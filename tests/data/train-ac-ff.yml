@@ -7,4 +7,11 @@ sections:
     calendar:
       start: '2021-12-01 23:50:00'
       end: '2021-12-31 23:50:00'
-      mask: D
+      mask: 'Mon Tue Wed Thu'
+  - departure: AC
+    arrival: Venlo
+    travel_time: 02:10:00
+    calendar:
+      start: '2021-12-01 23:50:00'
+      end: '2021-12-31 23:50:00'
+      mask: 'Fri Sat Sun'

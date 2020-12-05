@@ -7,6 +7,7 @@ from pathlib import PosixPath
 import pandas as pd
 import yaml
 from pandas import DatetimeIndex
+from pandas.tseries.offsets import CustomBusinessDay
 from typing import List
 
 
@@ -23,7 +24,6 @@ class RouteSection:
                  arrival: str,
                  travel_time: timedelta,
                  departure_timestamps: pd.DatetimeIndex):
-        assert departure_timestamps.freq == 'D'
         self.departure_times = departure_timestamps
         self.travel_time = travel_time
         self.departure = departure
@@ -65,8 +65,8 @@ def make_section_from_dict(section: dict) -> RouteSection:
     spec = section['calendar']
     start = spec['start']
     end = spec['end']
-    mask = spec['mask']
-    dts = pd.date_range(start, end, freq='D')
+    mask = CustomBusinessDay(weekmask=spec['mask'])
+    dts = pd.date_range(start, end, freq=mask)
     result = RouteSection(departure=section['departure'],
                           arrival=section['arrival'],
                           travel_time=tt,

@@ -34,18 +34,33 @@ def test_train_from_yml(train_ac_ff):
     t: Union[Train, Any] = train_ac_ff
     assert isinstance(t, Train)
     assert t.core_id == '12AB'
-    c = t.route_sections[0]
-    assert c.departure == 'AC'
-    assert c.arrival == 'EMM'
 
-    assert str(c.departure_time()) == '2021-12-01 23:50:00'
-    assert str(c.arrival_time()) == '2021-12-02 02:00:00'
+    rs = t.route_sections[0] # AC - EMM
+    assert rs.departure == 'AC'
+    assert rs.arrival == 'EMM'
 
-    assert str(c.first_day()) == '2021-12-01'
-    assert str(c.last_day()) == '2021-12-31'
+    assert str(rs.departure_time()) == '2021-12-01 23:50:00'
+    assert str(rs.arrival_time()) == '2021-12-02 02:00:00'
+
+    assert str(rs.first_day()) == '2021-12-01'
+    assert str(rs.last_day()) == '2021-12-30'
+
+    rs = t.route_sections[1]
+    assert rs.departure == 'AC'
+    assert rs.arrival == 'Venlo'
+
+    assert str(rs.departure_time()) == '2021-12-03 23:50:00'
+    assert str(rs.arrival_time()) == '2021-12-04 02:00:00'
+
+    assert str(rs.first_day()) == '2021-12-03'
+    assert str(rs.last_day()) == '2021-12-31'
 
 
 def test_train_to_df(train_ac_ff):
     df = train_ac_ff.route_sections[0].to_dataframe()
-    assert len(df) == 31
+    assert len(df) == 18
     assert list(df.columns) == ['AC', 'EMM']
+
+    df = train_ac_ff.route_sections[1].to_dataframe()
+    assert len(df) == 13
+    assert list(df.columns) == ['AC', 'Venlo']
