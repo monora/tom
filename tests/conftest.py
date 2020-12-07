@@ -20,7 +20,16 @@ def ac_to_emm():
     return r
 
 
+def _make_train(d: PosixPath, yml: str):
+    f = (d / (yml + '.yml'))
+    return make_train_from_yml(f)
+
+
 @pytest.fixture
 def train_ac_ff(shared_datadir):
-    f = (shared_datadir / 'train-ac-ff.yml')
-    return make_train_from_yml(f)
+    return _make_train(shared_datadir, 'train-ac-ff')
+
+
+@pytest.fixture
+def train_a_f(shared_datadir):
+    return _make_train(shared_datadir, 'train-a-f')

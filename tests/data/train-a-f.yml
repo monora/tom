@@ -1,0 +1,56 @@
+---
+coreID: 13AB
+routes:
+  - route: # B-F
+    - departure: B
+      arrival: C
+      travel_time: &tt-b-c 01:00:00
+      calendar:
+        begin: &b-begin '2020-12-01 00:30:00'
+        end: &b-end '2020-12-31 00:30:00'
+        mask: 'Mon Tue Wed Thu Fri Sat'
+    - &section-c-e
+      departure: C
+      arrival: E
+      travel_time: 03:00:00
+      calendar:
+        begin: '2020-12-01 1:30:00'
+        end: '2020-12-31 02:00:00'
+        mask: D
+    - &section-e-f
+      departure: E
+      arrival: F
+      travel_time: 04:00:00
+      calendar:
+        begin: &e-begin '2020-12-02 0:30:00'
+        end: &e-end '2020-12-31 00:30:00'
+        mask: 'Tue Wed Thu Fri Sun'
+
+  - route: # A-F
+    - departure: A
+      arrival: C
+      travel_time: 01:00:00
+      calendar:
+        begin: '2020-12-01 23:30:00'
+        end: '2020-12-31 00:30:00'
+        mask: 'Sat'
+    - *section-c-e
+    - *section-e-f
+
+  - route: # B-G
+    - departure: B
+      arrival: C
+      travel_time: *tt-b-c
+      calendar:
+        begin: *b-begin
+        end: *b-end
+        mask: 'Sun'
+    - *section-c-e
+    - departure: E
+      arrival: G
+      travel_time: 01:00:00
+      calendar:
+        begin: *e-begin
+        end: *e-end
+        mask: 'Sat'
+

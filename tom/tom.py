@@ -29,6 +29,9 @@ class RouteSection:
         self.departure = departure
         self.arrival = arrival
 
+    def __str__(self):
+        return self.departure + '->' + self.arrival
+
     def first_day(self) -> date:
         return datetime.date(self.departure_times[0])
 
@@ -51,22 +54,47 @@ class RouteSection:
         return self.departure_times + self.travel_time
 
 
+class Route:
+    sections: List[RouteSection]
+
+    def __init__(self, sections: List[RouteSection]):
+        if len(sections) == 0:
+            raise ValueError("No sections in route")
+        # Check if sections form a route
+        for prev, curr in zip(sections, sections[1:]):
+            if prev.arrival != curr.departure:
+                raise ValueError(f"Route sections do not fit: {prev} != {curr}")
+        self.sections = sections
+
+    def __str__(self):
+        return ','.join([str(s) for s in self.sections])
+
+    def to_dataframe(self) -> pd.DataFrame:
+        result = pd.concat([x.to_dataframe() for x in self.sections])
+        return result
+
+
 class Train:
     core_id: str
-    route_sections: List[RouteSection]
+    routes: List[Route]
 
-    def __init__(self, code_id: str, sections: List[RouteSection]):
+    def __init__(self, code_id: str, routes: List[Route]):
         self.core_id = code_id
-        self.route_sections = sections
+        self.routes = routes
 
 
-def make_section_from_dict(section: dict) -> RouteSection:
-    tt = pd.Timedelta(section['travel_time'])
+def _make_section_from_dict(section: dict) -> RouteSection:
+    try:
+        tt = pd.Timedelta(section['travel_time'])
+    except TypeError as e:
+        raise e
     spec = section['calendar']
-    start = spec['start']
+    begin = spec['begin']
     end = spec['end']
-    mask = CustomBusinessDay(weekmask=spec['mask'])
-    dts = pd.date_range(start, end, freq=mask)
+    mask = spec['mask']
+    if mask != 'D':
+        mask = CustomBusinessDay(weekmask=mask)
+    dts = pd.date_range(begin, end, freq=mask)
     result = RouteSection(departure=section['departure'],
                           arrival=section['arrival'],
                           travel_time=tt,
@@ -74,8 +102,19 @@ def make_section_from_dict(section: dict) -> RouteSection:
     return result
 
 
+def _make_route_from_dict(route: dict):
+    sections = [_make_section_from_dict(d) for d in route['route']]
+    result = Route(sections=sections)
+    return result
+
+
 def make_train_from_yml(file: PosixPath) -> Train:
-    td = yaml.safe_load(file.read_text())
-    sections = [make_section_from_dict(d) for d in td['sections']]
-    result = Train(td['coreID'], sections=sections)
+    try:
+        td = yaml.safe_load(file.read_text())
+    except yaml.YAMLError as e:
+        print(f'Error reading train from {file.name}.')
+        raise e
+
+    routes = [_make_route_from_dict(d) for d in td['routes']]
+    result = Train(td['coreID'], routes=routes)
     return result
