@@ -16,7 +16,7 @@ class RouteSection:
     Start of a route section
     """
     travel_time: timedelta
-    stop_time: timedelta
+    departure_stop_time: timedelta
     departure: str
     arrival: str
     departure_times: DatetimeIndex
@@ -25,10 +25,10 @@ class RouteSection:
                  arrival: str,
                  travel_time: timedelta,
                  departure_timestamps: pd.DatetimeIndex,
-                 stop_time: timedelta = 0):
+                 stop_time: timedelta = pd.Timedelta(0)):
         self.departure_times = departure_timestamps
         self.travel_time = travel_time
-        self.stop_time = stop_time
+        self.departure_stop_time = stop_time
         self.departure = departure
         self.arrival = arrival
 

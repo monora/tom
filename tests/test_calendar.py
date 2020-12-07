@@ -22,6 +22,7 @@ def test_route_section_instance(ac_to_emm):
 
     assert str(ac_to_emm.departure_time()) == '2021-12-01 23:50:00'
     assert str(ac_to_emm.arrival_time()) == '2021-12-02 02:00:00'
+    assert ac_to_emm.departure_stop_time == pd.Timedelta(0)
 
 
 def test_to_dataframe(ac_to_emm):
@@ -56,11 +57,15 @@ def test_train_from_yml(train_ac_ff):
     assert str(r) == 'AC->Venlo,Venlo->FF'
 
     assert str(rs.departure_time()) == '2021-12-03 23:50:00'
+    # 0 is default stop time
+    assert rs.departure_stop_time == pd.Timedelta(0)
     assert str(rs.arrival_time()) == '2021-12-04 02:00:00'
 
     assert str(rs.first_day()) == '2021-12-03'
     assert str(rs.last_day()) == '2021-12-31'
 
+    rs = r.sections[1]
+    assert rs.departure_stop_time == pd.Timedelta('00:05:00')
 
 def test_route_to_df(train_ac_ff):
     df = train_ac_ff.routes[0].to_dataframe()
@@ -84,6 +89,7 @@ def test_section_to_df(train_ac_ff):
     df = train_ac_ff.routes[1].sections[1].to_dataframe()
     assert len(df) == 13
     assert list(df.columns) == ['Venlo', 'FF']
+
 
 def test_train_a_f(train_a_f):
     assert len(train_a_f.routes) == 3
