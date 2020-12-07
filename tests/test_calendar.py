@@ -77,6 +77,13 @@ def test_section_to_df(train_ac_ff):
     assert len(df) == 18
     assert list(df.columns) == ['EMM', 'FF']
 
+    df = train_ac_ff.routes[1].sections[0].to_dataframe()
+    assert len(df) == 13
+    assert list(df.columns) == ['AC', 'Venlo']
+
+    df = train_ac_ff.routes[1].sections[1].to_dataframe()
+    assert len(df) == 13
+    assert list(df.columns) == ['Venlo', 'FF']
 
 def test_train_a_f(train_a_f):
     assert len(train_a_f.routes) == 3

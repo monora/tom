@@ -16,6 +16,7 @@ class RouteSection:
     Start of a route section
     """
     travel_time: timedelta
+    stop_time: timedelta
     departure: str
     arrival: str
     departure_times: DatetimeIndex
@@ -23,9 +24,11 @@ class RouteSection:
     def __init__(self, departure: str,
                  arrival: str,
                  travel_time: timedelta,
-                 departure_timestamps: pd.DatetimeIndex):
+                 departure_timestamps: pd.DatetimeIndex,
+                 stop_time: timedelta = 0):
         self.departure_times = departure_timestamps
         self.travel_time = travel_time
+        self.stop_time = stop_time
         self.departure = departure
         self.arrival = arrival
 
@@ -88,16 +91,20 @@ def _make_section_from_dict(section: dict) -> RouteSection:
         tt = pd.Timedelta(section['travel_time'])
     except TypeError as e:
         raise e
-    spec = section['calendar']
+    spec: dict = section['calendar']
     begin = spec['begin']
     end = spec['end']
-    mask = spec['mask']
+    mask = spec.get('mask', 'D')
+    departure_time = pd.Timedelta(section.get('departure_time', 0))
+    stop_time = pd.Timedelta(section.get('stop_time', 0))
     if mask != 'D':
         mask = CustomBusinessDay(weekmask=mask)
-    dts = pd.date_range(begin, end, freq=mask)
+    dts = pd.date_range(begin, end, freq=mask) + departure_time
+
     result = RouteSection(departure=section['departure'],
                           arrival=section['arrival'],
                           travel_time=tt,
+                          stop_time=stop_time,
                           departure_timestamps=dts)
     return result
 
