@@ -2,17 +2,17 @@
 coreID: 12AB
 routes:
   - route: # AC-EMM-FF
-    - departure: AC
+    - origin: AC
       departure_time: &dep_time_ac '23:50:00'
-      arrival: EMM
+      destination: EMM
       travel_time: 02:10:00
       calendar:
         begin: &ac-begin '2021-12-01'
         end: &ac-end '2021-12-31'
         mask: 'Mon Tue Wed Thu'
-    - departure: EMM
+    - origin: EMM
       departure_time: &dep_time_emm 02:00:00
-      arrival: FF
+      destination: FF
       travel_time: 10:00:00
       calendar:
         begin: '2021-12-02'
@@ -20,17 +20,17 @@ routes:
         mask: 'Tue Wed Thu Fri'
 
   - route: # AC-Venlo-FF
-    - departure: AC
+    - origin: AC
       departure_time: *dep_time_ac
-      arrival: Venlo
-      travel_time: 02:10:00
+      destination: Venlo
+      travel_time: 02:05:00
       calendar:
         begin: *ac-begin
         end: *ac-end
         mask: 'Fri Sat Sun'
-    - departure: Venlo
+    - origin: Venlo
       departure_time: *dep_time_emm
-      arrival: FF
+      destination: FF
       travel_time: '10:00:00'
       stop_time: 00:05:00
       calendar:

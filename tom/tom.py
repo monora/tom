@@ -5,10 +5,12 @@ from datetime import datetime, timedelta, date
 from pathlib import PosixPath
 
 import pandas as pd
+import networkx as nx
+
 import yaml
 from pandas import DatetimeIndex
 from pandas.tseries.offsets import CustomBusinessDay
-from typing import List
+from typing import List, Any, Generator
 
 
 class RouteSection:
@@ -16,45 +18,48 @@ class RouteSection:
     Start of a route section
     """
     travel_time: timedelta
-    departure_stop_time: timedelta
-    departure: str
-    arrival: str
-    departure_times: DatetimeIndex
+    origin_stop_time: timedelta
+    origin: str
+    destination: str
+    departure_times_at_origin: DatetimeIndex
 
-    def __init__(self, departure: str,
-                 arrival: str,
+    def __init__(self, origin: str,
+                 destination: str,
                  travel_time: timedelta,
                  departure_timestamps: pd.DatetimeIndex,
                  stop_time: timedelta = pd.Timedelta(0)):
-        self.departure_times = departure_timestamps
+        self.departure_times_at_origin = departure_timestamps
         self.travel_time = travel_time
-        self.departure_stop_time = stop_time
-        self.departure = departure
-        self.arrival = arrival
+        self.origin_stop_time = stop_time
+        self.origin = origin
+        self.destination = destination
 
     def __str__(self):
-        return self.departure + '->' + self.arrival
+        return self.origin + '->' + self.destination
+
+    def __iter__(self):
+        return (SectionRun(self, dt) for dt in self.departure_times_at_origin)
 
     def first_day(self) -> date:
-        return datetime.date(self.departure_times[0])
+        return datetime.date(self.departure_times_at_origin[0])
 
     def last_day(self) -> date:
-        return datetime.date(self.departure_times[-1])
+        return datetime.date(self.departure_times_at_origin[-1])
 
-    def departure_time(self) -> pd.Timestamp:
-        return self.departure_times[0]
+    def departure_at_origin(self) -> pd.Timestamp:
+        return self.departure_times_at_origin[0]
 
-    def arrival_time(self) -> pd.Timestamp:
-        return self.departure_time() + self.travel_time
+    def arrival_at_destination(self) -> pd.Timestamp:
+        return self.departure_at_origin() + self.travel_time
 
     def to_dataframe(self) -> pd.DataFrame:
-        df = pd.DataFrame(index=[x.date() for x in self.departure_times])
-        df[self.departure] = self.departure_times
-        df[self.arrival] = self.arrival_times()
+        df = pd.DataFrame(index=[x.date() for x in self.departure_times_at_origin])
+        df[self.origin] = self.departure_times_at_origin
+        df[self.destination] = self.arrival_times_at_destination()
         return df
 
-    def arrival_times(self) -> pd.DatetimeIndex:
-        return self.departure_times + self.travel_time
+    def arrival_times_at_destination(self) -> pd.DatetimeIndex:
+        return self.departure_times_at_origin + self.travel_time
 
 
 class Route:
@@ -65,7 +70,7 @@ class Route:
             raise ValueError("No sections in route")
         # Check if sections form a route
         for prev, curr in zip(sections, sections[1:]):
-            if prev.arrival != curr.departure:
+            if prev.destination != curr.origin:
                 raise ValueError(f"Route sections do not fit: {prev} != {curr}")
         self.sections = sections
 
@@ -85,6 +90,47 @@ class Train:
         self.core_id = code_id
         self.routes = routes
 
+    def section_run_iterator(self):
+        for r in self.routes:
+            for section in r.sections:
+                for sr in section:
+                    yield sr
+
+    def train_run_graph(self):
+        result = nx.DiGraph()
+
+        for u in self.section_run_iterator():
+            for v in self.section_run_iterator():
+                if u.destination() == v.origin():
+                    if u.arrival_at_destination() == v.arrival_at_origin():
+                        result.add_edge(u, v)
+        return result
+
+
+class SectionRun:
+    section: RouteSection
+    departure_at_origin: datetime
+
+    def __init__(self, section: RouteSection, time: datetime):
+        self.section = section
+        self.departure_at_origin = time
+
+    def __str__(self):
+        return f"{str(self.departure_at_origin)}: {self.section}"
+
+    def arrival_at_destination(self):
+        return self.departure_at_origin + self.section.travel_time
+
+    def arrival_at_origin(self):
+        return self.departure_at_origin - self.section.origin_stop_time
+
+    def origin(self) -> str:
+        return self.section.origin
+
+    def destination(self) -> str:
+        return self.section.destination
+
+
 
 def _make_section_from_dict(section: dict) -> RouteSection:
     try:
@@ -101,8 +147,8 @@ def _make_section_from_dict(section: dict) -> RouteSection:
         mask = CustomBusinessDay(weekmask=mask)
     dts = pd.date_range(begin, end, freq=mask) + departure_time
 
-    result = RouteSection(departure=section['departure'],
-                          arrival=section['arrival'],
+    result = RouteSection(origin=section['origin'],
+                          destination=section['destination'],
                           travel_time=tt,
                           stop_time=stop_time,
                           departure_timestamps=dts)
