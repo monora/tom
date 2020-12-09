@@ -1,7 +1,6 @@
 ---
 coreID: 13AB
-routes:
-  - route: # B-F
+sections:
     - origin: B
       departure_time: &b-departure '00:30:00'
       destination: C
@@ -10,52 +9,36 @@ routes:
         begin: &b-begin '2020-12-01'
         end: &b-end '2020-12-31'
         mask: 'Mon Tue Wed Thu Fri Sat'
-    - &section-c-e
-      origin: C
+    - origin: C
       departure_time: '01:30:00'
       destination: E
-      travel_time: '03:00:00'
+      travel_time: '23:00:00'
       calendar:
         begin: *b-begin
         end: *b-end
-    - &section-e-f
-      origin: E
+    - origin: E
       departure_time: *b-departure
       destination: F
-      travel_time: 04:00:00
+      travel_time: '04:00:00'
       calendar:
         begin: &e-begin '2020-12-02'
-        end: *b-end
-        mask: 'Tue Wed Thu Fri Sun'
-
-  - route: # A-F
+        # Need one SectionRun in January to come to F'
+        end: '2021-01-01'
+        # Not on Tuesday
+        mask: 'Wed Thu Fri Sat Sun Mon'
     - origin: A
       departure_time: '23:30:00'
       destination: C
-      travel_time: '01:00:00'
+      travel_time: '02:00:00'
       calendar:
         begin: *b-begin
         end: *b-end
         mask: 'Sat'
-    - *section-c-e
-    - *section-e-f
-
-  - route: # B-G
-    - origin: B
-      departure_time: *b-departure
-      destination: C
-      travel_time: *tt-b-c
-      calendar:
-        begin: *b-begin
-        end: *b-end
-        mask: 'Sun'
-    - *section-c-e
     - origin: E
       departure_time: *b-departure
       destination: G
-      travel_time: '01:00:00'
+      travel_time: '08:00:00'
       calendar:
         begin: *e-begin
-        end: *b-end
-        mask: 'Sat'
-
+        end: '2021-01-01'
+        mask: 'Tue'

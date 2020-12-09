@@ -1,7 +1,6 @@
 ---
 coreID: 12AB
-routes:
-  - route: # AC-EMM-FF
+sections:
     - origin: AC
       departure_time: &dep_time_ac '23:50:00'
       destination: EMM
@@ -19,7 +18,6 @@ routes:
         end: *ac-end
         mask: 'Tue Wed Thu Fri'
 
-  - route: # AC-Venlo-FF
     - origin: AC
       departure_time: *dep_time_ac
       destination: Venlo

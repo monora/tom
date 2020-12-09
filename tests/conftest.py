@@ -22,8 +22,7 @@ def ac_to_emm():
 
 @pytest.fixture()
 def tr_ac_to_emm(ac_to_emm):
-    route = Route(sections=[ac_to_emm])
-    return Train('12AB', routes=[route])
+    return Train('12AB', sections=[ac_to_emm])
 
 
 def _make_train(d: PosixPath, yml: str):

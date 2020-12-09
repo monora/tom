@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Main module of Train Object Model."""
+import itertools
 from datetime import datetime, timedelta, date
 from pathlib import PosixPath
 
@@ -10,7 +11,7 @@ import networkx as nx
 import yaml
 from pandas import DatetimeIndex
 from pandas.tseries.offsets import CustomBusinessDay
-from typing import List, Any, Generator
+from typing import List
 
 
 class RouteSection:
@@ -35,7 +36,7 @@ class RouteSection:
         self.destination = destination
 
     def __str__(self):
-        return self.origin + '->' + self.destination
+        return self.origin + '-' + self.destination
 
     def __iter__(self):
         return (SectionRun(self, dt) for dt in self.departure_times_at_origin)
@@ -84,27 +85,36 @@ class Route:
 
 class Train:
     core_id: str
-    routes: List[Route]
+    sections: List[RouteSection]
 
-    def __init__(self, code_id: str, routes: List[Route]):
+    def __init__(self, code_id: str, sections: List[Route]):
         self.core_id = code_id
-        self.routes = routes
+        self.sections = sections
 
     def section_run_iterator(self):
-        for r in self.routes:
-            for section in r.sections:
-                for sr in section:
-                    yield sr
+        for section in self.sections:
+            for sr in section:
+                yield sr
 
     def train_run_graph(self):
         result = nx.DiGraph()
 
-        for u in self.section_run_iterator():
-            for v in self.section_run_iterator():
-                if u.destination() == v.origin():
-                    if u.arrival_at_destination() == v.arrival_at_origin():
-                        result.add_edge(u, v)
+        section_runs = list(self.section_run_iterator())
+        for u in section_runs:
+            for v in section_runs:
+                if u.connects_to(v):
+                    result.add_edge(u, v)
         return result
+
+    def extended_train_run_graph(self):
+        g = self.train_run_graph()
+        nodes: List[SectionRun] = list(g.nodes)
+        for v in nodes:
+            if g.in_degree(v) == 0:
+                g.add_edge(v.section, v)
+            if g.out_degree(v) == 0:
+                g.add_edge(v, v.section)
+        return g
 
 
 class SectionRun:
@@ -116,7 +126,9 @@ class SectionRun:
         self.departure_at_origin = time
 
     def __str__(self):
-        return f"{str(self.departure_at_origin)}: {self.section}"
+        ts_origin = self.departure_at_origin.strftime("%F %H:%M")
+        ts_dest = self.arrival_at_destination().strftime("%F %H:%M")
+        return f"{str(ts_origin)} {self.section} {ts_dest}"
 
     def arrival_at_destination(self):
         return self.departure_at_origin + self.section.travel_time
@@ -130,6 +142,26 @@ class SectionRun:
     def destination(self) -> str:
         return self.section.destination
 
+    def connects_to(self, other):
+        # print(self, '->', other)
+        if self.destination() == other.origin():
+            return self.arrival_at_destination() == other.arrival_at_origin()
+        else:
+            return False
+
+
+class TrainRun:
+    train: Train
+    sections_runs: List[SectionRun]
+
+    def __init__(self, t: Train, section_runs: List[SectionRun]):
+
+        self.train = t
+        self.sections_runs = section_runs
+
+        for prev, curr in zip(self.sections_runs, self.sections_runs[1:]):
+            if not prev.connects_to(curr):
+                raise ValueError(f"Section run {prev} must connect to {curr}")
 
 
 def _make_section_from_dict(section: dict) -> RouteSection:
@@ -144,20 +176,19 @@ def _make_section_from_dict(section: dict) -> RouteSection:
     departure_time = pd.Timedelta(section.get('departure_time', 0))
     stop_time = pd.Timedelta(section.get('stop_time', 0))
     if mask != 'D':
-        mask = CustomBusinessDay(weekmask=mask)
-    dts = pd.date_range(begin, end, freq=mask) + departure_time
+        dis = list(map(lambda x: pd.date_range(begin, end, freq=('W-' + x.upper())), mask.split()))
+        dts = dis[0]
+        for x in dis[1:]:
+            dts = dts.union(x)
+    else:
+        dts = pd.date_range(begin, end)
+    dts = dts + departure_time
 
     result = RouteSection(origin=section['origin'],
                           destination=section['destination'],
                           travel_time=tt,
                           stop_time=stop_time,
                           departure_timestamps=dts)
-    return result
-
-
-def _make_route_from_dict(route: dict):
-    sections = [_make_section_from_dict(d) for d in route['route']]
-    result = Route(sections=sections)
     return result
 
 
@@ -168,6 +199,6 @@ def make_train_from_yml(file: PosixPath) -> Train:
         print(f'Error reading train from {file.name}.')
         raise e
 
-    routes = [_make_route_from_dict(d) for d in td['routes']]
-    result = Train(td['coreID'], routes=routes)
+    sections = [_make_section_from_dict(d) for d in td['sections']]
+    result = Train(td['coreID'], sections=sections)
     return result
