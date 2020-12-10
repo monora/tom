@@ -38,17 +38,13 @@ def test_train_run_iterator_simple(train_ac_to_emm):
     assert train_runs[-1].train_id() == 'TR/8350/12AB/00/0/2021-12-31'
 
 
-def test_train_run_iterator_ac_ff(train_ac_ff):
-    train_runs = list(train_ac_ff.train_run_iterator())
+def test_train_run_iterator(yml_train):
+    expected = {
+        '12AB': {0: 'TR/8350/12AB/00/0/2021-12-01',
+                 -1: 'TR/8350/12AB/00/2/2021-12-31'},
+        '13AB': {0: 'TR/8350/13AB/00/0/2020-12-01',
+                 -1: 'TR/8350/13AB/00/3/2020-12-26'}}
+    train_runs = list(yml_train.train_run_iterator())
     assert len(train_runs) == 31
-
-    assert train_runs[0].train_id() == 'TR/8350/12AB/00/0/2021-12-01'
-    assert train_runs[-1].train_id() == 'TR/8350/12AB/00/2/2021-12-31'
-
-
-def test_train_run_iterator_a_f(train_a_f):
-    train_runs = list(train_a_f.train_run_iterator())
-    assert len(train_runs) == 31
-
-    assert train_runs[0].train_id()  == 'TR/8350/13AB/00/0/2020-12-01'
-    assert train_runs[-1].train_id() == 'TR/8350/13AB/00/3/2020-12-26'
+    for i in [0, -1]:
+        assert train_runs[i].train_id() == expected[yml_train.core_id][i]

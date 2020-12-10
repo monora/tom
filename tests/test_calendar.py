@@ -86,15 +86,8 @@ def test_section_to_df_a_f(train_a_f: Train):
     _check_to_df(train_a_f, 2, 31 - 4, ['E', 'F'])
 
 
-def test_train_to_df_aa_ff(train_ac_ff):
-    t = train_ac_ff
+def test_train_to_df(yml_train):
+    t = yml_train
     df = t.to_dataframe()
     assert len(df) == 31
-    df.to_excel("train_ac_ff.xlsx")
-
-
-def test_train_to_df_a_f(train_a_f):
-    t = train_a_f
-    df = t.to_dataframe()
-    assert len(df) == 31
-    df.to_excel("train_a_f.xlsx")
+    df.to_excel(f"train-{yml_train.core_id}.xlsx")

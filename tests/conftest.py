@@ -23,7 +23,7 @@ def train_ac_to_emm(ac_to_emm):
     return Train('12AB', sections=[ac_to_emm])
 
 
-def _make_train(d: PosixPath, yml: str):
+def _make_train(d: PosixPath, yml: str) -> Train:
     f = (d / (yml + '.yml'))
     return make_train_from_yml(f)
 
@@ -36,3 +36,8 @@ def train_ac_ff(shared_datadir):
 @pytest.fixture
 def train_a_f(shared_datadir):
     return _make_train(shared_datadir, 'train-a-f')
+
+
+@pytest.fixture(params=["train-ac-ff", "train-a-f"])
+def yml_train(shared_datadir, request) -> Train:
+    return _make_train(shared_datadir, request.param)
