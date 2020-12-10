@@ -1,8 +1,6 @@
 from datetime import timedelta
 
 import pytest
-import tom
-import yaml
 import pandas as pd
 
 from tom.tom import *
@@ -21,7 +19,7 @@ def ac_to_emm():
 
 
 @pytest.fixture()
-def tr_ac_to_emm(ac_to_emm):
+def train_ac_to_emm(ac_to_emm):
     return Train('12AB', sections=[ac_to_emm])
 
 

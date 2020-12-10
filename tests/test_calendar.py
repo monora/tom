@@ -4,8 +4,6 @@
 """Tests for `tom` package."""
 from typing import Any, Union
 
-import pytest
-
 from tom import tom
 import pandas as pd
 
@@ -64,7 +62,13 @@ def test_train_from_yml(train_ac_ff):
     assert rs.origin_stop_time == pd.Timedelta('00:05:00')
 
 
-def test_section_to_df(train_ac_ff):
+def _check_to_df(t: Train, index: int, size: int, cols):
+    df = t.sections[index].to_dataframe()
+    assert len(df) == size
+    assert list(df.columns) == cols
+
+
+def test_section_to_df_aa_ff(train_ac_ff):
     assert len(train_ac_ff.sections) == 4
     _check_to_df(train_ac_ff, 0, 18, ['AC', 'EMM'])
     _check_to_df(train_ac_ff, 1, 18, ['EMM', 'FF'])
@@ -72,17 +76,25 @@ def test_section_to_df(train_ac_ff):
     _check_to_df(train_ac_ff, 3, 13, ['Venlo', 'FF'])
 
 
-def _check_to_df(t: Train, index: int, size: int, cols):
-    df = t.sections[index].to_dataframe()
-    assert len(df) == size
-    assert list(df.columns) == cols
-
-
-def test_train_a_f(train_a_f: Train):
+def test_section_to_df_a_f(train_a_f: Train):
     assert len(train_a_f.sections) == 5
     _check_to_df(train_a_f, 3, 4, ['A', 'C'])
-    _check_to_df(train_a_f, 0, 31-4, ['B', 'C'])
+    _check_to_df(train_a_f, 0, 31 - 4, ['B', 'C'])
     _check_to_df(train_a_f, 1, 31, ['C', 'E'])
     _check_to_df(train_a_f, 4, 4, ['E', 'G'])
     # Section E-F starts at 2.12. and ends on 1.1. (=> also 31 days)
-    _check_to_df(train_a_f, 2, 31-4, ['E', 'F'])
+    _check_to_df(train_a_f, 2, 31 - 4, ['E', 'F'])
+
+
+def test_train_to_df_aa_ff(train_ac_ff):
+    t = train_ac_ff
+    df = t.to_dataframe()
+    assert len(df) == 31
+    df.to_excel("train_ac_ff.xlsx")
+
+
+def test_train_to_df_a_f(train_a_f):
+    t = train_a_f
+    df = t.to_dataframe()
+    assert len(df) == 31
+    df.to_excel("train_a_f.xlsx")
