@@ -31,5 +31,6 @@ jobs:
         run: poetry --help
       - name: Update dependencies
         run: poetry update
-      - name: Test with pytest
-        run: make test
+      - name: name docs
+        run: make docs
+
