@@ -11,6 +11,10 @@ import yaml
 from pandas import DatetimeIndex
 
 
+class TomError(ValueError):
+    pass
+
+
 class RouteSection:
     """
     Start of a route section
@@ -60,17 +64,21 @@ class RouteSection:
     def arrival_times_at_destination(self) -> pd.DatetimeIndex:
         return self.departure_times_at_origin + self.travel_time
 
+    def section_key(self):
+        return ((self.origin, self.departure_at_origin()),
+                (self.destination, self.arrival_at_destination()))
+
 
 class Route:
     sections: List[RouteSection]
 
     def __init__(self, sections: List[RouteSection]):
         if len(sections) == 0:
-            raise ValueError("No sections in route")
+            raise TomError("No sections in route")
         # Check if sections form a route
         for prev, curr in zip(sections, sections[1:]):
             if prev.destination != curr.origin:
-                raise ValueError(f"Route sections do not fit: {prev} != {curr}")
+                raise TomError(f"Route sections do not fit: {prev} != {curr}")
         self.sections = sections
 
     def __str__(self):
@@ -89,6 +97,8 @@ class Train:
     def __init__(self, code_id: str, sections: List[RouteSection]):
         self.core_id = code_id
         self.sections = sections
+
+        self._check_sections()
 
     def train_id(self) -> str:
         return f"TR/{self.lead_ru}/{self.core_id}/00"
@@ -151,6 +161,18 @@ class Train:
     def _locations(self) -> List[str]:
         return list(nx.topological_sort(self.location_graph()))
 
+    def _check_sections(self):
+        # Check if section id are unique:
+        section_ids = [s.section_id for s in self.sections]
+        if len(self.sections) != len(set(section_ids)):
+            raise TomError(f"Section IDs of train {self.train_id()} not unique: {section_ids}")
+
+        # Check if section event coordinates are unique:
+        section_keys = [s.section_key() for s in self.sections]
+        if len(self.sections) != len(set(section_keys)):
+            raise TomError(
+                f"Section keys of train {self.train_id()} not unique: {section_keys}")
+
 
 class SectionRun:
     section: RouteSection
@@ -199,7 +221,7 @@ class TrainRun:
 
         for prev, curr in zip(self.sections_runs, self.sections_runs[1:]):
             if not prev.connects_to(curr):
-                raise ValueError(f"Section run {prev} must connect to {curr}")
+                raise TomError(f"Section run {prev} must connect to {curr}")
 
     def __str__(self):
         return self.train_id()
@@ -266,7 +288,7 @@ def make_train_from_yml(file: PosixPath) -> Train:
 
     sections = [_make_section_from_dict(d) for d in td['sections']]
     # Give each sections a section id:
-    for i in range(0, len(sections) - 1):
+    for i in range(0, len(sections)):
         sections[i].section_id = i
 
     result = Train(td['coreID'], sections=sections)
