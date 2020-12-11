@@ -90,4 +90,4 @@ def test_train_to_df(yml_train):
     t = yml_train
     df = t.to_dataframe()
     assert len(df) == 31
-    df.to_excel(f"train-{yml_train.core_id}.xlsx")
+    df.to_excel(f"train-{yml_train.id()}.xlsx")

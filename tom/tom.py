@@ -25,6 +25,7 @@ class RouteSection:
     destination: str
     departure_times_at_origin: DatetimeIndex
     section_id: int = 0
+    version: int = 1
 
     def __init__(self, origin: str,
                  destination: str,
@@ -91,10 +92,12 @@ SINGLE_TARGET = 'single-target'
 
 class Train:
     core_id: str
+    version: int
     sections: List[RouteSection]
     lead_ru: int = 8350
 
     def __init__(self, code_id: str, sections: List[RouteSection]):
+        self.version = 1
         self.core_id = code_id
         self.sections = sections
 
@@ -102,6 +105,9 @@ class Train:
 
     def train_id(self) -> str:
         return f"TR/{self.lead_ru}/{self.core_id}/00"
+
+    def id(self):
+        return f"TR-{self.core_id}-{self.version}"
 
     def section_run_iterator(self):
         for section in self.sections:
@@ -276,6 +282,8 @@ def _make_section_from_dict(section: dict) -> RouteSection:
                           travel_time=tt,
                           stop_time=stop_time,
                           departure_timestamps=dts)
+    result.section_id = section.get('id', None)
+    result.version = section.get('version', result.version)
     return result
 
 
@@ -287,9 +295,12 @@ def make_train_from_yml(file: PosixPath) -> Train:
         raise e
 
     sections = [_make_section_from_dict(d) for d in td['sections']]
-    # Give each sections a section id:
+    # Give each sections a unique section id:
     for i in range(0, len(sections)):
-        sections[i].section_id = i
+        s = sections[i]
+        if s.section_id is None:
+            s.section_id = i
 
     result = Train(td['coreID'], sections=sections)
+    result.version = td.get('version', 1)
     return result

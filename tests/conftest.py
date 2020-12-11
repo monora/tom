@@ -1,7 +1,4 @@
-from datetime import timedelta
-
 import pytest
-import pandas as pd
 
 from tom.tom import *
 
@@ -38,6 +35,6 @@ def train_a_f(shared_datadir):
     return _make_train(shared_datadir, 'train-a-f')
 
 
-@pytest.fixture(params=["train-ac-ff", "train-a-f"])
+@pytest.fixture(params=["train-ac-ff", "train-a-f", "train-ac-ff-v2"])
 def yml_train(shared_datadir, request) -> Train:
     return _make_train(shared_datadir, request.param)

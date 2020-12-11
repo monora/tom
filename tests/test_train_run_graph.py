@@ -51,7 +51,7 @@ def _graphml_train_run_graph(t: Train, filename: str):
 
 
 def test_graphml_train_run_graph(yml_train: Train):
-    _graphml_train_run_graph(yml_train, f"train-{yml_train.core_id}")
+    _graphml_train_run_graph(yml_train, f"train-{yml_train.id()}")
 
 
 def test_location_graph_aa_ff(train_ac_ff):
