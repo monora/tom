@@ -16,7 +16,7 @@ jobs:
       matrix:
         python-version: [3.8]
         poetry-version: [1.1.2]
-        os: [ubuntu-18.04, macos-latest, windows-latest]
+        os: [ubuntu-18.04]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -29,6 +29,7 @@ jobs:
           poetry-version: ${{ matrix.poetry-version }}
       - name: View poetry --help
         run: poetry --help
+      - name: View make output
+        run: make
       - name: Test with pytest
-        run: |
-          poetry run pytest
+        run: make test
