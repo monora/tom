@@ -32,6 +32,6 @@ jobs:
       - name: Update dependencies
         run: poetry update
       - name: Run tests
-        run: make test
-      - name: name docs
+        run: pytest
+      - name: Make docs
         run: make docs
