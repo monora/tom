@@ -21,7 +21,7 @@ Test and investigate FTEs Train Object Model
 
 * Free software: MIT license
 
-* Documentation: https://tom.readthedocs.io.
+* Documentation: https://monora.github.io/tom
 
 
 
@@ -40,7 +40,7 @@ Features
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `monora/cookiecutter-pypackage`_ project template.
+This package was created with Cookiecutter_ and the `monora/cookiecutter-pypackage-poetry`_ project template.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`monora/cookiecutter-pypackage-poetry`: https://github.com/monora/cookiecutter-pypackage-poetry
