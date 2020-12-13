@@ -35,10 +35,18 @@
   <h1>Source code for tom.tom</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">&quot;&quot;&quot;Main module of Train Object Model.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines the TOM domain model. The main classes are:</span>
+
+<span class="sd">* Train defines a set of planned TrainRuns which consist of a sequence of</span>
+<span class="sd">* SectionRun. A SectionRun belongs to exactly one</span>
+<span class="sd">* RouteSection, which has a planned calendar of days the SectionsRuns start. A RouteSection is</span>
+<span class="sd">  managed by exactly one railway undertaking (RU) and one infrastructure manager (IM).</span>
+<span class="sd">* Each TrainRun must run exactly once on each location (origin, destination) of the train.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">date</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PosixPath</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -47,12 +55,18 @@
 
 
 <div class="viewcode-block" id="TomError"><a class="viewcode-back" href="../../tom.html#tom.tom.TomError">[docs]</a><span class="k">class</span> <span class="nc">TomError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Constraint violation in the TOM Model are signalled using this error&quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="RouteSection"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection">[docs]</a><span class="k">class</span> <span class="nc">RouteSection</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Start of a route section</span>
+<span class="sd">    Section of a route of a train which belongs to exactly one responsible IM</span>
+<span class="sd">    and applicant RU.</span>
+
+<span class="sd">    The departure_times_at_origin define the calendar of the SectionRuns</span>
+<span class="sd">    of this RouteSection. The date part of these timestamps are the calender days of the train</span>
+<span class="sd">    is running is this section.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">travel_time</span><span class="p">:</span> <span class="n">timedelta</span>
     <span class="n">origin_stop_time</span><span class="p">:</span> <span class="n">timedelta</span>
@@ -67,6 +81,15 @@
                  <span class="n">travel_time</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">,</span>
                  <span class="n">departure_timestamps</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">,</span>
                  <span class="n">stop_time</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new route section from origin to destination at well defined timestamps.</span>
+
+<span class="sd">        :param origin: location where the train starts or breaks in</span>
+<span class="sd">        :param destination: location where the train stops or leaves</span>
+<span class="sd">        :param travel_time: planned time from origin to destination</span>
+<span class="sd">        :param departure_timestamps: timestamps at origin (must be same at each day)</span>
+<span class="sd">        :param stop_time: when origin is a train stop the stop_time &gt; 0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span> <span class="o">=</span> <span class="n">departure_timestamps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">travel_time</span> <span class="o">=</span> <span class="n">travel_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin_stop_time</span> <span class="o">=</span> <span class="n">stop_time</span>
@@ -77,48 +100,61 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an iterator over all SectionRuns of this RouteSection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">SectionRun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RouteSection.first_day"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.first_day">[docs]</a>    <span class="k">def</span> <span class="nf">first_day</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">date</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Calendar day of the first train run in this section.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="RouteSection.last_day"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.last_day">[docs]</a>    <span class="k">def</span> <span class="nf">last_day</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">date</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Calendar day of the last train run in this section.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="RouteSection.departure_at_origin"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.departure_at_origin">[docs]</a>    <span class="k">def</span> <span class="nf">departure_at_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Timestamp the first train run departs from section origin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="RouteSection.arrival_at_destination"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.arrival_at_destination">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_at_destination</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Timestamp the first train run arrives at section destination</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_at_origin</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">travel_time</span></div>
 
 <div class="viewcode-block" id="RouteSection.to_dataframe"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: pandas dataframe with two columns for [origin, destination] and one row for each</span>
+<span class="sd">               section run.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span><span class="p">])</span>
         <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span>
         <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_times_at_destination</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">df</span></div>
 
 <div class="viewcode-block" id="RouteSection.arrival_times_at_destination"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.arrival_times_at_destination">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_times_at_destination</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The arrival times at destination compute from departure times at origin + travel time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_at_origin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">travel_time</span></div>
 
 <div class="viewcode-block" id="RouteSection.section_key"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.section_key">[docs]</a>    <span class="k">def</span> <span class="nf">section_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A section of a train is uniquely identified by this quadruple:</span>
+
+<span class="sd">          ((origin, departure time), (destination, arrival time))</span>
+
+<span class="sd">        :return: unique key of all sections of a train</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_at_origin</span><span class="p">()),</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_at_destination</span><span class="p">()))</span></div></div>
-
-
-<div class="viewcode-block" id="Route"><a class="viewcode-back" href="../../tom.html#tom.tom.Route">[docs]</a><span class="k">class</span> <span class="nc">Route</span><span class="p">:</span>
-    <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sections</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="s2">&quot;No sections in route&quot;</span><span class="p">)</span>
-        <span class="c1"># Check if sections form a route</span>
-        <span class="k">for</span> <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sections</span><span class="p">,</span> <span class="n">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-            <span class="k">if</span> <span class="n">prev</span><span class="o">.</span><span class="n">destination</span> <span class="o">!=</span> <span class="n">curr</span><span class="o">.</span><span class="n">origin</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Route sections do not fit: </span><span class="si">{</span><span class="n">prev</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">curr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="n">sections</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">])</span></div>
 
 
 <span class="n">SINGLE_SOURCE</span> <span class="o">=</span> <span class="s1">&#39;single-source&#39;</span>
@@ -128,12 +164,12 @@
 <div class="viewcode-block" id="Train"><a class="viewcode-back" href="../../tom.html#tom.tom.Train">[docs]</a><span class="k">class</span> <span class="nc">Train</span><span class="p">:</span>
     <span class="n">core_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]</span>
+    <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">lead_ru</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8350</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">core_id</span> <span class="o">=</span> <span class="n">code_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core_id</span> <span class="o">=</span> <span class="n">core_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="n">sections</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_sections</span><span class="p">()</span>
@@ -182,6 +218,10 @@
         <span class="k">return</span> <span class="n">g</span></div>
 
 <div class="viewcode-block" id="Train.train_run_iterator"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.train_run_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">train_run_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :return: Iterator[TrainRun]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extended_train_run_graph</span><span class="p">(</span><span class="n">use_sections</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_run_iterator</span><span class="p">():</span>
@@ -205,6 +245,9 @@
     <span class="k">def</span> <span class="nf">_check_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Check if section id are unique:</span>
         <span class="n">section_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">section_id</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">section_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span><span class="si">}</span><span class="s2"> must contain at least one RouteSection&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">section_ids</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Section IDs of train </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span><span class="si">}</span><span class="s2"> not unique: </span><span class="si">{</span><span class="n">section_ids</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -292,6 +335,33 @@
             <span class="k">yield</span> <span class="n">sr</span><span class="o">.</span><span class="n">destination</span><span class="p">()</span></div></div>
 
 
+<div class="viewcode-block" id="Route"><a class="viewcode-back" href="../../tom.html#tom.tom.Route">[docs]</a><span class="k">class</span> <span class="nc">Route</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Route is a sequence of RouteSection where consecutive section must fit together:</span>
+
+<span class="sd">    If (prev, next) is a tuple in the sections, then</span>
+
+<span class="sd">       prev.destination == next.origin</span>
+
+<span class="sd">    NOTE: The here proposed TOM model does not need routes! They are instead modeled as TrainRuns</span>
+<span class="sd">    which are computed from RouteSection (see Train.train_run_iterator)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sections</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="s2">&quot;No sections in route&quot;</span><span class="p">)</span>
+        <span class="c1"># Check if sections form a route</span>
+        <span class="k">for</span> <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sections</span><span class="p">,</span> <span class="n">sections</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="k">if</span> <span class="n">prev</span><span class="o">.</span><span class="n">destination</span> <span class="o">!=</span> <span class="n">curr</span><span class="o">.</span><span class="n">origin</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Route sections do not fit: </span><span class="si">{</span><span class="n">prev</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">curr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="n">sections</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">])</span></div>
+
+
 <span class="k">def</span> <span class="nf">_make_section_from_dict</span><span class="p">(</span><span class="n">section</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteSection</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">tt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;travel_time&#39;</span><span class="p">])</span>
@@ -362,6 +432,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Train Object Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../domainmodel.html">Route Domain Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">tom</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>

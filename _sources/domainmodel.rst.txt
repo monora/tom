@@ -1,0 +1,61 @@
+.. toctree::
+   :maxdepth: 3
+
+==================
+Route Domain Model
+==================
+
+.. _Sector Handbook: http://taf-jsg.info/wp-content/uploads/2019/10/190604_js_handbook_2.0_with_xsd_2.2.3_0.pdf
+
+--------
+Overview
+--------
+
+Each international train has to be split into sections when the train crosses a border.  The split
+locations are called handover points. At each handover the responsiblity for the train planning
+changes from IM to IM and RU to RU. The planning process is coordinated by the lead RU.
+
+.. uml:: tom-overview.puml
+
+An international :class:`Train <tom.tom.Train>` must at least have two sections. It then has exactly
+
+* one origin
+* one destination
+* one or more handover journey locations
+
+For each :class:`RouteSection <tom.tom.RouteSection>` the responsible IM and applicant RU exchange
+*PathRequest* and *PathDetails* to plan the detailed route within a *RouteSection*. This process is
+described in detail in the `Sector Handbook`_.  As long as borders of a section both in location and
+time are unchanged no other participant in the planning of the whole train has to be informed.
+
+The following paragraph describes the minimal information which all companies involved must know
+about the whole train. Changes to this information have to be propagated by the lead RU.
+
+----------------------
+Train and RouteSection
+----------------------
+
+.. uml:: tom-section.puml
+
+Only RouteSections have a calendar.  This is the set of starting days at origin.  All timestamps in
+Train, TrainRun and SectionRuns are calculated from calendar, departure_at_origin, travel_time and
+stop_time. No OTR (Offset To Reference) is needed!
+
+-----------------------
+TrainRun and SectionRun
+-----------------------
+
+.. uml:: tom-section-run.puml
+
+------------------------------------------
+Example: Train from Amsterdam to Frankfurt
+------------------------------------------
+
+.. uml:: tom-example.puml
+
+YAML-Example
+~~~~~~~~~~~~
+
+.. literalinclude:: ../tests/data/train-ac-ff.yml
+   :language: yaml
+   :linenos:

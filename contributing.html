@@ -66,6 +66,20 @@ and “help wanted” is open to whoever wants to implement it.</p>
 <p>Train Object Model could always use more documentation, whether as part of the
 official Train Object Model docs, in docstrings, or even on the web in blog posts,
 articles, and such.</p>
+<p>The documentation is created using <a class="reference external" href="https://plantuml.com/en/class-diagram">PlantUml</a> with the help of the <a class="reference external" href="https://pythonhosted.org/an_example_pypi_project/sphinx.html">Sphinx</a> extension
+<a class="reference external" href="https://pypi.org/project/sphinxcontrib-plantuml">sphinxcontrib-plantuml</a>. See configuration in <code class="file docutils literal notranslate"><span class="pre">/conf.py</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add any Sphinx extension module names here, as strings. They can be</span>
+<span class="c1"># extensions coming with Sphinx (named &#39;sphinx.ext.*&#39;) or your custom ones.</span>
+<span class="nv">extensions</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;sphinx.ext.autodoc&#39;</span>,
+              <span class="s1">&#39;sphinx.ext.viewcode&#39;</span>,
+<span class="hll">              <span class="s1">&#39;sphinxcontrib.plantuml&#39;</span><span class="o">]</span>
+</span></pre></div>
+</div>
+<p>See also:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://evaparish.com/blog/2018/10/19/why-sphinx-and-rst-are-the-best">Why Sphinx and RST are the best</a></li>
+<li><a class="reference external" href="https://docs-as-co.de/news/plantuml-markdown-code-gitlab-github-integration">PlantUML dev workflow</a></li>
+</ul>
 </div>
 <div class="section" id="submit-feedback">
 <h3>Submit Feedback<a class="headerlink" href="#submit-feedback" title="Permalink to this headline">¶</a></h3>
@@ -156,6 +170,21 @@ $ git push --tags
 </div>
 <p>Travis will then deploy to PyPI if tests pass.</p>
 </div>
+<div class="section" id="deploying-documentation">
+<h2>Deploying Documentation<a class="headerlink" href="#deploying-documentation" title="Permalink to this headline">¶</a></h2>
+<p>For now we deploy the documention manually to GitHub pages:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd $PROJECT_DIR # where tom project ist cloned</span>
+<span class="go">make clean docs</span>
+<span class="go">cd ..</span>
+<span class="go">git clone https://github.com/monora/tom.git --branch gh-pages --single-branch gh-pages</span>
+<span class="go">cp -r docs/_build/html/* gh-pages</span>
+<span class="go">cd gh-pages</span>
+<span class="go">git add .</span>
+<span class="go">git ci -m&#39;Update documentation&#39;</span>
+<span class="go">git push</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -180,6 +209,7 @@ $ git push --tags
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Train Object Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="domainmodel.html">Route Domain Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">tom</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#types-of-contributions">Types of Contributions</a></li>
@@ -187,6 +217,7 @@ $ git push --tags
 <li class="toctree-l2"><a class="reference internal" href="#pull-request-guidelines">Pull Request Guidelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tips">Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deploying-documentation">Deploying Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
