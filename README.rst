@@ -24,7 +24,6 @@ Test and investigate FTEs Train Object Model
 * Documentation: https://monora.github.io/tom
 
 
-
 Installation:
 -------------
 

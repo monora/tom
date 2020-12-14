@@ -1,0 +1,50 @@
+object "TR/1080/12AB: Train" as tr
+object "AC->EMM: RouteSection" as ac_emm
+object "AC->Venlo: RouteSection" as ac_venlo
+object "EMM->FF: RouteSection" as emm_ff
+object "Venlo->FF: RouteSection" as venlo_ff
+
+ac_emm : departure_at_origin = 23:50
+ac_emm : travel_time = 02:10
+ac_emm : calendar = [2021-12-01, 2021-12-31, Mon-Thu]
+
+emm_ff : departure_at_origin = 02:00
+emm_ff : travel_time = 10:00
+emm_ff : calendar = [2021-12-02, 2021-12-31, Tue-Fri]
+
+ac_venlo : departure_at_origin = 23:50
+ac_venlo : travel_time = 02:05
+ac_venlo : calendar = [2021-12-01, 2021-12-31, Fri-Sun]
+
+venlo_ff : departure_at_origin = 02:00
+venlo_ff : travel_time = 10:00
+venlo_ff : stop_time = 00:05
+venlo_ff : calendar = [2021-12-01, 2022-01-01, Sat-Mon]
+
+tr *-- ac_emm
+tr *-- ac_venlo
+tr *-- emm_ff
+tr *-- venlo_ff
+
+ac_emm ..> emm_ff : connects_to >
+ac_venlo ..> venlo_ff : connects_to >
+
+note top of ac_venlo
+    - First run on Fr 2021-12-01
+    - Arrival in Venlo on Saturday 1:55 =>
+      calendar of Venlo->FF must start on Saturday
+      (overnight)
+end note
+note left of venlo_ff
+    - Train stops at Venlo for 5 minutes
+    - Last SectionRun starts on Sa 2022-01-01!
+end note
+
+note as n1
+    Another overnight between AC -> EMM =>
+    must shift calendar of EMM->FF one day.
+    A section calendar is always relative to the start
+    at origin of the connected sections.
+end note
+n1 .. emm_ff
+n1 .. ac_emm

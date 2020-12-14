@@ -42,6 +42,26 @@ Train Object Model could always use more documentation, whether as part of the
 official Train Object Model docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
+The documentation is created using PlantUml_ with the help of the Sphinx_ extension
+sphinxcontrib-plantuml_. See configuration in :file:`/conf.py`:
+
+.. literalinclude:: /conf.py
+   :start-after: @begin sphinx-extensions
+   :end-before: @end sphinx-extensions
+   :emphasize-lines: 5
+
+See also:
+
+* `Why Sphinx and RST are the best`_
+* `PlantUML dev workflow`_
+
+.. _sphinxcontrib-plantuml: https://pypi.org/project/sphinxcontrib-plantuml
+.. _PlantUml: https://plantuml.com/en/class-diagram
+.. _Sphinx: https://pythonhosted.org/an_example_pypi_project/sphinx.html
+.. _Why Sphinx and RST are the best: https://evaparish.com/blog/2018/10/19/why-sphinx-and-rst-are-the-best
+.. _PlantUML dev workflow: https://docs-as-co.de/news/plantuml-markdown-code-gitlab-github-integration
+
+
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
@@ -126,3 +146,22 @@ $ git push
 $ git push --tags
 
 Travis will then deploy to PyPI if tests pass.
+
+Deploying Documentation
+-----------------------
+
+For now we deploy the documention manually to GitHub pages:
+
+.. code-block:: console
+
+   cd $TOM_DIR # where tom project ist cloned
+   make clean docs
+   cd ..
+   git clone https://github.com/monora/tom.git --branch gh-pages --single-branch gh-pages
+   cp -r $TOM_DIR/docs/_build/html/* gh-pages
+   cd gh-pages
+   git add .
+   git ci -m'Update documentation'
+   git push
+   
+   

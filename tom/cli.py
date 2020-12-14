@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""Console script for tom."""
+"""Console script for TOM. Not yet functional!
+"""
 import sys
 import click
 

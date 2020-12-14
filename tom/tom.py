@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 
-"""Main module of Train Object Model."""
+"""
+This module defines the TOM domain model. The main classes are:
+
+* Train defines a set of planned TrainRuns which consist of a sequence of
+* SectionRun. A SectionRun belongs to exactly one
+* RouteSection, which has a planned calendar of days the SectionsRuns start. A RouteSection is
+  managed by exactly one railway undertaking (RU) and one infrastructure manager (IM).
+* Each TrainRun must run exactly once on each location (origin, destination) of the train.
+"""
 from datetime import datetime, timedelta, date
 from pathlib import PosixPath
-from typing import List, Dict
+from typing import List, Dict, Iterator
 
 import networkx as nx
 import pandas as pd
@@ -12,12 +20,18 @@ from pandas import DatetimeIndex
 
 
 class TomError(ValueError):
+    """Constraint violation in the TOM Model are signalled using this error"""
     pass
 
 
 class RouteSection:
     """
-    Start of a route section
+    Section of a route of a train which belongs to exactly one responsible IM
+    and applicant RU.
+
+    The departure_times_at_origin define the calendar of the SectionRuns
+    of this RouteSection. The date part of these timestamps are the calender days of the train
+    is running is this section.
     """
     travel_time: timedelta
     origin_stop_time: timedelta
@@ -32,6 +46,15 @@ class RouteSection:
                  travel_time: timedelta,
                  departure_timestamps: pd.DatetimeIndex,
                  stop_time: timedelta = pd.Timedelta(0)):
+        """
+        Creates a new route section from origin to destination at well defined timestamps.
+
+        :param origin: location where the train starts or breaks in
+        :param destination: location where the train stops or leaves
+        :param travel_time: planned time from origin to destination
+        :param departure_timestamps: timestamps at origin (must be same at each day)
+        :param stop_time: when origin is a train stop the stop_time > 0
+        """
         self.departure_times_at_origin = departure_timestamps
         self.travel_time = travel_time
         self.origin_stop_time = stop_time
@@ -42,48 +65,61 @@ class RouteSection:
         return self.origin + '-' + self.destination
 
     def __iter__(self):
+        """
+        Return an iterator over all SectionRuns of this RouteSection
+        """
         return (SectionRun(self, dt) for dt in self.departure_times_at_origin)
 
     def first_day(self) -> date:
+        """
+        :return: Calendar day of the first train run in this section.
+        """
         return datetime.date(self.departure_times_at_origin[0])
 
     def last_day(self) -> date:
+        """
+        :return: Calendar day of the last train run in this section.
+        """
         return datetime.date(self.departure_times_at_origin[-1])
 
     def departure_at_origin(self) -> pd.Timestamp:
+        """
+        :return: Timestamp the first train run departs from section origin
+        """
         return self.departure_times_at_origin[0]
 
     def arrival_at_destination(self) -> pd.Timestamp:
+        """
+        :return: Timestamp the first train run arrives at section destination
+        """
         return self.departure_at_origin() + self.travel_time
 
     def to_dataframe(self) -> pd.DataFrame:
+        """
+        :return: pandas dataframe with two columns for [origin, destination] and one row for each
+               section run.
+        """
         df = pd.DataFrame(index=[x.date() for x in self.departure_times_at_origin])
         df[self.origin] = self.departure_times_at_origin
         df[self.destination] = self.arrival_times_at_destination()
         return df
 
     def arrival_times_at_destination(self) -> pd.DatetimeIndex:
+        """
+        The arrival times at destination compute from departure times at origin + travel time.
+        """
         return self.departure_times_at_origin + self.travel_time
 
     def section_key(self):
+        """
+        A section of a train is uniquely identified by this quadruple:
+
+          ((origin, departure time), (destination, arrival time))
+
+        :return: unique key among all sections of a train
+        """
         return ((self.origin, self.departure_at_origin()),
                 (self.destination, self.arrival_at_destination()))
-
-
-class Route:
-    sections: List[RouteSection]
-
-    def __init__(self, sections: List[RouteSection]):
-        if len(sections) == 0:
-            raise TomError("No sections in route")
-        # Check if sections form a route
-        for prev, curr in zip(sections, sections[1:]):
-            if prev.destination != curr.origin:
-                raise TomError(f"Route sections do not fit: {prev} != {curr}")
-        self.sections = sections
-
-    def __str__(self):
-        return ','.join([str(s) for s in self.sections])
 
 
 SINGLE_SOURCE = 'single-source'
@@ -93,12 +129,12 @@ SINGLE_TARGET = 'single-target'
 class Train:
     core_id: str
     version: int
-    sections: List[RouteSection]
+    sections: List[RouteSection] = []
     lead_ru: int = 8350
 
-    def __init__(self, code_id: str, sections: List[RouteSection]):
+    def __init__(self, core_id: str, sections: List[RouteSection]):
         self.version = 1
-        self.core_id = code_id
+        self.core_id = core_id
         self.sections = sections
 
         self._check_sections()
@@ -147,6 +183,10 @@ class Train:
         return g
 
     def train_run_iterator(self):
+        """
+
+        :return: Iterator[TrainRun]
+        """
         g = self.extended_train_run_graph(use_sections=False)
         if len(g.edges) == 0:
             for sr in self.section_run_iterator():
@@ -170,6 +210,9 @@ class Train:
     def _check_sections(self):
         # Check if section id are unique:
         section_ids = [s.section_id for s in self.sections]
+        if len(section_ids) == 0:
+            raise TomError(f"Train {self.train_id()} must contain at least one RouteSection")
+
         if len(self.sections) != len(set(section_ids)):
             raise TomError(f"Section IDs of train {self.train_id()} not unique: {section_ids}")
 
@@ -255,6 +298,33 @@ class TrainRun:
         yield self.first_run().origin()
         for sr in self.sections_runs:
             yield sr.destination()
+
+
+class Route:
+    """
+    A Route is a sequence of RouteSection where consecutive section must fit together:
+
+    If (prev, next) is a tuple in the sections, then
+
+       prev.destination == next.origin
+
+    NOTE: The here proposed TOM model does not need routes! They are instead modeled as TrainRuns
+    which are computed from RouteSection (see Train.train_run_iterator)
+
+    """
+    sections: List[RouteSection]
+
+    def __init__(self, sections: List[RouteSection]):
+        if len(sections) == 0:
+            raise TomError("No sections in route")
+        # Check if sections form a route
+        for prev, curr in zip(sections, sections[1:]):
+            if prev.destination != curr.origin:
+                raise TomError(f"Route sections do not fit: {prev} != {curr}")
+        self.sections = sections
+
+    def __str__(self):
+        return ','.join([str(s) for s in self.sections])
 
 
 def _make_section_from_dict(section: dict) -> RouteSection:

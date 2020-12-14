@@ -1,0 +1,30 @@
+left to right direction
+
+class Train {
+    core: CoreID
+    version: int
+    lead_ru: CompanyCode
+
+    +TrainID train_id()
+}
+
+class RouteSection {
+    origin: JourneyLocation
+    origin_departure_time: TimeOfDay
+    origin_stop_time: timedelta
+    ---
+    destination: JourneyLocation
+    travel_time_to_destination: timedelta
+    calendar: Set<Date>
+    ---
+    applicant_ru: CompanyCode
+    responsible_im: CompanyCode
+    ---
+    section_id: int
+    version: int = 1
+    ---
+    + str section_key()
+}
+
+
+Train *-- "1..*" RouteSection

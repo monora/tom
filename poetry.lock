@@ -761,6 +761,17 @@ test = ["mock", "pytest", "pytest-cov", "html5lib", "flake8 (>=3.5.0)", "flake8-
 websupport = ["sqlalchemy (>=0.9)", "whoosh (>=2.0)"]
 
 [[package]]
+name = "sphinxcontrib-plantuml"
+version = "0.19"
+description = "Sphinx \"plantuml\" extension"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Sphinx = ">=1.6"
+
+[[package]]
 name = "sphinxcontrib-serializinghtml"
 version = "1.1.4"
 description = "sphinxcontrib-serializinghtml is a sphinx extension which outputs \"serialized\" HTML files (json and pickle)."
@@ -923,7 +934,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8"
-content-hash = "9f281caab088df3abf41cd5ce7901e58c8a3f3dc3e2b07de28220eefbf4c8994"
+content-hash = "2c709b90c0dc0268f8aca007be5c6486c8147f08bb0677514148b1ffa7cbf27d"
 
 [metadata.files]
 alabaster = [
@@ -1441,6 +1452,9 @@ snowballstemmer = [
 sphinx = [
     {file = "Sphinx-1.8.5-py2.py3-none-any.whl", hash = "sha256:9f3e17c64b34afc653d7c5ec95766e03043cc6d80b0de224f59b6b6e19d37c3c"},
     {file = "Sphinx-1.8.5.tar.gz", hash = "sha256:c7658aab75c920288a8cf6f09f244c6cfdae30d82d803ac1634d9f223a80ca08"},
+]
+sphinxcontrib-plantuml = [
+    {file = "sphinxcontrib-plantuml-0.19.tar.gz", hash = "sha256:98b9f02282907b0c5b7a93a446c4649909aaf5785d2da0dd263c8ad68e00e288"},
 ]
 sphinxcontrib-serializinghtml = [
     {file = "sphinxcontrib-serializinghtml-1.1.4.tar.gz", hash = "sha256:eaa0eccc86e982a9b939b2b82d12cc5d013385ba5eadcc7e4fed23f4405f77bc"},
