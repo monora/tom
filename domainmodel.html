@@ -42,7 +42,7 @@
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Each international train has to be split into sections when the train crosses a border.  The split
 locations are called handover points. At each handover the responsiblity for the train planning
-changes from IM to IM and RU to RU. The planning process is coordinated by the lead RU.</p>
+changes from IM to IM and RU to RU. The planning process is coordinated by the <cite>Train.lead_ru</cite>.</p>
 <p class="plantuml">
 <img src="_images/plantuml-d565e148c9ad714493c485b8049b2ab805c011e0.png" alt="class JourneyLocation {
     id: LocationIdentifier
@@ -69,23 +69,29 @@ class PathRequest {
 PathRequest -&gt; &quot;1&quot; RouteSection : belongs to &gt;
 "/>
 </p>
-<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> must at least have two sections. It then has exactly</p>
-<ul class="simple">
-<li>one origin</li>
-<li>one destination</li>
-<li>one or more handover journey locations</li>
+<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f1" id="id1">[1]</a> must at least have two sections. The
+following constraint must hold for each <a class="reference internal" href="tom.html#tom.tom.RouteSection" title="tom.tom.RouteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteSection</span></code></a>:</p>
+<div class="admonition-rule-sec-01-journey-locations admonition">
+<p class="first admonition-title">Rule SEC-01 Journey Locations</p>
+<ul class="last simple">
+<li><cite>RouteSection.origin</cite> is a <em>Origin</em> or <em>Handover</em></li>
+<li><cite>RouteSection.destination</cite> is a <em>Handover</em> or <em>Destination</em></li>
 </ul>
-<p>For each <a class="reference internal" href="tom.html#tom.tom.RouteSection" title="tom.tom.RouteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteSection</span></code></a> the responsible IM and applicant RU exchange
-<em>PathRequest</em> and <em>PathDetails</em> to plan the detailed route within a <em>RouteSection</em>. This process is
-described in detail in the <a class="reference external" href="http://taf-jsg.info/wp-content/uploads/2019/10/190604_js_handbook_2.0_with_xsd_2.2.3_0.pdf">Sector Handbook</a>.  As long as borders of a section both in location and
-time are unchanged no other participant in the planning of the whole train has to be informed.</p>
+</div>
+<p>For each <cite>RouteSection</cite> the <cite>responsible_im</cite> and <cite>applicant_ru</cite> exchange <em>PathRequest</em> and
+<em>PathDetails</em> to plan the detailed route within a <cite>RouteSection</cite>. This process is described in
+detail in the <a class="reference external" href="http://taf-jsg.info/wp-content/uploads/2019/10/190604_js_handbook_2.0_with_xsd_2.2.3_0.pdf">Sector Handbook</a> of the RU/IM Telematrics <a class="reference external" href="http://taf-jsg.info/">JSG</a>.  As long as borders of a section
+both in location and time are unchanged no other participant in the planning of the whole train has
+to be informed.</p>
 <p>The following paragraph describes the minimal information which all companies involved must know
 about the whole train. Changes to this information have to be propagated by the lead RU.</p>
 </div>
 <div class="section" id="train-and-routesection">
 <h2>Train and RouteSection<a class="headerlink" href="#train-and-routesection" title="Permalink to this headline">¶</a></h2>
+<p>The following diagramm shows the two main classes of our proposition for the TOM. It describes the
+minimum information needed for a valid route information of an international train:</p>
 <p class="plantuml">
-<img src="_images/plantuml-d91591b27a03af175412ba92e7c23a1f64c77191.png" alt="left to right direction
+<img src="_images/plantuml-093930f916f5f0863466075f47cc1677359390f8.png" alt="left to right direction
 
 class Train {
     core: CoreID
@@ -98,7 +104,7 @@ class Train {
 class RouteSection {
     origin: JourneyLocation
     origin_departure_time: TimeOfDay
-    stop_time: timedelta
+    origin_stop_time: timedelta
     ---
     destination: JourneyLocation
     travel_time_to_destination: timedelta
@@ -117,14 +123,70 @@ class RouteSection {
 Train *-- &quot;1..*&quot; RouteSection
 "/>
 </p>
-<p>Only RouteSections have a calendar.  This is the set of starting days at origin.  All timestamps in
-Train, TrainRun and SectionRuns are calculated from calendar, departure_at_origin, travel_time and
-stop_time. No OTR (Offset To Reference) is needed!</p>
+<div class="section" id="timestamps">
+<h3>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h3>
+<p>This model completely describes a planned set of <em>train runs</em>. Each train run is a sequence of
+<em>sections runs</em> which have to connect properly in time at handover points. The timing attributes of
+a <cite>RouteSection</cite> serve this purpose:</p>
+<ul class="simple">
+<li><cite>calendar</cite> is a set of calendar days where the train starts at <cite>RouteSection.origin</cite></li>
+<li><cite>origin_departure_time</cite> is the day time the train starts each day in <cite>calendar</cite></li>
+<li><cite>origin_stop_time</cite> planned stop time at a section handover origin</li>
+<li><cite>travel_time_to_destination</cite> travel time from origin to destination. This attribute is used to
+calculate the arrival time at destination.</li>
+</ul>
+<p>Only RouteSections have a calendar.  This is the set of starting days at the origin of a section.
+All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
+attributes.</p>
+<p>Because a train can have several starting RouteSections (i.e. different start locations and dates)
+it makes no sense to assign a calender to it. A calender must always be relativ to a fixed start
+location. <a class="reference internal" href="#example-ac-ff"><span class="std std-ref">Example: Train from Amsterdam to Frankfurt</span></a> explains such a situation with an overnight train in the starting
+sections.</p>
+<p>Working with only timestamps also avoids the difficulties with overnight trains. No OTR (<em>Offset To
+Reference</em>) is needed!</p>
+</div>
+<div class="section" id="identifiers">
+<h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
+<p>The method Train <a class="reference internal" href="tom.html#tom.tom.Train.train_id" title="tom.tom.Train.train_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_id()</span></code></a> computes the unique trainID from <cite>core_id</cite>, <cite>lead_ru</cite> and
+<cite>timetable_year</cite>.</p>
+<div class="admonition-rule-sec-03-unique-section-id admonition">
+<p class="first admonition-title">Rule SEC-03 Unique Section ID</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="tom.html#tom.tom.RouteSection.section_id" title="tom.tom.RouteSection.section_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RouteSection.section_id</span></code></a> must be unique within the set</dt>
+<dd>of sections of a train.</dd>
+</dl>
+</div>
+<p>The <cite>section_id</cite> is used to make the daily train IDs unique in case of overnight trains. Using the
+start date of a train results in duplicate train IDs. See example below.</p>
+<div class="admonition-rule-sec-04-unique-functional-key-of-sections admonition">
+<p class="first admonition-title">Rule SEC-04 Unique functional key of sections</p>
+<p>A route section of a train is uniquely identified by this quadruple:</p>
+<p class="last"><cite>((origin, departure time), (destination, arrival time))</cite></p>
+</div>
+<p>Therefor, if on some day in the calendar of a section the train from <cite>origin `AC</cite> to destination <cite>EMM</cite>
+should arrive at at different time at <cite>EMM</cite>, the RU has to define a new RouteSection for
+this day. If <cite>EMM</cite> is a handover, the lead RU must ask the RU of the following section to create
+fitting route section with origin <cite>EMM</cite>.</p>
+</div>
+<div class="section" id="versioning">
+<h3>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h3>
+<p>We suggest <em>Versioning</em> of trains and sections to support the synchronsisation of the domain model
+between the systems of the cooperating companies. If a company make a change of section its
+<cite>RouteSection.version</cite> is incremented. Same with the <cite>Train.version</cite>. The receiver of a message
+containing the RoutingInfo [#f2] can use this information to identify the change and act accordingly.</p>
+</div>
 </div>
 <div class="section" id="trainrun-and-sectionrun">
 <h2>TrainRun and SectionRun<a class="headerlink" href="#trainrun-and-sectionrun" title="Permalink to this headline">¶</a></h2>
+<p>In this section we describe, how the daily train and section runs are computed from the routing
+info of a <cite>Train</cite> described in the previous section.</p>
+<ul class="simple">
+<li>A <a class="reference internal" href="tom.html#tom.tom.SectionRun" title="tom.tom.SectionRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">SectionRun</span></code></a> is derived for each day in the calendar of its <cite>RouteSection</cite></li>
+<li>A <a class="reference internal" href="tom.html#tom.tom.TrainRun" title="tom.tom.TrainRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainRun</span></code></a> is computed from SectionRuns that <em>fit</em> together. Two sections <cite>s, t</cite>
+fit together if <cite>s.connects_to(t) == True</cite> (see <a class="reference internal" href="tom.html#tom.tom.SectionRun.connects_to" title="tom.tom.SectionRun.connects_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connects_to()</span></code></a>).</li>
+</ul>
 <p class="plantuml">
-<img src="_images/plantuml-8a3585a40a518797115f1df294d11561f8d5783a.png" alt="left to right direction
+<img src="_images/plantuml-33748316526a35e7f5c05f208825d55ceaf47a81.png" alt="left to right direction
 
 class Train {
     lead_ru: CompanyCode
@@ -141,9 +203,9 @@ class RouteSection {
 Train *-- &quot;1..*&quot; RouteSection
 
 class SectionRun {
-    section_id: str
 
     departure_at_origin: Timestamp
+    + str section_id()
     + Timestamp arrival_at_destination()
     + Timestamp arrival_at_origin()
     + JourneyLocation origin()
@@ -167,12 +229,39 @@ note right of TrainRun
 end note
 
 TrainRun o-&gt; &quot;1..* {ordered}&quot; SectionRun
-Train *- &quot;1..365&quot; TrainRun
+Train o- &quot;1..365&quot; TrainRun
 "/>
 </p>
+<div class="section" id="sectionrun">
+<h3>SectionRun<a class="headerlink" href="#sectionrun" title="Permalink to this headline">¶</a></h3>
+<p>For each day in day in <cite>RouteSection.calendar</cite> a section run is created. All <cite>SectionRuns</cite> of a
+section differ only in the value of <code class="xref py py-meth docutils literal notranslate"><span class="pre">departure_at_origin()</span></code>, which is the
+only information stored in the SectionRun. All other values shown can be computed from this an the
+section the run belongs to.</p>
+</div>
+<div class="section" id="trainrun">
+<h3>TrainRun<a class="headerlink" href="#trainrun" title="Permalink to this headline">¶</a></h3>
+<p>Whereas the section runs can easily computed from information in its RouteSection (mainly calendar
+and departure time at section origin), the train runs must be computed from all possible SectionRun
+sequences that fit together.</p>
+<p>We use a graph algorithm to compute all train runs. The graph used is best described by the examples
+shown below. The central methods are:</p>
+<ul class="simple">
+<li><a class="reference internal" href="tom.html#tom.tom.Train.train_run_graph" title="tom.tom.Train.train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_graph()</span></code></a> which computes a directed Graph G = (SectionRun,E), where
+(s,t) in E &lt;=&gt; s.connects_to(t).</li>
+<li><a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> which adds to synthetic vertices to G, one at the
+beginning (<cite>START</cite> connecting origin SectionRuns and one at the end <cite>END</cite> which connects to all
+destination SectionRuns.</li>
+<li><a class="reference internal" href="tom.html#tom.tom.Train.train_run_iterator" title="tom.tom.Train.train_run_iterator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_iterator()</span></code></a> which computes all TrainRuns out of all path in G from
+<cite>START</cite> to <cite>END</cite>.</li>
+</ul>
+</div>
 </div>
 <div class="section" id="example-train-from-amsterdam-to-frankfurt">
-<h2>Example: Train from Amsterdam to Frankfurt<a class="headerlink" href="#example-train-from-amsterdam-to-frankfurt" title="Permalink to this headline">¶</a></h2>
+<span id="example-ac-ff"></span><h2>Example: Train from Amsterdam to Frankfurt<a class="headerlink" href="#example-train-from-amsterdam-to-frankfurt" title="Permalink to this headline">¶</a></h2>
+<p>This object diagramm shows a szenario for a train vom Ammsterdam Central (AC) to Frankfurt (FF)
+which is planned to operate in december 2012. On Fri-Sun handover is Emmerich (EMM). On Mon-Thu
+handover is Venlo.</p>
 <p class="plantuml">
 <img src="_images/plantuml-0775244c9cbe05c6cc3beb0e4fb1a46efdb1677a.png" alt="object &quot;TR/1080/12AB: Train&quot; as tr
 object &quot;AC-&gt;EMM: RouteSection&quot; as ac_emm
@@ -228,6 +317,7 @@ n1 .. ac_emm
 </p>
 <div class="section" id="yaml-example">
 <h3>YAML-Example<a class="headerlink" href="#yaml-example" title="Permalink to this headline">¶</a></h3>
+<p>The following YAML-file is a machine readable specification of the route sections of the example:</p>
 <div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -321,6 +411,30 @@ n1 .. ac_emm
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
 </pre></div>
 </td></tr></table></div>
+</div>
+<div class="section" id="trainrun-graph">
+<h3>TrainRun Graph<a class="headerlink" href="#trainrun-graph" title="Permalink to this headline">¶</a></h3>
+<p>The resulting <em>TrainRun-Graph</em> can be calculated with
+<a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> and looks like this:</p>
+<div class="figure">
+<img alt="Example train run graph" src="_images/example-ac-ff-train-run-graph.png" />
+</div>
+<p>With <a class="reference internal" href="tom.html#tom.tom.Train.to_dataframe" title="tom.tom.Train.to_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a> you can create an pandas dataframe which you can export to
+execl. See <a class="reference download internal" download="" href="_downloads/66635e1d393f344dc6d9b070852dd658/train-TR-12AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">/train-TR-12AB-1.xlsx</span></code></a>.</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Click on the link to see the python source code for the code element</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td>Train and RouteSections could be transported in the TAF/TAP <cite>TrainInformation</cite> message
+structure.</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

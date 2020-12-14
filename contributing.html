@@ -173,11 +173,11 @@ $ git push --tags
 <div class="section" id="deploying-documentation">
 <h2>Deploying Documentation<a class="headerlink" href="#deploying-documentation" title="Permalink to this headline">¶</a></h2>
 <p>For now we deploy the documention manually to GitHub pages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd $PROJECT_DIR # where tom project ist cloned</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd $TOM_DIR # where tom project ist cloned</span>
 <span class="go">make clean docs</span>
 <span class="go">cd ..</span>
 <span class="go">git clone https://github.com/monora/tom.git --branch gh-pages --single-branch gh-pages</span>
-<span class="go">cp -r docs/_build/html/* gh-pages</span>
+<span class="go">cp -r $TOM_DIR/docs/_build/html/* gh-pages</span>
 <span class="go">cd gh-pages</span>
 <span class="go">git add .</span>
 <span class="go">git ci -m&#39;Update documentation&#39;</span>
