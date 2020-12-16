@@ -111,9 +111,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#example-train-with-three-ims">Example: Train with three IMs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Specification with YAML</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">TrainRun Graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Timetable as Excel-Sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Specification with YAML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">TrainRun Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Timetable as Excel-Sheet</a></li>
 </ul>
 </li>
 </ul>
@@ -194,8 +194,9 @@
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Each international train has to be split into sections when the train crosses a border.  The split
-locations are called handover points. At each handover the responsiblity for the train planning
+locations are called handover points. At each handover the responsibility for the train planning
 changes from IM to IM and RU to RU. The planning process is coordinated by the <cite>Train.lead_ru</cite>.</p>
+<p>This <a class="reference external" href="https://en.wikipedia.org/wiki/Class_diagram">UML</a> class diagramm <a class="footnote-reference" href="#f1" id="id1">[1]</a> shows the main concepts involved:</p>
 <p class="plantuml">
 <img src="_images/plantuml-d07db1e5d60c0c5cf2986e749bbd2c1f3e6d3c39.png" alt="class JourneyLocation &lt;&lt;TOM&gt;&gt; {
     id: LocationIdentifier
@@ -222,7 +223,7 @@ class PathRequest &lt;&lt;TOM&gt;&gt; {
 RouteSection o--  &quot;0..*&quot; PathRequest : is derived from &lt;
 "/>
 </p>
-<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f1" id="id1">[1]</a> must at least have two sections. The
+<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> must at least have two sections. The
 following constraint must hold for each <a class="reference internal" href="tom.html#tom.tom.RouteSection" title="tom.tom.RouteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteSection</span></code></a>:</p>
 <div class="admonition-rule-sec-01-journey-locations admonition">
 <p class="first admonition-title">Rule SEC-01 Journey Locations</p>
@@ -330,10 +331,10 @@ fitting route section with section origin <cite>EMM</cite>.</p>
 </div>
 <div class="section" id="versioning">
 <h3>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h3>
-<p>We suggest <em>Versioning</em> of trains and sections to support the synchronsisation of the domain model
+<p>We suggest <em>versioning</em> of trains and sections to support the synchronsisation of the domain model
 between the systems of the cooperating companies. If a company make a change of section its
 <cite>RouteSection.version</cite> is incremented. Same with the <cite>Train.version</cite>. The receiver of a message
-containing the RoutingInfo <a class="footnote-reference" href="#f2" id="id2">[2]</a> can use this information to identify the change and act
+containing the RoutingInfo <a class="footnote-reference" href="#f3" id="id3">[3]</a> can use this information to identify the change and act
 accordingly.</p>
 </div>
 </div>
@@ -422,21 +423,25 @@ destination SectionRuns.</li>
 <span id="example-ac-ff"></span><h2>Example: Train from Amsterdam to Frankfurt<a class="headerlink" href="#example-train-from-amsterdam-to-frankfurt" title="Permalink to this headline">¶</a></h2>
 <p>Given this infrastructure:</p>
 <p class="plantuml">
-<img src="_images/plantuml-1445d48c360a246fbca84d6d47ff1e6e732e0802.png" alt="package Prorail &lt;&lt;Rectangle&gt;&gt; {
-    object &quot;Amsterdam Central (AC)&quot; as ac
-    object Venlo
-    Venlo : Handover
+<img src="_images/plantuml-1edd99643aece3d8cbc7dd4128ff476949fcc71c.png" alt="package Prorail &lt;&lt;Rectangle&gt;&gt; {
+    object &quot;Amsterdam Central&quot; as ac
+    ac : AC
 }
 package &quot;DB Netz&quot; &lt;&lt;Rectangle&gt;&gt; {
-    object &quot;Emmerich (EMM)&quot; as emm
-    emm : Handover
-    object &quot;Frankfurt (FF)&quot; as ff
+    object &quot;Frankfurt&quot; as ff
+    ff : FF
+}
+package &quot;Handovers&quot; &lt;&lt;Rectangle&gt;&gt; {
+    object Venlo
+    object &quot;Emmerich&quot; as emm
+    emm : EMM
 }
 
 ac - emm
-ac -- Venlo
+ac - Venlo
 Venlo - ff
-emm -- ff
+emm - ff
+Venlo --[hidden] emm
 "/>
 </p>
 <p>This object diagramm shows a szenario for a train from AC to Frankfurt FF
@@ -562,8 +567,9 @@ CoreID <cite>12AB</cite>:</p>
 <h3>TrainRun Graph<a class="headerlink" href="#trainrun-graph" title="Permalink to this headline">¶</a></h3>
 <p>The resulting <em>TrainRun-Graph</em> can be calculated with
 <a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> and looks like this:</p>
-<div class="figure">
+<div class="figure" id="id7">
 <img alt="Example train run graph" src="_images/example-ac-ff-train-run-graph.png" />
+<p class="caption"><span class="caption-text">TrainRun Graph Example Amsterdam to Frankfurt</span></p>
 </div>
 <p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/47e4598cfaeb4e804114daaac2d9fa26/train-TR-12AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.graphml</span></code></a>.</p>
 </div>
@@ -577,18 +583,21 @@ to excel representing the time table of the train. See <a class="reference downl
 <span id="example-a-f"></span><h2>Example: Train with three IMs<a class="headerlink" href="#example-train-with-three-ims" title="Permalink to this headline">¶</a></h2>
 <p>Given this infrastructure:</p>
 <p class="plantuml">
-<img src="_images/plantuml-f18e2b034c40b9d4c89855c7cd5d12e2e5460031.png" alt="package IMa &lt;&lt;Rectangle&gt;&gt; {
+<img src="_images/plantuml-342eb86d58542f676555a1bb922df5e7be2a4262.png" alt="package IMa &lt;&lt;Rectangle&gt;&gt; {
     object A
     object B
 }
+object C
+C : Handover
+
 package IMb &lt;&lt;Rectangle&gt;&gt; {
-    object C
-    C : Handover
     object D
 }
+
+object E
+E : Handover
+
 package IMc &lt;&lt;Rectangle&gt;&gt; {
-    object E
-    E : Handover
     object F
     object G
 }
@@ -655,8 +664,8 @@ ef &lt;.. n1
 eg &lt;.. n1
 "/>
 </p>
-<div class="section" id="id3">
-<h3>Specification with YAML<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h3>Specification with YAML<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
 <span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">13AB</span>
 <span class="nt">sections</span><span class="p">:</span>
@@ -712,8 +721,8 @@ eg &lt;.. n1
 </pre></div>
 </div>
 </div>
-<div class="section" id="id4">
-<h3>TrainRun Graph<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>TrainRun Graph<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <div class="figure">
 <img alt="Example train run graph" src="_images/example-a-f-train-run-graph.png" />
 </div>
@@ -721,20 +730,26 @@ eg &lt;.. n1
 in F.</p>
 <p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/7737e967ae7ddcf9e6d6bb0bdb7bf884/train-TR-13AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.graphml</span></code></a>.</p>
 </div>
-<div class="section" id="id5">
-<h3>Timetable as Excel-Sheet<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>Timetable as Excel-Sheet<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>Download the time table for <cite>Train-13AB</cite> here: <a class="reference download internal" download="" href="_downloads/d363e50a1aed2e0743c6a57340a9c609/train-TR-13AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.xlsx</span></code></a>.</p>
 <p class="rubric">Footnotes</p>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Click on the link to see the python source code for the code element</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>We use <a class="reference external" href="https://plantuml.com/en/class-diagram">PlantUML</a> as modeling tool. See explanations there.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="f2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Train and RouteSections could be transported in the TAF/TAP <cite>TrainInformation</cite> message
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Click on the link to see the python source code for the code element</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Train and RouteSections could be transported in the TAF/TAP <cite>TrainInformation</cite> message
 structure.</td></tr>
 </tbody>
 </table>
