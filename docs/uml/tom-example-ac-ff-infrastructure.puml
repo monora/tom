@@ -1,15 +1,19 @@
 package Prorail <<Rectangle>> {
-    object "Amsterdam Central (AC)" as ac
-    object Venlo
-    Venlo : Handover
+    object "Amsterdam Central" as ac
+    ac : AC
 }
 package "DB Netz" <<Rectangle>> {
-    object "Emmerich (EMM)" as emm
-    emm : Handover
-    object "Frankfurt (FF)" as ff
+    object "Frankfurt" as ff
+    ff : FF
+}
+package "Handovers" <<Rectangle>> {
+    object Venlo
+    object "Emmerich" as emm
+    emm : EMM
 }
 
 ac - emm
-ac -- Venlo
+ac - Venlo
 Venlo - ff
-emm -- ff
+emm - ff
+Venlo --[hidden] emm

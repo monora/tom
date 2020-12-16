@@ -42,7 +42,7 @@ Train Object Model could always use more documentation, whether as part of the
 official Train Object Model docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
-The documentation is created using PlantUml_ with the help of the Sphinx_ extension
+The documentation is created using PlantUML_ with the help of the Sphinx_ extension
 sphinxcontrib-plantuml_. See configuration in :file:`/conf.py`:
 
 .. literalinclude:: /conf.py
@@ -53,13 +53,14 @@ sphinxcontrib-plantuml_. See configuration in :file:`/conf.py`:
 See also:
 
 * `Why Sphinx and RST are the best`_
+* `Hitchhiker’s Guide to PlantUML`_
 * `PlantUML dev workflow`_
-
+ 
 .. _sphinxcontrib-plantuml: https://pypi.org/project/sphinxcontrib-plantuml
-.. _PlantUml: https://plantuml.com/en/class-diagram
 .. _Sphinx: https://pythonhosted.org/an_example_pypi_project/sphinx.html
 .. _Why Sphinx and RST are the best: https://evaparish.com/blog/2018/10/19/why-sphinx-and-rst-are-the-best
 .. _PlantUML dev workflow: https://docs-as-co.de/news/plantuml-markdown-code-gitlab-github-integration
+.. _Hitchhiker’s Guide to PlantUML: https://crashedmind.github.io/PlantUMLHitchhikersGuide
 
 
 Submit Feedback

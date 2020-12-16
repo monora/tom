@@ -1,6 +1,7 @@
 .. toctree::
    :maxdepth: 4
 
+.. include:: references.rst
 .. _routedomainmodel:
 
 ==================
@@ -15,12 +16,16 @@ Overview
 --------
 
 Each international train has to be split into sections when the train crosses a border.  The split
-locations are called handover points. At each handover the responsiblity for the train planning
+locations are called handover points. At each handover the responsibility for the train planning
 changes from IM to IM and RU to RU. The planning process is coordinated by the `Train.lead_ru`.
+
+.. _UML: https://en.wikipedia.org/wiki/Class_diagram
+
+This UML_ class diagramm [#f1]_ shows the main concepts involved:
 
 .. uml:: uml/tom-overview.puml
 
-An international :class:`~tom.tom.Train` [#f1]_ must at least have two sections. The
+An international :class:`~tom.tom.Train` [#f2]_ must at least have two sections. The
 following constraint must hold for each :class:`~tom.tom.RouteSection`:
 
 .. admonition:: Rule SEC-01 Journey Locations
@@ -106,10 +111,10 @@ fitting route section with section origin `EMM`.
 Versioning
 ~~~~~~~~~~
 
-We suggest *Versioning* of trains and sections to support the synchronsisation of the domain model
+We suggest *versioning* of trains and sections to support the synchronsisation of the domain model
 between the systems of the cooperating companies. If a company make a change of section its
 `RouteSection.version` is incremented. Same with the `Train.version`. The receiver of a message
-containing the RoutingInfo [#f2]_ can use this information to identify the change and act
+containing the RoutingInfo [#f3]_ can use this information to identify the change and act
 accordingly.
 
 -----------------------
@@ -185,6 +190,8 @@ The resulting *TrainRun-Graph* can be calculated with
 .. figure:: examples/example-ac-ff-train-run-graph.png
    :alt: Example train run graph
 
+   TrainRun Graph Example Amsterdam to Frankfurt
+
 .. _GraphML: https://de.wikipedia.org/wiki/GraphML
 
 You can download this graph as GraphML_ here: :download:`examples/train-TR-12AB-1.graphml`.
@@ -237,6 +244,7 @@ Download the time table for `Train-13AB` here: :download:`examples/train-TR-13AB
 
 .. rubric:: Footnotes
 
-.. [#f1] Click on the link to see the python source code for the code element
-.. [#f2] Train and RouteSections could be transported in the TAF/TAP `TrainInformation` message
+.. [#f1] We use PlantUML_ as modeling tool. See explanations there.
+.. [#f2] Click on the link to see the python source code for the code element
+.. [#f3] Train and RouteSections could be transported in the TAF/TAP `TrainInformation` message
          structure.
