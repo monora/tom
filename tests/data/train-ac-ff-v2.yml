@@ -5,7 +5,7 @@ version: 2
 sections:
     - id: 1
       applicant_ru: 1084 # NS
-      resp_im: 0084 # Prorail
+      planning_im: 0084 # Prorail
       version: 2
       origin: Utrecht
       departure_time: '00:50:00'
@@ -19,7 +19,7 @@ sections:
     - id: 2
       version: 1
       applicant_ru: 1080 # DB FV
-      resp_im: 0080 # DB Netz
+      planning_im: 0080 # DB Netz
       origin: EMM
       departure_time: &dep_time_emm 02:00:00
       destination: FF
@@ -32,7 +32,7 @@ sections:
     - id: 3
       version: 1
       applicant_ru: 1084 # NS
-      resp_im: 0084 # Prorail
+      planning_im: 0084 # Prorail
       origin: AC
       departure_time: '23:50:00'
       destination: Venlo
@@ -44,7 +44,7 @@ sections:
     - id: 4
       version: 1
       applicant_ru: 1080 # DB FV
-      resp_im: 0080 # DB Netz
+      planning_im: 0080 # DB Netz
       origin: Venlo
       departure_time: *dep_time_emm
       destination: FF
