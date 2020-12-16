@@ -1,6 +1,8 @@
 .. toctree::
    :maxdepth: 4
 
+.. _routedomainmodel:
+
 ==================
 Route Domain Model
 ==================
@@ -16,7 +18,7 @@ Each international train has to be split into sections when the train crosses a 
 locations are called handover points. At each handover the responsiblity for the train planning
 changes from IM to IM and RU to RU. The planning process is coordinated by the `Train.lead_ru`.
 
-.. uml:: tom-overview.puml
+.. uml:: uml/tom-overview.puml
 
 An international :class:`~tom.tom.Train` [#f1]_ must at least have two sections. The
 following constraint must hold for each :class:`~tom.tom.RouteSection`:
@@ -42,7 +44,7 @@ Train and RouteSection
 The following diagramm shows the two main classes of our proposition for the TOM. It describes the
 minimum information needed for a valid route information of an international train:
 
-.. uml:: tom-section.puml
+.. uml:: uml/tom-section.puml
 
 Timestamps
 ~~~~~~~~~~
@@ -61,7 +63,7 @@ Only RouteSections have a calendar.  This is the set of starting days at the ori
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
 attributes.
 
-.. :admonition:: Rule SEC-02 RouteSection Calendar must be subset of timetable year
+.. admonition:: Rule SEC-02 RouteSection Calendar must be subset of timetable year
 
    The `RouteSection.calendar` must be a subset of the timetable year of its train.
 
@@ -82,7 +84,7 @@ The method Train :meth:`~tom.tom.Train.train_id` computes the unique trainID fro
 .. admonition:: Rule SEC-03 Unique Section ID
 
    :meth:`RouteSection.section_id <tom.tom.RouteSection.section_id>` must be unique within the set
-         of sections of a train.
+   of sections of a train.
 
 The `section_id` is used to make the daily train IDs unique in case of overnight trains. Using the
 start date of a train results in duplicate train IDs. See example below.
@@ -117,7 +119,7 @@ info of a `Train` described in the previous section.
 - A :class:`~tom.tom.TrainRun` is computed from SectionRuns that *fit* together. Two sections `s, t`
   fit together if `s.connects_to(t) == True` (see :meth:`~tom.tom.SectionRun.connects_to`).
 
-.. uml:: tom-section-run.puml
+.. uml:: uml/tom-section-run.puml
 
 SectionRun
 ~~~~~~~~~~
@@ -151,21 +153,24 @@ shown below. The central methods are:
 Example: Train from Amsterdam to Frankfurt
 ------------------------------------------
 
-This object diagramm shows a szenario for a train vom Ammsterdam Central (AC) to Frankfurt (FF)
-which is planned to operate in december 2012. On Fri-Sun handover is Emmerich (EMM). On Mon-Thu
+Given this infrastructure:
+
+.. uml:: uml/tom-example-ac-ff-infrastructure.puml
+
+This object diagramm shows a szenario for a train from AC to Frankfurt FF
+which is planned to operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu
 handover is Venlo.
 
-.. uml:: tom-example.puml
+.. uml:: uml/tom-example-ac-ff.puml
 
+Specification with YAML
+~~~~~~~~~~~~~~~~~~~~~~~
 
-YAML-Example
-~~~~~~~~~~~~
-
-The following YAML-file is a machine readable specification of the route sections of the example:
+The following YAML-file is a machine readable specification of the route sections of a train with
+CoreID `12AB`:
 
 .. literalinclude:: ../tests/data/train-ac-ff.yml
    :language: yaml
-   :linenos:
 
 TrainRun Graph
 ~~~~~~~~~~~~~~
@@ -173,11 +178,58 @@ TrainRun Graph
 The resulting *TrainRun-Graph* can be calculated with
 :meth:`~tom.tom.Train.extended_train_run_graph` and looks like this:
 
-.. figure:: /example-ac-ff-train-run-graph.png
+.. figure:: examples/example-ac-ff-train-run-graph.png
    :alt: Example train run graph
 
-With :meth:`~tom.tom.Train.to_dataframe` you can create an pandas dataframe which you can export to
-execl. See :download:`/train-TR-12AB-1.xlsx`.
+.. _GraphML: https://de.wikipedia.org/wiki/GraphML
+
+You can download this graph as GraphML_ here: :download:`examples/train-TR-12AB-1.graphml`.
+
+Timetable as Excel-Sheet
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _Pandas DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
+
+With :meth:`~tom.tom.Train.to_dataframe` you can create a `Pandas DataFrame`_ which you can export
+to excel representing the time table of the train. See :download:`examples/train-TR-12AB-1.xlsx`.
+
+.. _example-a-f:
+
+-----------------------------
+Example: Train with three IMs
+-----------------------------
+
+Given this infrastructure:
+
+.. uml:: uml/tom-example-a-f-infrastructure.puml
+
+This object diagramm shows a szenario for a train from A,B to F,G which is planned to operate in
+december 2020.
+
+.. uml:: uml/tom-example-a-f.puml
+
+Specification with YAML
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. literalinclude:: ../tests/data/train-a-f.yml
+   :language: yaml
+
+TrainRun Graph
+~~~~~~~~~~~~~~
+
+.. figure:: examples/example-a-f-train-run-graph.png
+   :alt: Example train run graph
+
+You can see 4 train runs starting from A, 31-4 starting from B, 4 arriving in G and 31-4 arriving
+in F.
+
+You can download this graph as GraphML_ here: :download:`examples/train-TR-13AB-1.graphml`.
+
+
+Timetable as Excel-Sheet
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Download the time table for `Train-13AB` here: :download:`examples/train-TR-13AB-1.xlsx`.
 
 .. rubric:: Footnotes
 

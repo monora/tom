@@ -1,53 +1,206 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Route Domain Model &#8212; Train Object Model 0.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Route Domain Model &mdash; Train Object Model 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="tom" href="modules.html" />
-    <link rel="prev" title="Usage" href="usage.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Train Object Model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Train Object Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Route Domain Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#train-and-routesection">Train and RouteSection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#timestamps">Timestamps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#identifiers">Identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#versioning">Versioning</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#trainrun-and-sectionrun">TrainRun and SectionRun</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sectionrun">SectionRun</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trainrun">TrainRun</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example-train-from-amsterdam-to-frankfurt">Example: Train from Amsterdam to Frankfurt</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#specification-with-yaml">Specification with YAML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trainrun-graph">TrainRun Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timetable-as-excel-sheet">Timetable as Excel-Sheet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example-train-with-three-ims">Example: Train with three IMs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Specification with YAML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">TrainRun Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Timetable as Excel-Sheet</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">tom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Train Object Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Route Domain Model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/domainmodel.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="toctree-wrapper compound">
 </div>
 <div class="section" id="route-domain-model">
-<h1>Route Domain Model<a class="headerlink" href="#route-domain-model" title="Permalink to this headline">¶</a></h1>
+<span id="routedomainmodel"></span><h1>Route Domain Model<a class="headerlink" href="#route-domain-model" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Each international train has to be split into sections when the train crosses a border.  The split
 locations are called handover points. At each handover the responsiblity for the train planning
 changes from IM to IM and RU to RU. The planning process is coordinated by the <cite>Train.lead_ru</cite>.</p>
 <p class="plantuml">
-<img src="_images/plantuml-d565e148c9ad714493c485b8049b2ab805c011e0.png" alt="class JourneyLocation {
+<img src="_images/plantuml-948e47f75bf1da06f1a8fb5eba087d50bd21f86f.png" alt="class JourneyLocation &lt;&lt;TOM&gt;&gt; {
     id: LocationIdentifier
 }
-class Train {
+class Train &lt;&lt;TOM&gt;&gt; {
     lead_ru: CompanyCode
 }
 class RouteSection {
@@ -58,15 +211,15 @@ Handover --|&gt; JourneyLocation
 Origin --|&gt; JourneyLocation
 Destination --|&gt; JourneyLocation
 
-RouteSection -&gt; &quot;1&quot; JourneyLocation : origin &gt;
-RouteSection -&gt; &quot;1&quot; JourneyLocation : destination &gt;
-Train *--&gt; &quot;1..*&quot; RouteSection
+RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : origin &gt;
+RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : destination &gt;
+Train *-- &quot;1..*&quot; RouteSection
 
-class PathRequest {
+class PathRequest &lt;&lt;TOM&gt;&gt; {
     responsible_im: CompanyCode
     applicant_ ru: CompanyCode
 }
-PathRequest -&gt; &quot;1&quot; RouteSection : belongs to &gt;
+RouteSection o--  &quot;0..*&quot; PathRequest : is derived from &lt;
 "/>
 </p>
 <p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f1" id="id1">[1]</a> must at least have two sections. The
@@ -91,12 +244,12 @@ about the whole train. Changes to this information have to be propagated by the 
 <p>The following diagramm shows the two main classes of our proposition for the TOM. It describes the
 minimum information needed for a valid route information of an international train:</p>
 <p class="plantuml">
-<img src="_images/plantuml-093930f916f5f0863466075f47cc1677359390f8.png" alt="left to right direction
+<img src="_images/plantuml-c61f93def0fea6ca040e8e511a066a4173bdfa5a.png" alt="left to right direction
 
 class Train {
     core: CoreID
-    version: int
     lead_ru: CompanyCode
+    version: int
 
     +TrainID train_id()
 }
@@ -119,7 +272,6 @@ class RouteSection {
     + str section_key()
 }
 
-
 Train *-- &quot;1..*&quot; RouteSection
 "/>
 </p>
@@ -138,6 +290,10 @@ calculate the arrival time at destination.</li>
 <p>Only RouteSections have a calendar.  This is the set of starting days at the origin of a section.
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
 attributes.</p>
+<div class="admonition-rule-sec-02-routesection-calendar-must-be-subset-of-timetable-year admonition">
+<p class="first admonition-title">Rule SEC-02 RouteSection Calendar must be subset of timetable year</p>
+<p class="last">The <cite>RouteSection.calendar</cite> must be a subset of the timetable year of its train.</p>
+</div>
 <p>Because a train can have several starting RouteSections (i.e. different start locations and dates)
 it makes no sense to assign a calender to it. A calender must always be relativ to a fixed start
 location. <a class="reference internal" href="#example-ac-ff"><span class="std std-ref">Example: Train from Amsterdam to Frankfurt</span></a> explains such a situation with an overnight train in the starting
@@ -151,10 +307,8 @@ Reference</em>) is needed!</p>
 <cite>timetable_year</cite>.</p>
 <div class="admonition-rule-sec-03-unique-section-id admonition">
 <p class="first admonition-title">Rule SEC-03 Unique Section ID</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="tom.html#tom.tom.RouteSection.section_id" title="tom.tom.RouteSection.section_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RouteSection.section_id</span></code></a> must be unique within the set</dt>
-<dd>of sections of a train.</dd>
-</dl>
+<p class="last"><a class="reference internal" href="tom.html#tom.tom.RouteSection.section_id" title="tom.tom.RouteSection.section_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RouteSection.section_id</span></code></a> must be unique within the set
+of sections of a train.</p>
 </div>
 <p>The <cite>section_id</cite> is used to make the daily train IDs unique in case of overnight trains. Using the
 start date of a train results in duplicate train IDs. See example below.</p>
@@ -186,9 +340,9 @@ info of a <cite>Train</cite> described in the previous section.</p>
 fit together if <cite>s.connects_to(t) == True</cite> (see <a class="reference internal" href="tom.html#tom.tom.SectionRun.connects_to" title="tom.tom.SectionRun.connects_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connects_to()</span></code></a>).</li>
 </ul>
 <p class="plantuml">
-<img src="_images/plantuml-33748316526a35e7f5c05f208825d55ceaf47a81.png" alt="left to right direction
+<img src="_images/plantuml-82392f4ef7938754559f9284f0bedba32fa2cba0.png" alt="left to right direction
 
-class Train {
+class Train &lt;&lt;TOM&gt;&gt; {
     lead_ru: CompanyCode
     +TrainID train_id()
 }
@@ -213,7 +367,7 @@ class SectionRun {
     + Boolean connects_to(other: SectionRun)
 }
 RouteSection *- &quot;1..*&quot; SectionRun
-note left of SectionRun
+note bottom of SectionRun
     A section run happens on the calendar day
     of its departure_at_origin timestamp.
 end note
@@ -222,13 +376,13 @@ class TrainRun {
     + TrainID train_run_id()
     + Date start_date()
 }
-note right of TrainRun
-    The start_date of train is the calendar day
+note bottom of TrainRun
+    The start_date of a train run is the calendar day
     of the departure_at_origin timestamp of
     its first section run.
 end note
 
-TrainRun o-&gt; &quot;1..* {ordered}&quot; SectionRun
+TrainRun o--&gt; &quot;1..* {ordered}&quot; SectionRun
 Train o- &quot;1..365&quot; TrainRun
 "/>
 </p>
@@ -259,11 +413,30 @@ destination SectionRuns.</li>
 </div>
 <div class="section" id="example-train-from-amsterdam-to-frankfurt">
 <span id="example-ac-ff"></span><h2>Example: Train from Amsterdam to Frankfurt<a class="headerlink" href="#example-train-from-amsterdam-to-frankfurt" title="Permalink to this headline">¶</a></h2>
-<p>This object diagramm shows a szenario for a train vom Ammsterdam Central (AC) to Frankfurt (FF)
-which is planned to operate in december 2012. On Fri-Sun handover is Emmerich (EMM). On Mon-Thu
+<p>Given this infrastructure:</p>
+<p class="plantuml">
+<img src="_images/plantuml-1445d48c360a246fbca84d6d47ff1e6e732e0802.png" alt="package Prorail &lt;&lt;Rectangle&gt;&gt; {
+    object &quot;Amsterdam Central (AC)&quot; as ac
+    object Venlo
+    Venlo : Handover
+}
+package &quot;DB Netz&quot; &lt;&lt;Rectangle&gt;&gt; {
+    object &quot;Emmerich (EMM)&quot; as emm
+    emm : Handover
+    object &quot;Frankfurt (FF)&quot; as ff
+}
+
+ac - emm
+ac -- Venlo
+Venlo - ff
+emm -- ff
+"/>
+</p>
+<p>This object diagramm shows a szenario for a train from AC to Frankfurt FF
+which is planned to operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu
 handover is Venlo.</p>
 <p class="plantuml">
-<img src="_images/plantuml-0775244c9cbe05c6cc3beb0e4fb1a46efdb1677a.png" alt="object &quot;TR/1080/12AB: Train&quot; as tr
+<img src="_images/plantuml-636a98092d8157e1d5f3eee09355ae0e252ff663.png" alt="object &quot;TR/1080/12AB: Train&quot; as tr
 object &quot;AC-&gt;EMM: RouteSection&quot; as ac_emm
 object &quot;AC-&gt;Venlo: RouteSection&quot; as ac_venlo
 object &quot;EMM-&gt;FF: RouteSection&quot; as emm_ff
@@ -315,59 +488,18 @@ n1 .. emm_ff
 n1 .. ac_emm
 "/>
 </p>
-<div class="section" id="yaml-example">
-<h3>YAML-Example<a class="headerlink" href="#yaml-example" title="Permalink to this headline">¶</a></h3>
-<p>The following YAML-file is a machine readable specification of the route sections of the example:</p>
-<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<div class="section" id="specification-with-yaml">
+<h3>Specification with YAML<a class="headerlink" href="#specification-with-yaml" title="Permalink to this headline">¶</a></h3>
+<p>The following YAML-file is a machine readable specification of the route sections of a train with
+CoreID <cite>12AB</cite>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
 <span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">12AB</span>
+<span class="nt">lead_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
 <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="nt">sections</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1084</span> <span class="c1"># NS</span>
+      <span class="nt">resp_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0084</span> <span class="c1"># Prorail</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span>
@@ -379,17 +511,21 @@ n1 .. ac_emm
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
+      <span class="nt">resp_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
       <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EMM</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nl">&amp;dep_time_emm</span> <span class="l l-Scalar l-Scalar-Plain">02:00:00</span>
       <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10:00:00</span>
       <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-12-02&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="nv">*ac-end</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-12-02&#39;</span> <span class="c1"># shifted by one day relativ to AC-EMM</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="nv">*ac-end</span>        <span class="c1"># substituted by &amp;ac-end</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri&#39;</span>
 
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1084</span> <span class="c1"># NS</span>
+      <span class="nt">resp_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0084</span> <span class="c1"># Prorail</span>
       <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span>
       <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
@@ -400,6 +536,8 @@ n1 .. ac_emm
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
+      <span class="nt">resp_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
       <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*dep_time_emm</span>
       <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
@@ -407,10 +545,11 @@ n1 .. ac_emm
       <span class="nt">stop_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:05:00</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*ac-begin</span>
+        <span class="c1"># Must include 1.1. for last section run</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2022-01-01&#39;</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="section" id="trainrun-graph">
 <h3>TrainRun Graph<a class="headerlink" href="#trainrun-graph" title="Permalink to this headline">¶</a></h3>
@@ -419,8 +558,165 @@ n1 .. ac_emm
 <div class="figure">
 <img alt="Example train run graph" src="_images/example-ac-ff-train-run-graph.png" />
 </div>
-<p>With <a class="reference internal" href="tom.html#tom.tom.Train.to_dataframe" title="tom.tom.Train.to_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a> you can create an pandas dataframe which you can export to
-execl. See <a class="reference download internal" download="" href="_downloads/66635e1d393f344dc6d9b070852dd658/train-TR-12AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">/train-TR-12AB-1.xlsx</span></code></a>.</p>
+<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/47e4598cfaeb4e804114daaac2d9fa26/train-TR-12AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.graphml</span></code></a>.</p>
+</div>
+<div class="section" id="timetable-as-excel-sheet">
+<h3>Timetable as Excel-Sheet<a class="headerlink" href="#timetable-as-excel-sheet" title="Permalink to this headline">¶</a></h3>
+<p>With <a class="reference internal" href="tom.html#tom.tom.Train.to_dataframe" title="tom.tom.Train.to_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a> you can create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a> which you can export
+to excel representing the time table of the train. See <a class="reference download internal" download="" href="_downloads/74e7ce4d1d7f0a2ed9c241e9cf246925/train-TR-12AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.xlsx</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="example-train-with-three-ims">
+<span id="example-a-f"></span><h2>Example: Train with three IMs<a class="headerlink" href="#example-train-with-three-ims" title="Permalink to this headline">¶</a></h2>
+<p>Given this infrastructure:</p>
+<p class="plantuml">
+<img src="_images/plantuml-f18e2b034c40b9d4c89855c7cd5d12e2e5460031.png" alt="package IMa &lt;&lt;Rectangle&gt;&gt; {
+    object A
+    object B
+}
+package IMb &lt;&lt;Rectangle&gt;&gt; {
+    object C
+    C : Handover
+    object D
+}
+package IMc &lt;&lt;Rectangle&gt;&gt; {
+    object E
+    E : Handover
+    object F
+    object G
+}
+
+A - B
+B - C
+C - D
+D - E
+E - F
+F - G
+"/>
+</p>
+<p>This object diagramm shows a szenario for a train from A,B to F,G which is planned to operate in
+december 2020.</p>
+<p class="plantuml">
+<img src="_images/plantuml-e73d799709a75f9eb03c1fb1802332990c121180.png" alt="object &quot;TR/1080/13AB: Train&quot; as tr
+object &quot;A-&gt;C: RouteSection&quot; as ac
+object &quot;B-&gt;C: RouteSection&quot; as bc
+object &quot;C-&gt;E: RouteSection&quot; as ce
+object &quot;E-&gt;F: RouteSection&quot; as ef
+object &quot;E-&gt;G: RouteSection&quot; as eg
+
+ac : departure_at_origin = 23:30
+ac : travel_time = 02:00
+ac : calendar = [2020-12-01, 2020-12-31, Sat]
+
+bc : departure_at_origin = 00:30
+bc : travel_time = 01:00
+bc : calendar = [2020-12-01, 2020-12-31, Mon-Sat]
+
+ce : departure_at_origin = 01:30
+ce : travel_time = 23:00
+ce : calendar = [2020-12-01, 2020-12-31, daily]
+
+ef : departure_at_origin = 00:30
+ef : travel_time = 04:00
+ef : calendar = [2020-12-02, 2021-01-01, Wed-Mon]
+
+eg : departure_at_origin = 00:30
+eg : travel_time = 08:00
+eg : calendar = [2020-12-02, 2021-01-01, Tue]
+
+tr --&gt; ac : begin_section &gt;
+tr --&gt; bc : begin_section &gt;
+
+ac ..&gt; ce : connects_to &gt;
+bc ..&gt; ce : connects_to &gt;
+ce ..&gt; ef : connects_to &gt;
+ce ..&gt; eg : connects_to &gt;
+
+note top of ac
+    Section starts previous day (night shift).
+    This train passes B at 00:30 on Sundays.
+    Therefore calender at start must be saturdays.
+end note
+
+note as n1
+    calendar validity starts 2.12.2011 because of double night shift
+    and last until 1.1.2021 (last section run starts ini new year)
+
+end note
+
+ef &lt;.. n1
+eg &lt;.. n1
+"/>
+</p>
+<div class="section" id="id2">
+<h3>Specification with YAML<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">13AB</span>
+<span class="nt">sections</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">B</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="nl">&amp;b-departure</span> <span class="s">&#39;00:30:00&#39;</span>
+      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;01:00:00&#39;</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="nl">&amp;b-begin</span> <span class="s">&#39;2020-12-01&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;b-end</span> <span class="s">&#39;2020-12-31&#39;</span>
+        <span class="c1"># Sundays the train starting from A passes B</span>
+        <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat&#39;</span>
+      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:30:00&#39;</span>
+      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;02:00:00&#39;</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*b-begin</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="nv">*b-end</span>
+        <span class="c1"># Sunday in B =&gt; Saturday start in A</span>
+        <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat&#39;</span>
+      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;01:30:00&#39;</span>
+      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;23:00:00&#39;</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*b-begin</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="nv">*b-end</span>
+        <span class="c1"># no mask =&gt; daily</span>
+      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
+      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">F</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;04:00:00&#39;</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="c1"># 1.12. must be be excluded und 1.1. included</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="nl">&amp;e-begin</span> <span class="s">&#39;2020-12-02&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;e-end</span> <span class="s">&#39;2021-01-01&#39;</span>
+        <span class="c1"># Not on tuesday. On tuesdays section E-G is used.</span>
+        <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
+      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
+      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">G</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;08:00:00&#39;</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*e-begin</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="nv">*e-end</span>
+        <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Tue&#39;</span>
+      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>TrainRun Graph<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="figure">
+<img alt="Example train run graph" src="_images/example-a-f-train-run-graph.png" />
+</div>
+<p>You can see 4 train runs starting from A, 31-4 starting from B, 4 arriving in G and 31-4 arriving
+in F.</p>
+<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/7737e967ae7ddcf9e6d6bb0bdb7bf884/train-TR-13AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.graphml</span></code></a>.</p>
+</div>
+<div class="section" id="id4">
+<h3>Timetable as Excel-Sheet<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Download the time table for <cite>Train-13AB</cite> here: <a class="reference download internal" download="" href="_downloads/d363e50a1aed2e0743c6a57340a9c609/train-TR-13AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.xlsx</span></code></a>.</p>
 <p class="rubric">Footnotes</p>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -440,87 +736,59 @@ structure.</td></tr>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Train Object Model</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Train Object Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Route Domain Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#train-and-routesection">Train and RouteSection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#trainrun-and-sectionrun">TrainRun and SectionRun</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-train-from-amsterdam-to-frankfurt">Example: Train from Amsterdam to Frankfurt</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">tom</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
-<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="usage.html" title="previous chapter">Usage</a></li>
-      <li>Next: <a href="modules.html" title="next chapter">tom</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="tom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Horst Duchene
 
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2020, Horst Duchene.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/domainmodel.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>
