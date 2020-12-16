@@ -14,16 +14,22 @@ Train Object Model
         :alt: Documentation Status
 
 .. _JSG: http://taf-jsg.info/
+.. _Route Domain Model: https://monora.github.io/tom/domainmodel.html
+.. _Example 1: https://monora.github.io/tom/domainmodel.html#example-train-from-amsterdam-to-frankfurt
+.. _Example 2: https://monora.github.io/tom/domainmodel.html#example-train-with-three-ims
 
 This repository contains a proposition to extend the *Combined Route Model* of the JSG_ *Train Object
-Model*. See :ref:`routedomainmodel`.
+Model*. See `Route Domain Model`_.
 
-We provide examples which can be tested and investigated. See .. :ref:`example-ac-ff` and :ref:`example-a-f`.
+We provide examples which can be tested and investigated. See
 
-* Free software: MIT license
+* `Example 1`_ Train from Amsterdam to Frankfurt over two different handovers
+* `Example 2`_ Train with three IMs involved
 
-* Documentation: https://monora.github.io/tom
+License
+~~~~~~~
 
+Free software: MIT license
 
 Installation:
 -------------
