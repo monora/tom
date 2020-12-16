@@ -761,6 +761,20 @@ test = ["mock", "pytest", "pytest-cov", "html5lib", "flake8 (>=3.5.0)", "flake8-
 websupport = ["sqlalchemy (>=0.9)", "whoosh (>=2.0)"]
 
 [[package]]
+name = "sphinx-rtd-theme"
+version = "0.5.0"
+description = "Read the Docs theme for Sphinx"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+sphinx = "*"
+
+[package.extras]
+dev = ["transifex-client", "sphinxcontrib-httpdomain", "bump2version"]
+
+[[package]]
 name = "sphinxcontrib-plantuml"
 version = "0.19"
 description = "Sphinx \"plantuml\" extension"
@@ -934,7 +948,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8"
-content-hash = "2c709b90c0dc0268f8aca007be5c6486c8147f08bb0677514148b1ffa7cbf27d"
+content-hash = "64d135aabea6e39a63077d1cf0b0d348c1cc09af1077f8d5cdda0baa1bfe2f9e"
 
 [metadata.files]
 alabaster = [
@@ -1452,6 +1466,10 @@ snowballstemmer = [
 sphinx = [
     {file = "Sphinx-1.8.5-py2.py3-none-any.whl", hash = "sha256:9f3e17c64b34afc653d7c5ec95766e03043cc6d80b0de224f59b6b6e19d37c3c"},
     {file = "Sphinx-1.8.5.tar.gz", hash = "sha256:c7658aab75c920288a8cf6f09f244c6cfdae30d82d803ac1634d9f223a80ca08"},
+]
+sphinx-rtd-theme = [
+    {file = "sphinx_rtd_theme-0.5.0-py2.py3-none-any.whl", hash = "sha256:373413d0f82425aaa28fb288009bf0d0964711d347763af2f1b65cafcb028c82"},
+    {file = "sphinx_rtd_theme-0.5.0.tar.gz", hash = "sha256:22c795ba2832a169ca301cd0a083f7a434e09c538c70beb42782c073651b707d"},
 ]
 sphinxcontrib-plantuml = [
     {file = "sphinxcontrib-plantuml-0.19.tar.gz", hash = "sha256:98b9f02282907b0c5b7a93a446c4649909aaf5785d2da0dd263c8ad68e00e288"},

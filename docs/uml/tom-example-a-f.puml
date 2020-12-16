@@ -1,0 +1,49 @@
+object "TR/1080/13AB: Train" as tr
+object "A->C: RouteSection" as ac
+object "B->C: RouteSection" as bc
+object "C->E: RouteSection" as ce
+object "E->F: RouteSection" as ef
+object "E->G: RouteSection" as eg
+
+ac : departure_at_origin = 23:30
+ac : travel_time = 02:00
+ac : calendar = [2020-12-01, 2020-12-31, Sat]
+
+bc : departure_at_origin = 00:30
+bc : travel_time = 01:00
+bc : calendar = [2020-12-01, 2020-12-31, Mon-Sat]
+
+ce : departure_at_origin = 01:30
+ce : travel_time = 23:00
+ce : calendar = [2020-12-01, 2020-12-31, daily]
+
+ef : departure_at_origin = 00:30
+ef : travel_time = 04:00
+ef : calendar = [2020-12-02, 2021-01-01, Wed-Mon]
+
+eg : departure_at_origin = 00:30
+eg : travel_time = 08:00
+eg : calendar = [2020-12-02, 2021-01-01, Tue]
+
+tr --> ac : begin_section >
+tr --> bc : begin_section >
+
+ac ..> ce : connects_to >
+bc ..> ce : connects_to >
+ce ..> ef : connects_to >
+ce ..> eg : connects_to >
+
+note top of ac
+    Section starts previous day (night shift).
+    This train passes B at 00:30 on Sundays.
+    Therefore calender at start must be saturdays.
+end note
+
+note as n1
+    calendar validity starts 2.12.2011 because of double night shift
+    and last until 1.1.2021 (last section run starts ini new year)
+
+end note
+
+ef <.. n1
+eg <.. n1

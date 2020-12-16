@@ -1,6 +1,19 @@
 ---
 coreID: 13AB
+version: 2
 sections:
+    # New section from B to C with ID 6:
+    # On Thu the train starts 45 min earlier (now overnight!)
+    - origin: B
+      departure_time: '23:45:00'
+      destination: C
+      # We augment travel time by 45 min to not break handover contracts at C!
+      travel_time: '01:45:00'
+      calendar:
+        begin: '2020-12-01'
+        end: '2020-12-31'
+        mask: 'Thu'
+      section_id: 6
     - origin: B
       departure_time: &b-departure '00:30:00'
       destination: C
@@ -8,8 +21,12 @@ sections:
       calendar:
         begin: &b-begin '2020-12-01'
         end: &b-end '2020-12-31'
-        # Sundays the train starting from A passes B
-        mask: 'Mon Tue Wed Thu Fri Sat'
+        # Must correct calender:
+        # Trains which formally depart at Friday now start at Do!
+        # => Have to omit Fri in calender
+        mask: 'Mon Tue Wed Thu Sat'
+      # New Version of section 1!
+      version: 2
       section_id: 1
     - origin: A
       departure_time: '23:30:00'

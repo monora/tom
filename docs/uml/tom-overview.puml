@@ -1,7 +1,7 @@
-class JourneyLocation {
+class JourneyLocation <<TOM>> {
     id: LocationIdentifier
 }
-class Train {
+class Train <<TOM>> {
     lead_ru: CompanyCode
 }
 class RouteSection {
@@ -12,12 +12,12 @@ Handover --|> JourneyLocation
 Origin --|> JourneyLocation
 Destination --|> JourneyLocation
 
-RouteSection -> "1" JourneyLocation : origin >
-RouteSection -> "1" JourneyLocation : destination >
-Train *--> "1..*" RouteSection
+RouteSection "*" -> "1" JourneyLocation : origin >
+RouteSection "*" -> "1" JourneyLocation : destination >
+Train *-- "1..*" RouteSection
 
-class PathRequest {
+class PathRequest <<TOM>> {
     responsible_im: CompanyCode
     applicant_ ru: CompanyCode
 }
-PathRequest -> "1" RouteSection : belongs to >
+RouteSection o--  "0..*" PathRequest : is derived from <

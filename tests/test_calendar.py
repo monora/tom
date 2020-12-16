@@ -78,12 +78,12 @@ def test_section_to_df_aa_ff(train_ac_ff):
 
 def test_section_to_df_a_f(train_a_f: Train):
     assert len(train_a_f.sections) == 5
-    _check_to_df(train_a_f, 3, 4, ['A', 'C'])
     _check_to_df(train_a_f, 0, 31 - 4, ['B', 'C'])
-    _check_to_df(train_a_f, 1, 31, ['C', 'E'])
-    _check_to_df(train_a_f, 4, 4, ['E', 'G'])
+    _check_to_df(train_a_f, 1, 4, ['A', 'C'])
+    _check_to_df(train_a_f, 2, 31, ['C', 'E'])
     # Section E-F starts at 2.12. and ends on 1.1. (=> also 31 days)
-    _check_to_df(train_a_f, 2, 31 - 4, ['E', 'F'])
+    _check_to_df(train_a_f, 3, 31 - 4, ['E', 'F'])
+    _check_to_df(train_a_f, 4, 4, ['E', 'G'])
 
 
 def test_train_to_df(yml_train):

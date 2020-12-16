@@ -45,7 +45,10 @@ def test_train_run_iterator(yml_train):
         'TR-12AB-2': {0: 'TR/8350/12AB/00/1/2021-12-02',
                       -1: 'TR/8350/12AB/00/3/2021-12-31'},
         'TR-13AB-1': {0: 'TR/8350/13AB/00/0/2020-12-01',
-                      -1: 'TR/8350/13AB/00/3/2020-12-26'}}
+                      -1: 'TR/8350/13AB/00/1/2020-12-26'},
+        'TR-13AB-2': {0: 'TR/8350/13AB/00/0/2020-12-03',
+                      -1: 'TR/8350/13AB/00/2/2020-12-26'}
+    }
     train_runs = list(yml_train.train_run_iterator())
     assert len(train_runs) == 31
     for i in [0, -1]:

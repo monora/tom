@@ -1,0 +1,22 @@
+package IMa <<Rectangle>> {
+    object A
+    object B
+}
+package IMb <<Rectangle>> {
+    object C
+    C : Handover
+    object D
+}
+package IMc <<Rectangle>> {
+    object E
+    E : Handover
+    object F
+    object G
+}
+
+A - B
+B - C
+C - D
+D - E
+E - F
+F - G

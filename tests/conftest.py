@@ -35,6 +35,6 @@ def train_a_f(shared_datadir):
     return _make_train(shared_datadir, 'train-a-f')
 
 
-@pytest.fixture(params=["train-ac-ff", "train-a-f", "train-ac-ff-v2"])
+@pytest.fixture(params=["train-ac-ff", "train-a-f", "train-ac-ff-v2", "train-a-f-v2"])
 def yml_train(shared_datadir, request) -> Train:
     return _make_train(shared_datadir, request.param)

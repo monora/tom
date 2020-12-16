@@ -1,8 +1,11 @@
 ---
 coreID: 12AB
+lead_ru: 1080 # DB FV
 version: 2
 sections:
     - id: 1
+      applicant_ru: 1084 # NS
+      resp_im: 0084 # Prorail
       version: 2
       origin: Utrecht
       departure_time: '00:50:00'
@@ -11,20 +14,25 @@ sections:
       calendar:
         begin: &ac-begin '2021-12-01'
         end: &ac-end '2021-12-31'
+        # train now starts one day later => Tue-Fri
         mask: 'Tue Wed Thu Fri'
     - id: 2
       version: 1
+      applicant_ru: 1080 # DB FV
+      resp_im: 0080 # DB Netz
       origin: EMM
       departure_time: &dep_time_emm 02:00:00
       destination: FF
       travel_time: 10:00:00
       calendar:
-        begin: '2021-12-02'
-        end: *ac-end
+        begin: '2021-12-02' # shifted by one day relativ to AC-EMM
+        end: *ac-end        # substituted by &ac-end
         mask: 'Tue Wed Thu Fri'
 
     - id: 3
       version: 1
+      applicant_ru: 1084 # NS
+      resp_im: 0084 # Prorail
       origin: AC
       departure_time: '23:50:00'
       destination: Venlo
@@ -35,6 +43,8 @@ sections:
         mask: 'Fri Sat Sun'
     - id: 4
       version: 1
+      applicant_ru: 1080 # DB FV
+      resp_im: 0080 # DB Netz
       origin: Venlo
       departure_time: *dep_time_emm
       destination: FF
@@ -42,5 +52,6 @@ sections:
       stop_time: 00:05:00
       calendar:
         begin: *ac-begin
+        # Must include 1.1. for last section run
         end: '2022-01-01'
         mask: 'Sat Sun Mon'

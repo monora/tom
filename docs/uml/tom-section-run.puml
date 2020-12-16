@@ -1,6 +1,6 @@
 left to right direction
 
-class Train {
+class Train <<TOM>> {
     lead_ru: CompanyCode
     +TrainID train_id()
 }
@@ -25,7 +25,7 @@ class SectionRun {
     + Boolean connects_to(other: SectionRun)
 }
 RouteSection *- "1..*" SectionRun
-note left of SectionRun
+note bottom of SectionRun
     A section run happens on the calendar day
     of its departure_at_origin timestamp.
 end note
@@ -34,11 +34,11 @@ class TrainRun {
     + TrainID train_run_id()
     + Date start_date()
 }
-note right of TrainRun
-    The start_date of train is the calendar day
+note bottom of TrainRun
+    The start_date of a train run is the calendar day
     of the departure_at_origin timestamp of
     its first section run.
 end note
 
-TrainRun o-> "1..* {ordered}" SectionRun
+TrainRun o--> "1..* {ordered}" SectionRun
 Train o- "1..365" TrainRun
