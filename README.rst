@@ -13,11 +13,12 @@ Train Object Model
         :target: https://tom.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
+.. _JSG: http://taf-jsg.info/
 
+This repository contains a proposition to extend the *Combined Route Model* of the JSG_ *Train Object
+Model*. See :ref:`routedomainmodel`.
 
-
-Test and investigate FTEs Train Object Model
-
+We provide examples which can be tested and investigated. See .. :ref:`example-ac-ff` and :ref:`example-a-f`.
 
 * Free software: MIT license
 

@@ -1,6 +1,8 @@
 .. toctree::
    :maxdepth: 4
 
+.. _routedomainmodel:
+
 ==================
 Route Domain Model
 ==================

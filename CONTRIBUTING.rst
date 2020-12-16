@@ -82,7 +82,7 @@ Ready to contribute? Here's how to set up `Train Object Model` for local develop
 1. Fork the `Train Object Model` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/Train Object Model.git
+    $ git clone git@github.com:your_name_here/tom.git
 
 3. Install your local copy into a virtualenv using poetry. Assuming you have poetry installed, this is how you set up your fork for local development::
 
