@@ -18,7 +18,7 @@ class RouteSection {
     calendar: Set<Date>
     ---
     applicant_ru: CompanyCode
-    responsible_im: CompanyCode
+    planning_im: CompanyCode
     ---
     section_id: int
     version: int = 1

@@ -28,7 +28,7 @@ following constraint must hold for each :class:`~tom.tom.RouteSection`:
    - `RouteSection.origin` is a *Origin* or *Handover*
    - `RouteSection.destination` is a *Handover* or *Destination*
 
-For each `RouteSection` the `responsible_im` and `applicant_ru` exchange *PathRequest* and
+For each `RouteSection` the `planning_im` and `applicant_ru` exchange *PathRequest* and
 *PathDetails* to plan the detailed route within a `RouteSection`. This process is described in
 detail in the `Sector Handbook`_ of the RU/IM Telematrics JSG_.  As long as borders of a section
 both in location and time are unchanged no other participant in the planning of the whole train has
@@ -56,8 +56,8 @@ a `RouteSection` serve this purpose:
 - `calendar` is a set of calendar days where the train starts at `RouteSection.origin`
 - `origin_departure_time` is the day time the train starts each day in `calendar`
 - `origin_stop_time` planned stop time at a section handover origin
-- `travel_time_to_destination` travel time from origin to destination. This attribute is used to
-  calculate the arrival time at destination.
+- `travel_time_to_destination` travel time from section origin to section destination. This
+   attribute is used to calculate the arrival time at section destination.
 
 Only RouteSections have a calendar.  This is the set of starting days at the origin of a section.
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
@@ -93,12 +93,15 @@ start date of a train results in duplicate train IDs. See example below.
 
    A route section of a train is uniquely identified by this quadruple:
 
-   `((origin, departure time), (destination, arrival time))`
+   `((section.origin, section.departure_time), (section.destination, section.arrival_time_at_destination))`
 
-Therefor, if on some day in the calendar of a section the train from `origin `AC` to destination `EMM`
+Therefore, if on some day in the calendar of a section the train from section origin `AC` to
+section destination
+`EMM`
 should arrive at at different time at `EMM`, the RU has to define a new RouteSection for
-this day. If `EMM` is a handover, the lead RU must ask the RU of the following section to create
-fitting route section with origin `EMM`.
+this day. If `EMM` is a handover, the lead RU must ask the applicant RU of the following section to
+create
+fitting route section with section origin `EMM`.
 
 Versioning
 ~~~~~~~~~~
@@ -106,7 +109,8 @@ Versioning
 We suggest *Versioning* of trains and sections to support the synchronsisation of the domain model
 between the systems of the cooperating companies. If a company make a change of section its
 `RouteSection.version` is incremented. Same with the `Train.version`. The receiver of a message
-containing the RoutingInfo [#f2] can use this information to identify the change and act accordingly.
+containing the RoutingInfo [#f2]_ can use this information to identify the change and act
+accordingly.
 
 -----------------------
 TrainRun and SectionRun
@@ -139,10 +143,10 @@ sequences that fit together.
 We use a graph algorithm to compute all train runs. The graph used is best described by the examples
 shown below. The central methods are:
 
-* :meth:`~tom.tom.Train.train_run_graph` which computes a directed Graph G = (SectionRun,E), where
+* :meth:`~tom.tom.Train.train_run_graph` which computes a directed Graph G = (SectionRun, E), where
   (s,t) in E <=> s.connects_to(t).
 * :meth:`~tom.tom.Train.extended_train_run_graph` which adds to synthetic vertices to G, one at the
-  beginning (`START` connecting origin SectionRuns and one at the end `END` which connects to all
+  beginning (`START`) connecting origin SectionRuns and one at the end (`END`) which connects to all
   destination SectionRuns.
 * :meth:`~tom.tom.Train.train_run_iterator` which computes all TrainRuns out of all path in G from
   `START` to `END`.
