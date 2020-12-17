@@ -12,8 +12,8 @@ Handover --|> JourneyLocation
 Origin --|> JourneyLocation
 Destination --|> JourneyLocation
 
-RouteSection "*" -> "1" JourneyLocation : origin >
-RouteSection "*" -> "1" JourneyLocation : destination >
+RouteSection "*" -> "1" JourneyLocation : departure_station >
+RouteSection "*" -> "1" JourneyLocation : arrival_station >
 Train *-- "1..*" RouteSection
 
 class PathRequest <<TOM>> {

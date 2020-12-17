@@ -21,8 +21,8 @@ def test_route_section_run_ac_ff(train_ac_ff: Train):
     first_run: SectionRun = r[0]
     last_run: SectionRun = r[17]
 
-    assert str(first_run.departure_at_origin) == '2021-12-01 23:50:00'
-    assert str(last_run.departure_at_origin) == '2021-12-30 23:50:00'
+    assert str(first_run.departure_time) == '2021-12-01 23:50:00'
+    assert str(last_run.departure_time) == '2021-12-30 23:50:00'
 
 
 def test_train_section_run_iterator(train_ac_to_emm):

@@ -9,12 +9,12 @@ class Train {
 }
 
 class RouteSection {
-    origin: JourneyLocation
-    origin_departure_time: TimeOfDay
-    origin_stop_time: timedelta
+    departure_station: JourneyLocation
+    departure_time: TimeOfDay
+    departure_stop_time: timedelta
     ---
-    destination: JourneyLocation
-    travel_time_to_destination: timedelta
+    arrival_station: JourneyLocation
+    travel_time: timedelta
     calendar: Set<Date>
     ---
     applicant_ru: CompanyCode

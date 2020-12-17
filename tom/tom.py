@@ -7,11 +7,11 @@ This module defines the TOM domain model. The main classes are:
 * SectionRun. A SectionRun belongs to exactly one
 * RouteSection, which has a planned calendar of days the SectionsRuns start. A RouteSection is
   managed by exactly one railway undertaking (RU) and one infrastructure manager (IM).
-* Each TrainRun must run exactly once on each location (origin, destination) of the train.
+* Each TrainRun must run exactly once on each location (departure_station, arrival_station) of the train.
 """
 from datetime import datetime, timedelta, date
 from pathlib import PosixPath
-from typing import List, Dict, Iterator
+from typing import List, Dict
 
 import networkx as nx
 import pandas as pd
@@ -29,97 +29,97 @@ class RouteSection:
     Section of a route of a train which belongs to exactly one responsible IM
     and applicant RU.
 
-    The departure_times_at_origin define the calendar of the SectionRuns
+    The departure_times define the calendar of the SectionRuns
     of this RouteSection. The date part of these timestamps are the calender days of the train
     is running is this section.
     """
     travel_time: timedelta
-    origin_stop_time: timedelta
-    origin: str
-    destination: str
-    departure_times_at_origin: DatetimeIndex
+    departure_stop_time: timedelta
+    departure_station: str
+    arrival_station: str
+    departure_timestamps: DatetimeIndex
     section_id: int = 0
     version: int = 1
 
-    def __init__(self, origin: str,
-                 destination: str,
+    def __init__(self, departure_station: str,
+                 arrival_station: str,
                  travel_time: timedelta,
                  departure_timestamps: pd.DatetimeIndex,
                  stop_time: timedelta = pd.Timedelta(0)):
         """
-        Creates a new route section from origin to destination at well defined timestamps.
+        Creates a new route section from departure_station to arrival_station at well defined timestamps.
 
-        :param origin: location where the train starts or breaks in
-        :param destination: location where the train stops or leaves
-        :param travel_time: planned time from origin to destination
-        :param departure_timestamps: timestamps at origin (must be same at each day)
-        :param stop_time: when origin is a train stop the stop_time > 0
+        :param departure_station: location where the train starts or breaks in
+        :param arrival_station: location where the train stops or leaves
+        :param travel_time: planned time from departure_station to arrival_station
+        :param departure_timestamps: timestamps at departure_station (must be same at each day)
+        :param stop_time: when station of departure is a train stop the stop_time > 0
         """
-        self.departure_times_at_origin = departure_timestamps
+        self.departure_timestamps = departure_timestamps
         self.travel_time = travel_time
-        self.origin_stop_time = stop_time
-        self.origin = origin
-        self.destination = destination
+        self.departure_stop_time = stop_time
+        self.departure_station = departure_station
+        self.arrival_station = arrival_station
 
     def __str__(self):
-        return self.origin + '-' + self.destination
+        return self.departure_station + '-' + self.arrival_station
 
     def __iter__(self):
         """
         Return an iterator over all SectionRuns of this RouteSection
         """
-        return (SectionRun(self, dt) for dt in self.departure_times_at_origin)
+        return (SectionRun(self, dt) for dt in self.departure_timestamps)
 
     def first_day(self) -> date:
         """
         :return: Calendar day of the first train run in this section.
         """
-        return datetime.date(self.departure_times_at_origin[0])
+        return datetime.date(self.departure_timestamps[0])
 
     def last_day(self) -> date:
         """
         :return: Calendar day of the last train run in this section.
         """
-        return datetime.date(self.departure_times_at_origin[-1])
+        return datetime.date(self.departure_timestamps[-1])
 
-    def departure_at_origin(self) -> pd.Timestamp:
+    def departure_time(self) -> pd.Timestamp:
         """
-        :return: Timestamp the first train run departs from section origin
+        :return: Timestamp the first train run departs from section departure_station
         """
-        return self.departure_times_at_origin[0]
+        return self.departure_timestamps[0]
 
-    def arrival_at_destination(self) -> pd.Timestamp:
+    def arrival_time(self) -> pd.Timestamp:
         """
-        :return: Timestamp the first train run arrives at section destination
+        :return: Timestamp the first train run arrives at section station of arrival
         """
-        return self.departure_at_origin() + self.travel_time
+        return self.departure_time() + self.travel_time
 
     def to_dataframe(self) -> pd.DataFrame:
         """
-        :return: pandas dataframe with two columns for [origin, destination] and one row for each
+        :return: pandas dataframe with two columns for [departure_station, arrival_station] and one row for each
                section run.
         """
-        df = pd.DataFrame(index=[x.date() for x in self.departure_times_at_origin])
-        df[self.origin] = self.departure_times_at_origin
-        df[self.destination] = self.arrival_times_at_destination()
+        df = pd.DataFrame(index=[x.date() for x in self.departure_timestamps])
+        df[self.departure_station] = self.departure_timestamps
+        df[self.arrival_station] = self.arrival_times()
         return df
 
-    def arrival_times_at_destination(self) -> pd.DatetimeIndex:
+    def arrival_times(self) -> pd.DatetimeIndex:
         """
-        The arrival times at destination compute from departure times at origin + travel time.
+        The arrival times are computed from section departure times + travel time.
         """
-        return self.departure_times_at_origin + self.travel_time
+        return self.departure_timestamps + self.travel_time
 
     def section_key(self):
         """
         A section of a train is uniquely identified by this quadruple:
 
-          ((origin, departure time), (destination, arrival time))
+          ((departure_station, departure time), (arrival_station, arrival time))
 
         :return: unique key among all sections of a train
         """
-        return ((self.origin, self.departure_at_origin()),
-                (self.destination, self.arrival_at_destination()))
+        return ((self.departure_station, self.departure_time()),
+                (self.arrival_station, self.arrival_time()))
 
 
 SINGLE_SOURCE = 'single-source'
@@ -166,8 +166,8 @@ class Train:
         for u, v in trg.edges:
             u: SectionRun
             v: SectionRun
-            lg.add_edge(u.origin(), u.destination())
-            lg.add_edge(v.origin(), v.destination())
+            lg.add_edge(u.departure_station(), u.arrival_station())
+            lg.add_edge(v.departure_station(), v.arrival_station())
         return lg
 
     def extended_train_run_graph(self, use_sections=True):
@@ -225,36 +225,48 @@ class Train:
 
 class SectionRun:
     section: RouteSection
-    departure_at_origin: datetime
+    departure_time: datetime
 
     def __init__(self, section: RouteSection, time: datetime):
         self.section = section
-        self.departure_at_origin = time
+        self.departure_time = time
 
     def __str__(self):
-        ts_origin = self.departure_at_origin.strftime("%F %H:%M")
-        ts_destination = self.arrival_at_destination().strftime("%F %H:%M")
-        return f"{str(ts_origin)} {self.section} {ts_destination}"
+        ts_departure_station = self.departure_time.strftime("%F %H:%M")
+        ts_arrival_station = self.arrival_time().strftime("%F %H:%M")
+        return f"{str(ts_departure_station)} {self.section} {ts_arrival_station}"
 
     def section_id(self):
         return self.section.section_id
 
-    def arrival_at_destination(self) -> datetime:
-        return self.departure_at_origin + self.section.travel_time
+    def arrival_time(self) -> datetime:
+        return self.departure_time + self.section.travel_time
 
-    def arrival_at_origin(self) -> datetime:
-        return self.departure_at_origin - self.section.origin_stop_time
+    def arrival_at_departure_station(self) -> datetime:
+        """:return: the timestamp at which the train arrived in this station. i.e. `departure_time -
+        departure_stop_time`
+        """
+        return self.departure_time - self.section.departure_stop_time
 
-    def origin(self) -> str:
-        return self.section.origin
+    def departure_station(self) -> str:
+        return self.section.departure_station
 
-    def destination(self) -> str:
-        return self.section.destination
+    def arrival_station(self) -> str:
+        return self.section.arrival_station
 
     def connects_to(self, other):
+        """
+        Checks if to two section `self` and `other` fit together`. This is only if
+
+        (self.arrival_station(), self.arrival_time())
+           = [other.departure_station(), other.arrival_at_departure_station())
+
+        :param other: SectionRun
+        :return: True if both section fit together.
+        """
         # print(self, '->', other)
-        if self.destination() == other.origin():
-            return self.arrival_at_destination() == other.arrival_at_origin()
+        if self.arrival_station() == other.departure_station():
+            return self.arrival_time() == other.arrival_at_departure_station()
         else:
             return False
 
@@ -282,22 +294,22 @@ class TrainRun:
         return f"{self.first_run().section_id()}/{self.start_date()}"
 
     def start_date(self):
-        return self.first_run().departure_at_origin.strftime("%F")
+        return self.first_run().departure_time.strftime("%F")
 
     def first_run(self):
         return self.sections_runs[0]
 
     def time_table(self) -> Dict[str, datetime]:
         fr = self.first_run()
-        result = {fr.origin(): fr.departure_at_origin}
+        result = {fr.departure_station(): fr.departure_time}
         for sr in self.sections_runs:
-            result[sr.destination()] = sr.arrival_at_destination()
+            result[sr.arrival_station()] = sr.arrival_time()
         return result
 
     def location_iterator(self):
-        yield self.first_run().origin()
+        yield self.first_run().departure_station()
         for sr in self.sections_runs:
-            yield sr.destination()
+            yield sr.arrival_station()
 
 
 class Route:
@@ -306,7 +318,7 @@ class Route:
 
     If (prev, next) is a tuple in the sections, then
 
-       prev.destination == next.origin
+       prev.arrival_station == next.departure_station
 
     NOTE: The here proposed TOM model does not need routes! They are instead modeled as TrainRuns
     which are computed from RouteSection (see Train.train_run_iterator)
@@ -319,7 +331,7 @@ class Route:
             raise TomError("No sections in route")
         # Check if sections form a route
         for prev, curr in zip(sections, sections[1:]):
-            if prev.destination != curr.origin:
+            if prev.arrival_station != curr.departure_station:
                 raise TomError(f"Route sections do not fit: {prev} != {curr}")
         self.sections = sections
 
@@ -347,8 +359,8 @@ def _make_section_from_dict(section: dict) -> RouteSection:
         dts = pd.date_range(begin, end)
     dts = dts + departure_time
 
-    result = RouteSection(origin=section['origin'],
-                          destination=section['destination'],
+    result = RouteSection(departure_station=section['departure_station'],
+                          arrival_station=section['arrival_station'],
                           travel_time=tt,
                           stop_time=stop_time,
                           departure_timestamps=dts)

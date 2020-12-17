@@ -9,25 +9,25 @@ class RouteSection {
     applicant_ru: CompanyCode
     planning_im: CompanyCode
 
-    origin_departure_time: TimeOfDay
+    departure_time: TimeOfDay
     calendar: Set<Date>
 }
 Train *-- "1..*" RouteSection
 
 class SectionRun {
 
-    departure_at_origin: Timestamp
+    departure_time: Timestamp
     + str section_id()
-    + Timestamp arrival_at_destination()
-    + Timestamp arrival_at_origin()
-    + JourneyLocation origin()
-    + JourneyLocation destination()
+    + Timestamp arrival_time()
+    + Timestamp arrival_at_departure_station()
+    + JourneyLocation departure_station()
+    + JourneyLocation arrival_station()
     + Boolean connects_to(other: SectionRun)
 }
 RouteSection *- "1..*" SectionRun
 note bottom of SectionRun
     A section run happens on the calendar day
-    of its departure_at_origin timestamp.
+    of its departure_time timestamp.
 end note
 
 class TrainRun {
@@ -36,7 +36,7 @@ class TrainRun {
 }
 note bottom of TrainRun
     The start_date of a train run is the calendar day
-    of the departure_at_origin timestamp of
+    of the departure_time timestamp of
     its first section run.
 end note
 

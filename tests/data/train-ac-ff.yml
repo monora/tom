@@ -7,9 +7,9 @@ sections:
       applicant_ru: 1084 # NS
       planning_im: 0084 # Prorail
       version: 1
-      origin: AC
+      departure_station: AC
       departure_time: '23:50:00'
-      destination: EMM
+      arrival_station: EMM
       travel_time: 02:10:00
       calendar:
         begin: &ac-begin '2021-12-01'
@@ -19,9 +19,9 @@ sections:
       version: 1
       applicant_ru: 1080 # DB FV
       planning_im: 0080 # DB Netz
-      origin: EMM
+      departure_station: EMM
       departure_time: &dep_time_emm 02:00:00
-      destination: FF
+      arrival_station: FF
       travel_time: 10:00:00
       calendar:
         begin: '2021-12-02' # shifted by one day relativ to AC-EMM
@@ -32,9 +32,9 @@ sections:
       version: 1
       applicant_ru: 1084 # NS
       planning_im: 0084 # Prorail
-      origin: AC
+      departure_station: AC
       departure_time: '23:50:00'
-      destination: Venlo
+      arrival_station: Venlo
       travel_time: 02:05:00
       calendar:
         begin: *ac-begin
@@ -44,9 +44,9 @@ sections:
       version: 1
       applicant_ru: 1080 # DB FV
       planning_im: 0080 # DB Netz
-      origin: Venlo
+      departure_station: Venlo
       departure_time: *dep_time_emm
-      destination: FF
+      arrival_station: FF
       travel_time: '10:00:00'
       stop_time: 00:05:00
       calendar:

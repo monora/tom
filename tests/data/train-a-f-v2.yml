@@ -4,9 +4,9 @@ version: 2
 sections:
     # New section from B to C with ID 6:
     # On Thu the train starts 45 min earlier (now overnight!)
-    - origin: B
+    - departure_station: B
       departure_time: '23:45:00'
-      destination: C
+      arrival_station: C
       # We augment travel time by 45 min to not break handover contracts at C!
       travel_time: '01:45:00'
       calendar:
@@ -14,9 +14,9 @@ sections:
         end: '2020-12-31'
         mask: 'Thu'
       section_id: 6
-    - origin: B
+    - departure_station: B
       departure_time: &b-departure '00:30:00'
-      destination: C
+      arrival_station: C
       travel_time: '01:00:00'
       calendar:
         begin: &b-begin '2020-12-01'
@@ -28,9 +28,9 @@ sections:
       # New Version of section 1!
       version: 2
       section_id: 1
-    - origin: A
+    - departure_station: A
       departure_time: '23:30:00'
-      destination: C
+      arrival_station: C
       travel_time: '02:00:00'
       calendar:
         begin: *b-begin
@@ -38,18 +38,18 @@ sections:
         # Sunday in B => Saturday start in A
         mask: 'Sat'
       section_id: 2
-    - origin: C
+    - departure_station: C
       departure_time: '01:30:00'
-      destination: E
+      arrival_station: E
       travel_time: '23:00:00'
       calendar:
         begin: *b-begin
         end: *b-end
         # no mask => daily
       section_id: 3
-    - origin: E
+    - departure_station: E
       departure_time: *b-departure
-      destination: F
+      arrival_station: F
       travel_time: '04:00:00'
       calendar:
         # 1.12. must be be excluded und 1.1. included
@@ -58,9 +58,9 @@ sections:
         # Not on tuesday. On tuesdays section E-G is used.
         mask: 'Wed Thu Fri Sat Sun Mon'
       section_id: 4
-    - origin: E
+    - departure_station: E
       departure_time: *b-departure
-      destination: G
+      arrival_station: G
       travel_time: '08:00:00'
       calendar:
         begin: *e-begin

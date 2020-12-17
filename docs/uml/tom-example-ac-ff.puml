@@ -4,19 +4,19 @@ object "AC->Venlo: RouteSection" as ac_venlo
 object "EMM->FF: RouteSection" as emm_ff
 object "Venlo->FF: RouteSection" as venlo_ff
 
-ac_emm : departure_at_origin = 23:50
+ac_emm : departure_time = 23:50
 ac_emm : travel_time = 02:10
 ac_emm : calendar = [2021-12-01, 2021-12-31, Mon-Thu]
 
-emm_ff : departure_at_origin = 02:00
+emm_ff : departure_time = 02:00
 emm_ff : travel_time = 10:00
 emm_ff : calendar = [2021-12-02, 2021-12-31, Tue-Fri]
 
-ac_venlo : departure_at_origin = 23:50
+ac_venlo : departure_time = 23:50
 ac_venlo : travel_time = 02:05
 ac_venlo : calendar = [2021-12-01, 2021-12-31, Fri-Sun]
 
-venlo_ff : departure_at_origin = 02:00
+venlo_ff : departure_time = 02:00
 venlo_ff : travel_time = 10:00
 venlo_ff : stop_time = 00:05
 venlo_ff : calendar = [2021-12-01, 2022-01-01, Sat-Mon]
@@ -44,7 +44,7 @@ note as n1
     Another overnight between AC -> EMM =>
     must shift calendar of EMM->FF one day.
     A section calendar is always relative to the start
-    at origin of the connected sections.
+    at station of departure of the connected sections.
 end note
 n1 .. emm_ff
 n1 .. ac_emm
