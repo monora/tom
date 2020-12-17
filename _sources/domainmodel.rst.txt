@@ -240,6 +240,35 @@ Timetable as Excel-Sheet
 
 Download the time table for `Train-13AB` here: :download:`examples/train-TR-13AB-1.xlsx`.
 
+--------------------------
+Example: Train Annex 4 ID1
+--------------------------
+
+Given this infrastructure:
+
+.. uml:: uml/tom-example-annex-4-infrastructure.puml
+
+Specification with YAML
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. literalinclude:: ../tests/data/train-annex-4.yml
+   :language: yaml
+
+TrainRun Graph
+~~~~~~~~~~~~~~
+
+.. figure:: examples/example-annex-4-train-run-graph.png
+   :alt: Example train run graph
+
+You can download this graph as GraphML_ here: :download:`examples/train-TR-ID1-1.graphml`.
+
+
+Timetable as Excel-Sheet
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Download the time table for `Train-13AB` here: :download:`examples/train-TR-ID1-1.xlsx`.
+
+
 .. rubric:: Footnotes
 
 .. [#f1] We use PlantUML_ as modeling tool. See explanations there.

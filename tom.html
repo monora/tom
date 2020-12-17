@@ -298,8 +298,8 @@ is running is this section.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pandas dataframe with two columns for [departure_station, arrival_station] and one row for each
-section run.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pandas dataframe with two columns for [departure_station, arrival_station] and
+one row for each section run.</td>
 </tr>
 </tbody>
 </table>
@@ -323,11 +323,11 @@ section run.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the timestamp at which the train arrived in this station.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the timestamp at which the train arrived in this station. i.e. <a href="#id1"><span class="problematic" id="id2">`</span></a>departure_time -</td>
 </tr>
 </tbody>
 </table>
-<p>i.e. <cite>departure_time - departure_stop_time</cite></p>
+<p>departure_stop_time`</p>
 </dd></dl>
 
 <dl class="method">
@@ -404,6 +404,11 @@ section run.</td>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="tom.tom.Train.section_dataframes">
+<code class="descname">section_dataframes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[pandas.core.frame.DataFrame]<a class="reference internal" href="_modules/tom/tom.html#Train.section_dataframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.section_dataframes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.Train.section_run_iterator">
 <code class="descname">section_run_iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Train.section_run_iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.section_run_iterator" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -414,6 +419,19 @@ section run.</td>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="tom.tom.Train.timetable_year">
+<code class="descname">timetable_year</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/tom/tom.html#Train.timetable_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.timetable_year" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">year of departuretime of first section</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.Train.to_dataframe">
 <code class="descname">to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/tom/tom.html#Train.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.to_dataframe" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -421,7 +439,17 @@ section run.</td>
 <dl class="method">
 <dt id="tom.tom.Train.train_id">
 <code class="descname">train_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#Train.train_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.train_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><strong>Attention:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>in the ECM the <em>variant</em> part is only used to identify TrainRuns, not Train.</li>
+<li>the TimetableYear is only unique, when the start dates of all RouteSections belong to</li>
+</ul>
+<p>the TimetableYear. (This is currently not valid for the test examples used. Why?</p>
+</div></blockquote>
+<p>Because it is not nessary, that the  TimetableYear should be part of the TrainID)
+:return: Unique ID of this train (LeadRU/CoreID/TimetableYear)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="tom.tom.Train.train_run_graph">
