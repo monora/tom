@@ -1,0 +1,72 @@
+---
+coreID: ID1
+lead_ru: RU1
+version: 1
+sections:
+    - id: 1
+      applicant_ru: RU1
+      planning_im: IM1
+      version: 1
+      departure_station: S
+      departure_time: '00:10:00'
+      arrival_station: H1
+      travel_time: &s1-tt '24:20:00'
+      calendar:
+        begin: '2021-02-01'
+        end: &s1-end '2021-02-07'
+    - id: 2
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: 00:30:00
+      arrival_station: T
+      travel_time: &s2-tt 07:30:00
+      calendar:
+        begin: '2021-02-02'
+        end: '2021-02-08'
+    - id: 3
+      applicant_ru: RU1
+      planning_im: IM1
+      version: 1
+      departure_station: S
+      departure_time: '23:50:00'
+      arrival_station: H1
+      travel_time: *s1-tt
+      calendar:
+        begin: *s1-end
+        end: '2021-02-13'
+    - id: 4
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: 00:10:00
+      arrival_station: T
+      travel_time: *s2-tt
+      calendar:
+        begin: '2021-02-09'
+        end: &s4-end '2021-02-15'
+    - id: 5
+      applicant_ru: RU1
+      planning_im: IM1
+      version: 1
+      departure_station: D
+      departure_time: '02:00:00'
+      arrival_station: H1
+      travel_time: '22:30:00'
+      calendar:
+        begin: *s4-end
+        end: '2021-02-20'
+    - id: 6
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: 00:30:00
+      arrival_station: T
+      travel_time: *s2-tt
+      calendar:
+        begin: '2021-02-16'
+        end: '2021-02-21'
+

@@ -96,8 +96,8 @@ class RouteSection:
 
     def to_dataframe(self) -> pd.DataFrame:
         """
-        :return: pandas dataframe with two columns for [departure_station, arrival_station] and one row for each
-               section run.
+        :return: pandas dataframe with two columns for [departure_station, arrival_station] and
+                one row for each section run.
         """
         df = pd.DataFrame(index=[x.date() for x in self.departure_timestamps])
         df[self.departure_station] = self.departure_timestamps
@@ -138,6 +138,9 @@ class Train:
         self.sections = sections
 
         self._check_sections()
+
+    def __str__(self):
+        return self.train_id()
 
     def train_id(self) -> str:
         """
@@ -212,6 +215,9 @@ class Train:
         for tr in train_runs:
             result.loc[tr.train_id()] = tr.time_table()
         return result
+
+    def section_dataframes(self) -> List[pd.DataFrame]:
+        return [sec.to_dataframe() for sec in self.sections]
 
     def _locations(self) -> List[str]:
         return list(nx.topological_sort(self.location_graph()))

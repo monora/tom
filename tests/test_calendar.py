@@ -87,7 +87,17 @@ def test_section_to_df_a_f(train_a_f: Train):
 
 
 def test_train_to_df(yml_train):
+    expected = {
+        'TR-ID1-1': 2 * 7 + 6,
+        'TR-12AB-1': 31,
+        'TR-12AB-2': 31,
+        'TR-13AB-1': 31,
+        'TR-13AB-2': 31,
+    }
     t = yml_train
     df = t.to_dataframe()
-    assert len(df) == 31
-    df.to_excel(f"train-{yml_train.id()}.xlsx")
+    sec_dfs = t.section_dataframes()
+    # if t.id() == 'TR-ID1-1':
+    #    assert len(sec_dfs) > 1
+    assert len(df) == expected[t.id()]
+    df.to_excel(f"train-{t.id()}.xlsx")

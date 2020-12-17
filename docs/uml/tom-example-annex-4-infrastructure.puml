@@ -1,0 +1,15 @@
+package IM1 <<Rectangle>> {
+    object S
+    object D
+}
+object H1
+H1 : Handover
+package IM2 <<Rectangle>> {
+    object M
+    object T
+}
+
+S - D
+D - H1
+H1 - M
+M - T

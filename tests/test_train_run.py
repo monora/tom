@@ -40,6 +40,8 @@ def test_train_run_iterator_simple(train_ac_to_emm):
 
 def test_train_run_iterator(yml_train):
     expected = {
+        'TR-ID1-1': {0: 'TR/8350/ID1/2021/1/2021-02-01',
+                     -1: 'TR/8350/ID1/2021/5/2021-02-20'},
         'TR-12AB-1': {0: 'TR/8350/12AB/2021/1/2021-12-01',
                       -1: 'TR/8350/12AB/2021/3/2021-12-31'},
         'TR-12AB-2': {0: 'TR/8350/12AB/2021/1/2021-12-02',
@@ -49,7 +51,12 @@ def test_train_run_iterator(yml_train):
         'TR-13AB-2': {0: 'TR/8350/13AB/2020/0/2020-12-03',
                       -1: 'TR/8350/13AB/2020/2/2020-12-26'}
     }
-    train_runs = list(yml_train.train_run_iterator())
-    assert len(train_runs) == 31
+    t = yml_train
+    train_runs = list(t.train_run_iterator())
+    if (t.id() == 'TR-ID1-1'):
+        assert len(train_runs) == 20
+    else:
+        assert len(train_runs) == 31
+
     for i in [0, -1]:
         assert train_runs[i].train_id() == expected[yml_train.id()][i]

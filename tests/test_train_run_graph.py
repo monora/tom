@@ -42,6 +42,19 @@ def test_train_run_graph_a_f(train_a_f: Train):
     assert len(g.edges) == 31 * 2
 
 
+def test_train_run_graph_annex_4(train_annex_4: Train):
+    t = train_annex_4
+    no_of_calender_days = 2 * 7 + 6
+    s = t.section_dataframes()
+    section_runs = list(t.section_run_iterator())
+    # Per day 2 section runs
+    assert len(section_runs) == no_of_calender_days * 2
+
+    g = t.train_run_graph()
+    assert len(g) == no_of_calender_days * 2
+    assert len(g.edges) == no_of_calender_days
+
+
 def _graphml_train_run_graph(t: Train, filename: str):
     g = t.extended_train_run_graph()
     for node in g.nodes():
@@ -70,3 +83,12 @@ def test_location_graph_a_f(train_a_f):
                                 ('E', 'F'),
                                 ('E', 'G')]
     assert list(nx.topological_sort(lg)) == ['A', 'B', 'C', 'E', 'G', 'F']
+
+
+def test_location_graph_annex_4(train_annex_4):
+    lg = train_annex_4.location_graph()
+    assert sorted(lg.edges) == [('D', 'H1'),
+                                ('H1', 'T'),
+                                ('S', 'H1'),
+                                ]
+    assert list(nx.topological_sort(lg)) == ['D', 'S', 'H1', 'T']

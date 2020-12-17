@@ -10,6 +10,7 @@
 !include tom-section-run.puml
 @enduml
 
+' AC-FF
 @startuml
 !include tom-example-ac-ff-infrastructure.puml
 @enduml
@@ -18,10 +19,16 @@
 !include tom-example-ac-ff.puml
 @enduml
 
+' A-F
 @startuml
 !include tom-example-a-f-infrastructure.puml
 @enduml
 
 @startuml
 !include tom-example-a-f.puml
+@enduml
+
+' Annex 4
+@startuml
+!include tom-example-annex-4-infrastructure.puml
 @enduml
