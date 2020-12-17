@@ -30,8 +30,8 @@ following constraint must hold for each :class:`~tom.tom.RouteSection`:
 
 .. admonition:: Rule SEC-01 Journey Locations
 
-   - `RouteSection.origin` is a *Origin* or *Handover*
-   - `RouteSection.destination` is a *Handover* or *Destination*
+   - `RouteSection.departure_station` is a *Origin* or *Handover*
+   - `RouteSection.arrival_station` is a *Handover* or *Destination*
 
 For each `RouteSection` the `planning_im` and `applicant_ru` exchange *PathRequest* and
 *PathDetails* to plan the detailed route within a `RouteSection`. This process is described in
@@ -58,13 +58,13 @@ This model completely describes a planned set of *train runs*. Each train run is
 *sections runs* which have to connect properly in time at handover points. The timing attributes of
 a `RouteSection` serve this purpose:
 
-- `calendar` is a set of calendar days where the train starts at `RouteSection.origin`
-- `origin_departure_time` is the day time the train starts each day in `calendar`
-- `origin_stop_time` planned stop time at a section handover origin
-- `travel_time_to_destination` travel time from section origin to section destination. This
-   attribute is used to calculate the arrival time at section destination.
+- `calendar` is a set of calendar days where the train starts at `RouteSection.departure_station`
+- `departure_time` is the day time the train starts each day in `calendar`
+- `departure_stop_time` planned stop time at a section handover station of departure
+- `travel_time` travel time from section station of departure to section station
+  of arrival. This attribute is used to calculate the arrival time at station of arrival.
 
-Only RouteSections have a calendar.  This is the set of starting days at the origin of a section.
+Only RouteSections have a calendar.  This is the set of starting days at the departure_station of a section.
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
 attributes.
 
@@ -98,15 +98,13 @@ start date of a train results in duplicate train IDs. See example below.
 
    A route section of a train is uniquely identified by this quadruple:
 
-   `((section.origin, section.departure_time), (section.destination, section.arrival_time_at_destination))`
+   `((section.departure_station, section.departure_time), (section.arrival_station, section.arrival_time))`
 
-Therefore, if on some day in the calendar of a section the train from section origin `AC` to
-section destination
-`EMM`
+Therefore, if on some day in the calendar of a section the train from section station of departure
+`AC` to section station of arrival `EMM`
 should arrive at at different time at `EMM`, the RU has to define a new RouteSection for
 this day. If `EMM` is a handover, the lead RU must ask the applicant RU of the following section to
-create
-fitting route section with section origin `EMM`.
+create fitting route section with section station of departure `EMM`.
 
 Versioning
 ~~~~~~~~~~
@@ -134,16 +132,16 @@ SectionRun
 ~~~~~~~~~~
 
 For each day in day in `RouteSection.calendar` a section run is created. All `SectionRuns` of a
-section differ only in the value of :meth:`~tom.tom.SectionRun.departure_at_origin`, which is the
-only information stored in the SectionRun. All other values shown can be computed from this an the
-section the run belongs to.
+section differ only in the value of :meth:`~tom.tom.SectionRun.departure_time`, which is the only
+information stored in a SectionRun. All other values shown can be computed from this timestamp and
+the attributes of the section the run belongs to.
 
 TrainRun
 ~~~~~~~~
 
 Whereas the section runs can easily computed from information in its RouteSection (mainly calendar
-and departure time at section origin), the train runs must be computed from all possible SectionRun
-sequences that fit together.
+and departure time at section station of departure), the train runs must be computed from all
+possible SectionRun sequences that fit together.
 
 We use a graph algorithm to compute all train runs. The graph used is best described by the examples
 shown below. The central methods are:
@@ -151,8 +149,8 @@ shown below. The central methods are:
 * :meth:`~tom.tom.Train.train_run_graph` which computes a directed Graph G = (SectionRun, E), where
   (s,t) in E <=> s.connects_to(t).
 * :meth:`~tom.tom.Train.extended_train_run_graph` which adds to synthetic vertices to G, one at the
-  beginning (`START`) connecting origin SectionRuns and one at the end (`END`) which connects to all
-  destination SectionRuns.
+  beginning (`START`) connecting to departure stations of SectionRuns and one at the end (`END`)
+  which connects to all stations of arrival of SectionRuns.
 * :meth:`~tom.tom.Train.train_run_iterator` which computes all TrainRuns out of all path in G from
   `START` to `END`.
 

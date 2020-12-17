@@ -198,7 +198,7 @@ locations are called handover points. At each handover the responsibility for th
 changes from IM to IM and RU to RU. The planning process is coordinated by the <cite>Train.lead_ru</cite>.</p>
 <p>This <a class="reference external" href="https://en.wikipedia.org/wiki/Class_diagram">UML</a> class diagramm <a class="footnote-reference" href="#f1" id="id1">[1]</a> shows the main concepts involved:</p>
 <p class="plantuml">
-<img src="_images/plantuml-d07db1e5d60c0c5cf2986e749bbd2c1f3e6d3c39.png" alt="class JourneyLocation &lt;&lt;TOM&gt;&gt; {
+<img src="_images/plantuml-1dc2d22755324fe0510a15982eb25c92f3e7d40e.png" alt="class JourneyLocation &lt;&lt;TOM&gt;&gt; {
     id: LocationIdentifier
 }
 class Train &lt;&lt;TOM&gt;&gt; {
@@ -212,8 +212,8 @@ Handover --|&gt; JourneyLocation
 Origin --|&gt; JourneyLocation
 Destination --|&gt; JourneyLocation
 
-RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : origin &gt;
-RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : destination &gt;
+RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : departure_station &gt;
+RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : arrival_station &gt;
 Train *-- &quot;1..*&quot; RouteSection
 
 class PathRequest &lt;&lt;TOM&gt;&gt; {
@@ -228,8 +228,8 @@ following constraint must hold for each <a class="reference internal" href="tom.
 <div class="admonition-rule-sec-01-journey-locations admonition">
 <p class="first admonition-title">Rule SEC-01 Journey Locations</p>
 <ul class="last simple">
-<li><cite>RouteSection.origin</cite> is a <em>Origin</em> or <em>Handover</em></li>
-<li><cite>RouteSection.destination</cite> is a <em>Handover</em> or <em>Destination</em></li>
+<li><cite>RouteSection.departure_station</cite> is a <em>Origin</em> or <em>Handover</em></li>
+<li><cite>RouteSection.arrival_station</cite> is a <em>Handover</em> or <em>Destination</em></li>
 </ul>
 </div>
 <p>For each <cite>RouteSection</cite> the <cite>planning_im</cite> and <cite>applicant_ru</cite> exchange <em>PathRequest</em> and
@@ -245,7 +245,7 @@ about the whole train. Changes to this information have to be propagated by the 
 <p>The following diagramm shows the two main classes of our proposition for the TOM. It describes the
 minimum information needed for a valid route information of an international train:</p>
 <p class="plantuml">
-<img src="_images/plantuml-5bb25333e089dcd86bf11f716e53ba392cbac780.png" alt="left to right direction
+<img src="_images/plantuml-612f35165429e2e34012bab9e3ce6cad7b5d5889.png" alt="left to right direction
 
 class Train {
     core: CoreID
@@ -256,12 +256,12 @@ class Train {
 }
 
 class RouteSection {
-    origin: JourneyLocation
-    origin_departure_time: TimeOfDay
-    origin_stop_time: timedelta
+    departure_station: JourneyLocation
+    departure_time: TimeOfDay
+    departure_stop_time: timedelta
     ---
-    destination: JourneyLocation
-    travel_time_to_destination: timedelta
+    arrival_station: JourneyLocation
+    travel_time: timedelta
     calendar: Set&lt;Date&gt;
     ---
     applicant_ru: CompanyCode
@@ -282,16 +282,13 @@ Train *-- &quot;1..*&quot; RouteSection
 <em>sections runs</em> which have to connect properly in time at handover points. The timing attributes of
 a <cite>RouteSection</cite> serve this purpose:</p>
 <ul class="simple">
-<li><cite>calendar</cite> is a set of calendar days where the train starts at <cite>RouteSection.origin</cite></li>
-<li><cite>origin_departure_time</cite> is the day time the train starts each day in <cite>calendar</cite></li>
-<li><cite>origin_stop_time</cite> planned stop time at a section handover origin</li>
-<li><dl class="first docutils">
-<dt><cite>travel_time_to_destination</cite> travel time from section origin to section destination. This</dt>
-<dd>attribute is used to calculate the arrival time at section destination.</dd>
-</dl>
-</li>
+<li><cite>calendar</cite> is a set of calendar days where the train starts at <cite>RouteSection.departure_station</cite></li>
+<li><cite>departure_time</cite> is the day time the train starts each day in <cite>calendar</cite></li>
+<li><cite>departure_stop_time</cite> planned stop time at a section handover station of departure</li>
+<li><cite>travel_time</cite> travel time from section station of departure to section station
+of arrival. This attribute is used to calculate the arrival time at station of arrival.</li>
 </ul>
-<p>Only RouteSections have a calendar.  This is the set of starting days at the origin of a section.
+<p>Only RouteSections have a calendar.  This is the set of starting days at the departure_station of a section.
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
 attributes.</p>
 <div class="admonition-rule-sec-02-routesection-calendar-must-be-subset-of-timetable-year admonition">
@@ -319,15 +316,13 @@ start date of a train results in duplicate train IDs. See example below.</p>
 <div class="admonition-rule-sec-04-unique-functional-key-of-sections admonition">
 <p class="first admonition-title">Rule SEC-04 Unique functional key of sections</p>
 <p>A route section of a train is uniquely identified by this quadruple:</p>
-<p class="last"><cite>((section.origin, section.departure_time), (section.destination, section.arrival_time_at_destination))</cite></p>
+<p class="last"><cite>((section.departure_station, section.departure_time), (section.arrival_station, section.arrival_time))</cite></p>
 </div>
-<p>Therefore, if on some day in the calendar of a section the train from section origin <cite>AC</cite> to
-section destination
-<cite>EMM</cite>
+<p>Therefore, if on some day in the calendar of a section the train from section station of departure
+<cite>AC</cite> to section station of arrival <cite>EMM</cite>
 should arrive at at different time at <cite>EMM</cite>, the RU has to define a new RouteSection for
 this day. If <cite>EMM</cite> is a handover, the lead RU must ask the applicant RU of the following section to
-create
-fitting route section with section origin <cite>EMM</cite>.</p>
+create fitting route section with section station of departure <cite>EMM</cite>.</p>
 </div>
 <div class="section" id="versioning">
 <h3>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h3>
@@ -348,7 +343,7 @@ info of a <cite>Train</cite> described in the previous section.</p>
 fit together if <cite>s.connects_to(t) == True</cite> (see <a class="reference internal" href="tom.html#tom.tom.SectionRun.connects_to" title="tom.tom.SectionRun.connects_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connects_to()</span></code></a>).</li>
 </ul>
 <p class="plantuml">
-<img src="_images/plantuml-cbe9b99c59fbe1dffd407fdff53ae42ee82fbd25.png" alt="left to right direction
+<img src="_images/plantuml-e8b3482207f2804e7581eb48d55736179a2b3329.png" alt="left to right direction
 
 class Train &lt;&lt;TOM&gt;&gt; {
     lead_ru: CompanyCode
@@ -359,25 +354,25 @@ class RouteSection {
     applicant_ru: CompanyCode
     planning_im: CompanyCode
 
-    origin_departure_time: TimeOfDay
+    departure_time: TimeOfDay
     calendar: Set&lt;Date&gt;
 }
 Train *-- &quot;1..*&quot; RouteSection
 
 class SectionRun {
 
-    departure_at_origin: Timestamp
+    departure_time: Timestamp
     + str section_id()
-    + Timestamp arrival_at_destination()
-    + Timestamp arrival_at_origin()
-    + JourneyLocation origin()
-    + JourneyLocation destination()
+    + Timestamp arrival_time()
+    + Timestamp arrival_at_departure_station()
+    + JourneyLocation departure_station()
+    + JourneyLocation arrival_station()
     + Boolean connects_to(other: SectionRun)
 }
 RouteSection *- &quot;1..*&quot; SectionRun
 note bottom of SectionRun
     A section run happens on the calendar day
-    of its departure_at_origin timestamp.
+    of its departure_time timestamp.
 end note
 
 class TrainRun {
@@ -386,7 +381,7 @@ class TrainRun {
 }
 note bottom of TrainRun
     The start_date of a train run is the calendar day
-    of the departure_at_origin timestamp of
+    of the departure_time timestamp of
     its first section run.
 end note
 
@@ -397,23 +392,23 @@ Train o- &quot;1..365&quot; TrainRun
 <div class="section" id="sectionrun">
 <h3>SectionRun<a class="headerlink" href="#sectionrun" title="Permalink to this headline">¶</a></h3>
 <p>For each day in day in <cite>RouteSection.calendar</cite> a section run is created. All <cite>SectionRuns</cite> of a
-section differ only in the value of <code class="xref py py-meth docutils literal notranslate"><span class="pre">departure_at_origin()</span></code>, which is the
-only information stored in the SectionRun. All other values shown can be computed from this an the
-section the run belongs to.</p>
+section differ only in the value of <code class="xref py py-meth docutils literal notranslate"><span class="pre">departure_time()</span></code>, which is the only
+information stored in a SectionRun. All other values shown can be computed from this timestamp and
+the attributes of the section the run belongs to.</p>
 </div>
 <div class="section" id="trainrun">
 <h3>TrainRun<a class="headerlink" href="#trainrun" title="Permalink to this headline">¶</a></h3>
 <p>Whereas the section runs can easily computed from information in its RouteSection (mainly calendar
-and departure time at section origin), the train runs must be computed from all possible SectionRun
-sequences that fit together.</p>
+and departure time at section station of departure), the train runs must be computed from all
+possible SectionRun sequences that fit together.</p>
 <p>We use a graph algorithm to compute all train runs. The graph used is best described by the examples
 shown below. The central methods are:</p>
 <ul class="simple">
 <li><a class="reference internal" href="tom.html#tom.tom.Train.train_run_graph" title="tom.tom.Train.train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_graph()</span></code></a> which computes a directed Graph G = (SectionRun, E), where
 (s,t) in E &lt;=&gt; s.connects_to(t).</li>
 <li><a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> which adds to synthetic vertices to G, one at the
-beginning (<cite>START</cite>) connecting origin SectionRuns and one at the end (<cite>END</cite>) which connects to all
-destination SectionRuns.</li>
+beginning (<cite>START</cite>) connecting to departure stations of SectionRuns and one at the end (<cite>END</cite>)
+which connects to all stations of arrival of SectionRuns.</li>
 <li><a class="reference internal" href="tom.html#tom.tom.Train.train_run_iterator" title="tom.tom.Train.train_run_iterator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_iterator()</span></code></a> which computes all TrainRuns out of all path in G from
 <cite>START</cite> to <cite>END</cite>.</li>
 </ul>
@@ -448,25 +443,25 @@ Venlo --[hidden] emm
 which is planned to operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu
 handover is Venlo.</p>
 <p class="plantuml">
-<img src="_images/plantuml-636a98092d8157e1d5f3eee09355ae0e252ff663.png" alt="object &quot;TR/1080/12AB: Train&quot; as tr
+<img src="_images/plantuml-37b381b9a40a7f1d1a4b1afe854e0d8ee3998969.png" alt="object &quot;TR/1080/12AB: Train&quot; as tr
 object &quot;AC-&gt;EMM: RouteSection&quot; as ac_emm
 object &quot;AC-&gt;Venlo: RouteSection&quot; as ac_venlo
 object &quot;EMM-&gt;FF: RouteSection&quot; as emm_ff
 object &quot;Venlo-&gt;FF: RouteSection&quot; as venlo_ff
 
-ac_emm : departure_at_origin = 23:50
+ac_emm : departure_time = 23:50
 ac_emm : travel_time = 02:10
 ac_emm : calendar = [2021-12-01, 2021-12-31, Mon-Thu]
 
-emm_ff : departure_at_origin = 02:00
+emm_ff : departure_time = 02:00
 emm_ff : travel_time = 10:00
 emm_ff : calendar = [2021-12-02, 2021-12-31, Tue-Fri]
 
-ac_venlo : departure_at_origin = 23:50
+ac_venlo : departure_time = 23:50
 ac_venlo : travel_time = 02:05
 ac_venlo : calendar = [2021-12-01, 2021-12-31, Fri-Sun]
 
-venlo_ff : departure_at_origin = 02:00
+venlo_ff : departure_time = 02:00
 venlo_ff : travel_time = 10:00
 venlo_ff : stop_time = 00:05
 venlo_ff : calendar = [2021-12-01, 2022-01-01, Sat-Mon]
@@ -494,7 +489,7 @@ note as n1
     Another overnight between AC -&gt; EMM =&gt;
     must shift calendar of EMM-&gt;FF one day.
     A section calendar is always relative to the start
-    at origin of the connected sections.
+    at station of departure of the connected sections.
 end note
 n1 .. emm_ff
 n1 .. ac_emm
@@ -513,9 +508,9 @@ CoreID <cite>12AB</cite>:</p>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1084</span> <span class="c1"># NS</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0084</span> <span class="c1"># Prorail</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EMM</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EMM</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">02:10:00</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="nl">&amp;ac-begin</span> <span class="s">&#39;2021-12-01&#39;</span>
@@ -525,9 +520,9 @@ CoreID <cite>12AB</cite>:</p>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
-      <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EMM</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EMM</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nl">&amp;dep_time_emm</span> <span class="l l-Scalar l-Scalar-Plain">02:00:00</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10:00:00</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-12-02&#39;</span> <span class="c1"># shifted by one day relativ to AC-EMM</span>
@@ -538,9 +533,9 @@ CoreID <cite>12AB</cite>:</p>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1084</span> <span class="c1"># NS</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0084</span> <span class="c1"># Prorail</span>
-      <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">02:05:00</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*ac-begin</span>
@@ -550,9 +545,9 @@ CoreID <cite>12AB</cite>:</p>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
-      <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*dep_time_emm</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;10:00:00&#39;</span>
       <span class="nt">stop_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:05:00</span>
       <span class="nt">calendar</span><span class="p">:</span>
@@ -613,30 +608,30 @@ F - G
 <p>This object diagramm shows a szenario for a train from A,B to F,G which is planned to operate in
 december 2020.</p>
 <p class="plantuml">
-<img src="_images/plantuml-e73d799709a75f9eb03c1fb1802332990c121180.png" alt="object &quot;TR/1080/13AB: Train&quot; as tr
+<img src="_images/plantuml-a62c9e541bd2011a77594a4084ba5f33de6dfe76.png" alt="object &quot;TR/1080/13AB: Train&quot; as tr
 object &quot;A-&gt;C: RouteSection&quot; as ac
 object &quot;B-&gt;C: RouteSection&quot; as bc
 object &quot;C-&gt;E: RouteSection&quot; as ce
 object &quot;E-&gt;F: RouteSection&quot; as ef
 object &quot;E-&gt;G: RouteSection&quot; as eg
 
-ac : departure_at_origin = 23:30
+ac : departure_time = 23:30
 ac : travel_time = 02:00
 ac : calendar = [2020-12-01, 2020-12-31, Sat]
 
-bc : departure_at_origin = 00:30
+bc : departure_time = 00:30
 bc : travel_time = 01:00
 bc : calendar = [2020-12-01, 2020-12-31, Mon-Sat]
 
-ce : departure_at_origin = 01:30
+ce : departure_time = 01:30
 ce : travel_time = 23:00
 ce : calendar = [2020-12-01, 2020-12-31, daily]
 
-ef : departure_at_origin = 00:30
+ef : departure_time = 00:30
 ef : travel_time = 04:00
 ef : calendar = [2020-12-02, 2021-01-01, Wed-Mon]
 
-eg : departure_at_origin = 00:30
+eg : departure_time = 00:30
 eg : travel_time = 08:00
 eg : calendar = [2020-12-02, 2021-01-01, Tue]
 
@@ -669,9 +664,9 @@ eg &lt;.. n1
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
 <span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">13AB</span>
 <span class="nt">sections</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">B</span>
+    <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">B</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nl">&amp;b-departure</span> <span class="s">&#39;00:30:00&#39;</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;01:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="nl">&amp;b-begin</span> <span class="s">&#39;2020-12-01&#39;</span>
@@ -679,9 +674,9 @@ eg &lt;.. n1
         <span class="c1"># Sundays the train starting from A passes B</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat&#39;</span>
       <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A</span>
+    <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:30:00&#39;</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;02:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*b-begin</span>
@@ -689,18 +684,18 @@ eg &lt;.. n1
         <span class="c1"># Sunday in B =&gt; Saturday start in A</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat&#39;</span>
       <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
-    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
+    <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;01:30:00&#39;</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;23:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*b-begin</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*b-end</span>
         <span class="c1"># no mask =&gt; daily</span>
       <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
-    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
+    <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">F</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">F</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;04:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="c1"># 1.12. must be be excluded und 1.1. included</span>
@@ -709,9 +704,9 @@ eg &lt;.. n1
         <span class="c1"># Not on tuesday. On tuesdays section E-G is used.</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
       <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
-    <span class="p p-Indicator">-</span> <span class="nt">origin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
+    <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
-      <span class="nt">destination</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">G</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">G</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;08:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*e-begin</span>
