@@ -140,7 +140,16 @@ class Train:
         self._check_sections()
 
     def train_id(self) -> str:
-        return f"TR/{self.lead_ru}/{self.core_id}/00"
+        """
+        **Attention:**
+
+         * in the ECM the *variant* part is only used to identify TrainRuns, not Train.
+         * the TimetableYear is only unique, when the start dates of all RouteSections belong to
+         the TimetableYear. (This is currently not valid for the test examples used. Why?
+        Because it is not nessary, that the  TimetableYear should be part of the TrainID)
+        :return: Unique ID of this train (LeadRU/CoreID/TimetableYear)
+        """
+        return f"TR/{self.lead_ru}/{self.core_id}/{self.timetable_year()}"
 
     def id(self):
         return f"TR-{self.core_id}-{self.version}"
@@ -221,6 +230,12 @@ class Train:
         if len(self.sections) != len(set(section_keys)):
             raise TomError(
                 f"Section keys of train {self.train_id()} not unique: {section_keys}")
+
+    def timetable_year(self) -> int:
+        """
+        :rtype: year of departuretime of first section
+        """
+        return self.sections[0].departure_time().year
 
 
 class SectionRun:
