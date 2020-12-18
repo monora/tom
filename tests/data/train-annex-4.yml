@@ -1,19 +1,19 @@
 ---
 coreID: ID1
 lead_ru: RU1
-version: 1
+version: 1 # Train version
 sections:
     - id: 1
+      version: 1 # RouteSection version
       applicant_ru: RU1
       planning_im: IM1
-      version: 1
       departure_station: S
       departure_time: '00:10:00'
       arrival_station: H1
       travel_time: &s1-tt '24:20:00'
       calendar:
         begin: '2021-02-01'
-        end: &s1-end '2021-02-07'
+        end: '2021-02-07'
     - id: 2
       version: 1
       applicant_ru: RU2
@@ -26,15 +26,15 @@ sections:
         begin: '2021-02-02'
         end: '2021-02-08'
     - id: 3
+      version: 1
       applicant_ru: RU1
       planning_im: IM1
-      version: 1
       departure_station: S
       departure_time: '23:50:00'
       arrival_station: H1
       travel_time: *s1-tt
       calendar:
-        begin: *s1-end
+        begin: '2021-02-07'
         end: '2021-02-13'
     - id: 4
       version: 1
@@ -48,9 +48,9 @@ sections:
         begin: '2021-02-09'
         end: &s4-end '2021-02-15'
     - id: 5
+      version: 1
       applicant_ru: RU1
       planning_im: IM1
-      version: 1
       departure_station: D
       departure_time: '02:00:00'
       arrival_station: H1
@@ -69,4 +69,3 @@ sections:
       calendar:
         begin: '2021-02-16'
         end: '2021-02-21'
-

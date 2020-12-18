@@ -4,7 +4,7 @@
 """Graphing Tests for `Train runs` package."""
 import networkx as nx
 
-from tom.tom import Train
+from tom.tom import Train, SectionRun
 
 
 def test_train_run_graph_zero(train_ac_to_emm: Train):
@@ -33,11 +33,11 @@ def test_train_run_graph_a_f(train_a_f: Train):
     c_e = 31
     e_g = 4
     e_f = 31 - e_g
-    sum = a_c + b_c + c_e + e_f + e_g
-    assert len(list(t.section_run_iterator())) == sum
+    summe = a_c + b_c + c_e + e_f + e_g
+    assert len(list(t.section_run_iterator())) == summe
 
     g = t.train_run_graph()
-    assert len(g) == sum
+    assert len(g) == summe
     # 31 TrainRuns! One for each day. Each TrainRun uses two SectionsRun which are connected
     assert len(g.edges) == 31 * 2
 
@@ -55,10 +55,26 @@ def test_train_run_graph_annex_4(train_annex_4: Train):
     assert len(g.edges) == no_of_calender_days
 
 
+def test_train_run_graph_annex_4_2(train_annex_4_2: Train):
+    t = train_annex_4_2
+    no_of_calender_days = 2 * 7 + 6
+    s = t.section_dataframes()
+    section_runs = list(t.section_run_iterator())
+    # Per day 2 section runs
+    assert len(section_runs) == no_of_calender_days * 2
+
+    g = t.train_run_graph()
+    assert len(g) == no_of_calender_days * 2
+    assert len(g.edges) == no_of_calender_days
+
+
 def _graphml_train_run_graph(t: Train, filename: str):
     g = t.extended_train_run_graph()
     for node in g.nodes():
         g.nodes[node]['label'] = str(node)
+        if type(node) == SectionRun:
+            sec: SectionRun = node
+            g.nodes[node]['id'] = sec.section_id()
     # nx.readwrite.write_graphml(g, path=(tmpdir / 'train-ac-ff.graphml'))
     nx.readwrite.write_graphml(g, path=(filename + '.graphml'))
 

@@ -28,7 +28,7 @@ This UML_ class diagramm [#f1]_ shows the main concepts involved:
 An international :class:`~tom.tom.Train` [#f2]_ must at least have two sections. The
 following constraint must hold for each :class:`~tom.tom.RouteSection`:
 
-.. admonition:: Rule SEC-01 Journey Locations
+.. admonition:: Rule SEC-JL Journey Locations
 
    - `RouteSection.departure_station` is a *Origin* or *Handover*
    - `RouteSection.arrival_station` is a *Handover* or *Destination*
@@ -46,8 +46,8 @@ about the whole train. Changes to this information have to be propagated by the 
 Train and RouteSection
 ----------------------
 
-The following diagramm shows the two main classes of our proposition for the TOM. It describes the
-minimum information needed for a valid route information of an international train:
+The following diagramm shows the two main classes of our proposition for the Route Domain Model. It
+describes the minimum information needed for a valid route information of an international train:
 
 .. uml:: uml/tom-section.puml
 
@@ -68,7 +68,7 @@ Only RouteSections have a calendar.  This is the set of starting days at the dep
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
 attributes.
 
-.. admonition:: Rule SEC-02 RouteSection Calendar must be subset of timetable year
+.. admonition:: Rule SEC-CAL RouteSection Calendar must be subset of timetable year
 
    The `RouteSection.calendar` must be a subset of the timetable year of its train.
 
@@ -86,7 +86,7 @@ Identifiers
 The method Train :meth:`~tom.tom.Train.train_id` computes the unique trainID from `core_id`, `lead_ru` and
 `timetable_year`.
 
-.. admonition:: Rule SEC-03 Unique Section ID
+.. admonition:: Rule SEC-UID Unique Section ID
 
    :meth:`RouteSection.section_id <tom.tom.RouteSection.section_id>` must be unique within the set
    of sections of a train.
@@ -94,7 +94,7 @@ The method Train :meth:`~tom.tom.Train.train_id` computes the unique trainID fro
 The `section_id` is used to make the daily train IDs unique in case of overnight trains. Using the
 start date of a train results in duplicate train IDs. See example below.
 
-.. admonition:: Rule SEC-04 Unique functional key of sections
+.. admonition:: Rule SEC-UFK Unique functional key of sections
 
    A route section of a train is uniquely identified by this quadruple:
 
@@ -240,6 +240,8 @@ Timetable as Excel-Sheet
 
 Download the time table for `Train-13AB` here: :download:`examples/train-TR-13AB-1.xlsx`.
 
+.. _example-annex-4-1:
+
 ----------------------
 Example: Train Annex 4
 ----------------------
@@ -251,14 +253,23 @@ Given this infrastructure:
 Specification with YAML
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+The following routing specification describes the initial planned routes for Train with `ID1`. As
+you can see, there is no route section needed which mentions Station `M`. This station does not play
+a role in the routing planning process because it is no origin, destination or handover.
+
 .. literalinclude:: ../tests/data/train-annex-4.yml
    :language: yaml
 
 TrainRun Graph
 ~~~~~~~~~~~~~~
 
-.. figure:: examples/example-annex-4-train-run-graph.png
-   :alt: Example train run graph
+.. figure:: examples/example-annex-4-1-train-run-graph.png
+   :alt: Example train run graph Annex 4
+
+   TrainRun graph of example Annex 4 initial planning status.
+
+Vertices (RouteSectionRuns) with same color belong to the same RouteSection. The vertice label
+shows Section IDs and there versions (ID.Version).
 
 You can download this graph as GraphML_ here: :download:`examples/train-TR-ID1-1.graphml`.
 

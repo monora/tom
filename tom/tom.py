@@ -96,10 +96,11 @@ class RouteSection:
 
     def to_dataframe(self) -> pd.DataFrame:
         """
-        :return: pandas dataframe with two columns for [departure_station, arrival_station] and
-                one row for each section run.
+        :return: pandas dataframe with three columns for
+         [section_id, departure_station, arrival_station] and one row for each section run.
         """
         df = pd.DataFrame(index=[x.date() for x in self.departure_timestamps])
+        df['ID'] = self.section_id
         df[self.departure_station] = self.departure_timestamps
         df[self.arrival_station] = self.arrival_times()
         return df
@@ -255,7 +256,8 @@ class SectionRun:
     def __str__(self):
         ts_departure_station = self.departure_time.strftime("%F %H:%M")
         ts_arrival_station = self.arrival_time().strftime("%F %H:%M")
-        return f"{str(ts_departure_station)} {self.section} {ts_arrival_station}"
+        v = self.section.version
+        return f"{self.section_id()}.{v}:{ts_departure_station} {self.section} {ts_arrival_station}"
 
     def section_id(self):
         return self.section.section_id

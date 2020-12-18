@@ -63,7 +63,7 @@ def test_train_from_yml(train_ac_ff):
 
 
 def _check_to_df(t: Train, index: int, size: int, cols):
-    df = t.sections[index].to_dataframe()
+    df = t.sections[index].to_dataframe()[cols]
     assert len(df) == size
     assert list(df.columns) == cols
 
@@ -89,6 +89,7 @@ def test_section_to_df_a_f(train_a_f: Train):
 def test_train_to_df(yml_train):
     expected = {
         'TR-ID1-1': 2 * 7 + 6,
+        'TR-ID1-2': 2 * 7 + 6,
         'TR-12AB-1': 31,
         'TR-12AB-2': 31,
         'TR-13AB-1': 31,
@@ -101,3 +102,4 @@ def test_train_to_df(yml_train):
     #    assert len(sec_dfs) > 1
     assert len(df) == expected[t.id()]
     df.to_excel(f"train-{t.id()}.xlsx")
+    df.to_csv(f"train-{t.id()}.csv", sep=' ')
