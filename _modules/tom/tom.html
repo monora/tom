@@ -90,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../domainmodel.html">Route Domain Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../routing-update-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">tom</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
@@ -256,10 +257,11 @@
 
 <div class="viewcode-block" id="RouteSection.to_dataframe"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: pandas dataframe with two columns for [departure_station, arrival_station] and</span>
-<span class="sd">                one row for each section run.</span>
+<span class="sd">        :return: pandas dataframe with three columns for</span>
+<span class="sd">         [section_id, departure_station, arrival_station] and one row for each section run.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="p">])</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_id</span>
         <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_station</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span>
         <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_times</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">df</span></div>
@@ -415,7 +417,8 @@
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ts_departure_station</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%F</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
         <span class="n">ts_arrival_station</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%F</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ts_departure_station</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ts_arrival_station</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">version</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">section_id</span><span class="p">()</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">ts_departure_station</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ts_arrival_station</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="SectionRun.section_id"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.section_id">[docs]</a>    <span class="k">def</span> <span class="nf">section_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span></div>

@@ -9,6 +9,7 @@ Welcome to Train Object Model's documentation!
    installation
    usage
    domainmodel
+   routing-update-process
    modules
    contributing
    authors

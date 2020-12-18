@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="tom" href="modules.html" />
+    <link rel="next" title="Routing Planning Process" href="routing-update-process.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
@@ -116,7 +116,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id6">Timetable as Excel-Sheet</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#example-train-annex-4-id1">Example: Train Annex 4 ID1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-train-annex-4">Example: Train Annex 4</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id7">Specification with YAML</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id8">TrainRun Graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id9">Timetable as Excel-Sheet</a></li>
@@ -124,6 +124,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="routing-update-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">tom</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
@@ -231,8 +232,8 @@ RouteSection o--  &quot;0..*&quot; PathRequest : is derived from &lt;
 </p>
 <p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> must at least have two sections. The
 following constraint must hold for each <a class="reference internal" href="tom.html#tom.tom.RouteSection" title="tom.tom.RouteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteSection</span></code></a>:</p>
-<div class="admonition-rule-sec-01-journey-locations admonition">
-<p class="first admonition-title">Rule SEC-01 Journey Locations</p>
+<div class="admonition-rule-sec-jl-journey-locations admonition">
+<p class="first admonition-title">Rule SEC-JL Journey Locations</p>
 <ul class="last simple">
 <li><cite>RouteSection.departure_station</cite> is a <em>Origin</em> or <em>Handover</em></li>
 <li><cite>RouteSection.arrival_station</cite> is a <em>Handover</em> or <em>Destination</em></li>
@@ -248,8 +249,8 @@ about the whole train. Changes to this information have to be propagated by the 
 </div>
 <div class="section" id="train-and-routesection">
 <h2>Train and RouteSection<a class="headerlink" href="#train-and-routesection" title="Permalink to this headline">¶</a></h2>
-<p>The following diagramm shows the two main classes of our proposition for the TOM. It describes the
-minimum information needed for a valid route information of an international train:</p>
+<p>The following diagramm shows the two main classes of our proposition for the Route Domain Model. It
+describes the minimum information needed for a valid route information of an international train:</p>
 <p class="plantuml">
 <img src="_images/plantuml-612f35165429e2e34012bab9e3ce6cad7b5d5889.png" alt="left to right direction
 
@@ -297,8 +298,8 @@ of arrival. This attribute is used to calculate the arrival time at station of a
 <p>Only RouteSections have a calendar.  This is the set of starting days at the departure_station of a section.
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
 attributes.</p>
-<div class="admonition-rule-sec-02-routesection-calendar-must-be-subset-of-timetable-year admonition">
-<p class="first admonition-title">Rule SEC-02 RouteSection Calendar must be subset of timetable year</p>
+<div class="admonition-rule-sec-cal-routesection-calendar-must-be-subset-of-timetable-year admonition">
+<p class="first admonition-title">Rule SEC-CAL RouteSection Calendar must be subset of timetable year</p>
 <p class="last">The <cite>RouteSection.calendar</cite> must be a subset of the timetable year of its train.</p>
 </div>
 <p>Because a train can have several starting RouteSections (i.e. different start locations and dates)
@@ -312,15 +313,15 @@ Reference</em>) is needed!</p>
 <h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
 <p>The method Train <a class="reference internal" href="tom.html#tom.tom.Train.train_id" title="tom.tom.Train.train_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_id()</span></code></a> computes the unique trainID from <cite>core_id</cite>, <cite>lead_ru</cite> and
 <cite>timetable_year</cite>.</p>
-<div class="admonition-rule-sec-03-unique-section-id admonition">
-<p class="first admonition-title">Rule SEC-03 Unique Section ID</p>
+<div class="admonition-rule-sec-uid-unique-section-id admonition">
+<p class="first admonition-title">Rule SEC-UID Unique Section ID</p>
 <p class="last"><a class="reference internal" href="tom.html#tom.tom.RouteSection.section_id" title="tom.tom.RouteSection.section_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RouteSection.section_id</span></code></a> must be unique within the set
 of sections of a train.</p>
 </div>
 <p>The <cite>section_id</cite> is used to make the daily train IDs unique in case of overnight trains. Using the
 start date of a train results in duplicate train IDs. See example below.</p>
-<div class="admonition-rule-sec-04-unique-functional-key-of-sections admonition">
-<p class="first admonition-title">Rule SEC-04 Unique functional key of sections</p>
+<div class="admonition-rule-sec-ufk-unique-functional-key-of-sections admonition">
+<p class="first admonition-title">Rule SEC-UFK Unique functional key of sections</p>
 <p>A route section of a train is uniquely identified by this quadruple:</p>
 <p class="last"><cite>((section.departure_station, section.departure_time), (section.arrival_station, section.arrival_time))</cite></p>
 </div>
@@ -736,8 +737,8 @@ in F.</p>
 <p>Download the time table for <cite>Train-13AB</cite> here: <a class="reference download internal" download="" href="_downloads/d363e50a1aed2e0743c6a57340a9c609/train-TR-13AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.xlsx</span></code></a>.</p>
 </div>
 </div>
-<div class="section" id="example-train-annex-4-id1">
-<h2>Example: Train Annex 4 ID1<a class="headerlink" href="#example-train-annex-4-id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="example-train-annex-4">
+<span id="example-annex-4-1"></span><h2>Example: Train Annex 4<a class="headerlink" href="#example-train-annex-4" title="Permalink to this headline">¶</a></h2>
 <p>Given this infrastructure:</p>
 <p class="plantuml">
 <img src="_images/plantuml-b4a061c1a5a2b7a14951a1b1206b37d640391e4a.png" alt="package IM1 &lt;&lt;Rectangle&gt;&gt; {
@@ -759,22 +760,25 @@ M - T
 </p>
 <div class="section" id="id7">
 <h3>Specification with YAML<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>The following routing specification describes the initial planned routes for Train with <cite>ID1</cite>. As
+you can see, there is no route section needed which mentions Station <cite>M</cite>. This station does not play
+a role in the routing planning process because it is no origin, destination or handover.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
 <span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ID1</span>
 <span class="nt">lead_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
-<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># Train version</span>
 <span class="nt">sections</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># RouteSection version</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">S</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;00:10:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s1-tt</span> <span class="s">&#39;24:20:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-01&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;s1-end</span> <span class="s">&#39;2021-02-07&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
@@ -787,15 +791,15 @@ M - T
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-02&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-08&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">S</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s1-tt</span>
       <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*s1-end</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-13&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
@@ -809,9 +813,9 @@ M - T
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-09&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;s4-end</span> <span class="s">&#39;2021-02-15&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">D</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;02:00:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
@@ -835,9 +839,12 @@ M - T
 </div>
 <div class="section" id="id8">
 <h3>TrainRun Graph<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<div class="figure">
-<img alt="Example train run graph" src="_images/example-annex-4-train-run-graph.png" />
+<div class="figure" id="id11">
+<img alt="Example train run graph Annex 4" src="_images/example-annex-4-1-train-run-graph.png" />
+<p class="caption"><span class="caption-text">TrainRun graph of example Annex 4 initial planning status.</span></p>
 </div>
+<p>Vertices (RouteSectionRuns) with same color belong to the same RouteSection. The vertice label
+shows Section IDs and there versions (ID.Version).</p>
 <p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/97f4e4e72e522a85e1ab41ebc2d61b75/train-TR-ID1-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.graphml</span></code></a>.</p>
 </div>
 <div class="section" id="id9">
@@ -875,7 +882,7 @@ structure.</td></tr>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="modules.html" class="btn btn-neutral float-right" title="tom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="routing-update-process.html" class="btn btn-neutral float-right" title="Routing Planning Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
