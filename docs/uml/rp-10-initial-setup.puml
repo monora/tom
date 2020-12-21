@@ -1,0 +1,36 @@
+title Initial planning (Lead RU = RU1)
+skinparam BoxPadding 25
+
+box "RU1/IM1"
+    participant RU1 order 10
+    participant IM1 order 20
+end box
+box "RU2/IM2"
+    participant RU2 order 40
+    participant IM2 order 50
+end box
+
+group Harmonisation
+    RU1 -> RU2: RIM(RI-1)
+end
+group "Path Planning RU1/IM1"
+    loop "for $i in {10,20,30}"
+        RU1 -> IM1: PRM(RI-1, RS-$i.01)
+        note left
+            Send whole RoutingInfo
+            RI-1 within PRM
+        end note
+    end
+    par "for $i in {10,20,30}"
+        IM1 -> RU1: PDM(RS-$i.01)
+    end
+end
+group "Path Planning RU2/IM2"
+    loop "for $i in {10,20,30}"
+        RU2 -> IM2: PRM(RI-1, RS-$i.02)
+    end
+    par "for $i in {10,20,30}"
+        IM2 -> RU2: PDM(RS-$i.02)
+    end
+end
+

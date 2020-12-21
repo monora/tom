@@ -73,14 +73,16 @@ def _graphml_train_run_graph(t: Train, filename: str):
     for node in g.nodes():
         g.nodes[node]['label'] = str(node)
         if type(node) == SectionRun:
-            sec: SectionRun = node
-            g.nodes[node]['id'] = sec.section_id()
+            sr: SectionRun = node
+            g.nodes[node]['id'] = sr.section_id()
+            g.nodes[node]['route_id'] = sr.section.route_id()
     # nx.readwrite.write_graphml(g, path=(tmpdir / 'train-ac-ff.graphml'))
     nx.readwrite.write_graphml(g, path=(filename + '.graphml'))
 
 
 def test_graphml_train_run_graph(yml_train: Train):
-    _graphml_train_run_graph(yml_train, f"train-{yml_train.id()}")
+    t = yml_train
+    _graphml_train_run_graph(t, f"train-{t.id()}")
 
 
 def test_location_graph_aa_ff(train_ac_ff):
@@ -108,3 +110,13 @@ def test_location_graph_annex_4(train_annex_4):
                                 ('S', 'H1'),
                                 ]
     assert list(nx.topological_sort(lg)) == ['D', 'S', 'H1', 'T']
+
+
+def _graphml_section_graph(g: nx.DiGraph, filename: str):
+    nx.readwrite.write_graphml(g, path=(filename + '.graphml'))
+
+
+def test_section_graph(yml_train):
+    t = yml_train
+    sg = t.section_graph()
+    _graphml_section_graph(sg, f"route-section-graph-{t.id()}")

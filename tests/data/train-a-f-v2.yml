@@ -13,7 +13,7 @@ sections:
         begin: '2020-12-01'
         end: '2020-12-31'
         mask: 'Thu'
-      section_id: 6
+      id: 11.01
     - departure_station: B
       departure_time: &b-departure '00:30:00'
       arrival_station: C
@@ -27,7 +27,7 @@ sections:
         mask: 'Mon Tue Wed Thu Sat'
       # New Version of section 1!
       version: 2
-      section_id: 1
+      id: 10.01
     - departure_station: A
       departure_time: '23:30:00'
       arrival_station: C
@@ -37,7 +37,7 @@ sections:
         end: *b-end
         # Sunday in B => Saturday start in A
         mask: 'Sat'
-      section_id: 2
+      id: 20.01
     - departure_station: C
       departure_time: '01:30:00'
       arrival_station: E
@@ -46,7 +46,7 @@ sections:
         begin: *b-begin
         end: *b-end
         # no mask => daily
-      section_id: 3
+      id: 10.02
     - departure_station: E
       departure_time: *b-departure
       arrival_station: F
@@ -57,7 +57,7 @@ sections:
         end: &e-end '2021-01-01'
         # Not on tuesday. On tuesdays section E-G is used.
         mask: 'Wed Thu Fri Sat Sun Mon'
-      section_id: 4
+      id: 10.03
     - departure_station: E
       departure_time: *b-departure
       arrival_station: G
@@ -66,4 +66,4 @@ sections:
         begin: *e-begin
         end: *e-end
         mask: 'Tue'
-      section_id: 5
+      id: 30.03

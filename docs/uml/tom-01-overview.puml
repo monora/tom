@@ -2,22 +2,27 @@ class JourneyLocation <<TOM>> {
     id: LocationIdentifier
 }
 class Train <<TOM>> {
+    +TrainID train_id()
+}
+class RoutingInfo {
     lead_ru: CompanyCode
 }
+
 class RouteSection {
     planning_im: CompanyCode
     applicant_ ru: CompanyCode
 }
-Handover --|> JourneyLocation
-Origin --|> JourneyLocation
-Destination --|> JourneyLocation
+JourneyLocation <|-- Origin
+JourneyLocation <|-- Handover
+JourneyLocation <|-- Destination
 
 RouteSection "*" -> "1" JourneyLocation : departure_station >
 RouteSection "*" -> "1" JourneyLocation : arrival_station >
-Train *-- "1..*" RouteSection
+RoutingInfo *-- "1..*" RouteSection
+RoutingInfo "0..1" -* Train : routing <
 
 class PathRequest <<TOM>> {
     planning_im: CompanyCode
     applicant_ ru: CompanyCode
 }
-RouteSection o--  "0..*" PathRequest : is derived from <
+RouteSection o--  "0..*" PathRequest : planned for <

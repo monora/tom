@@ -1,24 +1,24 @@
 ---
 coreID: ID1
 lead_ru: RU1
-version: 2 # RoutingInfo version
+version: 3
 sections:
-    - id: 10.01
-      version: 2 # RouteSection version
+    - id: 12.01
+      version: 2
       applicant_ru: RU1
       planning_im: IM1
       departure_station: S
       departure_time: '00:20:00'
-      arrival_station: H1
+      arrival_station: H2
       travel_time: &s1-tt '24:20:00'
       calendar:
         begin: '2021-02-01'
         end: '2021-02-04'
-    - id: 10.02
+    - id: 12.02
       version: 2
       applicant_ru: RU2
       planning_im: IM2
-      departure_station: H1
+      departure_station: H2
       departure_time: 00:40:00
       arrival_station: T
       travel_time: &s2-tt 07:30:00

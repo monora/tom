@@ -1,0 +1,37 @@
+left to right direction
+
+class Train {
+    core: CoreID
+    timetable_year: Year
+    +TrainID train_id()
+}
+
+class RoutingInfo {
+    lead_ru: CompanyCode
+    version: int
+}
+
+class RouteSection {
+    applicant_ru: CompanyCode
+    planning_im: CompanyCode
+    ---
+    departure_station: JourneyLocation
+    arrival_station: JourneyLocation
+    ---
+    calendar: Set<Date>
+    departure_time: TimeOfDay
+    departure_stop_time: timedelta
+    travel_time: timedelta
+    ---
+    version: int
+    ---
+    + String section_key()
+    + String section_id()
+}
+note left of RouteSection
+  The section_id() must be unique
+  within the set of sections of a RoutingInfo
+end note
+
+Train *-- "0..1" RoutingInfo
+RoutingInfo *-- "1..*" RouteSection

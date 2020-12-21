@@ -7,14 +7,14 @@ from tom.tom import Train, TomError, RouteSection
 def test_train_section_ids_not_unique(ac_to_emm: RouteSection):
     s1 = ac_to_emm
     s2 = copy.copy(s1)
-    with pytest.raises(TomError, match=r"Section IDs.*not unique: .0, 0.*"):
+    with pytest.raises(TomError, match=r"Section IDs.*not unique:"):
         Train('12AB', sections=[s1, s2])
 
     # Fix errors
-    s2.section_id = 1
+    s2.section_id = '1'
     s2.departure_station = s2.departure_station + "_"
     t = Train('12AB', sections=[s1, s2])
-    assert [s.section_id for s in t.sections] == [0, 1]
+    assert [s.section_id for s in t.sections] == ['0', '1']
 
 
 def test_train_section_keys_not_unique(ac_to_emm: RouteSection):
@@ -30,6 +30,11 @@ def test_train_section_keys_not_unique(ac_to_emm: RouteSection):
     t = Train('12AB', sections=[s1, s2])
     assert s1.section_key()[0][0] == 'AC'
     assert s2.section_key()[0][0] == 'AC_'
+
+
+def test_description(ac_to_emm: RouteSection):
+    d = ac_to_emm.description()
+    assert len(d) > 0
 
 
 def test_timetable_year(train_ac_ff):

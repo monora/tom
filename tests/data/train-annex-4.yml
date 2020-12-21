@@ -1,9 +1,9 @@
 ---
 coreID: ID1
 lead_ru: RU1
-version: 1 # Train version
+version: 1 # RoutingInfo version
 sections:
-    - id: 1
+    - id: 10.01
       version: 1 # RouteSection version
       applicant_ru: RU1
       planning_im: IM1
@@ -14,7 +14,7 @@ sections:
       calendar:
         begin: '2021-02-01'
         end: '2021-02-07'
-    - id: 2
+    - id: 10.02
       version: 1
       applicant_ru: RU2
       planning_im: IM2
@@ -25,7 +25,7 @@ sections:
       calendar:
         begin: '2021-02-02'
         end: '2021-02-08'
-    - id: 3
+    - id: 20.01
       version: 1
       applicant_ru: RU1
       planning_im: IM1
@@ -36,7 +36,7 @@ sections:
       calendar:
         begin: '2021-02-07'
         end: '2021-02-13'
-    - id: 4
+    - id: 20.02
       version: 1
       applicant_ru: RU2
       planning_im: IM2
@@ -47,7 +47,7 @@ sections:
       calendar:
         begin: '2021-02-09'
         end: &s4-end '2021-02-15'
-    - id: 5
+    - id: 30.01
       version: 1
       applicant_ru: RU1
       planning_im: IM1
@@ -58,7 +58,7 @@ sections:
       calendar:
         begin: *s4-end
         end: '2021-02-20'
-    - id: 6
+    - id: 30.02
       version: 1
       applicant_ru: RU2
       planning_im: IM2

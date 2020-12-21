@@ -17,6 +17,7 @@ Train Object Model
 .. _Route Domain Model: https://monora.github.io/tom/domainmodel.html
 .. _Example 1: https://monora.github.io/tom/domainmodel.html#example-train-from-amsterdam-to-frankfurt
 .. _Example 2: https://monora.github.io/tom/domainmodel.html#example-train-with-three-ims
+.. _Example 3: https://monora.github.io/tom/domainmodel.html#example-train-annex-4
 
 This repository contains a proposition to extend the *Combined Route Model* of the JSG_ *Train Object
 Model*. See `Route Domain Model`_.
@@ -25,6 +26,7 @@ We provide examples which can be tested and investigated. See
 
 * `Example 1`_ Train from Amsterdam to Frankfurt over two different handovers
 * `Example 2`_ Train with three IMs involved
+* `Example 3`_ Train example of Working Group Annex 4
 
 License
 ~~~~~~~

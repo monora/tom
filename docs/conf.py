@@ -33,6 +33,9 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinxcontrib.plantuml']
 # @end sphinx-extensions
+# FIXME: Installed version did not support boxes in sequence diagrams.
+# You should use the newest version from source forge
+plantuml = 'plantuml.sh'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

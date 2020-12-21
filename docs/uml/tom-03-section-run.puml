@@ -1,10 +1,11 @@
 left to right direction
 
 class Train <<TOM>> {
-    lead_ru: CompanyCode
     +TrainID train_id()
 }
-
+class RoutingInfo {
+    lead_ru: CompanyCode
+}
 class RouteSection {
     applicant_ru: CompanyCode
     planning_im: CompanyCode
@@ -12,12 +13,12 @@ class RouteSection {
     departure_time: TimeOfDay
     calendar: Set<Date>
 }
-Train *-- "1..*" RouteSection
+Train *-- "0..1" RoutingInfo
+RoutingInfo *-- "1..*" RouteSection
 
 class SectionRun {
-
     departure_time: Timestamp
-    + str section_id()
+    + String section_id()
     + Timestamp arrival_time()
     + Timestamp arrival_at_departure_station()
     + JourneyLocation departure_station()

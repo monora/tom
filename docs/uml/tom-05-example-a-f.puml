@@ -1,4 +1,4 @@
-object "TR/1080/13AB: Train" as tr
+object "RO/1080/13AB: RoutingInfo" as tr
 object "A->C: RouteSection" as ac
 object "B->C: RouteSection" as bc
 object "C->E: RouteSection" as ce

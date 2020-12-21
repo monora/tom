@@ -1,0 +1,25 @@
+class RoutingInfo {
+    lead_ru: CompanyCode
+}
+
+class RouteSection {
+    calendar: Set<Date>
+    + planning_im(): CompanyCode
+    + applicant_ru(): CompanyCode
+}
+
+RoutingInfo *-- "1..*" RouteSection
+RoutingInfo "0..1" -* Train : routing <
+
+class PathRequest <<TOM>> {
+    calendar: Set<Date>
+    + planning_im(): CompanyCode
+    + applicant_ru(): CompanyCode
+}
+RouteSection o-  "0..*" PathRequest : planned_for <
+class Path <<TOM>> {
+    calendar: Set<Date>
+    + planning_im(): CompanyCode
+    + applicant_ ru(): CompanyCode
+}
+PathRequest o-- "0..*" Path : response_to <

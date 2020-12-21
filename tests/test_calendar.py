@@ -90,6 +90,7 @@ def test_train_to_df(yml_train):
     expected = {
         'TR-ID1-1': 2 * 7 + 6,
         'TR-ID1-2': 2 * 7 + 6,
+        'TR-ID1-3': 2 * 7 + 6,
         'TR-12AB-1': 31,
         'TR-12AB-2': 31,
         'TR-13AB-1': 31,
@@ -97,9 +98,21 @@ def test_train_to_df(yml_train):
     }
     t = yml_train
     df = t.to_dataframe()
-    sec_dfs = t.section_dataframes()
-    # if t.id() == 'TR-ID1-1':
-    #    assert len(sec_dfs) > 1
+    # sec_dfs = t.section_dataframes()
+    # if t.id() == 'TR-ID1-3':
     assert len(df) == expected[t.id()]
     df.to_excel(f"train-{t.id()}.xlsx")
-    df.to_csv(f"train-{t.id()}.csv", sep=' ')
+    _to_csv(df, t)
+
+
+def _fmt_timestamp(x):
+    try:
+        return x.strftime("``%a %d.%m.%y %H:%M``")
+    except ValueError:
+        return ''
+
+
+def _to_csv(df: pd.DataFrame, t: Train):
+    for c in df.columns:
+        df[c] = df[c].apply(_fmt_timestamp)
+    df.to_csv(f"train-{t.id()}.csv")

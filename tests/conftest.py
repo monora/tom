@@ -51,6 +51,7 @@ def train_annex_4_2(shared_datadir):
                         "train-a-f-v2",
                         "train-annex-4",
                         "train-annex-4-2",
+                        "train-annex-4-3",
                         ])
 def yml_train(shared_datadir, request) -> Train:
     return _make_train(shared_datadir, request.param)

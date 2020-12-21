@@ -3,11 +3,13 @@
 """
 This module defines the TOM domain model. The main classes are:
 
-* Train defines a set of planned TrainRuns which consist of a sequence of
-* SectionRun. A SectionRun belongs to exactly one
-* RouteSection, which has a planned calendar of days the SectionsRuns start. A RouteSection is
+* A `Train` defines a set of planned TrainRuns which consist of a sequence of
+* `SectionRun`. A SectionRun belongs to exactly one
+* `RouteSection`, which has a planned calendar of days the SectionsRuns start. A RouteSection is
   managed by exactly one railway undertaking (RU) and one infrastructure manager (IM).
-* Each TrainRun must run exactly once on each location (departure_station, arrival_station) of the train.
+* Each 'TrainRun` must run exactly once on each location (departure_station, arrival_station) of
+  the train.
+
 """
 from datetime import datetime, timedelta, date
 from pathlib import PosixPath
@@ -38,7 +40,7 @@ class RouteSection:
     departure_station: str
     arrival_station: str
     departure_timestamps: DatetimeIndex
-    section_id: int = 0
+    section_id: str = '0'
     version: int = 1
 
     def __init__(self, departure_station: str,
@@ -47,7 +49,8 @@ class RouteSection:
                  departure_timestamps: pd.DatetimeIndex,
                  stop_time: timedelta = pd.Timedelta(0)):
         """
-        Creates a new route section from departure_station to arrival_station at well defined timestamps.
+        Creates a new route section from departure_station to arrival_station at well defined
+        timestamps.
 
         :param departure_station: location where the train starts or breaks in
         :param arrival_station: location where the train stops or leaves
@@ -70,6 +73,27 @@ class RouteSection:
         """
         return (SectionRun(self, dt) for dt in self.departure_timestamps)
 
+    def version_info(self):
+        return f"{self.section_id}v{self.version}"
+
+    def route_id(self):
+        route_id = str(self.section_id).split('.')[:-1]
+        if len(route_id) > 0:
+            return '.'.join(route_id)
+        else:
+            return self.section_id
+
+    def description(self) -> str:
+        dep = self.departure_time().strftime("%H:%M")
+        arr = self.arrival_time().strftime("%H:%M")
+        fd = self.first_day().strftime("%d/%m")
+        ld = self.last_day().strftime("%d/%m")
+        result = f"ID        : {self.version_info()}\n"
+        result += f"Calender  : {fd} to {ld}\n"
+        result += f"Start   at: {dep} in {self.departure_station}\n"
+        result += f"Arrival at: {arr} in {self.arrival_station}\n"
+        return result
+
     def first_day(self) -> date:
         """
         :return: Calendar day of the first train run in this section.
@@ -81,6 +105,9 @@ class RouteSection:
         :return: Calendar day of the last train run in this section.
         """
         return datetime.date(self.departure_timestamps[-1])
+
+    def validity(self):
+        return self.first_day(), self.last_day()
 
     def departure_time(self) -> pd.Timestamp:
         """
@@ -100,7 +127,7 @@ class RouteSection:
          [section_id, departure_station, arrival_station] and one row for each section run.
         """
         df = pd.DataFrame(index=[x.date() for x in self.departure_timestamps])
-        df['ID'] = self.section_id
+        df['ID'] = str(self.section_id)
         df[self.departure_station] = self.departure_timestamps
         df[self.arrival_station] = self.arrival_times()
         return df
@@ -147,10 +174,12 @@ class Train:
         """
         **Attention:**
 
-         * in the ECM the *variant* part is only used to identify TrainRuns, not Train.
-         * the TimetableYear is only unique, when the start dates of all RouteSections belong to
-         the TimetableYear. (This is currently not valid for the test examples used. Why?
-        Because it is not nessary, that the  TimetableYear should be part of the TrainID)
+        in the ECM the *variant* part is only used to identify TrainRuns, not the train.
+        the TimetableYear is only unique, when the start dates of all RouteSections belong to
+        the TimetableYear.
+        (This is currently not valid for the test examples used. Why? Because it is not
+        necessary, that the  TimetableYear should be part of the TrainID)
+
         :return: Unique ID of this train (LeadRU/CoreID/TimetableYear)
         """
         return f"TR/{self.lead_ru}/{self.core_id}/{self.timetable_year()}"
@@ -163,7 +192,7 @@ class Train:
             for sr in section:
                 yield sr
 
-    def train_run_graph(self):
+    def train_run_graph(self) -> nx.DiGraph:
         result = nx.DiGraph()
 
         section_runs = list(self.section_run_iterator())
@@ -173,7 +202,7 @@ class Train:
                     result.add_edge(u, v)
         return result
 
-    def location_graph(self):
+    def location_graph(self) -> nx.DiGraph:
         trg = self.train_run_graph()
         lg = nx.DiGraph()
         for u, v in trg.edges:
@@ -183,7 +212,24 @@ class Train:
             lg.add_edge(v.departure_station(), v.arrival_station())
         return lg
 
-    def extended_train_run_graph(self, use_sections=True):
+    def section_graph(self) -> nx.DiGraph:
+        trg = self.train_run_graph()
+        sg = nx.DiGraph()
+        for v in trg.nodes:
+            vi = v.section.version_info()
+            sg.add_node(vi)
+            sg.nodes[vi]['id'] = vi
+            sg.nodes[vi]['label'] = v.section.description()
+            sg.nodes[vi]['route_id'] = v.section.route_id()
+        for u, v in trg.edges:
+            u: SectionRun
+            v: SectionRun
+            vi = v.section.version_info()
+            ui = u.section.version_info()
+            sg.add_edge(ui, vi)
+        return sg
+
+    def extended_train_run_graph(self, use_sections=True) -> nx.DiGraph:
         g = self.train_run_graph()
         nodes: List[SectionRun] = list(g.nodes)
         for v in nodes:
@@ -240,7 +286,7 @@ class Train:
 
     def timetable_year(self) -> int:
         """
-        :rtype: year of departuretime of first section
+        :rtype: year of departure_time of first section
         """
         return self.sections[0].departure_time().year
 
@@ -254,10 +300,9 @@ class SectionRun:
         self.departure_time = time
 
     def __str__(self):
-        ts_departure_station = self.departure_time.strftime("%F %H:%M")
-        ts_arrival_station = self.arrival_time().strftime("%F %H:%M")
-        v = self.section.version
-        return f"{self.section_id()}.{v}:{ts_departure_station} {self.section} {ts_arrival_station}"
+        dep = self.departure_time.strftime("%F %H:%M")
+        arr = self.arrival_time().strftime("%F %H:%M")
+        return f"{self.section.version_info()}:{dep} {self.section} {arr}"
 
     def section_id(self):
         return self.section.section_id
@@ -266,8 +311,9 @@ class SectionRun:
         return self.departure_time + self.section.travel_time
 
     def arrival_at_departure_station(self) -> datetime:
-        """:return: the timestamp at which the train arrived in this station. i.e. `departure_time -
-        departure_stop_time`
+        """:return: the timestamp when the train will arrive in the departure station
+
+        result = departure_time - departure_stop_time
         """
         return self.departure_time - self.section.departure_stop_time
 
