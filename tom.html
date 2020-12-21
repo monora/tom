@@ -92,7 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domainmodel.html">Route Domain Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="routing-update-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">tom</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">tom package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -186,11 +186,12 @@
 <span id="tom-tom-module"></span><h2>tom.tom module<a class="headerlink" href="#module-tom.tom" title="Permalink to this headline">¶</a></h2>
 <p>This module defines the TOM domain model. The main classes are:</p>
 <ul class="simple">
-<li>Train defines a set of planned TrainRuns which consist of a sequence of</li>
-<li>SectionRun. A SectionRun belongs to exactly one</li>
-<li>RouteSection, which has a planned calendar of days the SectionsRuns start. A RouteSection is
+<li>A <cite>Train</cite> defines a set of planned TrainRuns which consist of a sequence of</li>
+<li><cite>SectionRun</cite>. A SectionRun belongs to exactly one</li>
+<li><cite>RouteSection</cite>, which has a planned calendar of days the SectionsRuns start. A RouteSection is
 managed by exactly one railway undertaking (RU) and one infrastructure manager (IM).</li>
-<li>Each TrainRun must run exactly once on each location (departure_station, arrival_station) of the train.</li>
+<li>Each ‘TrainRun` must run exactly once on each location (departure_station, arrival_station) of
+the train.</li>
 </ul>
 <dl class="class">
 <dt id="tom.tom.Route">
@@ -246,6 +247,11 @@ is running is this section.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="tom.tom.RouteSection.description">
+<code class="descname">description</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#RouteSection.description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.RouteSection.first_day">
 <code class="descname">first_day</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; datetime.date<a class="reference internal" href="_modules/tom/tom.html#RouteSection.first_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.first_day" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
@@ -271,9 +277,14 @@ is running is this section.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="tom.tom.RouteSection.route_id">
+<code class="descname">route_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.route_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.route_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="tom.tom.RouteSection.section_id">
-<code class="descname">section_id</code><em class="property"> = 0</em><a class="headerlink" href="#tom.tom.RouteSection.section_id" title="Permalink to this definition">¶</a></dt>
+<code class="descname">section_id</code><em class="property"> = '0'</em><a class="headerlink" href="#tom.tom.RouteSection.section_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -306,9 +317,19 @@ is running is this section.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="tom.tom.RouteSection.validity">
+<code class="descname">validity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.validity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.validity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="tom.tom.RouteSection.version">
 <code class="descname">version</code><em class="property"> = 1</em><a class="headerlink" href="#tom.tom.RouteSection.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.RouteSection.version_info">
+<code class="descname">version_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.version_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.version_info" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -324,11 +345,11 @@ is running is this section.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the timestamp at which the train arrived in this station. i.e. <a href="#id1"><span class="problematic" id="id2">`</span></a>departure_time -</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the timestamp when the train will arrive in the departure station</td>
 </tr>
 </tbody>
 </table>
-<p>departure_stop_time`</p>
+<p>result = departure_time - departure_stop_time</p>
 </dd></dl>
 
 <dl class="method">
@@ -386,7 +407,7 @@ is running is this section.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="tom.tom.Train.extended_train_run_graph">
-<code class="descname">extended_train_run_graph</code><span class="sig-paren">(</span><em>use_sections=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Train.extended_train_run_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.extended_train_run_graph" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extended_train_run_graph</code><span class="sig-paren">(</span><em>use_sections=True</em><span class="sig-paren">)</span> &#x2192; networkx.classes.digraph.DiGraph<a class="reference internal" href="_modules/tom/tom.html#Train.extended_train_run_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.extended_train_run_graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -401,12 +422,17 @@ is running is this section.</p>
 
 <dl class="method">
 <dt id="tom.tom.Train.location_graph">
-<code class="descname">location_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Train.location_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.location_graph" title="Permalink to this definition">¶</a></dt>
+<code class="descname">location_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; networkx.classes.digraph.DiGraph<a class="reference internal" href="_modules/tom/tom.html#Train.location_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.location_graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="tom.tom.Train.section_dataframes">
 <code class="descname">section_dataframes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[pandas.core.frame.DataFrame]<a class="reference internal" href="_modules/tom/tom.html#Train.section_dataframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.section_dataframes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.Train.section_graph">
+<code class="descname">section_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; networkx.classes.digraph.DiGraph<a class="reference internal" href="_modules/tom/tom.html#Train.section_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.section_graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -426,7 +452,7 @@ is running is this section.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">year of departuretime of first section</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">year of departure_time of first section</td>
 </tr>
 </tbody>
 </table>
@@ -441,20 +467,24 @@ is running is this section.</p>
 <dt id="tom.tom.Train.train_id">
 <code class="descname">train_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#Train.train_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.train_id" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Attention:</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li>in the ECM the <em>variant</em> part is only used to identify TrainRuns, not Train.</li>
-<li>the TimetableYear is only unique, when the start dates of all RouteSections belong to</li>
-</ul>
-<p>the TimetableYear. (This is currently not valid for the test examples used. Why?</p>
-</div></blockquote>
-<p>Because it is not nessary, that the  TimetableYear should be part of the TrainID)
-:return: Unique ID of this train (LeadRU/CoreID/TimetableYear)</p>
+<p>in the ECM the <em>variant</em> part is only used to identify TrainRuns, not the train.
+the TimetableYear is only unique, when the start dates of all RouteSections belong to
+the TimetableYear.
+(This is currently not valid for the test examples used. Why? Because it is not
+necessary, that the  TimetableYear should be part of the TrainID)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Unique ID of this train (LeadRU/CoreID/TimetableYear)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="tom.tom.Train.train_run_graph">
-<code class="descname">train_run_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Train.train_run_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.train_run_graph" title="Permalink to this definition">¶</a></dt>
+<code class="descname">train_run_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; networkx.classes.digraph.DiGraph<a class="reference internal" href="_modules/tom/tom.html#Train.train_run_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.train_run_graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

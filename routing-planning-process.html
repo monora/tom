@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Routing Planning Process &mdash; Train Object Model 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tom" href="modules.html" />
+    <link rel="prev" title="Route Domain Model" href="domainmodel.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Train Object Model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Train Object Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="domainmodel.html">Route Domain Model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Routing Planning Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-route-planning-of-train-annex-4">Example: Route Planning of Train Annex 4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#planning-process-for-version-1">Planning Process for version 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#routinginfo-of-example-annex-4-v2">RoutingInfo of example Annex 4 v2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trainrun-graph-v2">TrainRun Graph v2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timetable-v2">Timetable v2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#planning-process-v2">Planning Process v2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">tom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Train Object Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Routing Planning Process</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/routing-planning-process.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="routing-planning-process">
+<span id="routing-process"></span><h1>Routing Planning Process<a class="headerlink" href="#routing-planning-process" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The routing planning process starts with a first version of a <cite>RoutingInfo</cite> of a train. For each
+version and each section the <cite>Path Planning Process</cite> between <cite>ApplicantRU</cite> and <cite>ResponseIM</cite> of the
+section is carried out until the section is completeley <em>covered</em> with allocated paths. We use an
+<a class="reference external" href="https://en.wikipedia.org/wiki/Sequence_diagram">UML sequence diagram</a> to describe the message flow:</p>
+<div class="figure" id="id5">
+<p class="plantuml">
+<img src="_images/plantuml-d27fd7b4f3043e9cf5a8dff6ea6c3b62ff175614.png" alt="skinparam BoxPadding 25
+hide footbox
+
+loop for each version RI-$i of a trains RoutingInfo
+group Harmonisation
+    LeadRU -&gt; ApplicantRUs: RoutingInfo RI-$i
+end
+
+group &quot;Path Planning RU/IM&quot;
+    loop for each section RS-$j of RI-$i
+        ApplicantRUs -&gt; ResponsibleIMs: PathRequest for RS-$j together with RoutingInfo
+        ResponsibleIMs -&gt; ApplicantRUs: PathDetails for PathRequest
+    end
+end
+end
+"/>
+</p>
+<p class="caption"><span class="caption-text">Basis message exchange pattern between involved parties</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<p>If in between the partipiants find out, that a planned version of a RoutingInfo cannot be
+constructed, a new version is created and communicated by the <cite>LeadRU</cite> to the <cite>ApplicantRUs</cite>
+(Harmonisation). These in turn inform their <cite>ResponseIMs</cite> with each <cite>PathRequest</cite> containing also
+the new version of the <cite>RoutingInfo</cite>.</p>
+<p>The <cite>Path Planning Process</cite> for each defined section has then to start over again. This must only be
+done for sections with a new version or totally new sections.</p>
+</div>
+<div class="section" id="example-route-planning-of-train-annex-4">
+<span id="example-annex-4-2"></span><h2>Example: Route Planning of Train Annex 4<a class="headerlink" href="#example-route-planning-of-train-annex-4" title="Permalink to this headline">¶</a></h2>
+<p>The initial planned routing of Train <cite>ID1</cite> was described in <a class="reference external" href="domainmodel.html#example-annex-4-1">Example Train Annex 4</a>.</p>
+<div class="section" id="planning-process-for-version-1">
+<h3>Planning Process for version 1<a class="headerlink" href="#planning-process-for-version-1" title="Permalink to this headline">¶</a></h3>
+<p>The following messages have to be exchanged by the involved companies to begin the planning process
+for this train.</p>
+<div class="figure" id="id6">
+<p class="plantuml">
+<img src="_images/plantuml-fb56661e45b3a50c54d743d295fbbf5d17ed582c.png" alt="title Initial planning (Lead RU = RU1)
+skinparam BoxPadding 25
+
+box &quot;RU1/IM1&quot;
+    participant RU1 order 10
+    participant IM1 order 20
+end box
+box &quot;RU2/IM2&quot;
+    participant RU2 order 40
+    participant IM2 order 50
+end box
+
+group Harmonisation
+    RU1 -&gt; RU2: RIM(RI-1)
+end
+group &quot;Path Planning RU1/IM1&quot;
+    loop &quot;for $i in {10,20,30}&quot;
+        RU1 -&gt; IM1: PRM(RI-1, RS-$i.01)
+        note left
+            Send whole RoutingInfo
+            RI-1 within PRM
+        end note
+    end
+    par &quot;for $i in {10,20,30}&quot;
+        IM1 -&gt; RU1: PDM(RS-$i.01)
+    end
+end
+group &quot;Path Planning RU2/IM2&quot;
+    loop &quot;for $i in {10,20,30}&quot;
+        RU2 -&gt; IM2: PRM(RI-1, RS-$i.02)
+    end
+    par &quot;for $i in {10,20,30}&quot;
+        IM2 -&gt; RU2: PDM(RS-$i.02)
+    end
+end
+
+"/>
+</p>
+<p class="caption"><span class="caption-text">Initial message flow to build path consistent with routing info</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+<p>For various reasons this process could not be finished. A second RoutingInfo version RI-v2 for the
+train must now be communicated by the lead RU, which is specified in the next chapter.</p>
+</div>
+<div class="section" id="routinginfo-of-example-annex-4-v2">
+<h3>RoutingInfo of example Annex 4 v2<a class="headerlink" href="#routinginfo-of-example-annex-4-v2" title="Permalink to this headline">¶</a></h3>
+<p>The updated routing info specification describes the planned final status. You can download it here:
+<a class="reference download internal" download="" href="_downloads/c6566b054b95087e3e4cea55772249bf/train-annex-4-2.yml"><code class="xref download docutils literal notranslate"><span class="pre">../tests/data/train-annex-4-2.yml</span></code></a></p>
+<p>Look at the resulting new section graph to see the differences (marked in yellow):</p>
+<div class="figure" id="id7">
+<img alt="Section graph Annex 4 version 2" src="_images/example-annex-4-2-section-graph.png" />
+<p class="caption"><span class="caption-text">Section graph Annex 4 version 2</span></p>
+</div>
+</div>
+<div class="section" id="trainrun-graph-v2">
+<h3>TrainRun Graph v2<a class="headerlink" href="#trainrun-graph-v2" title="Permalink to this headline">¶</a></h3>
+<p>These are the resulting new train runs:</p>
+<div class="figure" id="id8">
+<img alt="Example train run graph Annex 4 final state" src="_images/example-annex-4-2-train-run-graph.png" />
+<p class="caption"><span class="caption-text">TrainRun graph of example Annex 4 version 2.</span></p>
+</div>
+<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a href="#id1"><span class="problematic" id="id2">:download:`examples/train-TR-ID1-2.graphml`_</span></a>.</p>
+</div>
+<div class="section" id="timetable-v2">
+<h3>Timetable v2<a class="headerlink" href="#timetable-v2" title="Permalink to this headline">¶</a></h3>
+<p>Download the time table for <cite>Train-ID1v2</cite> here: <a href="#id3"><span class="problematic" id="id4">:download:`examples/train-TR-ID1-2.xlsx`_</span></a>.</p>
+</div>
+<div class="section" id="planning-process-v2">
+<h3>Planning Process v2<a class="headerlink" href="#planning-process-v2" title="Permalink to this headline">¶</a></h3>
+<p>The following messages have to be exchanged by the involved companies to reach the state defined by
+version 2 of the routing info:</p>
+<div class="figure" id="id9">
+<p class="plantuml">
+<img src="_images/plantuml-2f646cdfbbc738c4ea6ce6cbbaa7498347e0e49c.png" alt="title Re-Planning (Lead RU = RU1)
+skinparam BoxPadding 25
+
+box &quot;RU1/IM1&quot;
+participant RU1 order 10
+participant IM1 order 20
+end box
+box &quot;RU2/IM2&quot;
+participant RU2 order 40
+participant IM2 order 50
+end box
+
+group Harmonisation (Lead RU sends new version (RI-2) of RoutingInfo to applicant RU2)
+    RU1 -&gt; RU2: RIM(RI-2)
+    note left
+        Sections updates: {10,20,30}.01v2, {10,20,30}.02v2
+        New       sections: {11,31}.01v1, {11,31}.02v1
+    end note
+end
+group &quot;Path Re-Planning RU1/IM1&quot;
+    loop &quot;for $i in {10,20,30}&quot;
+        RU1 -&gt; IM1: PRM(RI-2, RS-$i.01v2)
+    end
+    RU1 -&gt; IM1: PRM(RI-2, RS-11.01v1)
+    RU1 -&gt; IM1: PRM(RI-2, RS-31.01v1)
+    par &quot;for $i in {10,20,30}&quot;
+        IM1 -&gt; RU1: PDM(RS-$i.01v2)
+    end
+    IM1 -&gt; RU1: PDM(RS-11.01v1)
+    IM1 -&gt; RU1: PDM(RS-31.01v1)
+end
+group &quot;Path Re-Planning RU2/IM2&quot;
+    loop &quot;for $i in {10,20,30}&quot;
+        RU2 -&gt; IM2: PRM(RI-2, RS-$i.02v2)
+    end
+    RU2 -&gt; IM2: PRM(RI-2, RS-11.02v1)
+    RU2 -&gt; IM2: PRM(RI-2, RS-31.02v1)
+    par &quot;for $i in {10,20,30}&quot;
+        IM2 -&gt; RU2: PDM(RS-$i.2v2)
+    end
+    IM2 -&gt; RU2: PDM(RS-11.02v1)
+    IM2 -&gt; RU2: PDM(RS-31.02v1)
+end
+"/>
+</p>
+<p class="caption"><span class="caption-text">Message flow to build path consistent with routing info version 2</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="tom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="domainmodel.html" class="btn btn-neutral float-left" title="Route Domain Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Horst Duchene
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

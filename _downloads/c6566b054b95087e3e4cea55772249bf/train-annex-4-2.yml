@@ -1,0 +1,118 @@
+---
+coreID: ID1
+lead_ru: RU1
+version: 2 # RoutingInfo version
+sections:
+    - id: 10.01
+      version: 2 # RouteSection version
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: S
+      departure_time: '00:20:00'
+      arrival_station: H1
+      travel_time: &s1-tt '24:20:00'
+      calendar:
+        begin: '2021-02-01'
+        end: '2021-02-04'
+    - id: 10.02
+      version: 2
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: 00:40:00
+      arrival_station: T
+      travel_time: &s2-tt 07:30:00
+      calendar:
+        begin: '2021-02-02'
+        end: '2021-02-05'
+    - id: 11.01
+      version: 1
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: S
+      departure_time: '23:30:00'
+      arrival_station: H1
+      travel_time: '24:20:00'
+      calendar:
+        begin: '2021-02-04'
+        end: '2021-02-06'
+    - id: 11.02
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: '23:50:00'
+      arrival_station: T
+      travel_time: 07:30:00
+      calendar:
+        begin: '2021-02-05'
+        end: '2021-02-07'
+    # Sec 3-4: Shorten calender
+    # Change departure times
+    - id: 20.01
+      version: 2
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: S
+      departure_time: '23:55:00'
+      arrival_station: H1
+      travel_time: *s1-tt
+      calendar:
+        begin: '2021-02-11'
+        end: '2021-02-13'
+    - id: 20.02
+      version: 2
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: 00:15:00
+      arrival_station: T
+      travel_time: *s2-tt
+      calendar:
+        begin: '2021-02-13'
+        end: '2021-02-15'
+    # Shorten calender of D-T
+    - id: 30.01
+      version: 2
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: D
+      departure_time: '01:45:00'
+      arrival_station: H1
+      travel_time: '22:30:00'
+      calendar:
+        begin: '2021-02-08'
+        end: '2021-02-11'
+    - id: 30.02
+      version: 2
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: 00:15:00
+      arrival_station: T
+      travel_time: *s2-tt
+      calendar:
+        begin: '2021-02-09'
+        end: '2021-02-12'
+    - id: 31.01
+      version: 1
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: D
+      departure_time: '01:10:00'
+      arrival_station: H1
+      travel_time: '22:30:00'
+      calendar:
+        begin: '2021-02-15'
+        end: '2021-02-20'
+    - id: 31.02
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      departure_time: '23:40:00'
+      arrival_station: T
+      travel_time: *s2-tt
+      calendar:
+        begin: '2021-02-15'
+        end: '2021-02-20'

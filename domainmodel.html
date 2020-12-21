@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Routing Planning Process" href="routing-update-process.html" />
+    <link rel="next" title="Routing Planning Process" href="routing-planning-process.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
@@ -93,8 +93,9 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Route Domain Model</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#train-and-routesection">Train and RouteSection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#train-routinginfo-and-routesection">Train, RoutingInfo and RouteSection</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timestamps">Timestamps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calendars">Calendars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#identifiers">Identifiers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#versioning">Versioning</a></li>
 </ul>
@@ -106,25 +107,28 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#example-train-from-amsterdam-to-frankfurt">Example: Train from Amsterdam to Frankfurt</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#specification-with-yaml">Specification with YAML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-graph">Section Graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trainrun-graph">TrainRun Graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#timetable-as-excel-sheet">Timetable as Excel-Sheet</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#example-train-with-three-ims">Example: Train with three IMs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Specification with YAML</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">TrainRun Graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">Timetable as Excel-Sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#example-train-annex-4">Example: Train Annex 4</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id7">Specification with YAML</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">TrainRun Graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9">Timetable as Excel-Sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Specification with YAML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Section Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">TrainRun Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Timetable</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example-train-with-three-ims">Example: Train with three IMs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Specification with YAML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Section Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">TrainRun Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timetable-as-excel-sheet">Timetable as Excel-Sheet</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="routing-update-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">tom</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
@@ -202,35 +206,46 @@
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Each international train has to be split into sections when the train crosses a border.  The split
 locations are called handover points. At each handover the responsibility for the train planning
-changes from IM to IM and RU to RU. The planning process is coordinated by the <cite>Train.lead_ru</cite>.</p>
-<p>This <a class="reference external" href="https://en.wikipedia.org/wiki/Class_diagram">UML</a> class diagramm <a class="footnote-reference" href="#f1" id="id1">[1]</a> shows the main concepts involved:</p>
+changes from IM to IM and RU to RU. The planning process is coordinated by the <cite>RoutingInfo
+.lead_ru</cite>.</p>
+<p>This <a class="reference external" href="https://en.wikipedia.org/wiki/Class_diagram">UML class diagram</a> <a class="footnote-reference" href="#f1" id="id1">[1]</a> shows the main concepts involved:</p>
+<div class="figure" id="id11">
 <p class="plantuml">
-<img src="_images/plantuml-1dc2d22755324fe0510a15982eb25c92f3e7d40e.png" alt="class JourneyLocation &lt;&lt;TOM&gt;&gt; {
+<img src="_images/plantuml-72f61406223b22d62774bac091bd88b239d61d6c.png" alt="class JourneyLocation &lt;&lt;TOM&gt;&gt; {
     id: LocationIdentifier
 }
 class Train &lt;&lt;TOM&gt;&gt; {
+    +TrainID train_id()
+}
+class RoutingInfo {
     lead_ru: CompanyCode
 }
+
 class RouteSection {
     planning_im: CompanyCode
     applicant_ ru: CompanyCode
 }
-Handover --|&gt; JourneyLocation
-Origin --|&gt; JourneyLocation
-Destination --|&gt; JourneyLocation
+JourneyLocation &lt;|-- Origin
+JourneyLocation &lt;|-- Handover
+JourneyLocation &lt;|-- Destination
 
 RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : departure_station &gt;
 RouteSection &quot;*&quot; -&gt; &quot;1&quot; JourneyLocation : arrival_station &gt;
-Train *-- &quot;1..*&quot; RouteSection
+RoutingInfo *-- &quot;1..*&quot; RouteSection
+RoutingInfo &quot;0..1&quot; -* Train : routing &lt;
 
 class PathRequest &lt;&lt;TOM&gt;&gt; {
     planning_im: CompanyCode
     applicant_ ru: CompanyCode
 }
-RouteSection o--  &quot;0..*&quot; PathRequest : is derived from &lt;
+RouteSection o--  &quot;0..*&quot; PathRequest : planned for &lt;
 "/>
 </p>
-<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> must at least have two sections. The
+<p class="caption"><span class="caption-text">Overview Routing Model</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> must at least have two sections. All
+<cite>RouteSections</cite> of a train are bundled in a <cite>RoutingInfo</cite>. The <em>Lead RU</em> is responsible for
+the correctness and communication of this information to all involved companies. The
 following constraint must hold for each <a class="reference internal" href="tom.html#tom.tom.RouteSection" title="tom.tom.RouteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteSection</span></code></a>:</p>
 <div class="admonition-rule-sec-jl-journey-locations admonition">
 <p class="first admonition-title">Rule SEC-JL Journey Locations</p>
@@ -243,50 +258,63 @@ following constraint must hold for each <a class="reference internal" href="tom.
 <em>PathDetails</em> to plan the detailed route within a <cite>RouteSection</cite>. This process is described in
 detail in the <a class="reference external" href="http://taf-jsg.info/wp-content/uploads/2019/10/190604_js_handbook_2.0_with_xsd_2.2.3_0.pdf">Sector Handbook</a> of the RU/IM Telematrics <a class="reference external" href="http://taf-jsg.info/">JSG</a>.  As long as borders of a section
 both in location and time are unchanged no other participant in the planning of the whole train has
-to be informed.</p>
+to be informed. See also <a class="reference external" href="routing-planning-process.html#routing-process">Routing Planning Process</a>.</p>
 <p>The following paragraph describes the minimal information which all companies involved must know
-about the whole train. Changes to this information have to be propagated by the lead RU.</p>
+about the <cite>RoutingInfo</cite>. Changes to this information have to be propagated by the lead RU.</p>
 </div>
-<div class="section" id="train-and-routesection">
-<h2>Train and RouteSection<a class="headerlink" href="#train-and-routesection" title="Permalink to this headline">¶</a></h2>
-<p>The following diagramm shows the two main classes of our proposition for the Route Domain Model. It
+<div class="section" id="train-routinginfo-and-routesection">
+<h2>Train, RoutingInfo and RouteSection<a class="headerlink" href="#train-routinginfo-and-routesection" title="Permalink to this headline">¶</a></h2>
+<p>The following diagramm shows the three main classes of our proposition for the Route Domain Model. It
 describes the minimum information needed for a valid route information of an international train:</p>
+<div class="figure" id="id12">
 <p class="plantuml">
-<img src="_images/plantuml-612f35165429e2e34012bab9e3ce6cad7b5d5889.png" alt="left to right direction
+<img src="_images/plantuml-7ffcfb762a8d0a376eecc4d40eb2657c1b41bc22.png" alt="left to right direction
 
 class Train {
     core: CoreID
-    lead_ru: CompanyCode
-    version: int
-
+    timetable_year: Year
     +TrainID train_id()
 }
 
+class RoutingInfo {
+    lead_ru: CompanyCode
+    version: int
+}
+
 class RouteSection {
-    departure_station: JourneyLocation
-    departure_time: TimeOfDay
-    departure_stop_time: timedelta
-    ---
-    arrival_station: JourneyLocation
-    travel_time: timedelta
-    calendar: Set&lt;Date&gt;
-    ---
     applicant_ru: CompanyCode
     planning_im: CompanyCode
     ---
-    section_id: int
-    version: int = 1
+    departure_station: JourneyLocation
+    arrival_station: JourneyLocation
     ---
-    + str section_key()
+    calendar: Set&lt;Date&gt;
+    departure_time: TimeOfDay
+    departure_stop_time: timedelta
+    travel_time: timedelta
+    ---
+    version: int
+    ---
+    + String section_key()
+    + String section_id()
 }
+note left of RouteSection
+  The section_id() must be unique
+  within the set of sections of a RoutingInfo
+end note
 
-Train *-- &quot;1..*&quot; RouteSection
+Train *-- &quot;0..1&quot; RoutingInfo
+RoutingInfo *-- &quot;1..*&quot; RouteSection
 "/>
 </p>
+<p class="caption"><span class="caption-text">RoutingInfo and RouteSection</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+<p>A train has zero or one <cite>RoutingInfo</cite> which bundles the information in <cite>RouteSections</cite>. The version
+is incremented each time one or more RouteSections have changed.</p>
 <div class="section" id="timestamps">
 <h3>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h3>
 <p>This model completely describes a planned set of <em>train runs</em>. Each train run is a sequence of
-<em>sections runs</em> which have to connect properly in time at handover points. The timing attributes of
+<em>section runs</em> which have to connect properly in time at handover points. The timing attributes of
 a <cite>RouteSection</cite> serve this purpose:</p>
 <ul class="simple">
 <li><cite>calendar</cite> is a set of calendar days where the train starts at <cite>RouteSection.departure_station</cite></li>
@@ -296,18 +324,73 @@ a <cite>RouteSection</cite> serve this purpose:</p>
 of arrival. This attribute is used to calculate the arrival time at station of arrival.</li>
 </ul>
 <p>Only RouteSections have a calendar.  This is the set of starting days at the departure_station of a section.
-All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from the timing
+All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from these timing
 attributes.</p>
 <div class="admonition-rule-sec-cal-routesection-calendar-must-be-subset-of-timetable-year admonition">
 <p class="first admonition-title">Rule SEC-CAL RouteSection Calendar must be subset of timetable year</p>
 <p class="last">The <cite>RouteSection.calendar</cite> must be a subset of the timetable year of its train.</p>
 </div>
-<p>Because a train can have several starting RouteSections (i.e. different start locations and dates)
-it makes no sense to assign a calender to it. A calender must always be relativ to a fixed start
-location. <a class="reference internal" href="#example-ac-ff"><span class="std std-ref">Example: Train from Amsterdam to Frankfurt</span></a> explains such a situation with an overnight train in the starting
-sections.</p>
+<p>Because a train can have several starting RouteSections (i.e. different departure stations and
+dates) it makes no sense to assign a calender to a train. A calender must always be relativ to a fixed
+start location. <a class="reference internal" href="#example-ac-ff">example-ac-ff</a> explains such a situation with an overnight train in the
+starting sections.</p>
 <p>Working with only timestamps also avoids the difficulties with overnight trains. No OTR (<em>Offset To
 Reference</em>) is needed!</p>
+</div>
+<div class="section" id="calendars">
+<h3>Calendars<a class="headerlink" href="#calendars" title="Permalink to this headline">¶</a></h3>
+<p>In our model these classes have a calendar:</p>
+<ul class="simple">
+<li>A RouteSection defines the planned daily runs of a train</li>
+<li>A PathRequest is planned for a RouteSection</li>
+<li>A Path is created in response to a PathRequest of an RU to an IM</li>
+</ul>
+<div class="figure" id="id13">
+<p class="plantuml">
+<img src="_images/plantuml-e95f27cfdd57b90203c974fe597845674de2404d.png" alt="class RoutingInfo {
+    lead_ru: CompanyCode
+}
+
+class RouteSection {
+    calendar: Set&lt;Date&gt;
+    + planning_im(): CompanyCode
+    + applicant_ru(): CompanyCode
+}
+
+RoutingInfo *-- &quot;1..*&quot; RouteSection
+RoutingInfo &quot;0..1&quot; -* Train : routing &lt;
+
+class PathRequest &lt;&lt;TOM&gt;&gt; {
+    calendar: Set&lt;Date&gt;
+    + planning_im(): CompanyCode
+    + applicant_ru(): CompanyCode
+}
+RouteSection o-  &quot;0..*&quot; PathRequest : planned_for &lt;
+class Path &lt;&lt;TOM&gt;&gt; {
+    calendar: Set&lt;Date&gt;
+    + planning_im(): CompanyCode
+    + applicant_ ru(): CompanyCode
+}
+PathRequest o-- &quot;0..*&quot; Path : response_to &lt;
+"/>
+</p>
+<p class="caption"><span class="caption-text">Calendars of RouteSection, PathRequest and Path</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
+<p>The following rules must hold for a consistent set of paths of a train:</p>
+<div class="admonition-rule-sec-cal-section-pathrequest-path-calendar-relationships admonition">
+<p class="first admonition-title">Rule SEC-CAL Section-PathRequest-Path calendar relationships</p>
+<ul class="last simple">
+<li>The calendar of a PathRequest must be a subset of the calendar of the section it is planned for.</li>
+<li>The calendar of a Path must be a subset of the calendar the PathRequest it is a response.</li>
+<li>The calendars of two different PathRequests of a RouteSection must be pairwise disjoint.</li>
+<li>The calendars of two different Paths of a PathRequest must be pairwise disjoint.</li>
+<li>The calender of a RouteSection must be the union of the calendars of its PathRequests.</li>
+<li>The calender of a PathRequest must be the union of the calendars of its Paths.</li>
+</ul>
+</div>
+<p>The last two rules must hold when the path allocation process is finished. The other must always
+hold. Objects that violate these conditions must not be communicated among partners. Such messages
+have to be answered with an <cite>ErrorMessage</cite>.</p>
 </div>
 <div class="section" id="identifiers">
 <h3>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h3>
@@ -334,29 +417,30 @@ create fitting route section with section station of departure <cite>EMM</cite>.
 <div class="section" id="versioning">
 <h3>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h3>
 <p>We suggest <em>versioning</em> of trains and sections to support the synchronsisation of the domain model
-between the systems of the cooperating companies. If a company make a change of section its
-<cite>RouteSection.version</cite> is incremented. Same with the <cite>Train.version</cite>. The receiver of a message
+between the systems of the cooperating companies. If the lead RU changes a section its
+<cite>RouteSection.version</cite> is incremented. Same with the <cite>RoutingInfo.version</cite>. The receiver of a message
 containing the RoutingInfo <a class="footnote-reference" href="#f3" id="id3">[3]</a> can use this information to identify the change and act
 accordingly.</p>
 </div>
 </div>
 <div class="section" id="trainrun-and-sectionrun">
 <h2>TrainRun and SectionRun<a class="headerlink" href="#trainrun-and-sectionrun" title="Permalink to this headline">¶</a></h2>
-<p>In this section we describe, how the daily train and section runs are computed from the routing
-info of a <cite>Train</cite> described in the previous section.</p>
+<p>In this section we describe, how the daily train (i.e. a <cite>TrainRun</cite>) and section runs are computed
+from the routing info of a <cite>Train</cite> described in the previous section.</p>
 <ul class="simple">
 <li>A <a class="reference internal" href="tom.html#tom.tom.SectionRun" title="tom.tom.SectionRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">SectionRun</span></code></a> is derived for each day in the calendar of its <cite>RouteSection</cite></li>
 <li>A <a class="reference internal" href="tom.html#tom.tom.TrainRun" title="tom.tom.TrainRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainRun</span></code></a> is computed from SectionRuns that <em>fit</em> together. Two sections <cite>s, t</cite>
 fit together if <cite>s.connects_to(t) == True</cite> (see <a class="reference internal" href="tom.html#tom.tom.SectionRun.connects_to" title="tom.tom.SectionRun.connects_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connects_to()</span></code></a>).</li>
 </ul>
 <p class="plantuml">
-<img src="_images/plantuml-e8b3482207f2804e7581eb48d55736179a2b3329.png" alt="left to right direction
+<img src="_images/plantuml-de9c8fcffd69c4a0c12d9230073417c3632bd7d8.png" alt="left to right direction
 
 class Train &lt;&lt;TOM&gt;&gt; {
-    lead_ru: CompanyCode
     +TrainID train_id()
 }
-
+class RoutingInfo {
+    lead_ru: CompanyCode
+}
 class RouteSection {
     applicant_ru: CompanyCode
     planning_im: CompanyCode
@@ -364,12 +448,12 @@ class RouteSection {
     departure_time: TimeOfDay
     calendar: Set&lt;Date&gt;
 }
-Train *-- &quot;1..*&quot; RouteSection
+Train *-- &quot;0..1&quot; RoutingInfo
+RoutingInfo *-- &quot;1..*&quot; RouteSection
 
 class SectionRun {
-
     departure_time: Timestamp
-    + str section_id()
+    + String section_id()
     + Timestamp arrival_time()
     + Timestamp arrival_at_departure_station()
     + JourneyLocation departure_station()
@@ -446,11 +530,10 @@ emm - ff
 Venlo --[hidden] emm
 "/>
 </p>
-<p>This object diagramm shows a szenario for a train from AC to Frankfurt FF
-which is planned to operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu
-handover is Venlo.</p>
+<p>This object diagramm shows a szenario for a train from AC to Frankfurt FF which is planned to
+operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu handover is Venlo.</p>
 <p class="plantuml">
-<img src="_images/plantuml-37b381b9a40a7f1d1a4b1afe854e0d8ee3998969.png" alt="object &quot;TR/1080/12AB: Train&quot; as tr
+<img src="_images/plantuml-5e61c8724b759830f2d74da9b10ac4f19345d9dc.png" alt="object &quot;RO/1080/12AB: RoutingInfo&quot; as tr
 object &quot;AC-&gt;EMM: RouteSection&quot; as ac_emm
 object &quot;AC-&gt;Venlo: RouteSection&quot; as ac_venlo
 object &quot;EMM-&gt;FF: RouteSection&quot; as emm_ff
@@ -511,7 +594,7 @@ CoreID <cite>12AB</cite>:</p>
 <span class="nt">lead_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
 <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="nt">sections</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.01</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1084</span> <span class="c1"># NS</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0084</span> <span class="c1"># Prorail</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
@@ -523,7 +606,7 @@ CoreID <cite>12AB</cite>:</p>
         <span class="nt">begin</span><span class="p">:</span> <span class="nl">&amp;ac-begin</span> <span class="s">&#39;2021-12-01&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;ac-end</span> <span class="s">&#39;2021-12-31&#39;</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
@@ -536,7 +619,7 @@ CoreID <cite>12AB</cite>:</p>
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*ac-end</span>        <span class="c1"># substituted by &amp;ac-end</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri&#39;</span>
 
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1084</span> <span class="c1"># NS</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0084</span> <span class="c1"># Prorail</span>
@@ -548,7 +631,7 @@ CoreID <cite>12AB</cite>:</p>
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*ac-begin</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*ac-end</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
@@ -565,20 +648,161 @@ CoreID <cite>12AB</cite>:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="section-graph">
+<h3>Section Graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h3>
+<p>The following picture shows the involved sections in compact notation. Notice the shift of calendars
+of the sections with ID 10.02 and 20.02 because they run over midnight.</p>
+<div class="figure" id="id14">
+<img alt="Sections of example AC to FF" src="_images/example-ac-ff-section-graph.png" />
+<p class="caption"><span class="caption-text">Section Graph Example Amsterdam to Frankfurt</span></p>
+</div>
+</div>
 <div class="section" id="trainrun-graph">
 <h3>TrainRun Graph<a class="headerlink" href="#trainrun-graph" title="Permalink to this headline">¶</a></h3>
 <p>The resulting <em>TrainRun-Graph</em> can be calculated with
 <a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> and looks like this:</p>
-<div class="figure" id="id10">
+<div class="figure" id="id15">
 <img alt="Example train run graph" src="_images/example-ac-ff-train-run-graph.png" />
 <p class="caption"><span class="caption-text">TrainRun Graph Example Amsterdam to Frankfurt</span></p>
 </div>
 <p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/47e4598cfaeb4e804114daaac2d9fa26/train-TR-12AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.graphml</span></code></a>.</p>
 </div>
-<div class="section" id="timetable-as-excel-sheet">
-<h3>Timetable as Excel-Sheet<a class="headerlink" href="#timetable-as-excel-sheet" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="timetable">
+<h3>Timetable<a class="headerlink" href="#timetable" title="Permalink to this headline">¶</a></h3>
 <p>With <a class="reference internal" href="tom.html#tom.tom.Train.to_dataframe" title="tom.tom.Train.to_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a> you can create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a> which you can export
-to excel representing the time table of the train. See <a class="reference download internal" download="" href="_downloads/74e7ce4d1d7f0a2ed9c241e9cf246925/train-TR-12AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.xlsx</span></code></a>.</p>
+to excel or csv representing the time table of the train. See <a class="reference download internal" download="" href="_downloads/74e7ce4d1d7f0a2ed9c241e9cf246925/train-TR-12AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.xlsx</span></code></a>.</p>
+<p>This is the timetable of version 1 of TR-12ABv1:</p>
+</div>
+</div>
+<div class="section" id="example-train-annex-4">
+<span id="example-annex-4-1"></span><h2>Example: Train Annex 4<a class="headerlink" href="#example-train-annex-4" title="Permalink to this headline">¶</a></h2>
+<p>Given this infrastructure:</p>
+<p class="plantuml">
+<img src="_images/plantuml-b4a061c1a5a2b7a14951a1b1206b37d640391e4a.png" alt="package IM1 &lt;&lt;Rectangle&gt;&gt; {
+    object S
+    object D
+}
+object H1
+H1 : Handover
+package IM2 &lt;&lt;Rectangle&gt;&gt; {
+    object M
+    object T
+}
+
+S - D
+D - H1
+H1 - M
+M - T
+"/>
+</p>
+<div class="section" id="id4">
+<h3>Specification with YAML<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>The following routing specification describes the initial planned routes for Train with <cite>ID1</cite>. As
+you can see, there is no route section needed which mentions Station <cite>M</cite>. This station does not play
+a role in the routing planning process because it is no origin, destination or handover.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ID1</span>
+<span class="nt">lead_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
+<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># RoutingInfo version</span>
+<span class="nt">sections</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.01</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># RouteSection version</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
+      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">S</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;00:10:00&#39;</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s1-tt</span> <span class="s">&#39;24:20:00&#39;</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-01&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
+      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:30:00</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s2-tt</span> <span class="l l-Scalar l-Scalar-Plain">07:30:00</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-02&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-08&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
+      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">S</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s1-tt</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-13&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
+      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:10:00</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-09&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;s4-end</span> <span class="s">&#39;2021-02-15&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.01</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
+      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">D</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;02:00:00&#39;</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;22:30:00&#39;</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*s4-end</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-20&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.02</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
+      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
+      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
+      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:30:00</span>
+      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
+      <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
+      <span class="nt">calendar</span><span class="p">:</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-16&#39;</span>
+        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-21&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>Section Graph<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>The following graph shows the involved sections in compact notation. Notice the shift of calendars
+of the sections with ID 10.02 and 20.02 because they run over midnight.</p>
+<div class="figure" id="id16">
+<img alt="Sections of example in Annex 4" src="_images/example-annex-4-1-section-graph.png" />
+<p class="caption"><span class="caption-text">Section Graph Example Annex 4</span></p>
+</div>
+<p>We see 6 sections which define three routes, two starting from <cite>S</cite> and one from <cite>D</cite>.</p>
+</div>
+<div class="section" id="id6">
+<h3>TrainRun Graph<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>The resulting train run graph looks like this:</p>
+<div class="figure" id="id17">
+<img alt="Example train run graph Annex 4" src="_images/example-annex-4-1-train-run-graph.png" />
+<p class="caption"><span class="caption-text">TrainRun graph of example Annex 4 initial planning status.</span></p>
+</div>
+<p>Vertices (<cite>SectionRuns</cite>) with same color belong to the same <cite>RouteSection</cite>. The vertice label
+shows Section IDs and there versions (ID.version).</p>
+<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/97f4e4e72e522a85e1ab41ebc2d61b75/train-TR-ID1-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.graphml</span></code></a>.</p>
+</div>
+<div class="section" id="id7">
+<h3>Timetable<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>This is the timetable of version 1 of TR-ID1. Notice the two train runs with ID
+<cite>TR/8350/ID1/2021/10.01/2021-02-07</cite> and <cite>TR/8350/ID1/2021/20.01/2021-02-07</cite>. They both start on
+<cite>07/02</cite>. To make the ID unique on this operating day, we propose to add the <cite>section_id</cite> to be part
+of <cite>TrainRun.train_id()</cite>. Here <cite>10.01</cite> for the train starting at <cite>00:10</cite> and <cite>20.01</cite> for the train
+departing at <cite>23:50</cite> at station <cite>S</cite>.</p>
+<p>Download the timetable as Excel here: <a class="reference download internal" download="" href="_downloads/c2bf0e1e718727024788aaa1ae7e565a/train-TR-ID1-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.xlsx</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="example-train-with-three-ims">
@@ -615,7 +839,7 @@ F - G
 <p>This object diagramm shows a szenario for a train from A,B to F,G which is planned to operate in
 december 2020.</p>
 <p class="plantuml">
-<img src="_images/plantuml-a62c9e541bd2011a77594a4084ba5f33de6dfe76.png" alt="object &quot;TR/1080/13AB: Train&quot; as tr
+<img src="_images/plantuml-d68a376e627e94440fe36c8baf96188ab2438042.png" alt="object &quot;RO/1080/13AB: RoutingInfo&quot; as tr
 object &quot;A-&gt;C: RouteSection&quot; as ac
 object &quot;B-&gt;C: RouteSection&quot; as bc
 object &quot;C-&gt;E: RouteSection&quot; as ce
@@ -666,8 +890,8 @@ ef &lt;.. n1
 eg &lt;.. n1
 "/>
 </p>
-<div class="section" id="id4">
-<h3>Specification with YAML<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>Specification with YAML<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
 <span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">13AB</span>
 <span class="nt">sections</span><span class="p">:</span>
@@ -680,7 +904,7 @@ eg &lt;.. n1
         <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;b-end</span> <span class="s">&#39;2020-12-31&#39;</span>
         <span class="c1"># Sundays the train starting from A passes B</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat&#39;</span>
-      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.01</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:30:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
@@ -690,7 +914,7 @@ eg &lt;.. n1
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*b-end</span>
         <span class="c1"># Sunday in B =&gt; Saturday start in A</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat&#39;</span>
-      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+      <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;01:30:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
@@ -699,7 +923,7 @@ eg &lt;.. n1
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*b-begin</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*b-end</span>
         <span class="c1"># no mask =&gt; daily</span>
-      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+      <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">F</span>
@@ -710,7 +934,7 @@ eg &lt;.. n1
         <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;e-end</span> <span class="s">&#39;2021-01-01&#39;</span>
         <span class="c1"># Not on tuesday. On tuesdays section E-G is used.</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
-      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+      <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.03</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">G</span>
@@ -719,12 +943,20 @@ eg &lt;.. n1
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*e-begin</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*e-end</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Tue&#39;</span>
-      <span class="nt">section_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+      <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.03</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id5">
-<h3>TrainRun Graph<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3>Section Graph<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="figure" id="id18">
+<img alt="Sections of example with 3 IMs" src="_images/example-a-f-section-graph.png" />
+<p class="caption"><span class="caption-text">Sections of example with 3 IMs. This example shows a situation, where the middle section ist used
+by both starting and ending sections.</span></p>
+</div>
+</div>
+<div class="section" id="id10">
+<h3>TrainRun Graph<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <div class="figure">
 <img alt="Example train run graph" src="_images/example-a-f-train-run-graph.png" />
 </div>
@@ -732,124 +964,9 @@ eg &lt;.. n1
 in F.</p>
 <p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/7737e967ae7ddcf9e6d6bb0bdb7bf884/train-TR-13AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.graphml</span></code></a>.</p>
 </div>
-<div class="section" id="id6">
-<h3>Timetable as Excel-Sheet<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="timetable-as-excel-sheet">
+<h3>Timetable as Excel-Sheet<a class="headerlink" href="#timetable-as-excel-sheet" title="Permalink to this headline">¶</a></h3>
 <p>Download the time table for <cite>Train-13AB</cite> here: <a class="reference download internal" download="" href="_downloads/d363e50a1aed2e0743c6a57340a9c609/train-TR-13AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.xlsx</span></code></a>.</p>
-</div>
-</div>
-<div class="section" id="example-train-annex-4">
-<span id="example-annex-4-1"></span><h2>Example: Train Annex 4<a class="headerlink" href="#example-train-annex-4" title="Permalink to this headline">¶</a></h2>
-<p>Given this infrastructure:</p>
-<p class="plantuml">
-<img src="_images/plantuml-b4a061c1a5a2b7a14951a1b1206b37d640391e4a.png" alt="package IM1 &lt;&lt;Rectangle&gt;&gt; {
-    object S
-    object D
-}
-object H1
-H1 : Handover
-package IM2 &lt;&lt;Rectangle&gt;&gt; {
-    object M
-    object T
-}
-
-S - D
-D - H1
-H1 - M
-M - T
-"/>
-</p>
-<div class="section" id="id7">
-<h3>Specification with YAML<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p>The following routing specification describes the initial planned routes for Train with <cite>ID1</cite>. As
-you can see, there is no route section needed which mentions Station <cite>M</cite>. This station does not play
-a role in the routing planning process because it is no origin, destination or handover.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
-<span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ID1</span>
-<span class="nt">lead_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
-<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># Train version</span>
-<span class="nt">sections</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># RouteSection version</span>
-      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
-      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
-      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">S</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;00:10:00&#39;</span>
-      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s1-tt</span> <span class="s">&#39;24:20:00&#39;</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-01&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
-      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
-      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:30:00</span>
-      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
-      <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s2-tt</span> <span class="l l-Scalar l-Scalar-Plain">07:30:00</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-02&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-08&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
-      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
-      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">S</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span>
-      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s1-tt</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-13&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
-      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
-      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:10:00</span>
-      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
-      <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-09&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;s4-end</span> <span class="s">&#39;2021-02-15&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
-      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM1</span>
-      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">D</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;02:00:00&#39;</span>
-      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;22:30:00&#39;</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*s4-end</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-20&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-      <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
-      <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
-      <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:30:00</span>
-      <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
-      <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-16&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-21&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="id8">
-<h3>TrainRun Graph<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<div class="figure" id="id11">
-<img alt="Example train run graph Annex 4" src="_images/example-annex-4-1-train-run-graph.png" />
-<p class="caption"><span class="caption-text">TrainRun graph of example Annex 4 initial planning status.</span></p>
-</div>
-<p>Vertices (RouteSectionRuns) with same color belong to the same RouteSection. The vertice label
-shows Section IDs and there versions (ID.Version).</p>
-<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/97f4e4e72e522a85e1ab41ebc2d61b75/train-TR-ID1-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.graphml</span></code></a>.</p>
-</div>
-<div class="section" id="id9">
-<h3>Timetable as Excel-Sheet<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<p>Download the time table for <cite>Train-13AB</cite> here: <a class="reference download internal" download="" href="_downloads/c2bf0e1e718727024788aaa1ae7e565a/train-TR-ID1-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.xlsx</span></code></a>.</p>
 <p class="rubric">Footnotes</p>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -882,7 +999,7 @@ structure.</td></tr>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="routing-update-process.html" class="btn btn-neutral float-right" title="Routing Planning Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="routing-planning-process.html" class="btn btn-neutral float-right" title="Routing Planning Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
