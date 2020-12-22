@@ -100,7 +100,7 @@ ENV/
 
 # mypy
 .mypy_cache/
-.idea/
 /tests/train-*.*
 /train-*.*
 ~$*
+poetry.lock
