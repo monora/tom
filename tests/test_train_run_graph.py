@@ -3,9 +3,9 @@
 
 """Graphing Tests for `Train runs` package."""
 import networkx as nx
+from tom import config
 
-from tom.tom import Train, SectionRun
-
+from tom.tom import Train, SectionRun\
 
 def test_train_run_graph_zero(train_ac_to_emm: Train):
     g = train_ac_to_emm.train_run_graph()
@@ -77,7 +77,7 @@ def _graphml_train_run_graph(t: Train, filename: str):
             g.nodes[node]['id'] = sr.section_id()
             g.nodes[node]['route_id'] = sr.section.route_id()
     # nx.readwrite.write_graphml(g, path=(tmpdir / 'train-ac-ff.graphml'))
-    nx.readwrite.write_graphml(g, path=(filename + '.graphml'))
+    nx.readwrite.write_graphml(g, path=config.output_file(filename, 'graphml'))
 
 
 def test_graphml_train_run_graph(yml_train: Train):
@@ -113,7 +113,7 @@ def test_location_graph_annex_4(train_annex_4):
 
 
 def _graphml_section_graph(g: nx.DiGraph, filename: str):
-    nx.readwrite.write_graphml(g, path=(filename + '.graphml'))
+    nx.readwrite.write_graphml(g, path=config.output_file(filename, 'graphml'))
 
 
 def test_section_graph(yml_train):

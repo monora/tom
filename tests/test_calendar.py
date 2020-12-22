@@ -4,14 +4,14 @@
 """Tests for `tom` package."""
 from typing import Any, Union
 
-from tom import tom
 import pandas as pd
+from tom import config
 
-from tom.tom import Train
+from tom.tom import Train, RouteSection
 
 
 def test_route_section_instance(ac_to_emm):
-    isinstance(ac_to_emm, tom.RouteSection)
+    isinstance(ac_to_emm, RouteSection)
     assert str(ac_to_emm.first_day()) == "2021-12-01"
     assert str(ac_to_emm.last_day()) == "2021-12-31"
 
@@ -101,7 +101,7 @@ def test_train_to_df(yml_train):
     # sec_dfs = t.section_dataframes()
     # if t.id() == 'TR-ID1-3':
     assert len(df) == expected[t.id()]
-    df.to_excel(f"train-{t.id()}.xlsx")
+    df.to_excel(config.output_file(f"train-{t.id()}", "xlsx"))
     _to_csv(df, t)
 
 
@@ -115,4 +115,4 @@ def _fmt_timestamp(x):
 def _to_csv(df: pd.DataFrame, t: Train):
     for c in df.columns:
         df[c] = df[c].apply(_fmt_timestamp)
-    df.to_csv(f"train-{t.id()}.csv")
+    df.to_csv(config.output_file(f"train-{t.id()}", "csv"))
