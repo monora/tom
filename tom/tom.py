@@ -11,6 +11,7 @@ This module defines the TOM domain model. The main classes are:
   the train.
 
 """
+import logging
 from datetime import datetime, timedelta, date
 from pathlib import PosixPath
 from typing import List, Dict
@@ -39,9 +40,10 @@ class RouteSection:
     departure_stop_time: timedelta
     departure_station: str
     arrival_station: str
-    departure_timestamps: DatetimeIndex
+    departure_timestamps: DatetimeIndex = None
     section_id: str = '0'
     version: int = 1
+    is_section_complete: bool = False
 
     def __init__(self, departure_station: str,
                  arrival_station: str,
@@ -72,6 +74,9 @@ class RouteSection:
         Return an iterator over all SectionRuns of this RouteSection
         """
         return (SectionRun(self, dt) for dt in self.departure_timestamps)
+
+    def is_complete(self):
+        return self.is_section_complete
 
     def version_info(self):
         return f"{self.section_id}v{self.version}"
@@ -149,6 +154,33 @@ class RouteSection:
         return ((self.departure_station, self.departure_time()),
                 (self.arrival_station, self.arrival_time()))
 
+    def complete_from_predecessor(self, pred):
+        """
+
+        :type pred: RouteSection
+        """
+        if self.is_section_complete:
+            return
+
+        dts = pred.departure_timestamps + pred.travel_time + self.departure_stop_time
+        self._adjust_calender(dts)
+
+    def complete_from_successor(self, succ):
+        if self.is_section_complete:
+            return
+
+        dts = succ.departure_timestamps - self.travel_time - succ.departure_stop_time
+        self._adjust_calender(dts)
+
+    def _adjust_calender(self, dts: DatetimeIndex):
+        if self.departure_timestamps is not None:
+            dates = [x.date() for x in self.departure_timestamps]
+            dts = pd.DatetimeIndex(filter(lambda x: x.date() in dates, dts))
+            if len(dts) == 0:
+                raise TomError(f"RouteSection {self} has empty calender")
+        self.departure_timestamps = dts
+        self.is_section_complete = True
+
 
 SINGLE_SOURCE = 'single-source'
 SINGLE_TARGET = 'single-target'
@@ -165,7 +197,8 @@ class Train:
         self.core_id = core_id
         self.sections = sections
 
-        self._check_sections()
+        self._repair_incomplete_sections()
+        self._check_invariant()
 
     def __str__(self):
         return self.train_id()
@@ -229,7 +262,32 @@ class Train:
             sg.add_edge(ui, vi)
         return sg
 
+    def _basic_section_graph(self) -> nx.DiGraph:
+        sg = nx.DiGraph()
+        for v in self.sections:
+            sg.add_node(v)
+            for u in self.sections:
+                if v.arrival_station == u.departure_station:
+                    sg.add_edge(v, u)
+        return sg
+
+    def _repair_incomplete_sections(self):
+        construction_begins = list(filter(RouteSection.is_complete, self.sections))
+        sg = self._basic_section_graph()
+        for cb in construction_begins:
+            for pred, successors in nx.bfs_successors(sg, cb):
+                succ: RouteSection
+                for succ in successors:
+                    succ.complete_from_predecessor(pred)
+        sg = sg.reverse()
+        for cb in construction_begins:
+            for pred, successors in nx.bfs_successors(sg, cb):
+                succ: RouteSection
+                for succ in successors:
+                    succ.complete_from_successor(pred)
+
     def extended_train_run_graph(self, use_sections=True) -> nx.DiGraph:
+
         g = self.train_run_graph()
         nodes: List[SectionRun] = list(g.nodes)
         for v in nodes:
@@ -289,6 +347,19 @@ class Train:
         :rtype: year of departure_time of first section
         """
         return self.sections[0].departure_time().year
+
+    def _check_invariant(self):
+        self._check_sections()
+        self._check_train_run_graph()
+
+    def _check_train_run_graph(self):
+        trg = self.train_run_graph()
+        for v in trg.nodes:
+            out_degree = trg.out_degree(v)
+            if out_degree > 1:
+                out_neighbors = list(map(str, trg.successors(v)))
+                logging.error("Section run %s has %d successors: %s", v, out_degree, out_neighbors)
+                raise TomError(f"Section runs can have at least one successor: {v}")
 
 
 class SectionRun:
@@ -413,29 +484,42 @@ def _make_section_from_dict(section: dict) -> RouteSection:
         tt = pd.Timedelta(section['travel_time'])
     except TypeError as e:
         raise e
-    spec: dict = section['calendar']
-    begin = spec['begin']
-    end = spec['end']
-    mask = spec.get('mask', 'D')
-    departure_time = pd.Timedelta(section.get('departure_time', 0))
+    departure_time = section.get('departure_time', None)
     stop_time = pd.Timedelta(section.get('stop_time', 0))
-    if mask != 'D':
-        dis = list(map(lambda x: pd.date_range(begin, end, freq=('W-' + x.upper())), mask.split()))
-        dts = dis[0]
-        for di in dis[1:]:
-            dts = dts.union(di)
-    else:
-        dts = pd.date_range(begin, end)
-    dts = dts + departure_time
-
+    cal = _make_calendar(section.get('calendar', None))
     result = RouteSection(departure_station=section['departure_station'],
                           arrival_station=section['arrival_station'],
                           travel_time=tt,
                           stop_time=stop_time,
-                          departure_timestamps=dts)
+                          departure_timestamps=cal)
+    if departure_time is not None and cal is not None:
+        result.departure_timestamps += pd.Timedelta(departure_time)
+        result.is_section_complete = True
     result.section_id = section.get('id', None)
     result.version = section.get('version', result.version)
     return result
+
+
+def _make_calendar(spec: dict):
+    if not spec:
+        return None
+
+    ndays = spec.get('ndays', None)
+    if ndays is not None:
+        return None
+        # FIXME
+
+    begin = spec['begin']
+    end = spec['end']
+    mask = spec.get('mask', 'D')
+    if mask != 'D':
+        dis = list(map(lambda x: pd.date_range(begin, end, freq=('W-' + x.upper())), mask.split()))
+        cal = dis[0]
+        for di in dis[1:]:
+            cal = cal.union(di)
+    else:
+        cal = pd.date_range(begin, end)
+    return cal
 
 
 def make_train_from_yml(file: PosixPath) -> Train:

@@ -45,6 +45,11 @@ def train_annex_4_2(shared_datadir):
     return _make_train(shared_datadir, 'train-annex-4-2')
 
 
+@pytest.fixture
+def train_condensed(shared_datadir):
+    return _make_train(shared_datadir, 'train-condensed')
+
+
 @pytest.fixture(params=["train-ac-ff",
                         "train-a-f",
                         "train-ac-ff-v2",
@@ -52,6 +57,7 @@ def train_annex_4_2(shared_datadir):
                         "train-annex-4",
                         "train-annex-4-2",
                         "train-annex-4-3",
+                        "train-condensed",
                         ])
 def yml_train(shared_datadir, request) -> Train:
     return _make_train(shared_datadir, request.param)

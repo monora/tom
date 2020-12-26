@@ -3,9 +3,10 @@
 
 """Graphing Tests for `Train runs` package."""
 import networkx as nx
-from tom import config
 
-from tom.tom import Train, SectionRun\
+from tom import config
+from tom.tom import Train, SectionRun
+
 
 def test_train_run_graph_zero(train_ac_to_emm: Train):
     g = train_ac_to_emm.train_run_graph()
@@ -120,3 +121,11 @@ def test_section_graph(yml_train):
     t = yml_train
     sg = t.section_graph()
     _graphml_section_graph(sg, f"route-section-graph-{t.id()}")
+
+
+def test_condensed(train_condensed):
+    t = train_condensed
+    sg = t.section_graph()
+    _graphml_section_graph(sg, f"route-section-graph-{t.id()}")
+    df = t.to_dataframe()
+    assert len(df) == 2

@@ -95,11 +95,12 @@ def test_train_to_df(yml_train):
         'TR-12AB-2': 31,
         'TR-13AB-1': 31,
         'TR-13AB-2': 31,
+        'TR-23AB-1': 2,
     }
     t = yml_train
+    # if t.id() == 'TR-23AB-1':
+    #     sec_dfs = t.section_dataframes()
     df = t.to_dataframe()
-    # sec_dfs = t.section_dataframes()
-    # if t.id() == 'TR-ID1-3':
     assert len(df) == expected[t.id()]
     df.to_excel(config.output_file(f"train-{t.id()}", "xlsx"))
     _to_csv(df, t)
