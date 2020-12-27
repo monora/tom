@@ -5,7 +5,6 @@ sections:
     # New section from B to C with ID 6:
     # On Thu the train starts 45 min earlier (now overnight!)
     - departure_station: B
-      departure_time: '23:45:00'
       arrival_station: C
       # We augment travel time by 45 min to not break handover contracts at C!
       travel_time: '01:45:00'
@@ -15,7 +14,6 @@ sections:
         mask: 'Thu'
       id: 11.01
     - departure_station: B
-      departure_time: &b-departure '00:30:00'
       arrival_station: C
       travel_time: '01:00:00'
       calendar:
@@ -29,7 +27,6 @@ sections:
       version: 2
       id: 10.01
     - departure_station: A
-      departure_time: '23:30:00'
       arrival_station: C
       travel_time: '02:00:00'
       calendar:
@@ -48,7 +45,6 @@ sections:
         # no mask => daily
       id: 10.02
     - departure_station: E
-      departure_time: *b-departure
       arrival_station: F
       travel_time: '04:00:00'
       calendar:
@@ -59,7 +55,6 @@ sections:
         mask: 'Wed Thu Fri Sat Sun Mon'
       id: 10.03
     - departure_station: E
-      departure_time: *b-departure
       arrival_station: G
       travel_time: '08:00:00'
       calendar:

@@ -44,6 +44,7 @@ class RouteSection:
     section_id: str = '0'
     version: int = 1
     is_section_complete: bool = False
+    is_construction_start: bool = False
 
     def __init__(self, departure_station: str,
                  arrival_station: str,
@@ -163,21 +164,27 @@ class RouteSection:
             return
 
         dts = pred.departure_timestamps + pred.travel_time + self.departure_stop_time
-        self._adjust_calender(dts)
+        self._adjust_departure_times(dts)
 
     def complete_from_successor(self, succ):
         if self.is_section_complete:
             return
 
         dts = succ.departure_timestamps - self.travel_time - succ.departure_stop_time
-        self._adjust_calender(dts)
+        self._adjust_departure_times(dts)
 
-    def _adjust_calender(self, dts: DatetimeIndex):
+    def _adjust_departure_times(self, dts: DatetimeIndex):
+        """
+        Only called if departure_time was not set explicitly: Compute it from neighbor
+        :param dts: departure_times computed from travel time to neighbor
+        """
         if self.departure_timestamps is not None:
-            dates = [x.date() for x in self.departure_timestamps]
-            dts = pd.DatetimeIndex(filter(lambda x: x.date() in dates, dts))
-            if len(dts) == 0:
-                raise TomError(f"RouteSection {self} has empty calender")
+            my_date_set = [x.date() for x in self.departure_timestamps]
+            my_date_times = list(filter(lambda x: x.date() in my_date_set, dts))
+            if len(my_date_times) == 0:
+                # No connected section runs possible
+                return
+            dts = pd.DatetimeIndex(my_date_times)
         self.departure_timestamps = dts
         self.is_section_complete = True
 
@@ -264,11 +271,11 @@ class Train:
 
     def _basic_section_graph(self) -> nx.DiGraph:
         sg = nx.DiGraph()
-        for v in self.sections:
-            sg.add_node(v)
-            for u in self.sections:
-                if v.arrival_station == u.departure_station:
-                    sg.add_edge(v, u)
+        for u in self.sections:
+            sg.add_node(u)
+            for v in self.sections:
+                if u.arrival_station == v.departure_station:
+                    sg.add_edge(u, v)
         return sg
 
     def _repair_incomplete_sections(self):
@@ -495,6 +502,8 @@ def _make_section_from_dict(section: dict) -> RouteSection:
     if departure_time is not None and cal is not None:
         result.departure_timestamps += pd.Timedelta(departure_time)
         result.is_section_complete = True
+        result.is_construction_start = True
+
     result.section_id = section.get('id', None)
     result.version = section.get('version', result.version)
     return result
@@ -503,11 +512,6 @@ def _make_section_from_dict(section: dict) -> RouteSection:
 def _make_calendar(spec: dict):
     if not spec:
         return None
-
-    ndays = spec.get('ndays', None)
-    if ndays is not None:
-        return None
-        # FIXME
 
     begin = spec['begin']
     end = spec['end']

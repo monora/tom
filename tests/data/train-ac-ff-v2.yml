@@ -21,7 +21,6 @@ sections:
       applicant_ru: 1080 # DB FV
       planning_im: 0080 # DB Netz
       departure_station: EMM
-      departure_time: &dep_time_emm 02:00:00
       arrival_station: FF
       travel_time: 10:00:00
       calendar:
@@ -46,7 +45,6 @@ sections:
       applicant_ru: 1080 # DB FV
       planning_im: 0080 # DB Netz
       departure_station: Venlo
-      departure_time: *dep_time_emm
       arrival_station: FF
       travel_time: '10:00:00'
       stop_time: 00:05:00

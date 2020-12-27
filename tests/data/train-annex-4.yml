@@ -19,7 +19,6 @@ sections:
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:30:00
       arrival_station: T
       travel_time: &s2-tt 07:30:00
       calendar:
@@ -41,7 +40,6 @@ sections:
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:10:00
       arrival_station: T
       travel_time: *s2-tt
       calendar:
@@ -63,7 +61,6 @@ sections:
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:30:00
       arrival_station: T
       travel_time: *s2-tt
       calendar:
