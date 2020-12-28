@@ -38,9 +38,11 @@ class RouteSection:
     """
     travel_time: timedelta
     departure_stop_time: timedelta
+    departure_daytime: timedelta
     departure_station: str
     arrival_station: str
-    departure_timestamps: DatetimeIndex = None
+    departure_timestamps: DatetimeIndex = DatetimeIndex([])
+    calendar: DatetimeIndex = None
     section_id: str = '0'
     version: int = 1
     is_section_complete: bool = False
@@ -49,23 +51,33 @@ class RouteSection:
     def __init__(self, departure_station: str,
                  arrival_station: str,
                  travel_time: timedelta,
-                 departure_timestamps: pd.DatetimeIndex,
+                 calendar: pd.DatetimeIndex,
+                 departure_daytime: pd.Timedelta = None,
                  stop_time: timedelta = pd.Timedelta(0)):
         """
         Creates a new route section from departure_station to arrival_station at well defined
         timestamps.
 
+        :param calendar: set of calendar days the train starts at departure_station
         :param departure_station: location where the train starts or breaks in
         :param arrival_station: location where the train stops or leaves
         :param travel_time: planned time from departure_station to arrival_station
-        :param departure_timestamps: timestamps at departure_station (must be same at each day)
+        :param departure_daytime: timetable daytime at departure_station
         :param stop_time: when station of departure is a train stop the stop_time > 0
         """
-        self.departure_timestamps = departure_timestamps
         self.travel_time = travel_time
         self.departure_stop_time = stop_time
         self.departure_station = departure_station
         self.arrival_station = arrival_station
+        self.calendar = calendar
+
+        if departure_daytime is not None:
+            self.departure_daytime = pd.Timedelta(departure_daytime)
+            if calendar is None:
+                raise TomError(f"Calendar must not be None for construction start section: {self}")
+            self.departure_timestamps = calendar + self.departure_daytime
+            self.is_section_complete = True
+            self.is_construction_start = True
 
     def __str__(self):
         return self.departure_station + '-' + self.arrival_station
@@ -152,8 +164,8 @@ class RouteSection:
 
         :return: unique key among all sections of a train
         """
-        return ((self.departure_station, self.departure_time()),
-                (self.arrival_station, self.arrival_time()))
+        return ((self.departure_station, str(self.departure_time())),
+                (self.arrival_station, str(self.arrival_time())))
 
     def complete_from_predecessor(self, pred):
         """
@@ -178,15 +190,28 @@ class RouteSection:
         Only called if departure_time was not set explicitly: Compute it from neighbor
         :param dts: departure_times computed from travel time to neighbor
         """
-        if self.departure_timestamps is not None:
-            my_date_set = [x.date() for x in self.departure_timestamps]
-            my_date_times = list(filter(lambda x: x.date() in my_date_set, dts))
-            if len(my_date_times) == 0:
-                # No connected section runs possible
-                return
-            dts = pd.DatetimeIndex(my_date_times)
-        self.departure_timestamps = dts
-        self.is_section_complete = True
+        if self.is_section_complete:
+            return
+
+        computed_calendar = pd.DatetimeIndex([x.date() for x in dts])
+        if self.calendar is None:
+            self.calendar = my_date_set = computed_calendar
+        else:
+            my_date_set = self.calendar
+        intersection = computed_calendar.intersection(my_date_set)
+        if len(intersection) == 0:
+            # No connected section runs possible
+            return
+        self.departure_daytime = self._compute_daytime(dts[0])
+        dts = intersection + self.departure_daytime
+        self.departure_timestamps = self.departure_timestamps.union(dts)
+        if len(self.calendar) == len(self.departure_timestamps):
+            self.is_section_complete = True
+
+    @staticmethod
+    def _compute_daytime(ts: pd.Timestamp):
+        t = ts.time()
+        return pd.Timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
 
 
 SINGLE_SOURCE = 'single-source'
@@ -344,10 +369,15 @@ class Train:
             raise TomError(f"Section IDs of train {self.train_id()} not unique: {section_ids}")
 
         # Check if section event coordinates are unique:
-        section_keys = [s.section_key() for s in self.sections]
-        if len(self.sections) != len(set(section_keys)):
+        key2section = dict()
+        for s in self.sections:
+            k = s.section_key()
+            v = key2section.get(k, [])
+            v.append(s)
+            key2section[k] = v
+        if len(self.sections) != len(key2section):
             raise TomError(
-                f"Section keys of train {self.train_id()} not unique: {section_keys}")
+                f"Section keys of train {self.train_id()} not unique: {key2section}")
 
     def timetable_year(self) -> int:
         """
@@ -491,18 +521,16 @@ def _make_section_from_dict(section: dict) -> RouteSection:
         tt = pd.Timedelta(section['travel_time'])
     except TypeError as e:
         raise e
-    departure_time = section.get('departure_time', None)
     stop_time = pd.Timedelta(section.get('stop_time', 0))
     cal = _make_calendar(section.get('calendar', None))
+    departure_daytime = section.get('departure_time', None)
     result = RouteSection(departure_station=section['departure_station'],
                           arrival_station=section['arrival_station'],
                           travel_time=tt,
                           stop_time=stop_time,
-                          departure_timestamps=cal)
-    if departure_time is not None and cal is not None:
-        result.departure_timestamps += pd.Timedelta(departure_time)
-        result.is_section_complete = True
-        result.is_construction_start = True
+                          calendar=cal,
+                          departure_daytime=departure_daytime
+                          )
 
     result.section_id = section.get('id', None)
     result.version = section.get('version', result.version)

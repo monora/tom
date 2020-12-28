@@ -5,13 +5,15 @@ from tom.tom import *
 
 @pytest.fixture()
 def ac_to_emm():
-    begin = '2021-12-01 23:50:00'
+    begin = '2021-12-01'
     cal = pd.date_range(begin, periods=31, freq='D')
     travel_time = timedelta(hours=2, minutes=10)
     r = RouteSection(departure_station="AC",
                      arrival_station="EMM",
                      travel_time=travel_time,
-                     departure_timestamps=cal)
+                     calendar=cal,
+                     departure_daytime='23:50:00'
+                     )
     return r
 
 

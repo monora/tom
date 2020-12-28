@@ -19,7 +19,6 @@ sections:
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:40:00
       arrival_station: T
       travel_time: &s2-tt 07:30:00
       calendar:
@@ -34,18 +33,17 @@ sections:
       arrival_station: H1
       travel_time: '24:20:00'
       calendar:
-        begin: '2021-02-04'
+        begin: '2021-02-05'
         end: '2021-02-06'
     - id: 11.02
       version: 1
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: '23:50:00'
       arrival_station: T
       travel_time: 07:30:00
       calendar:
-        begin: '2021-02-05'
+        begin: '2021-02-06'
         end: '2021-02-07'
     # Sec 3-4: Shorten calender
     # Change departure times
@@ -65,7 +63,6 @@ sections:
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:15:00
       arrival_station: T
       travel_time: *s2-tt
       calendar:
@@ -88,7 +85,6 @@ sections:
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:15:00
       arrival_station: T
       travel_time: *s2-tt
       calendar:
@@ -103,16 +99,15 @@ sections:
       arrival_station: H1
       travel_time: '22:30:00'
       calendar:
-        begin: '2021-02-15'
+        begin: '2021-02-16'
         end: '2021-02-20'
     - id: 31.02
       version: 1
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: '23:40:00'
       arrival_station: T
       travel_time: *s2-tt
       calendar:
-        begin: '2021-02-15'
+        begin: '2021-02-16'
         end: '2021-02-20'

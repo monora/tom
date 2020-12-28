@@ -21,6 +21,7 @@ def test_route_section_instance(ac_to_emm):
     assert str(ac_to_emm.departure_time()) == '2021-12-01 23:50:00'
     assert str(ac_to_emm.arrival_time()) == '2021-12-02 02:00:00'
     assert ac_to_emm.departure_stop_time == pd.Timedelta(0)
+    assert ac_to_emm.departure_daytime == pd.Timedelta('23:50:00')
 
 
 def test_to_dataframe(ac_to_emm):
@@ -101,9 +102,9 @@ def test_train_to_df(yml_train):
     # if t.id() == 'TR-23AB-1':
     #     sec_dfs = t.section_dataframes()
     df = t.to_dataframe()
-    assert len(df) == expected[t.id()]
     df.to_excel(config.output_file(f"train-{t.id()}", "xlsx"))
     _to_csv(df, t)
+    assert len(df) == expected[t.id()]
 
 
 def _fmt_timestamp(x):
