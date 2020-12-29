@@ -247,7 +247,7 @@ to excel or csv representing the time table of the train. See :download:`example
 This is the timetable of version 1 of TR-12ABv1:
 
 .. csv-table:: Timetable TR-12ABv1
-   :file: ../tests/train-TR-12AB-1.csv
+   :file: ../build/TR-12AB1/train-TR-12AB-1.csv
    :header-rows: 1
 
 .. _example-annex-4-1:
@@ -309,7 +309,7 @@ of `TrainRun.train_id()`. Here `10.01` for the train starting at `00:10` and `20
 departing at `23:50` at station `S`.
 
 .. csv-table:: Timetable TRID1v01
-   :file: ../tests/train-TR-ID1-1.csv
+   :file: ../build/TR-ID1-1/train-TR-ID1-1.csv
    :header-rows: 1
 
 Download the timetable as Excel here: :download:`examples/train-TR-ID1-1.xlsx`.
