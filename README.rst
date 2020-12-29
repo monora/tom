@@ -13,6 +13,9 @@ Train Object Model
         :target: https://tom.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/monora/tom/test-binder
+
 .. _JSG: http://taf-jsg.info/
 .. _Route Domain Model: https://monora.github.io/tom/domainmodel.html
 .. _Example 1: https://monora.github.io/tom/domainmodel.html#example-train-from-amsterdam-to-frankfurt

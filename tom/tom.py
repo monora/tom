@@ -111,6 +111,7 @@ class RouteSection:
         result += f"Calender  : {fd} to {ld}\n"
         result += f"Start   at: {dep} in {self.departure_station}\n"
         result += f"Arrival at: {arr} in {self.arrival_station}\n"
+        result += f"Successors: {self.successors}"
         return result
 
     def first_day(self) -> date:
@@ -298,7 +299,7 @@ class Train:
             sg.add_edge(ui, vi)
         return sg
 
-    def _basic_section_graph(self) -> nx.DiGraph:
+    def basic_section_graph(self) -> nx.DiGraph:
         sg = nx.DiGraph()
         id2section = dict()
         for u in self.sections:
@@ -318,7 +319,7 @@ class Train:
 
     def _repair_incomplete_sections(self):
         construction_begins = list(filter(RouteSection.is_complete, self.sections))
-        sg = self._basic_section_graph()
+        sg = self.basic_section_graph()
         for cb in construction_begins:
             for pred, successors in nx.bfs_successors(sg, cb):
                 succ: RouteSection
