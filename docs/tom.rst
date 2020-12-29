@@ -12,6 +12,14 @@ tom.cli module
     :undoc-members:
     :show-inheritance:
 
+tom.config module
+-----------------
+
+.. automodule:: tom.config
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tom.tom module
 --------------
 
