@@ -393,10 +393,16 @@ class Train:
         trg = self.train_run_graph()
         for v in trg.nodes:
             out_degree = trg.out_degree(v)
-            if out_degree > 1:
-                out_neighbors = list(map(str, trg.successors(v)))
-                logging.error("Section run %s has %d successors: %s", v, out_degree, out_neighbors)
-                raise TomError(f"Section runs can have at least one successor: {v}")
+            in_degree = trg.in_degree(v)
+            if out_degree > 1 or in_degree > 1:
+                logging.error("Section run %s departs %d times and arrives %d times", v, out_degree, in_degree)
+                if out_degree > 1:
+                    out_neighbors = list(map(str, trg.successors(v)))
+                    logging.error("Departures: %s", out_neighbors)
+                if in_degree > 1:
+                    in_neighbors = list(map(str, trg.predecessors(v)))
+                    logging.error("Arrivals: %s", in_neighbors)
+                raise TomError(f"Invalid section run design for: {v}")
 
 
 class SectionRun:

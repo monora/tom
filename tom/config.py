@@ -19,7 +19,10 @@ def output_dir() -> Path:
         return Path(PROJECT_ROOT) / '../build'
 
 
-def output_file(filename: str, suffix: str = '') -> Path:
+def output_file(filename: str, subdir: str = '.', suffix: str = '') -> Path:
     if len(suffix) > 0:
         filename = filename + '.' + suffix
-    return output_dir() / filename
+    p = output_dir() / str(subdir)
+    # Ensure subdir exists
+    p.mkdir(parents=True, exist_ok=True)
+    return p / filename

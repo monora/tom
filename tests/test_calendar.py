@@ -97,12 +97,13 @@ def test_train_to_df(yml_train):
         'TR-13AB-1': 31,
         'TR-13AB-2': 31,
         'TR-23AB-1': 2,
+        'TR-23AB-2': 2,
     }
     t = yml_train
-    # if t.id() == 'TR-23AB-1':
-    #     sec_dfs = t.section_dataframes()
+    if t.id() == 'TR-ID1-2':
+         sec_dfs = t.section_dataframes()
     df = t.to_dataframe()
-    df.to_excel(config.output_file(f"train-{t.id()}", "xlsx"))
+    df.to_excel(config.output_file(f"train-{t.id()}", subdir=t.id(), suffix="xlsx"))
     _to_csv(df, t)
     assert len(df) == expected[t.id()]
 
@@ -117,4 +118,4 @@ def _fmt_timestamp(x):
 def _to_csv(df: pd.DataFrame, t: Train):
     for c in df.columns:
         df[c] = df[c].apply(_fmt_timestamp)
-    df.to_csv(config.output_file(f"train-{t.id()}", "csv"))
+    df.to_csv(config.output_file(f"train-{t.id()}", subdir=t.id(), suffix="csv"))

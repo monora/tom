@@ -78,7 +78,9 @@ def _graphml_train_run_graph(t: Train, filename: str):
             g.nodes[node]['id'] = sr.section_id()
             g.nodes[node]['route_id'] = sr.section.route_id()
     # nx.readwrite.write_graphml(g, path=(tmpdir / 'train-ac-ff.graphml'))
-    nx.readwrite.write_graphml(g, path=config.output_file(filename, 'graphml'))
+    nx.readwrite.write_graphml(g, path=config.output_file(filename,
+                                                          subdir=t.id(),
+                                                          suffix='graphml'))
 
 
 def test_graphml_train_run_graph(yml_train: Train):
@@ -113,19 +115,19 @@ def test_location_graph_annex_4(train_annex_4):
     assert list(nx.topological_sort(lg)) == ['D', 'S', 'H1', 'T']
 
 
-def _graphml_section_graph(g: nx.DiGraph, filename: str):
-    nx.readwrite.write_graphml(g, path=config.output_file(filename, 'graphml'))
+def _graphml_section_graph(g: nx.DiGraph, filename: str, id):
+    nx.readwrite.write_graphml(g, path=config.output_file(filename, subdir=id, suffix='graphml'))
 
 
 def test_section_graph(yml_train):
     t = yml_train
     sg = t.section_graph()
-    _graphml_section_graph(sg, f"route-section-graph-{t.id()}")
+    _graphml_section_graph(sg, f"route-section-graph-{t.id()}", t.id())
 
 
 def test_condensed(train_condensed):
     t = train_condensed
     sg = t.section_graph()
-    _graphml_section_graph(sg, f"route-section-graph-{t.id()}")
+    _graphml_section_graph(sg, f"route-section-graph-{t.id()}", t.id())
     df = t.to_dataframe()
     assert len(df) == 2

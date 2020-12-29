@@ -1,0 +1,30 @@
+---
+coreID: 23AB
+version: 1
+sections:
+    - departure_station: A
+      arrival_station: B
+      travel_time: '01:00:00'
+      id: '10.10'
+    - departure_station: B
+      arrival_station: C
+      travel_time: '02:00:00'
+      departure_time: '23:30:00'
+      calendar:
+        begin: '2020-12-01'
+        end: '2020-12-02'
+      id: '10.20'
+    - departure_station: C
+      arrival_station: D
+      travel_time: '23:00:00'
+      calendar:
+        begin: '2020-12-02'
+        end: '2020-12-02'
+      id: '10.30'
+    - departure_station: C
+      arrival_station: E
+      travel_time: '04:00:00'
+      calendar:
+        begin: '2020-12-03'
+        end: '2020-12-03'
+      id: '10.31'
