@@ -16,6 +16,8 @@ sections:
         end: &ac-end '2021-12-31'
         # train now starts one day later => Tue-Fri
         mask: 'Tue Wed Thu Fri'
+      succ:
+          - 10.02
     - id: 10.02
       version: 1
       applicant_ru: 1080 # DB FV
@@ -36,6 +38,8 @@ sections:
         begin: *ac-begin
         end: *ac-end
         mask: 'Sat Sun Mon'
+      succ:
+          - 20.02
     - id: 20.02
       version: 1
       applicant_ru: 1080 # DB FV

@@ -10,6 +10,8 @@ sections:
         # Sundays the train starting from A passes B
         mask: 'Mon Tue Wed Thu Fri Sat'
       id: 10.01
+      succ:
+          - 10.02
     - departure_station: A
       arrival_station: C
       travel_time: '02:00:00'
@@ -19,6 +21,8 @@ sections:
         # Sunday in B => Saturday start in A
         mask: 'Sat'
       id: 20.01
+      succ:
+          - 10.02
     - departure_station: C
       departure_time: '01:30:00'
       arrival_station: E
@@ -28,6 +32,9 @@ sections:
         end: *b-end
         # no mask => daily
       id: 10.02
+      succ:
+          - 10.03
+          - 30.03
     - departure_station: E
       arrival_station: F
       travel_time: '04:00:00'

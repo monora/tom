@@ -47,6 +47,7 @@ class RouteSection:
     version: int = 1
     is_section_complete: bool = False
     is_construction_start: bool = False
+    successors: List[str] = []
 
     def __init__(self, departure_station: str,
                  arrival_station: str,
@@ -213,6 +214,9 @@ class RouteSection:
         t = ts.time()
         return pd.Timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
 
+    def can_connect_to(self, other) -> bool:
+        return self.arrival_station == other.departure_station
+
 
 SINGLE_SOURCE = 'single-source'
 SINGLE_TARGET = 'single-target'
@@ -296,10 +300,19 @@ class Train:
 
     def _basic_section_graph(self) -> nx.DiGraph:
         sg = nx.DiGraph()
+        id2section = dict()
         for u in self.sections:
+            id2section[u.section_id] = u
             sg.add_node(u)
-            for v in self.sections:
-                if u.arrival_station == v.departure_station:
+        for u in self.sections:
+            for v_id in u.successors:
+                v = id2section.get(v_id, None)
+                if v is None:
+                    logging.warning(f"Invalid successor for section {u} ignored")
+                else:
+                    if not u.can_connect_to(v):
+                        logging.warning(f"Section {u} can not connect to successor {v}. "
+                                        "Edge is ignored")
                     sg.add_edge(u, v)
         return sg
 
@@ -395,7 +408,8 @@ class Train:
             out_degree = trg.out_degree(v)
             in_degree = trg.in_degree(v)
             if out_degree > 1 or in_degree > 1:
-                logging.error("Section run %s departs %d times and arrives %d times", v, out_degree, in_degree)
+                logging.error("Section run %s departs %d times and arrives %d times", v, out_degree,
+                              in_degree)
                 if out_degree > 1:
                     out_neighbors = list(map(str, trg.successors(v)))
                     logging.error("Departures: %s", out_neighbors)
@@ -540,6 +554,7 @@ def _make_section_from_dict(section: dict) -> RouteSection:
 
     result.section_id = section.get('id', None)
     result.version = section.get('version', result.version)
+    result.successors = section.get('succ', [])
     return result
 
 

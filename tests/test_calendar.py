@@ -100,8 +100,8 @@ def test_train_to_df(yml_train):
         'TR-23AB-2': 2,
     }
     t = yml_train
-    if t.id() == 'TR-ID1-2':
-         sec_dfs = t.section_dataframes()
+    # if t.id() == 'TR-ID1-2':
+    #     sec_dfs = t.section_dataframes()
     df = t.to_dataframe()
     df.to_excel(config.output_file(f"train-{t.id()}", subdir=t.id(), suffix="xlsx"))
     _to_csv(df, t)

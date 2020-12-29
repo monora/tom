@@ -6,6 +6,8 @@ sections:
       arrival_station: B
       travel_time: '01:00:00'
       id: '10.10'
+      succ:
+          - '10.20'
     - departure_station: B
       arrival_station: C
       travel_time: '02:00:00'
@@ -14,6 +16,9 @@ sections:
         begin: '2020-12-01'
         end: '2020-12-02'
       id: '10.20'
+      succ:
+          - '10.30'
+          - '10.31'
     - departure_station: C
       arrival_station: D
       travel_time: '23:00:00'
