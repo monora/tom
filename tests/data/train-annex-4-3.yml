@@ -14,17 +14,15 @@ sections:
       calendar:
         begin: '2021-02-01'
         end: '2021-02-04'
+      succ:
+          - 12.02
     - id: 12.02
       version: 2
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H2
-      departure_time: 00:40:00
       arrival_station: T
       travel_time: &s2-tt 07:30:00
-      calendar:
-        begin: '2021-02-02'
-        end: '2021-02-05'
     - id: 11.01
       version: 1
       applicant_ru: RU1
@@ -36,17 +34,15 @@ sections:
       calendar:
         begin: '2021-02-04'
         end: '2021-02-06'
+      succ:
+          - 11.02
     - id: 11.02
       version: 1
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: '23:50:00'
       arrival_station: T
       travel_time: 07:30:00
-      calendar:
-        begin: '2021-02-05'
-        end: '2021-02-07'
     # Sec 3-4: Shorten calender
     # Change departure times
     - id: 20.01
@@ -60,17 +56,15 @@ sections:
       calendar:
         begin: '2021-02-11'
         end: '2021-02-13'
+      succ:
+          - 20.02
     - id: 20.02
       version: 2
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:15:00
       arrival_station: T
       travel_time: *s2-tt
-      calendar:
-        begin: '2021-02-13'
-        end: '2021-02-15'
     # Shorten calender of D-T
     - id: 30.01
       version: 2
@@ -83,17 +77,15 @@ sections:
       calendar:
         begin: '2021-02-08'
         end: '2021-02-11'
+      succ:
+          - 30.02
     - id: 30.02
       version: 2
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: 00:15:00
       arrival_station: T
       travel_time: *s2-tt
-      calendar:
-        begin: '2021-02-09'
-        end: '2021-02-12'
     - id: 31.01
       version: 1
       applicant_ru: RU1
@@ -105,14 +97,12 @@ sections:
       calendar:
         begin: '2021-02-15'
         end: '2021-02-20'
+      succ:
+          - 31.02
     - id: 31.02
       version: 1
       applicant_ru: RU2
       planning_im: IM2
       departure_station: H1
-      departure_time: '23:40:00'
       arrival_station: T
       travel_time: *s2-tt
-      calendar:
-        begin: '2021-02-15'
-        end: '2021-02-20'
