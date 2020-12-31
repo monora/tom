@@ -73,16 +73,16 @@ These are the resulting new train runs:
 
    TrainRun graph of example Annex 4 version 2.
 
-You can download this graph as GraphML_ here: :download:`examples/train-TR-ID1-2.graphml`_.
+You can download this graph as GraphML_ here: :download:`examples/train-TR-ID1-2.graphml`.
 
 Timetable v2
 ~~~~~~~~~~~~
 
 .. csv-table:: Timetable TR-ID1-2
-   :file: ../tests/train-TR-ID1-2.csv
+   :file: ../build/TR-ID1-2/train-TR-ID1-2.csv
    :header-rows: 1
 
-Download the time table for `Train-ID1v2` here: :download:`examples/train-TR-ID1-2.xlsx`_.
+Download the time table for `Train-ID1v2` here: :download:`examples/train-TR-ID1-2.xlsx`.
 
 Planning Process v2
 ~~~~~~~~~~~~~~~~~~~

@@ -2,7 +2,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -27,10 +27,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -164,6 +164,7 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
@@ -171,6 +172,7 @@
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -181,6 +183,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.SectionRun.arrival_at_departure_station">arrival_at_departure_station() (tom.tom.SectionRun method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.arrival_station">arrival_station (tom.tom.RouteSection attribute)</a>
 </li>
       <li><a href="tom.html#tom.tom.SectionRun.arrival_station">arrival_station() (tom.tom.SectionRun method)</a>
 </li>
@@ -197,10 +201,30 @@
   </ul></td>
 </tr></table>
 
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.Train.basic_section_graph">basic_section_graph() (tom.tom.Train method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.RouteSection.calendar">calendar (tom.tom.RouteSection attribute)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.can_connect_to">can_connect_to() (tom.tom.RouteSection method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.complete_from_predecessor">complete_from_predecessor() (tom.tom.RouteSection method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.RouteSection.complete_from_successor">complete_from_successor() (tom.tom.RouteSection method)</a>
+</li>
       <li><a href="tom.html#tom.tom.SectionRun.connects_to">connects_to() (tom.tom.SectionRun method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.Train.core_id">core_id (tom.tom.Train attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -208,11 +232,21 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.RouteSection.departure_daytime">departure_daytime (tom.tom.RouteSection attribute)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.departure_station">departure_station (tom.tom.RouteSection attribute)</a>
+</li>
       <li><a href="tom.html#tom.tom.SectionRun.departure_station">departure_station() (tom.tom.SectionRun method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.departure_stop_time">departure_stop_time (tom.tom.RouteSection attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.SectionRun.departure_time">departure_time (tom.tom.SectionRun attribute)</a>
+</li>
       <li><a href="tom.html#tom.tom.RouteSection.departure_time">departure_time() (tom.tom.RouteSection method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.departure_timestamps">departure_timestamps (tom.tom.RouteSection attribute)</a>
 </li>
       <li><a href="tom.html#tom.tom.RouteSection.description">description() (tom.tom.RouteSection method)</a>
 </li>
@@ -244,6 +278,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.Train.id">id() (tom.tom.Train method)</a>
 </li>
+      <li><a href="tom.html#tom.tom.RouteSection.is_complete">is_complete() (tom.tom.RouteSection method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.RouteSection.is_construction_start">is_construction_start (tom.tom.RouteSection attribute)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.is_section_complete">is_section_complete (tom.tom.RouteSection attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -271,6 +313,18 @@
   </ul></td>
 </tr></table>
 
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.config.output_dir">output_dir() (in module tom.config)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.config.output_file">output_file() (in module tom.config)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -288,6 +342,8 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.SectionRun.section">section (tom.tom.SectionRun attribute)</a>
+</li>
       <li><a href="tom.html#tom.tom.Train.section_dataframes">section_dataframes() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.Train.section_graph">section_graph() (tom.tom.Train method)</a>
@@ -296,17 +352,25 @@
 </li>
       <li><a href="tom.html#tom.tom.SectionRun.section_id">section_id() (tom.tom.SectionRun method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.RouteSection.section_key">section_key() (tom.tom.RouteSection method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.Train.section_run_iterator">section_run_iterator() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.SectionRun">SectionRun (class in tom.tom)</a>
 </li>
-      <li><a href="tom.html#tom.tom.Train.sections">sections (tom.tom.Train attribute)</a>
+      <li><a href="tom.html#tom.tom.Route.sections">sections (tom.tom.Route attribute)</a>
+
+      <ul>
+        <li><a href="tom.html#tom.tom.Train.sections">(tom.tom.Train attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="tom.html#tom.tom.TrainRun.sections_runs">sections_runs (tom.tom.TrainRun attribute)</a>
 </li>
       <li><a href="tom.html#tom.tom.TrainRun.start_date">start_date() (tom.tom.TrainRun method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.successors">successors (tom.tom.RouteSection attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -328,13 +392,17 @@
 </li>
       <li><a href="tom.html#module-tom.cli">tom.cli (module)</a>
 </li>
+      <li><a href="tom.html#module-tom.config">tom.config (module)</a>
+</li>
       <li><a href="tom.html#module-tom.tom">tom.tom (module)</a>
+</li>
+      <li><a href="tom.html#tom.tom.TomError">TomError</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tom.html#tom.tom.TomError">TomError</a>
-</li>
       <li><a href="tom.html#tom.tom.Train">Train (class in tom.tom)</a>
+</li>
+      <li><a href="tom.html#tom.tom.TrainRun.train">train (tom.tom.TrainRun attribute)</a>
 </li>
       <li><a href="tom.html#tom.tom.Train.train_id">train_id() (tom.tom.Train method)</a>
 
@@ -350,6 +418,8 @@
 </li>
       <li><a href="tom.html#tom.tom.TrainRun">TrainRun (class in tom.tom)</a>
 </li>
+      <li><a href="tom.html#tom.tom.RouteSection.travel_time">travel_time (tom.tom.RouteSection attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -358,10 +428,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.RouteSection.validity">validity() (tom.tom.RouteSection method)</a>
 </li>
+      <li><a href="tom.html#tom.tom.RouteSection.version">version (tom.tom.RouteSection attribute)</a>
+
+      <ul>
+        <li><a href="tom.html#tom.tom.Train.version">(tom.tom.Train attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tom.html#tom.tom.RouteSection.version">version (tom.tom.RouteSection attribute)</a>
-</li>
       <li><a href="tom.html#tom.tom.RouteSection.version_info">version_info() (tom.tom.RouteSection method)</a>
 </li>
   </ul></td>

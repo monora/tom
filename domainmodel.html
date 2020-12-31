@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -208,8 +208,8 @@
 locations are called handover points. At each handover the responsibility for the train planning
 changes from IM to IM and RU to RU. The planning process is coordinated by the <cite>RoutingInfo
 .lead_ru</cite>.</p>
-<p>This <a class="reference external" href="https://en.wikipedia.org/wiki/Class_diagram">UML class diagram</a> <a class="footnote-reference" href="#f1" id="id1">[1]</a> shows the main concepts involved:</p>
-<div class="figure" id="id11">
+<p>This <a class="reference external" href="https://en.wikipedia.org/wiki/Class_diagram">UML class diagram</a> <a class="footnote-reference brackets" href="#f1" id="id1">1</a> shows the main concepts involved:</p>
+<div class="figure align-default" id="id11">
 <p class="plantuml">
 <img src="_images/plantuml-72f61406223b22d62774bac091bd88b239d61d6c.png" alt="class JourneyLocation &lt;&lt;TOM&gt;&gt; {
     id: LocationIdentifier
@@ -243,15 +243,15 @@ RouteSection o--  &quot;0..*&quot; PathRequest : planned for &lt;
 </p>
 <p class="caption"><span class="caption-text">Overview Routing Model</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </div>
-<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference" href="#f2" id="id2">[2]</a> must at least have two sections. All
+<p>An international <a class="reference internal" href="tom.html#tom.tom.Train" title="tom.tom.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train</span></code></a> <a class="footnote-reference brackets" href="#f2" id="id2">2</a> must at least have two sections. All
 <cite>RouteSections</cite> of a train are bundled in a <cite>RoutingInfo</cite>. The <em>Lead RU</em> is responsible for
 the correctness and communication of this information to all involved companies. The
 following constraint must hold for each <a class="reference internal" href="tom.html#tom.tom.RouteSection" title="tom.tom.RouteSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteSection</span></code></a>:</p>
 <div class="admonition-rule-sec-jl-journey-locations admonition">
-<p class="first admonition-title">Rule SEC-JL Journey Locations</p>
-<ul class="last simple">
-<li><cite>RouteSection.departure_station</cite> is a <em>Origin</em> or <em>Handover</em></li>
-<li><cite>RouteSection.arrival_station</cite> is a <em>Handover</em> or <em>Destination</em></li>
+<p class="admonition-title">Rule SEC-JL Journey Locations</p>
+<ul class="simple">
+<li><p><cite>RouteSection.departure_station</cite> is a <em>Origin</em> or <em>Handover</em></p></li>
+<li><p><cite>RouteSection.arrival_station</cite> is a <em>Handover</em> or <em>Destination</em></p></li>
 </ul>
 </div>
 <p>For each <cite>RouteSection</cite> the <cite>planning_im</cite> and <cite>applicant_ru</cite> exchange <em>PathRequest</em> and
@@ -266,7 +266,7 @@ about the <cite>RoutingInfo</cite>. Changes to this information have to be propa
 <h2>Train, RoutingInfo and RouteSection<a class="headerlink" href="#train-routinginfo-and-routesection" title="Permalink to this headline">¶</a></h2>
 <p>The following diagramm shows the three main classes of our proposition for the Route Domain Model. It
 describes the minimum information needed for a valid route information of an international train:</p>
-<div class="figure" id="id12">
+<div class="figure align-default" id="id12">
 <p class="plantuml">
 <img src="_images/plantuml-7ffcfb762a8d0a376eecc4d40eb2657c1b41bc22.png" alt="left to right direction
 
@@ -317,18 +317,18 @@ is incremented each time one or more RouteSections have changed.</p>
 <em>section runs</em> which have to connect properly in time at handover points. The timing attributes of
 a <cite>RouteSection</cite> serve this purpose:</p>
 <ul class="simple">
-<li><cite>calendar</cite> is a set of calendar days where the train starts at <cite>RouteSection.departure_station</cite></li>
-<li><cite>departure_time</cite> is the day time the train starts each day in <cite>calendar</cite></li>
-<li><cite>departure_stop_time</cite> planned stop time at a section handover station of departure</li>
-<li><cite>travel_time</cite> travel time from section station of departure to section station
-of arrival. This attribute is used to calculate the arrival time at station of arrival.</li>
+<li><p><cite>calendar</cite> is a set of calendar days where the train starts at <cite>RouteSection.departure_station</cite></p></li>
+<li><p><cite>departure_time</cite> is the day time the train starts each day in <cite>calendar</cite></p></li>
+<li><p><cite>departure_stop_time</cite> planned stop time at a section handover station of departure</p></li>
+<li><p><cite>travel_time</cite> travel time from section station of departure to section station
+of arrival. This attribute is used to calculate the arrival time at station of arrival.</p></li>
 </ul>
 <p>Only RouteSections have a calendar.  This is the set of starting days at the departure_station of a section.
 All timestamps in Train, TrainRun and SectionRuns (see next chapter) are calculated from these timing
 attributes.</p>
 <div class="admonition-rule-sec-cal-routesection-calendar-must-be-subset-of-timetable-year admonition">
-<p class="first admonition-title">Rule SEC-CAL RouteSection Calendar must be subset of timetable year</p>
-<p class="last">The <cite>RouteSection.calendar</cite> must be a subset of the timetable year of its train.</p>
+<p class="admonition-title">Rule SEC-CAL RouteSection Calendar must be subset of timetable year</p>
+<p>The <cite>RouteSection.calendar</cite> must be a subset of the timetable year of its train.</p>
 </div>
 <p>Because a train can have several starting RouteSections (i.e. different departure stations and
 dates) it makes no sense to assign a calender to a train. A calender must always be relativ to a fixed
@@ -341,11 +341,11 @@ Reference</em>) is needed!</p>
 <h3>Calendars<a class="headerlink" href="#calendars" title="Permalink to this headline">¶</a></h3>
 <p>In our model these classes have a calendar:</p>
 <ul class="simple">
-<li>A RouteSection defines the planned daily runs of a train</li>
-<li>A PathRequest is planned for a RouteSection</li>
-<li>A Path is created in response to a PathRequest of an RU to an IM</li>
+<li><p>A RouteSection defines the planned daily runs of a train</p></li>
+<li><p>A PathRequest is planned for a RouteSection</p></li>
+<li><p>A Path is created in response to a PathRequest of an RU to an IM</p></li>
 </ul>
-<div class="figure" id="id13">
+<div class="figure align-default" id="id13">
 <p class="plantuml">
 <img src="_images/plantuml-e95f27cfdd57b90203c974fe597845674de2404d.png" alt="class RoutingInfo {
     lead_ru: CompanyCode
@@ -378,14 +378,14 @@ PathRequest o-- &quot;0..*&quot; Path : response_to &lt;
 </div>
 <p>The following rules must hold for a consistent set of paths of a train:</p>
 <div class="admonition-rule-sec-cal-section-pathrequest-path-calendar-relationships admonition">
-<p class="first admonition-title">Rule SEC-CAL Section-PathRequest-Path calendar relationships</p>
-<ul class="last simple">
-<li>The calendar of a PathRequest must be a subset of the calendar of the section it is planned for.</li>
-<li>The calendar of a Path must be a subset of the calendar the PathRequest it is a response.</li>
-<li>The calendars of two different PathRequests of a RouteSection must be pairwise disjoint.</li>
-<li>The calendars of two different Paths of a PathRequest must be pairwise disjoint.</li>
-<li>The calender of a RouteSection must be the union of the calendars of its PathRequests.</li>
-<li>The calender of a PathRequest must be the union of the calendars of its Paths.</li>
+<p class="admonition-title">Rule SEC-CAL Section-PathRequest-Path calendar relationships</p>
+<ul class="simple">
+<li><p>The calendar of a PathRequest must be a subset of the calendar of the section it is planned for.</p></li>
+<li><p>The calendar of a Path must be a subset of the calendar the PathRequest it is a response.</p></li>
+<li><p>The calendars of two different PathRequests of a RouteSection must be pairwise disjoint.</p></li>
+<li><p>The calendars of two different Paths of a PathRequest must be pairwise disjoint.</p></li>
+<li><p>The calender of a RouteSection must be the union of the calendars of its PathRequests.</p></li>
+<li><p>The calender of a PathRequest must be the union of the calendars of its Paths.</p></li>
 </ul>
 </div>
 <p>The last two rules must hold when the path allocation process is finished. The other must always
@@ -397,16 +397,16 @@ have to be answered with an <cite>ErrorMessage</cite>.</p>
 <p>The method Train <a class="reference internal" href="tom.html#tom.tom.Train.train_id" title="tom.tom.Train.train_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_id()</span></code></a> computes the unique trainID from <cite>core_id</cite>, <cite>lead_ru</cite> and
 <cite>timetable_year</cite>.</p>
 <div class="admonition-rule-sec-uid-unique-section-id admonition">
-<p class="first admonition-title">Rule SEC-UID Unique Section ID</p>
-<p class="last"><a class="reference internal" href="tom.html#tom.tom.RouteSection.section_id" title="tom.tom.RouteSection.section_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RouteSection.section_id</span></code></a> must be unique within the set
+<p class="admonition-title">Rule SEC-UID Unique Section ID</p>
+<p><a class="reference internal" href="tom.html#tom.tom.RouteSection.section_id" title="tom.tom.RouteSection.section_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RouteSection.section_id</span></code></a> must be unique within the set
 of sections of a train.</p>
 </div>
 <p>The <cite>section_id</cite> is used to make the daily train IDs unique in case of overnight trains. Using the
 start date of a train results in duplicate train IDs. See example below.</p>
 <div class="admonition-rule-sec-ufk-unique-functional-key-of-sections admonition">
-<p class="first admonition-title">Rule SEC-UFK Unique functional key of sections</p>
+<p class="admonition-title">Rule SEC-UFK Unique functional key of sections</p>
 <p>A route section of a train is uniquely identified by this quadruple:</p>
-<p class="last"><cite>((section.departure_station, section.departure_time), (section.arrival_station, section.arrival_time))</cite></p>
+<p><cite>((section.departure_station, section.departure_time), (section.arrival_station, section.arrival_time))</cite></p>
 </div>
 <p>Therefore, if on some day in the calendar of a section the train from section station of departure
 <cite>AC</cite> to section station of arrival <cite>EMM</cite>
@@ -419,7 +419,7 @@ create fitting route section with section station of departure <cite>EMM</cite>.
 <p>We suggest <em>versioning</em> of trains and sections to support the synchronsisation of the domain model
 between the systems of the cooperating companies. If the lead RU changes a section its
 <cite>RouteSection.version</cite> is incremented. Same with the <cite>RoutingInfo.version</cite>. The receiver of a message
-containing the RoutingInfo <a class="footnote-reference" href="#f3" id="id3">[3]</a> can use this information to identify the change and act
+containing the RoutingInfo <a class="footnote-reference brackets" href="#f3" id="id3">3</a> can use this information to identify the change and act
 accordingly.</p>
 </div>
 </div>
@@ -428,9 +428,9 @@ accordingly.</p>
 <p>In this section we describe, how the daily train (i.e. a <cite>TrainRun</cite>) and section runs are computed
 from the routing info of a <cite>Train</cite> described in the previous section.</p>
 <ul class="simple">
-<li>A <a class="reference internal" href="tom.html#tom.tom.SectionRun" title="tom.tom.SectionRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">SectionRun</span></code></a> is derived for each day in the calendar of its <cite>RouteSection</cite></li>
-<li>A <a class="reference internal" href="tom.html#tom.tom.TrainRun" title="tom.tom.TrainRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainRun</span></code></a> is computed from SectionRuns that <em>fit</em> together. Two sections <cite>s, t</cite>
-fit together if <cite>s.connects_to(t) == True</cite> (see <a class="reference internal" href="tom.html#tom.tom.SectionRun.connects_to" title="tom.tom.SectionRun.connects_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connects_to()</span></code></a>).</li>
+<li><p>A <a class="reference internal" href="tom.html#tom.tom.SectionRun" title="tom.tom.SectionRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">SectionRun</span></code></a> is derived for each day in the calendar of its <cite>RouteSection</cite></p></li>
+<li><p>A <a class="reference internal" href="tom.html#tom.tom.TrainRun" title="tom.tom.TrainRun"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainRun</span></code></a> is computed from SectionRuns that <em>fit</em> together. Two sections <cite>s, t</cite>
+fit together if <cite>s.connects_to(t) == True</cite> (see <a class="reference internal" href="tom.html#tom.tom.SectionRun.connects_to" title="tom.tom.SectionRun.connects_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connects_to()</span></code></a>).</p></li>
 </ul>
 <p class="plantuml">
 <img src="_images/plantuml-de9c8fcffd69c4a0c12d9230073417c3632bd7d8.png" alt="left to right direction
@@ -483,7 +483,7 @@ Train o- &quot;1..365&quot; TrainRun
 <div class="section" id="sectionrun">
 <h3>SectionRun<a class="headerlink" href="#sectionrun" title="Permalink to this headline">¶</a></h3>
 <p>For each day in day in <cite>RouteSection.calendar</cite> a section run is created. All <cite>SectionRuns</cite> of a
-section differ only in the value of <code class="xref py py-meth docutils literal notranslate"><span class="pre">departure_time()</span></code>, which is the only
+section differ only in the value of <a class="reference internal" href="tom.html#tom.tom.SectionRun.departure_time" title="tom.tom.SectionRun.departure_time"><code class="xref py py-meth docutils literal notranslate"><span class="pre">departure_time()</span></code></a>, which is the only
 information stored in a SectionRun. All other values shown can be computed from this timestamp and
 the attributes of the section the run belongs to.</p>
 </div>
@@ -495,13 +495,13 @@ possible SectionRun sequences that fit together.</p>
 <p>We use a graph algorithm to compute all train runs. The graph used is best described by the examples
 shown below. The central methods are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="tom.html#tom.tom.Train.train_run_graph" title="tom.tom.Train.train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_graph()</span></code></a> which computes a directed Graph G = (SectionRun, E), where
-(s,t) in E &lt;=&gt; s.connects_to(t).</li>
-<li><a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> which adds to synthetic vertices to G, one at the
+<li><p><a class="reference internal" href="tom.html#tom.tom.Train.train_run_graph" title="tom.tom.Train.train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_graph()</span></code></a> which computes a directed Graph G = (SectionRun, E), where
+(s,t) in E &lt;=&gt; s.connects_to(t).</p></li>
+<li><p><a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> which adds to synthetic vertices to G, one at the
 beginning (<cite>START</cite>) connecting to departure stations of SectionRuns and one at the end (<cite>END</cite>)
-which connects to all stations of arrival of SectionRuns.</li>
-<li><a class="reference internal" href="tom.html#tom.tom.Train.train_run_iterator" title="tom.tom.Train.train_run_iterator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_iterator()</span></code></a> which computes all TrainRuns out of all path in G from
-<cite>START</cite> to <cite>END</cite>.</li>
+which connects to all stations of arrival of SectionRuns.</p></li>
+<li><p><a class="reference internal" href="tom.html#tom.tom.Train.train_run_iterator" title="tom.tom.Train.train_run_iterator"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_run_iterator()</span></code></a> which computes all TrainRuns out of all path in G from
+<cite>START</cite> to <cite>END</cite>.</p></li>
 </ul>
 </div>
 </div>
@@ -606,18 +606,15 @@ CoreID <cite>12AB</cite>:</p>
         <span class="nt">begin</span><span class="p">:</span> <span class="nl">&amp;ac-begin</span> <span class="s">&#39;2021-12-01&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;ac-end</span> <span class="s">&#39;2021-12-31&#39;</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu&#39;</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EMM</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="nl">&amp;dep_time_emm</span> <span class="l l-Scalar l-Scalar-Plain">02:00:00</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10:00:00</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-12-02&#39;</span> <span class="c1"># shifted by one day relativ to AC-EMM</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="nv">*ac-end</span>        <span class="c1"># substituted by &amp;ac-end</span>
-        <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri&#39;</span>
 
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
@@ -631,20 +628,16 @@ CoreID <cite>12AB</cite>:</p>
         <span class="nt">begin</span><span class="p">:</span> <span class="nv">*ac-begin</span>
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*ac-end</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun&#39;</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1080</span> <span class="c1"># DB FV</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0080</span> <span class="c1"># DB Netz</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*dep_time_emm</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">FF</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;10:00:00&#39;</span>
       <span class="nt">stop_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:05:00</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*ac-begin</span>
-        <span class="c1"># Must include 1.1. for last section run</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2022-01-01&#39;</span>
-        <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -652,26 +645,232 @@ CoreID <cite>12AB</cite>:</p>
 <h3>Section Graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h3>
 <p>The following picture shows the involved sections in compact notation. Notice the shift of calendars
 of the sections with ID 10.02 and 20.02 because they run over midnight.</p>
-<div class="figure" id="id14">
+<div class="figure align-default" id="id14">
 <img alt="Sections of example AC to FF" src="_images/example-ac-ff-section-graph.png" />
-<p class="caption"><span class="caption-text">Section Graph Example Amsterdam to Frankfurt</span></p>
+<p class="caption"><span class="caption-text">Section Graph Example Amsterdam to Frankfurt</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="trainrun-graph">
 <h3>TrainRun Graph<a class="headerlink" href="#trainrun-graph" title="Permalink to this headline">¶</a></h3>
 <p>The resulting <em>TrainRun-Graph</em> can be calculated with
 <a class="reference internal" href="tom.html#tom.tom.Train.extended_train_run_graph" title="tom.tom.Train.extended_train_run_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extended_train_run_graph()</span></code></a> and looks like this:</p>
-<div class="figure" id="id15">
+<div class="figure align-default" id="id15">
 <img alt="Example train run graph" src="_images/example-ac-ff-train-run-graph.png" />
-<p class="caption"><span class="caption-text">TrainRun Graph Example Amsterdam to Frankfurt</span></p>
+<p class="caption"><span class="caption-text">TrainRun Graph Example Amsterdam to Frankfurt</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </div>
-<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/47e4598cfaeb4e804114daaac2d9fa26/train-TR-12AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.graphml</span></code></a>.</p>
+<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/d7b3bd8e9b48c12bdd533c9e528b6c36/train-TR-12AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.graphml</span></code></a>.</p>
 </div>
 <div class="section" id="timetable">
 <h3>Timetable<a class="headerlink" href="#timetable" title="Permalink to this headline">¶</a></h3>
 <p>With <a class="reference internal" href="tom.html#tom.tom.Train.to_dataframe" title="tom.tom.Train.to_dataframe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a> you can create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a> which you can export
-to excel or csv representing the time table of the train. See <a class="reference download internal" download="" href="_downloads/74e7ce4d1d7f0a2ed9c241e9cf246925/train-TR-12AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.xlsx</span></code></a>.</p>
-<p>This is the timetable of version 1 of TR-12ABv1:</p>
+to excel or csv representing the time table of the train. See <a class="reference download internal" download="" href="_downloads/e5fcdc0b7877053d77d7631c57a7793d/train-TR-12AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-12AB-1.xlsx</span></code></a>.</p>
+<p>This is the timetable of version 1 of TR-12AB:</p>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">Timetable TR-12AB-v1</span><a class="headerlink" href="#id16" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>AC</p></th>
+<th class="head"><p>Venlo</p></th>
+<th class="head"><p>EMM</p></th>
+<th class="head"><p>FF</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-01</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">01.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">02.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">02.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-02</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">02.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">03.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">03.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/20.01/2021-12-03</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">03.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">04.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">04.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/20.01/2021-12-04</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">04.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">05.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">05.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/20.01/2021-12-05</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">05.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">06.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">06.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-06</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">06.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">07.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">07.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-07</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">07.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">08.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">08.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-08</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">08.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">09.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">09.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-09</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">09.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">10.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">10.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/20.01/2021-12-10</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">10.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">11.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">11.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/20.01/2021-12-11</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">11.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">12.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">12.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/20.01/2021-12-12</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">12.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">13.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">13.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-13</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">13.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">14.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">14.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-14</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">14.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">15.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">15.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-15</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">15.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">16.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">16.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-16</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">16.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">17.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">17.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/20.01/2021-12-17</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">17.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">18.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">18.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/20.01/2021-12-18</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">18.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">19.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">19.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/20.01/2021-12-19</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">19.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">20.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">20.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-20</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">20.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">21.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">21.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-21</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">21.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">22.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">22.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-22</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">22.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">23.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">23.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-23</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">23.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">24.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">24.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/20.01/2021-12-24</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">24.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">25.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">25.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/20.01/2021-12-25</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">25.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">26.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">26.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/20.01/2021-12-26</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">26.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">27.12.21</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">27.12.21</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-27</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">27.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">28.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">28.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-28</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">28.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">29.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">29.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/10.01/2021-12-29</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">29.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">30.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">30.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/12AB/2021/10.01/2021-12-30</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">30.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">31.12.21</span> <span class="pre">02:00</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">31.12.21</span> <span class="pre">02:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/12AB/2021/20.01/2021-12-31</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">31.12.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">01.01.22</span> <span class="pre">01:55</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">01.01.22</span> <span class="pre">12:00</span></code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section" id="example-train-annex-4">
@@ -716,17 +915,15 @@ a role in the routing planning process because it is no origin, destination or h
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-01&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:30:00</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s2-tt</span> <span class="l l-Scalar l-Scalar-Plain">07:30:00</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-02&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-08&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
@@ -738,17 +935,15 @@ a role in the routing planning process because it is no origin, destination or h
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-13&#39;</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:10:00</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-09&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="nl">&amp;s4-end</span> <span class="s">&#39;2021-02-15&#39;</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.01</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU1</span>
@@ -758,19 +953,17 @@ a role in the routing planning process because it is no origin, destination or h
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;22:30:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="nv">*s4-end</span>
+        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-15&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-20&#39;</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">30.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.02</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">applicant_ru</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RU2</span>
       <span class="nt">planning_im</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IM2</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:30:00</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
-      <span class="nt">calendar</span><span class="p">:</span>
-        <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-16&#39;</span>
-        <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-21&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -778,22 +971,22 @@ a role in the routing planning process because it is no origin, destination or h
 <h3>Section Graph<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>The following graph shows the involved sections in compact notation. Notice the shift of calendars
 of the sections with ID 10.02 and 20.02 because they run over midnight.</p>
-<div class="figure" id="id16">
+<div class="figure align-default" id="id17">
 <img alt="Sections of example in Annex 4" src="_images/example-annex-4-1-section-graph.png" />
-<p class="caption"><span class="caption-text">Section Graph Example Annex 4</span></p>
+<p class="caption"><span class="caption-text">Section Graph Example Annex 4</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </div>
 <p>We see 6 sections which define three routes, two starting from <cite>S</cite> and one from <cite>D</cite>.</p>
 </div>
 <div class="section" id="id6">
 <h3>TrainRun Graph<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>The resulting train run graph looks like this:</p>
-<div class="figure" id="id17">
+<div class="figure align-default" id="id18">
 <img alt="Example train run graph Annex 4" src="_images/example-annex-4-1-train-run-graph.png" />
-<p class="caption"><span class="caption-text">TrainRun graph of example Annex 4 initial planning status.</span></p>
+<p class="caption"><span class="caption-text">TrainRun graph of example Annex 4 initial planning status.</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </div>
 <p>Vertices (<cite>SectionRuns</cite>) with same color belong to the same <cite>RouteSection</cite>. The vertice label
 shows Section IDs and there versions (ID.version).</p>
-<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/97f4e4e72e522a85e1ab41ebc2d61b75/train-TR-ID1-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.graphml</span></code></a>.</p>
+<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/39e9dbcf7fdfeaa94d51fa8afb6f0f01/train-TR-ID1-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.graphml</span></code></a>.</p>
 </div>
 <div class="section" id="id7">
 <h3>Timetable<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
@@ -802,7 +995,147 @@ shows Section IDs and there versions (ID.version).</p>
 <cite>07/02</cite>. To make the ID unique on this operating day, we propose to add the <cite>section_id</cite> to be part
 of <cite>TrainRun.train_id()</cite>. Here <cite>10.01</cite> for the train starting at <cite>00:10</cite> and <cite>20.01</cite> for the train
 departing at <cite>23:50</cite> at station <cite>S</cite>.</p>
-<p>Download the timetable as Excel here: <a class="reference download internal" download="" href="_downloads/c2bf0e1e718727024788aaa1ae7e565a/train-TR-ID1-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.xlsx</span></code></a>.</p>
+<table class="docutils align-default" id="id19">
+<caption><span class="caption-text">Timetable TRID1v01</span><a class="headerlink" href="#id19" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>D</p></th>
+<th class="head"><p>S</p></th>
+<th class="head"><p>H1</p></th>
+<th class="head"><p>T</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/10.01/2021-02-01</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">01.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">02.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">02.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/10.01/2021-02-02</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">02.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">03.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">03.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/10.01/2021-02-03</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">03.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">04.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">04.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/10.01/2021-02-04</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">04.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">05.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">05.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/10.01/2021-02-05</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">05.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">06.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">06.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/10.01/2021-02-06</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">06.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">07.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">07.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/10.01/2021-02-07</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">07.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">08.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">08.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/20.01/2021-02-07</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">07.02.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">09.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">09.02.21</span> <span class="pre">07:40</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/20.01/2021-02-08</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">08.02.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">10.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">10.02.21</span> <span class="pre">07:40</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/20.01/2021-02-09</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">09.02.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">11.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">11.02.21</span> <span class="pre">07:40</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/20.01/2021-02-10</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">10.02.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">12.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">12.02.21</span> <span class="pre">07:40</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/20.01/2021-02-11</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">11.02.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">13.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">13.02.21</span> <span class="pre">07:40</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/20.01/2021-02-12</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">12.02.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">14.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">14.02.21</span> <span class="pre">07:40</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/20.01/2021-02-13</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">13.02.21</span> <span class="pre">23:50</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">15.02.21</span> <span class="pre">00:10</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">15.02.21</span> <span class="pre">07:40</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/30.01/2021-02-15</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Mon</span> <span class="pre">15.02.21</span> <span class="pre">02:00</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">16.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">16.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/30.01/2021-02-16</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tue</span> <span class="pre">16.02.21</span> <span class="pre">02:00</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">17.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">17.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/30.01/2021-02-17</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Wed</span> <span class="pre">17.02.21</span> <span class="pre">02:00</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">18.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">18.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/30.01/2021-02-18</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Thu</span> <span class="pre">18.02.21</span> <span class="pre">02:00</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">19.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">19.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TR/8350/ID1/2021/30.01/2021-02-19</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Fri</span> <span class="pre">19.02.21</span> <span class="pre">02:00</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">20.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">20.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TR/8350/ID1/2021/30.01/2021-02-20</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sat</span> <span class="pre">20.02.21</span> <span class="pre">02:00</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">21.02.21</span> <span class="pre">00:30</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Sun</span> <span class="pre">21.02.21</span> <span class="pre">08:00</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Download the timetable as Excel here: <a class="reference download internal" download="" href="_downloads/0b1a08fc663e2ab59d75568dbbe2fe60/train-TR-ID1-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-ID1-1.xlsx</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="example-train-with-three-ims">
@@ -896,7 +1229,6 @@ eg &lt;.. n1
 <span class="nt">coreID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">13AB</span>
 <span class="nt">sections</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">B</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="nl">&amp;b-departure</span> <span class="s">&#39;00:30:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;01:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
@@ -905,8 +1237,9 @@ eg &lt;.. n1
         <span class="c1"># Sundays the train starting from A passes B</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat&#39;</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.01</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:30:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;02:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
@@ -915,6 +1248,8 @@ eg &lt;.. n1
         <span class="c1"># Sunday in B =&gt; Saturday start in A</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat&#39;</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;01:30:00&#39;</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
@@ -924,8 +1259,10 @@ eg &lt;.. n1
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*b-end</span>
         <span class="c1"># no mask =&gt; daily</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
+      <span class="nt">succ</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.03</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">30.03</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">F</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;04:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
@@ -936,7 +1273,6 @@ eg &lt;.. n1
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.03</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
-      <span class="nt">departure_time</span><span class="p">:</span> <span class="nv">*b-departure</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">G</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;08:00:00&#39;</span>
       <span class="nt">calendar</span><span class="p">:</span>
@@ -949,44 +1285,37 @@ eg &lt;.. n1
 </div>
 <div class="section" id="id9">
 <h3>Section Graph<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<div class="figure" id="id18">
+<div class="figure align-default" id="id20">
 <img alt="Sections of example with 3 IMs" src="_images/example-a-f-section-graph.png" />
 <p class="caption"><span class="caption-text">Sections of example with 3 IMs. This example shows a situation, where the middle section ist used
-by both starting and ending sections.</span></p>
+by both starting and ending sections.</span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="id10">
 <h3>TrainRun Graph<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<div class="figure">
+<div class="figure align-default">
 <img alt="Example train run graph" src="_images/example-a-f-train-run-graph.png" />
 </div>
 <p>You can see 4 train runs starting from A, 31-4 starting from B, 4 arriving in G and 31-4 arriving
 in F.</p>
-<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/7737e967ae7ddcf9e6d6bb0bdb7bf884/train-TR-13AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.graphml</span></code></a>.</p>
+<p>You can download this graph as <a class="reference external" href="https://de.wikipedia.org/wiki/GraphML">GraphML</a> here: <a class="reference download internal" download="" href="_downloads/02a174396f9baa7cc3133ff76a46d9ef/train-TR-13AB-1.graphml"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.graphml</span></code></a>.</p>
 </div>
 <div class="section" id="timetable-as-excel-sheet">
 <h3>Timetable as Excel-Sheet<a class="headerlink" href="#timetable-as-excel-sheet" title="Permalink to this headline">¶</a></h3>
-<p>Download the time table for <cite>Train-13AB</cite> here: <a class="reference download internal" download="" href="_downloads/d363e50a1aed2e0743c6a57340a9c609/train-TR-13AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.xlsx</span></code></a>.</p>
+<p>Download the time table for <cite>Train-13AB</cite> here: <a class="reference download internal" download="" href="_downloads/9fb193af5ef3ea7f53cfb0ded2ee8a70/train-TR-13AB-1.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">examples/train-TR-13AB-1.xlsx</span></code></a>.</p>
 <p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="f1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>We use <a class="reference external" href="https://plantuml.com/en/class-diagram">PlantUML</a> as modeling tool. See explanations there.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="f2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Click on the link to see the python source code for the code element</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="f3" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Train and RouteSections could be transported in the TAF/TAP <cite>TrainInformation</cite> message
-structure.</td></tr>
-</tbody>
-</table>
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>We use <a class="reference external" href="https://plantuml.com/en/class-diagram">PlantUML</a> as modeling tool. See explanations there.</p>
+</dd>
+<dt class="label" id="f2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Click on the link to see the python source code for the code element</p>
+</dd>
+<dt class="label" id="f3"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Train and RouteSections could be transported in the TAF/TAP <cite>TrainInformation</cite> message
+structure.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
