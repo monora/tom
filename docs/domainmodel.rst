@@ -244,10 +244,10 @@ Timetable
 With :meth:`~tom.tom.Train.to_dataframe` you can create a `Pandas DataFrame`_ which you can export
 to excel or csv representing the time table of the train. See :download:`examples/train-TR-12AB-1.xlsx`.
 
-This is the timetable of version 1 of TR-12ABv1:
+This is the timetable of version 1 of TR-12AB:
 
-.. csv-table:: Timetable TR-12ABv1
-   :file: ../build/TR-12AB1/train-TR-12AB-1.csv
+.. csv-table:: Timetable TR-12AB-v1
+   :file: ../build/TR-12AB-1/train-TR-12AB-1.csv
    :header-rows: 1
 
 .. _example-annex-4-1:
