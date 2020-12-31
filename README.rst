@@ -38,7 +38,7 @@ We provide examples which can be tested and investigated. See
 * `Example 3`_ Train example of Working Group Annex 4
 
 License
-~~~~~~~
+-------
 
 Free software: MIT license
 

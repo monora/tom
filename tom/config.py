@@ -16,7 +16,7 @@ def output_dir() -> Path:
     if TOM_OUTPUT_DIR:
         return Path(TOM_OUTPUT_DIR)
     else:
-        return Path(PROJECT_ROOT) / '../build'
+        return Path(PROJECT_ROOT) / '..' / 'build'
 
 
 def output_file(filename: str, subdir: str = '.', suffix: str = '') -> Path:

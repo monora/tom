@@ -77,7 +77,6 @@ def _graphml_train_run_graph(t: Train, filename: str):
             sr: SectionRun = node
             g.nodes[node]['id'] = sr.section_id()
             g.nodes[node]['route_id'] = sr.section.route_id()
-    # nx.readwrite.write_graphml(g, path=(tmpdir / 'train-ac-ff.graphml'))
     nx.readwrite.write_graphml(g, path=config.output_file(filename,
                                                           subdir=t.id(),
                                                           suffix='graphml'))
