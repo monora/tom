@@ -141,12 +141,19 @@ class RouteSection:
         """
         return self.departure_time() + self.travel_time
 
+    @staticmethod
+    def __compute_calendar(dts: pd.DatetimeIndex) -> pd.DatetimeIndex:
+        """
+        :return: the set of days of my departure times
+        """
+        return pd.DatetimeIndex([x.date() for x in dts])
+
     def to_dataframe(self) -> pd.DataFrame:
         """
         :return: pandas dataframe with three columns for
          [section_id, departure_station, arrival_station] and one row for each section run.
         """
-        df = pd.DataFrame(index=[x.date() for x in self.departure_timestamps])
+        df = pd.DataFrame(index=self.__compute_calendar(self.departure_timestamps))
         df['ID'] = str(self.section_id)
         df[self.departure_station] = self.departure_timestamps
         df[self.arrival_station] = self.arrival_times()
@@ -206,7 +213,7 @@ class RouteSection:
         self.__complete_calendar_dts(dts)
 
     def __complete_calendar_dts(self, dts):
-        computed_calendar = pd.DatetimeIndex([x.date() for x in dts])
+        computed_calendar = self.__compute_calendar(dts)
         self.__complete_calendar(computed_calendar, dts)
 
     def __adjust_departure_times(self, dts: DatetimeIndex):
@@ -214,7 +221,7 @@ class RouteSection:
         Only called if calendar or departure_time was not set explicitly: Compute it from neighbor
         :param dts: departure_times computed from travel time to neighbor
         """
-        computed_calendar = pd.DatetimeIndex([x.date() for x in dts])
+        computed_calendar = self.__compute_calendar(dts)
         if self.calendar is None:
             self.calendar = computed_calendar
             self.departure_timestamps = dts
@@ -251,9 +258,28 @@ class RouteSection:
         if len(self.departure_timestamps) == 0:
             raise TomError(f"Empty section not allowed: {self}")
 
+    def adjust_calendar_to_timestamps(self):
+        logging.warning("Shorten section calendar of %s %s to real section runs. "
+                        "Old: %d "
+                        "New: %d.",
+                        self, self.version_info(),
+                        len(self.calendar), len(self.departure_timestamps))
+        self.calendar = self.__compute_calendar(self.departure_timestamps)
 
-SINGLE_SOURCE = 'single-source'
-SINGLE_TARGET = 'single-target'
+
+class SingleSource:
+    """Used as sentinel object in `Train.extended_train_run_graph`.
+
+    .. seealso:: https://www.revsys.com/tidbits/sentinel-values-python/
+    """
+
+    def __repr__(self):
+        return 'single-source'
+
+
+class SingleTarget:
+    def __repr__(self):
+        return 'single-target'
 
 
 class Train:
@@ -273,17 +299,20 @@ class Train:
             if section.departure_daytime is None:
                 raise TomError(f"Could not compute departure time for section "
                                f"{section}: {section.version_info()}.")
-        self.__repair_section_calenders(sg)
+        self.__complete_section_calenders(sg)
 
         self.__check_invariant()
 
-    @staticmethod
-    def __repair_section_calenders(sg):
+    def __complete_section_calenders(self, sg):
         for u, v in sg.edges:
             u: RouteSection
             v: RouteSection
             v.complete_calender_from_predecessor(u)
             u.complete_calender_from_successor(v)
+        # Check if calendars are complete
+        for rs in self.sections:
+            if not rs.is_complete():
+                rs.adjust_calendar_to_timestamps()
 
     def __str__(self):
         return self.train_id()
@@ -397,10 +426,10 @@ class Train:
         nodes: List[SectionRun] = list(g.nodes)
         for v in nodes:
             if g.in_degree(v) == 0:
-                in_node = v.section if use_sections else SINGLE_SOURCE
+                in_node = v.section if use_sections else SingleSource
                 g.add_edge(in_node, v)
             if g.out_degree(v) == 0:
-                out_node = v.section if use_sections else 'single-target'
+                out_node = v.section if use_sections else SingleTarget
                 g.add_edge(v, out_node)
         return g
 
@@ -415,7 +444,7 @@ class Train:
                 yield TrainRun(self, [sr])
             return
 
-        for path in nx.all_simple_paths(g, source=SINGLE_SOURCE, target=SINGLE_TARGET):
+        for path in nx.all_simple_paths(g, source=SingleSource, target=SingleTarget):
             yield TrainRun(self, path[1:-1])
 
     def to_dataframe(self) -> pd.DataFrame:

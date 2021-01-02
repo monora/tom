@@ -36,6 +36,8 @@ sections:
       arrival_station: D
       travel_time: '03:00:00'
       calendar:
-        begin: '2020-12-01'
+        begin: '2020-12-02'
         end: '2020-12-04'
+        # Exclude Thu 3.12. No section run on this day!
+        mask: 'Wed Fri'
       id: '10.30'
