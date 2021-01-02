@@ -38,7 +38,7 @@ class RouteSection:
     """
     travel_time: timedelta
     departure_stop_time: timedelta
-    departure_daytime: timedelta
+    departure_daytime: timedelta = None
     departure_station: str
     arrival_station: str
     departure_timestamps: DatetimeIndex = DatetimeIndex([])
@@ -177,46 +177,79 @@ class RouteSection:
         if self.is_section_complete:
             return
 
-        dts = pred.departure_timestamps + pred.travel_time + self.departure_stop_time
-        self._adjust_departure_times(dts)
+        dts = self.departure_times_from_predecessor(pred)
+        self.__adjust_departure_times(dts)
+
+    def departure_times_from_predecessor(self, pred) -> pd.DatetimeIndex:
+        return pred.departure_timestamps + pred.travel_time + self.departure_stop_time
+
+    def departures_times_from_successor(self, succ):
+        return succ.departure_timestamps - self.travel_time - succ.departure_stop_time
 
     def complete_from_successor(self, succ):
         if self.is_section_complete:
             return
 
-        dts = succ.departure_timestamps - self.travel_time - succ.departure_stop_time
-        self._adjust_departure_times(dts)
+        dts = self.departures_times_from_successor(succ)
+        self.__adjust_departure_times(dts)
 
-    def _adjust_departure_times(self, dts: DatetimeIndex):
-        """
-        Only called if departure_time was not set explicitly: Compute it from neighbor
-        :param dts: departure_times computed from travel time to neighbor
-        """
+    def complete_calender_from_predecessor(self, pred):
         if self.is_section_complete:
             return
+        dts = self.departure_times_from_predecessor(pred)
+        self.__complete_calendar_dts(dts)
 
+    def complete_calender_from_successor(self, succ):
+        if self.is_section_complete:
+            return
+        dts = self.departures_times_from_successor(succ)
+        self.__complete_calendar_dts(dts)
+
+    def __complete_calendar_dts(self, dts):
+        computed_calendar = pd.DatetimeIndex([x.date() for x in dts])
+        self.__complete_calendar(computed_calendar, dts)
+
+    def __adjust_departure_times(self, dts: DatetimeIndex):
+        """
+        Only called if calendar or departure_time was not set explicitly: Compute it from neighbor
+        :param dts: departure_times computed from travel time to neighbor
+        """
         computed_calendar = pd.DatetimeIndex([x.date() for x in dts])
         if self.calendar is None:
-            self.calendar = my_date_set = computed_calendar
+            self.calendar = computed_calendar
+            self.departure_timestamps = dts
+            self.departure_daytime = self.__compute_daytime(dts)
+            self.is_section_complete = True
         else:
-            my_date_set = self.calendar
-        intersection = computed_calendar.intersection(my_date_set)
+            self.__complete_calendar(computed_calendar, dts)
+
+    def __complete_calendar(self, computed_calendar, dts):
+        intersection = computed_calendar.intersection(self.calendar)
         if len(intersection) == 0:
-            # No connected section runs possible
             return
-        self.departure_daytime = self._compute_daytime(dts[0])
+        dt = self.__compute_daytime(dts)
+        if self.departure_daytime is not None:
+            if dt != self.departure_daytime:
+                raise TomError(f"Inconsistent departure times for section {self}:"
+                               f" {dt}!={self.departure_daytime}")
+
+        self.departure_daytime = dt
         dts = intersection + self.departure_daytime
         self.departure_timestamps = self.departure_timestamps.union(dts)
         if len(self.calendar) == len(self.departure_timestamps):
             self.is_section_complete = True
 
     @staticmethod
-    def _compute_daytime(ts: pd.Timestamp):
-        t = ts.time()
+    def __compute_daytime(ts: pd.DatetimeIndex):
+        t = ts[0].time()
         return pd.Timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
 
     def can_connect_to(self, other) -> bool:
         return self.arrival_station == other.departure_station
+
+    def check_invariant(self):
+        if len(self.departure_timestamps) == 0:
+            raise TomError(f"Empty section not allowed: {self}")
 
 
 SINGLE_SOURCE = 'single-source'
@@ -234,8 +267,23 @@ class Train:
         self.core_id = core_id
         self.sections = sections
 
-        self._repair_incomplete_sections()
-        self._check_invariant()
+        sg: nx.DiGraph = self.__repair_incomplete_sections()
+        # After repair all sections must have a departure time
+        for section in self.sections:
+            if section.departure_daytime is None:
+                raise TomError(f"Could not compute departure time for section "
+                               f"{section}: {section.version_info()}.")
+        self.__repair_section_calenders(sg)
+
+        self.__check_invariant()
+
+    @staticmethod
+    def __repair_section_calenders(sg):
+        for u, v in sg.edges:
+            u: RouteSection
+            v: RouteSection
+            v.complete_calender_from_predecessor(u)
+            u.complete_calender_from_successor(v)
 
     def __str__(self):
         return self.train_id()
@@ -317,7 +365,18 @@ class Train:
                     sg.add_edge(u, v)
         return sg
 
-    def _repair_incomplete_sections(self):
+    def __repair_incomplete_sections(self) -> nx.DiGraph:
+        """
+        Try to repair incomplete sections. A section can be under specified either:
+
+        * departure time is not specified or
+        * calender is not set
+
+        In this method at least the departure time is calculated from the construction
+        begins using a BFS search in the section graph from these.
+
+        :return: basic section graph (see Train.basis_section_graph)
+        """
         construction_begins = list(filter(RouteSection.is_complete, self.sections))
         sg = self.basic_section_graph()
         for cb in construction_begins:
@@ -325,15 +384,15 @@ class Train:
                 succ: RouteSection
                 for succ in successors:
                     succ.complete_from_predecessor(pred)
-        sg = sg.reverse()
+        sg_reversed = sg.reverse()
         for cb in construction_begins:
-            for pred, successors in nx.bfs_successors(sg, cb):
+            for pred, successors in nx.bfs_successors(sg_reversed, cb):
                 succ: RouteSection
                 for succ in successors:
                     succ.complete_from_successor(pred)
+        return sg
 
     def extended_train_run_graph(self, use_sections=True) -> nx.DiGraph:
-
         g = self.train_run_graph()
         nodes: List[SectionRun] = list(g.nodes)
         for v in nodes:
@@ -362,7 +421,7 @@ class Train:
     def to_dataframe(self) -> pd.DataFrame:
         train_runs = sorted(self.train_run_iterator(), key=TrainRun.start_date)
         train_ids = list(map(TrainRun.train_id, train_runs))
-        result = pd.DataFrame(index=train_ids, columns=self._locations())
+        result = pd.DataFrame(index=train_ids, columns=self.__locations())
         for tr in train_runs:
             result.loc[tr.train_id()] = tr.time_table()
         return result
@@ -370,10 +429,10 @@ class Train:
     def section_dataframes(self) -> List[pd.DataFrame]:
         return [sec.to_dataframe() for sec in self.sections]
 
-    def _locations(self) -> List[str]:
+    def __locations(self) -> List[str]:
         return list(nx.topological_sort(self.location_graph()))
 
-    def _check_sections(self):
+    def __check_sections(self):
         # Check if section id are unique:
         section_ids = [s.section_id for s in self.sections]
         if len(section_ids) == 0:
@@ -385,6 +444,7 @@ class Train:
         # Check if section event coordinates are unique:
         key2section = dict()
         for s in self.sections:
+            s.check_invariant()
             k = s.section_key()
             v = key2section.get(k, [])
             v.append(s)
@@ -399,11 +459,11 @@ class Train:
         """
         return self.sections[0].departure_time().year
 
-    def _check_invariant(self):
-        self._check_sections()
-        self._check_train_run_graph()
+    def __check_invariant(self):
+        self.__check_sections()
+        self.__check_train_run_graph()
 
-    def _check_train_run_graph(self):
+    def __check_train_run_graph(self):
         trg = self.train_run_graph()
         for v in trg.nodes:
             out_degree = trg.out_degree(v)
@@ -537,13 +597,13 @@ class Route:
         return ','.join([str(s) for s in self.sections])
 
 
-def _make_section_from_dict(section: dict) -> RouteSection:
+def __make_section_from_dict(section: dict) -> RouteSection:
     try:
         tt = pd.Timedelta(section['travel_time'])
     except TypeError as e:
         raise e
     stop_time = pd.Timedelta(section.get('stop_time', 0))
-    cal = _make_calendar(section.get('calendar', None))
+    cal = __make_calendar(section.get('calendar', None))
     departure_daytime = section.get('departure_time', None)
     result = RouteSection(departure_station=section['departure_station'],
                           arrival_station=section['arrival_station'],
@@ -559,7 +619,7 @@ def _make_section_from_dict(section: dict) -> RouteSection:
     return result
 
 
-def _make_calendar(spec: dict):
+def __make_calendar(spec: dict):
     if not spec:
         return None
 
@@ -583,7 +643,7 @@ def make_train_from_yml(file: PosixPath) -> Train:
         print(f'Error reading train from {file.name}.')
         raise e
 
-    sections = [_make_section_from_dict(d) for d in td['sections']]
+    sections = [__make_section_from_dict(d) for d in td['sections']]
     # Give each sections a unique section id:
     for i in range(0, len(sections)):
         s = sections[i]

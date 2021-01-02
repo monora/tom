@@ -39,6 +39,8 @@ def test_train_run_iterator_simple(train_ac_to_emm):
 
 def test_train_run_iterator(yml_train):
     expected = {
+        'TR-30AB-1': {0: 'TR/8350/30AB/2020/10.10/2020-12-01',
+                      -1: 'TR/8350/30AB/2020/10.10/2020-12-02'},
         'TR-23AB-1': {0: 'TR/8350/23AB/2020/10.10/2020-12-01',
                       -1: 'TR/8350/23AB/2020/10.10/2020-12-02'},
         'TR-23AB-2': {0: 'TR/8350/23AB/2020/10.05/2020-12-01',
@@ -56,13 +58,13 @@ def test_train_run_iterator(yml_train):
         'TR-13AB-1': {0: 'TR/8350/13AB/2020/10.01/2020-12-01',
                       -1: 'TR/8350/13AB/2020/10.01/2020-12-31'},
         'TR-13AB-2': {0: 'TR/8350/13AB/2020/10.01/2020-12-01',
-                      -1: 'TR/8350/13AB/2020/10.01/2020-12-31'}
+                      -1: 'TR/8350/13AB/2020/10.01/2020-12-31'},
     }
     t = yml_train
     train_runs = sorted(t.train_run_iterator(), key=TrainRun.start_date)
     if t.id() in ['TR-ID1-1', 'TR-ID1-2', 'TR-ID1-3']:
         assert len(train_runs) == 20
-    elif t.id() in ['TR-23AB-1', 'TR-23AB-2']:
+    elif t.id() in ['TR-23AB-1', 'TR-23AB-2', 'TR-30AB-1']:
         assert len(train_runs) == 2
     else:
         assert len(train_runs) == 31

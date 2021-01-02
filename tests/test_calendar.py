@@ -98,6 +98,7 @@ def test_train_to_df(yml_train):
         'TR-13AB-2': 31,
         'TR-23AB-1': 2,
         'TR-23AB-2': 2,
+        'TR-30AB-1': 2,
     }
     t = yml_train
     # if t.id() == 'TR-ID1-2':

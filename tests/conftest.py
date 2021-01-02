@@ -61,6 +61,7 @@ def train_condensed(shared_datadir):
                         "train-annex-4-3",
                         "train-condensed-1",
                         "train-condensed-2",
+                        "train-otr-test-1",
                         ])
 def yml_train(shared_datadir, request) -> Train:
     return _make_train(shared_datadir, request.param)
