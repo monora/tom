@@ -199,7 +199,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">travel_time</span><span class="p">:</span> <span class="n">timedelta</span>
     <span class="n">departure_stop_time</span><span class="p">:</span> <span class="n">timedelta</span>
-    <span class="n">departure_daytime</span><span class="p">:</span> <span class="n">timedelta</span>
+    <span class="n">departure_daytime</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">departure_station</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">arrival_station</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">departure_timestamps</span><span class="p">:</span> <span class="n">DatetimeIndex</span> <span class="o">=</span> <span class="n">DatetimeIndex</span><span class="p">([])</span>
@@ -302,12 +302,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">travel_time</span></div>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__compute_calendar</span><span class="p">(</span><span class="n">dts</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the set of days of my departure times</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dts</span><span class="p">])</span>
+
 <div class="viewcode-block" id="RouteSection.to_dataframe"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :return: pandas dataframe with three columns for</span>
 <span class="sd">         [section_id, departure_station, arrival_station] and one row for each section run.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__compute_calendar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="p">))</span>
         <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section_id</span><span class="p">)</span>
         <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_station</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span>
         <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_times</span><span class="p">()</span>
@@ -338,50 +345,102 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_section_complete</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">dts</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">departure_timestamps</span> <span class="o">+</span> <span class="n">pred</span><span class="o">.</span><span class="n">travel_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_stop_time</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_adjust_departure_times</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span></div>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_from_predecessor</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__adjust_departure_times</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RouteSection.departure_times_from_predecessor"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.departure_times_from_predecessor">[docs]</a>    <span class="k">def</span> <span class="nf">departure_times_from_predecessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pred</span><span class="o">.</span><span class="n">departure_timestamps</span> <span class="o">+</span> <span class="n">pred</span><span class="o">.</span><span class="n">travel_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_stop_time</span></div>
+
+<div class="viewcode-block" id="RouteSection.departures_times_from_successor"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.departures_times_from_successor">[docs]</a>    <span class="k">def</span> <span class="nf">departures_times_from_successor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">succ</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">succ</span><span class="o">.</span><span class="n">departure_timestamps</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">travel_time</span> <span class="o">-</span> <span class="n">succ</span><span class="o">.</span><span class="n">departure_stop_time</span></div>
 
 <div class="viewcode-block" id="RouteSection.complete_from_successor"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.complete_from_successor">[docs]</a>    <span class="k">def</span> <span class="nf">complete_from_successor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">succ</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_section_complete</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">dts</span> <span class="o">=</span> <span class="n">succ</span><span class="o">.</span><span class="n">departure_timestamps</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">travel_time</span> <span class="o">-</span> <span class="n">succ</span><span class="o">.</span><span class="n">departure_stop_time</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_adjust_departure_times</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span></div>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departures_times_from_successor</span><span class="p">(</span><span class="n">succ</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__adjust_departure_times</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_adjust_departure_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dts</span><span class="p">:</span> <span class="n">DatetimeIndex</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Only called if departure_time was not set explicitly: Compute it from neighbor</span>
-<span class="sd">        :param dts: departure_times computed from travel time to neighbor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RouteSection.complete_calender_from_predecessor"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.complete_calender_from_predecessor">[docs]</a>    <span class="k">def</span> <span class="nf">complete_calender_from_predecessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_section_complete</span><span class="p">:</span>
             <span class="k">return</span>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_times_from_predecessor</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__complete_calendar_dts</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span></div>
 
-        <span class="n">computed_calendar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dts</span><span class="p">])</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span> <span class="o">=</span> <span class="n">my_date_set</span> <span class="o">=</span> <span class="n">computed_calendar</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">my_date_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span>
-        <span class="n">intersection</span> <span class="o">=</span> <span class="n">computed_calendar</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">my_date_set</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersection</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c1"># No connected section runs possible</span>
+<div class="viewcode-block" id="RouteSection.complete_calender_from_successor"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.complete_calender_from_successor">[docs]</a>    <span class="k">def</span> <span class="nf">complete_calender_from_successor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">succ</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_section_complete</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">departure_daytime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_daytime</span><span class="p">(</span><span class="n">dts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departures_times_from_successor</span><span class="p">(</span><span class="n">succ</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__complete_calendar_dts</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__complete_calendar_dts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dts</span><span class="p">):</span>
+        <span class="n">computed_calendar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compute_calendar</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__complete_calendar</span><span class="p">(</span><span class="n">computed_calendar</span><span class="p">,</span> <span class="n">dts</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__adjust_departure_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dts</span><span class="p">:</span> <span class="n">DatetimeIndex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Only called if calendar or departure_time was not set explicitly: Compute it from neighbor</span>
+<span class="sd">        :param dts: departure_times computed from travel time to neighbor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">computed_calendar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compute_calendar</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span> <span class="o">=</span> <span class="n">computed_calendar</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span> <span class="o">=</span> <span class="n">dts</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">departure_daytime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compute_daytime</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_section_complete</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__complete_calendar</span><span class="p">(</span><span class="n">computed_calendar</span><span class="p">,</span> <span class="n">dts</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__complete_calendar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">computed_calendar</span><span class="p">,</span> <span class="n">dts</span><span class="p">):</span>
+        <span class="n">intersection</span> <span class="o">=</span> <span class="n">computed_calendar</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersection</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compute_daytime</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_daytime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dt</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_daytime</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Inconsistent departure times for section </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">:&quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2">!=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_daytime</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">departure_daytime</span> <span class="o">=</span> <span class="n">dt</span>
         <span class="n">dts</span> <span class="o">=</span> <span class="n">intersection</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_daytime</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">dts</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_section_complete</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_compute_daytime</span><span class="p">(</span><span class="n">ts</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">):</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">__compute_daytime</span><span class="p">(</span><span class="n">ts</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">second</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RouteSection.can_connect_to"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.can_connect_to">[docs]</a>    <span class="k">def</span> <span class="nf">can_connect_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_station</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">departure_station</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_station</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">departure_station</span></div>
+
+<div class="viewcode-block" id="RouteSection.check_invariant"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.check_invariant">[docs]</a>    <span class="k">def</span> <span class="nf">check_invariant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty section not allowed: </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RouteSection.adjust_calendar_to_timestamps"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.adjust_calendar_to_timestamps">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_calendar_to_timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Shorten section calendar of </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> to real section runs. &quot;</span>
+                        <span class="s2">&quot;Old: </span><span class="si">%d</span><span class="s2"> &quot;</span>
+                        <span class="s2">&quot;New: </span><span class="si">%d</span><span class="s2">.&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version_info</span><span class="p">(),</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compute_calendar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_timestamps</span><span class="p">)</span></div></div>
 
 
-<span class="n">SINGLE_SOURCE</span> <span class="o">=</span> <span class="s1">&#39;single-source&#39;</span>
-<span class="n">SINGLE_TARGET</span> <span class="o">=</span> <span class="s1">&#39;single-target&#39;</span>
+<div class="viewcode-block" id="SingleSource"><a class="viewcode-back" href="../../tom.html#tom.tom.SingleSource">[docs]</a><span class="k">class</span> <span class="nc">SingleSource</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Used as sentinel object in `Train.extended_train_run_graph`.</span>
+
+<span class="sd">    .. seealso:: https://www.revsys.com/tidbits/sentinel-values-python/</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;single-source&#39;</span></div>
+
+
+<div class="viewcode-block" id="SingleTarget"><a class="viewcode-back" href="../../tom.html#tom.tom.SingleTarget">[docs]</a><span class="k">class</span> <span class="nc">SingleTarget</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;single-target&#39;</span></div>
 
 
 <div class="viewcode-block" id="Train"><a class="viewcode-back" href="../../tom.html#tom.tom.Train">[docs]</a><span class="k">class</span> <span class="nc">Train</span><span class="p">:</span>
@@ -395,8 +454,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">core_id</span> <span class="o">=</span> <span class="n">core_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="n">sections</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_repair_incomplete_sections</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_invariant</span><span class="p">()</span>
+        <span class="n">sg</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__repair_incomplete_sections</span><span class="p">()</span>
+        <span class="c1"># After repair all sections must have a departure time</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">departure_daytime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not compute departure time for section &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">version_info</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__complete_section_calenders</span><span class="p">(</span><span class="n">sg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_invariant</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__complete_section_calenders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sg</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sg</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="n">u</span><span class="p">:</span> <span class="n">RouteSection</span>
+            <span class="n">v</span><span class="p">:</span> <span class="n">RouteSection</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">complete_calender_from_predecessor</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">complete_calender_from_successor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="c1"># Check if calendars are complete</span>
+        <span class="k">for</span> <span class="n">rs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">rs</span><span class="o">.</span><span class="n">is_complete</span><span class="p">():</span>
+                <span class="n">rs</span><span class="o">.</span><span class="n">adjust_calendar_to_timestamps</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
@@ -478,7 +555,18 @@
                     <span class="n">sg</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sg</span></div>
 
-    <span class="k">def</span> <span class="nf">_repair_incomplete_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__repair_incomplete_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Try to repair incomplete sections. A section can be under specified either:</span>
+
+<span class="sd">        * departure time is not specified or</span>
+<span class="sd">        * calender is not set</span>
+
+<span class="sd">        In this method at least the departure time is calculated from the construction</span>
+<span class="sd">        begins using a BFS search in the section graph from these.</span>
+
+<span class="sd">        :return: basic section graph (see Train.basis_section_graph)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">construction_begins</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">RouteSection</span><span class="o">.</span><span class="n">is_complete</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">))</span>
         <span class="n">sg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">basic_section_graph</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">cb</span> <span class="ow">in</span> <span class="n">construction_begins</span><span class="p">:</span>
@@ -486,28 +574,28 @@
                 <span class="n">succ</span><span class="p">:</span> <span class="n">RouteSection</span>
                 <span class="k">for</span> <span class="n">succ</span> <span class="ow">in</span> <span class="n">successors</span><span class="p">:</span>
                     <span class="n">succ</span><span class="o">.</span><span class="n">complete_from_predecessor</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
-        <span class="n">sg</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="n">sg_reversed</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">cb</span> <span class="ow">in</span> <span class="n">construction_begins</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">successors</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">bfs_successors</span><span class="p">(</span><span class="n">sg</span><span class="p">,</span> <span class="n">cb</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">successors</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">bfs_successors</span><span class="p">(</span><span class="n">sg_reversed</span><span class="p">,</span> <span class="n">cb</span><span class="p">):</span>
                 <span class="n">succ</span><span class="p">:</span> <span class="n">RouteSection</span>
                 <span class="k">for</span> <span class="n">succ</span> <span class="ow">in</span> <span class="n">successors</span><span class="p">:</span>
                     <span class="n">succ</span><span class="o">.</span><span class="n">complete_from_successor</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sg</span>
 
 <div class="viewcode-block" id="Train.extended_train_run_graph"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.extended_train_run_graph">[docs]</a>    <span class="k">def</span> <span class="nf">extended_train_run_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_sections</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
-
         <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_run_graph</span><span class="p">()</span>
         <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SectionRun</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">in_degree</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">in_node</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span> <span class="k">if</span> <span class="n">use_sections</span> <span class="k">else</span> <span class="n">SINGLE_SOURCE</span>
+                <span class="n">in_node</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span> <span class="k">if</span> <span class="n">use_sections</span> <span class="k">else</span> <span class="n">SingleSource</span>
                 <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">in_node</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">out_degree</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">out_node</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span> <span class="k">if</span> <span class="n">use_sections</span> <span class="k">else</span> <span class="s1">&#39;single-target&#39;</span>
+                <span class="n">out_node</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span> <span class="k">if</span> <span class="n">use_sections</span> <span class="k">else</span> <span class="n">SingleTarget</span>
                 <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">out_node</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">g</span></div>
 
 <div class="viewcode-block" id="Train.train_run_iterator"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.train_run_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">train_run_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Iterate over all `TrainRuns` of this train.</span>
 
 <span class="sd">        :return: Iterator[TrainRun]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -517,24 +605,34 @@
                 <span class="k">yield</span> <span class="n">TrainRun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">sr</span><span class="p">])</span>
             <span class="k">return</span>
 
-        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_simple_paths</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">SINGLE_SOURCE</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">SINGLE_TARGET</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_simple_paths</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">SingleSource</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">SingleTarget</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">TrainRun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Train.to_dataframe"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="n">train_runs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">TrainRun</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
         <span class="n">train_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">TrainRun</span><span class="o">.</span><span class="n">train_id</span><span class="p">,</span> <span class="n">train_runs</span><span class="p">))</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">train_ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_locations</span><span class="p">())</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">train_ids</span><span class="p">,</span>
+                              <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                              <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__time_table_columns</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">train_runs</span><span class="p">:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">train_id</span><span class="p">()]</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">time_table</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Train.section_dataframes"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.section_dataframes">[docs]</a>    <span class="k">def</span> <span class="nf">section_dataframes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">sec</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">_locations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location_graph</span><span class="p">()))</span>
+    <span class="k">def</span> <span class="nf">__time_table_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">col_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+        <span class="n">trg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_run_graph</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">trg</span><span class="p">:</span>
+            <span class="n">dep</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">departure_column</span><span class="p">()</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">arrival_column</span><span class="p">()</span>
+            <span class="n">col_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">dep</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">trg</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="n">col_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">arrival_column</span><span class="p">(),</span> <span class="n">v</span><span class="o">.</span><span class="n">departure_column</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">col_graph</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">_check_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__check_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Check if section id are unique:</span>
         <span class="n">section_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">section_id</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">section_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -546,6 +644,7 @@
         <span class="c1"># Check if section event coordinates are unique:</span>
         <span class="n">key2section</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">check_invariant</span><span class="p">()</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">section_key</span><span class="p">()</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">key2section</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[])</span>
             <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -560,11 +659,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">departure_time</span><span class="p">()</span><span class="o">.</span><span class="n">year</span></div>
 
-    <span class="k">def</span> <span class="nf">_check_invariant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sections</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_train_run_graph</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">__check_invariant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_sections</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_train_run_graph</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_check_train_run_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__check_train_run_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">trg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_run_graph</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">trg</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
             <span class="n">out_degree</span> <span class="o">=</span> <span class="n">trg</span><span class="o">.</span><span class="n">out_degree</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -584,21 +683,51 @@
 <div class="viewcode-block" id="SectionRun"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun">[docs]</a><span class="k">class</span> <span class="nc">SectionRun</span><span class="p">:</span>
     <span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span>
     <span class="n">departure_time</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    -1: &lt; RCS</span>
+<span class="sd">    0: = RCS</span>
+<span class="sd">    +1: &gt; RCS</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="c1"># Set to self as long as not computed in TrainRun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">construction_start_section_run</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_relative_to_construction_start</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">is_construction_start</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">dep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%F</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
-        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%F</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
+        <span class="n">dep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%F %H:%M OTR=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">otr_at_departure</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%F %H:%M OTR=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">otr_at_arrival</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">version_info</span><span class="p">()</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">dep</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__otr_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">):</span>
+        <span class="n">dep_time_at_rcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construction_start_section_run</span><span class="o">.</span><span class="n">departure_time</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_relative_to_construction_start</span>
+        <span class="n">otr</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">timestamp</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="o">-</span> <span class="n">dep_time_at_rcs</span><span class="o">.</span><span class="n">date</span><span class="p">())</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">otr</span> <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">pos</span> <span class="o">*</span> <span class="n">otr</span>
+
+<div class="viewcode-block" id="SectionRun.otr_at_arrival"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.otr_at_arrival">[docs]</a>    <span class="k">def</span> <span class="nf">otr_at_arrival</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__otr_at</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="SectionRun.otr_at_departure"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.otr_at_departure">[docs]</a>    <span class="k">def</span> <span class="nf">otr_at_departure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__otr_at</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SectionRun.section_id"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.section_id">[docs]</a>    <span class="k">def</span> <span class="nf">section_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span></div>
 
 <div class="viewcode-block" id="SectionRun.arrival_time"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.arrival_time">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">travel_time</span></div>
+
+<div class="viewcode-block" id="SectionRun.arrival_with_otr"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.arrival_with_otr">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_with_otr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__format_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">otr_at_arrival</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="SectionRun.departure_with_otr"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.departure_with_otr">[docs]</a>    <span class="k">def</span> <span class="nf">departure_with_otr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__format_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">otr_at_departure</span><span class="p">())</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__format_time</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">otr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%a %d.%m.%y %H:%M </span><span class="si">{</span><span class="n">otr</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SectionRun.arrival_at_departure_station"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.arrival_at_departure_station">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_at_departure_station</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;:return: the timestamp when the train will arrive in the departure station</span>
@@ -607,11 +736,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">departure_stop_time</span></div>
 
+<div class="viewcode-block" id="SectionRun.block_timedelta"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.block_timedelta">[docs]</a>    <span class="k">def</span> <span class="nf">block_timedelta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">departure_stop_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">travel_time</span></div>
+
 <div class="viewcode-block" id="SectionRun.departure_station"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.departure_station">[docs]</a>    <span class="k">def</span> <span class="nf">departure_station</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">departure_station</span></div>
 
 <div class="viewcode-block" id="SectionRun.arrival_station"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.arrival_station">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_station</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">arrival_station</span></div>
+
+<div class="viewcode-block" id="SectionRun.arrival_column"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.arrival_column">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_column</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Arrival </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="SectionRun.departure_column"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.departure_column">[docs]</a>    <span class="k">def</span> <span class="nf">departure_column</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Departure </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_station</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 <div class="viewcode-block" id="SectionRun.connects_to"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.connects_to">[docs]</a>    <span class="k">def</span> <span class="nf">connects_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -639,9 +777,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">train</span> <span class="o">=</span> <span class="n">t</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span> <span class="o">=</span> <span class="n">section_runs</span>
 
-        <span class="k">for</span> <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">prev</span><span class="o">.</span><span class="n">connects_to</span><span class="p">(</span><span class="n">curr</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Section run </span><span class="si">{</span><span class="n">prev</span><span class="si">}</span><span class="s2"> must connect to </span><span class="si">{</span><span class="n">curr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">is_construction_start</span><span class="p">,</span> <span class="n">section_runs</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No route construction start for train run </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">rcs</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span> <span class="o">=</span> <span class="n">cs</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Can only have one construction begin in train run </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">. &quot;</span>
+                           <span class="sa">f</span><span class="s2">&quot;List of construction begins: </span><span class="si">{</span><span class="n">cs</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">section_runs</span><span class="p">:</span>
+            <span class="n">sr</span><span class="o">.</span><span class="n">construction_start_section_run</span> <span class="o">=</span> <span class="n">rcs</span>
+            <span class="k">if</span> <span class="n">sr</span><span class="o">.</span><span class="n">position_relative_to_construction_start</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sr</span><span class="o">.</span><span class="n">position_relative_to_construction_start</span> <span class="o">=</span> <span class="n">pos</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
@@ -658,11 +807,11 @@
 <div class="viewcode-block" id="TrainRun.first_run"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.first_run">[docs]</a>    <span class="k">def</span> <span class="nf">first_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="TrainRun.time_table"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.time_table">[docs]</a>    <span class="k">def</span> <span class="nf">time_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]:</span>
-        <span class="n">fr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_run</span><span class="p">()</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">fr</span><span class="o">.</span><span class="n">departure_station</span><span class="p">():</span> <span class="n">fr</span><span class="o">.</span><span class="n">departure_time</span><span class="p">}</span>
+<div class="viewcode-block" id="TrainRun.time_table"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.time_table">[docs]</a>    <span class="k">def</span> <span class="nf">time_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
-            <span class="n">result</span><span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">()]</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">arrival_column</span><span class="p">()]</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_with_otr</span><span class="p">()</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">departure_column</span><span class="p">()]</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">departure_with_otr</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="TrainRun.location_iterator"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.location_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">location_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -698,13 +847,13 @@
         <span class="k">return</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">])</span></div>
 
 
-<span class="k">def</span> <span class="nf">_make_section_from_dict</span><span class="p">(</span><span class="n">section</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteSection</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">__make_section_from_dict</span><span class="p">(</span><span class="n">section</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteSection</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">tt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;travel_time&#39;</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">e</span>
     <span class="n">stop_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;stop_time&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="n">cal</span> <span class="o">=</span> <span class="n">_make_calendar</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">cal</span> <span class="o">=</span> <span class="n">__make_calendar</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
     <span class="n">departure_daytime</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;departure_time&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">RouteSection</span><span class="p">(</span><span class="n">departure_station</span><span class="o">=</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;departure_station&#39;</span><span class="p">],</span>
                           <span class="n">arrival_station</span><span class="o">=</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;arrival_station&#39;</span><span class="p">],</span>
@@ -720,7 +869,7 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="k">def</span> <span class="nf">_make_calendar</span><span class="p">(</span><span class="n">spec</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">__make_calendar</span><span class="p">(</span><span class="n">spec</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -744,7 +893,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error reading train from </span><span class="si">{</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">e</span>
 
-    <span class="n">sections</span> <span class="o">=</span> <span class="p">[</span><span class="n">_make_section_from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">td</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
+    <span class="n">sections</span> <span class="o">=</span> <span class="p">[</span><span class="n">__make_section_from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">td</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
     <span class="c1"># Give each sections a unique section id:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sections</span><span class="p">)):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>

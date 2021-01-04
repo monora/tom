@@ -234,6 +234,11 @@ and applicant RU.</p>
 <p>The departure_times define the calendar of the SectionRuns
 of this RouteSection. The date part of these timestamps are the calender days of the train
 is running is this section.</p>
+<dl class="method">
+<dt id="tom.tom.RouteSection.adjust_calendar_to_timestamps">
+<code class="sig-name descname">adjust_calendar_to_timestamps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.adjust_calendar_to_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.adjust_calendar_to_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="tom.tom.RouteSection.arrival_station">
 <code class="sig-name descname">arrival_station</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.RouteSection.arrival_station" title="Permalink to this definition">¶</a></dt>
@@ -266,6 +271,21 @@ is running is this section.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="tom.tom.RouteSection.check_invariant">
+<code class="sig-name descname">check_invariant</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.check_invariant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.check_invariant" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.RouteSection.complete_calender_from_predecessor">
+<code class="sig-name descname">complete_calender_from_predecessor</code><span class="sig-paren">(</span><em class="sig-param">pred</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.complete_calender_from_predecessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.complete_calender_from_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.RouteSection.complete_calender_from_successor">
+<code class="sig-name descname">complete_calender_from_successor</code><span class="sig-paren">(</span><em class="sig-param">succ</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.complete_calender_from_successor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.complete_calender_from_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.RouteSection.complete_from_predecessor">
 <code class="sig-name descname">complete_from_predecessor</code><span class="sig-paren">(</span><em class="sig-param">pred</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.complete_from_predecessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.complete_from_predecessor" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
@@ -279,7 +299,7 @@ is running is this section.</p>
 
 <dl class="attribute">
 <dt id="tom.tom.RouteSection.departure_daytime">
-<code class="sig-name descname">departure_daytime</code><em class="property">: timedelta</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.RouteSection.departure_daytime" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">departure_daytime</code><em class="property">: datetime.timedelta</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.RouteSection.departure_daytime" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -302,9 +322,19 @@ is running is this section.</p>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="tom.tom.RouteSection.departure_times_from_predecessor">
+<code class="sig-name descname">departure_times_from_predecessor</code><span class="sig-paren">(</span><em class="sig-param">pred</em><span class="sig-paren">)</span> &#x2192; pandas.core.indexes.datetimes.DatetimeIndex<a class="reference internal" href="_modules/tom/tom.html#RouteSection.departure_times_from_predecessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.departure_times_from_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="tom.tom.RouteSection.departure_timestamps">
 <code class="sig-name descname">departure_timestamps</code><em class="property">: pandas.core.indexes.datetimes.DatetimeIndex</em><em class="property"> = DatetimeIndex([], dtype='datetime64[ns]', freq=None)</em><a class="headerlink" href="#tom.tom.RouteSection.departure_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.RouteSection.departures_times_from_successor">
+<code class="sig-name descname">departures_times_from_successor</code><span class="sig-paren">(</span><em class="sig-param">succ</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.departures_times_from_successor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.departures_times_from_successor" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -425,6 +455,11 @@ is running is this section.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="tom.tom.SectionRun.arrival_column">
+<code class="sig-name descname">arrival_column</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#SectionRun.arrival_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.arrival_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.SectionRun.arrival_station">
 <code class="sig-name descname">arrival_station</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#SectionRun.arrival_station"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.arrival_station" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -432,6 +467,16 @@ is running is this section.</p>
 <dl class="method">
 <dt id="tom.tom.SectionRun.arrival_time">
 <code class="sig-name descname">arrival_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; datetime.datetime<a class="reference internal" href="_modules/tom/tom.html#SectionRun.arrival_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.arrival_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.SectionRun.arrival_with_otr">
+<code class="sig-name descname">arrival_with_otr</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#SectionRun.arrival_with_otr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.arrival_with_otr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.SectionRun.block_timedelta">
+<code class="sig-name descname">block_timedelta</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas._libs.tslibs.timedeltas.Timedelta<a class="reference internal" href="_modules/tom/tom.html#SectionRun.block_timedelta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.block_timedelta" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -453,6 +498,11 @@ is running is this section.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="tom.tom.SectionRun.departure_column">
+<code class="sig-name descname">departure_column</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#SectionRun.departure_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.departure_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.SectionRun.departure_station">
 <code class="sig-name descname">departure_station</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#SectionRun.departure_station"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.departure_station" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -460,6 +510,24 @@ is running is this section.</p>
 <dl class="attribute">
 <dt id="tom.tom.SectionRun.departure_time">
 <code class="sig-name descname">departure_time</code><em class="property">: datetime</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.SectionRun.departure_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>-1: &lt; RCS
+0: = RCS
++1: &gt; RCS</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.SectionRun.departure_with_otr">
+<code class="sig-name descname">departure_with_otr</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#SectionRun.departure_with_otr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.departure_with_otr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.SectionRun.otr_at_arrival">
+<code class="sig-name descname">otr_at_arrival</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#SectionRun.otr_at_arrival"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.otr_at_arrival" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.SectionRun.otr_at_departure">
+<code class="sig-name descname">otr_at_departure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#SectionRun.otr_at_departure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.otr_at_departure" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -472,6 +540,23 @@ is running is this section.</p>
 <code class="sig-name descname">section_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#SectionRun.section_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.section_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="tom.tom.SingleSource">
+<em class="property">class </em><code class="sig-prename descclassname">tom.tom.</code><code class="sig-name descname">SingleSource</code><a class="reference internal" href="_modules/tom/tom.html#SingleSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SingleSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Used as sentinel object in <cite>Train.extended_train_run_graph</cite>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://www.revsys.com/tidbits/sentinel-values-python/">https://www.revsys.com/tidbits/sentinel-values-python/</a></p>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="tom.tom.SingleTarget">
+<em class="property">class </em><code class="sig-prename descclassname">tom.tom.</code><code class="sig-name descname">SingleTarget</code><a class="reference internal" href="_modules/tom/tom.html#SingleTarget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SingleTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
 <dl class="exception">
@@ -574,7 +659,8 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 <dl class="method">
 <dt id="tom.tom.Train.train_run_iterator">
 <code class="sig-name descname">train_run_iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Train.train_run_iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.train_run_iterator" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Iterate over all <cite>TrainRuns</cite> of this train.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Iterator[TrainRun]</p>
 </dd>
@@ -614,7 +700,7 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 
 <dl class="method">
 <dt id="tom.tom.TrainRun.time_table">
-<code class="sig-name descname">time_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict[str, datetime.datetime]<a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict[str, str]<a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
