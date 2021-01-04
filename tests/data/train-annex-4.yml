@@ -8,7 +8,7 @@ sections:
       applicant_ru: RU1
       planning_im: IM1
       departure_station: S
-      departure_time: '00:10:00'
+      departure_time: '00:10:00' # => Route Construction Start
       arrival_station: H1
       travel_time: &s1-tt '24:20:00'
       calendar:
@@ -28,7 +28,7 @@ sections:
       applicant_ru: RU1
       planning_im: IM1
       departure_station: S
-      departure_time: '23:50:00'
+      departure_time: '23:50:00' # => Route Construction Start
       arrival_station: H1
       travel_time: *s1-tt
       calendar:
@@ -48,7 +48,7 @@ sections:
       applicant_ru: RU1
       planning_im: IM1
       departure_station: D
-      departure_time: '02:00:00'
+      departure_time: '02:00:00' # => Route Construction Start
       arrival_station: H1
       travel_time: '22:30:00'
       calendar:

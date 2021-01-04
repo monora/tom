@@ -142,7 +142,7 @@ create fitting route section with section station of departure `EMM`.
 Versioning
 ~~~~~~~~~~
 
-We suggest *versioning* of trains and sections to support the synchronsisation of the domain model
+We suggest *versioning* of trains and sections to support the synchronisation of the domain model
 between the systems of the cooperating companies. If the lead RU changes a section its
 `RouteSection.version` is incremented. Same with the `RoutingInfo.version`. The receiver of a message
 containing the RoutingInfo [#f3]_ can use this information to identify the change and act
@@ -293,7 +293,7 @@ The resulting train run graph looks like this:
 
    TrainRun graph of example Annex 4 initial planning status.
 
-Vertices (`SectionRuns`) with same color belong to the same `RouteSection`. The vertice label
+Vertices (`SectionRuns`) with same color belong to the same `RouteSection`. The vertex label
 shows Section IDs and there versions (ID.version).
 
 You can download this graph as GraphML_ here: :download:`examples/train-TR-ID1-1.graphml`.

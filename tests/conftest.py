@@ -52,6 +52,11 @@ def train_condensed(shared_datadir):
     return _make_train(shared_datadir, 'train-condensed-2')
 
 
+@pytest.fixture
+def train_otr(shared_datadir):
+    return _make_train(shared_datadir, 'train-otr-test-1')
+
+
 @pytest.fixture(params=["train-ac-ff",
                         "train-a-f",
                         "train-ac-ff-v2",

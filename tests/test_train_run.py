@@ -71,3 +71,16 @@ def test_train_run_iterator(yml_train):
 
     for i in [0, -1]:
         assert train_runs[i].train_id() == expected[yml_train.id()][i]
+
+
+def test_otr(train_otr):
+    train_runs: List[TrainRun] = list(train_otr.train_run_iterator())
+    assert len(train_runs) == 2
+
+    t_12_01 = train_runs[0]
+    otrs = [(sr.otr_at_departure(), sr.otr_at_arrival()) for sr in t_12_01.sections_runs]
+    assert otrs == [(-1, 0), (0, 0), (0, 1)]
+
+    t_12_02 = train_runs[1]
+    otrs = [(sr.otr_at_departure(), sr.otr_at_arrival()) for sr in t_12_02.sections_runs]
+    assert otrs == [(-2, -1), (0, 0), (0, 1)]

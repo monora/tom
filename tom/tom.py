@@ -434,7 +434,7 @@ class Train:
         return g
 
     def train_run_iterator(self):
-        """
+        """Iterate over all `TrainRuns` of this train.
 
         :return: Iterator[TrainRun]
         """
@@ -450,16 +450,26 @@ class Train:
     def to_dataframe(self) -> pd.DataFrame:
         train_runs = sorted(self.train_run_iterator(), key=TrainRun.start_date)
         train_ids = list(map(TrainRun.train_id, train_runs))
-        result = pd.DataFrame(index=train_ids, columns=self.__locations())
+        result = pd.DataFrame(index=train_ids,
+                              dtype=str,
+                              columns=self.__time_table_columns())
         for tr in train_runs:
             result.loc[tr.train_id()] = tr.time_table()
-        return result
+        return result.fillna('')
 
     def section_dataframes(self) -> List[pd.DataFrame]:
         return [sec.to_dataframe() for sec in self.sections]
 
-    def __locations(self) -> List[str]:
-        return list(nx.topological_sort(self.location_graph()))
+    def __time_table_columns(self) -> List[str]:
+        col_graph = nx.DiGraph()
+        trg = self.train_run_graph()
+        for u in trg:
+            dep = u.departure_column()
+            arr = u.arrival_column()
+            col_graph.add_edge(dep, arr)
+        for u, v in trg.edges:
+            col_graph.add_edge(u.arrival_column(), v.departure_column())
+        return list(nx.topological_sort(col_graph))
 
     def __check_sections(self):
         # Check if section id are unique:
@@ -512,21 +522,51 @@ class Train:
 class SectionRun:
     section: RouteSection
     departure_time: datetime
+    """
+    -1: < RCS
+    0: = RCS
+    +1: > RCS
+    """
 
     def __init__(self, section: RouteSection, time: datetime):
         self.section = section
         self.departure_time = time
+        # Set to self as long as not computed in TrainRun
+        self.construction_start_section_run = self
+        self.position_relative_to_construction_start = 0 if section.is_construction_start else -1
 
     def __str__(self):
-        dep = self.departure_time.strftime("%F %H:%M")
-        arr = self.arrival_time().strftime("%F %H:%M")
+        dep = self.departure_time.strftime(f"%F %H:%M OTR={self.otr_at_departure()}")
+        arr = self.arrival_time().strftime(f"%F %H:%M OTR={self.otr_at_arrival()}")
         return f"{self.section.version_info()}:{dep} {self.section} {arr}"
+
+    def __otr_at(self, timestamp):
+        dep_time_at_rcs = self.construction_start_section_run.departure_time
+        pos = self.position_relative_to_construction_start
+        otr = abs((timestamp.date() - dep_time_at_rcs.date()).days)
+        return otr if pos == 0 else pos * otr
+
+    def otr_at_arrival(self):
+        return self.__otr_at(self.arrival_time())
+
+    def otr_at_departure(self):
+        return self.__otr_at(self.departure_time)
 
     def section_id(self):
         return self.section.section_id
 
     def arrival_time(self) -> datetime:
         return self.departure_time + self.section.travel_time
+
+    def arrival_with_otr(self) -> str:
+        return self.__format_time(self.arrival_time(), self.otr_at_arrival())
+
+    def departure_with_otr(self) -> str:
+        return self.__format_time(self.departure_time, self.otr_at_departure())
+
+    @staticmethod
+    def __format_time(t, otr):
+        return t.strftime(f"%a %d.%m.%y %H:%M {otr:2d}")
 
     def arrival_at_departure_station(self) -> datetime:
         """:return: the timestamp when the train will arrive in the departure station
@@ -535,11 +575,20 @@ class SectionRun:
         """
         return self.departure_time - self.section.departure_stop_time
 
+    def block_timedelta(self) -> pd.Timedelta:
+        return self.section.departure_stop_time + self.section.travel_time
+
     def departure_station(self) -> str:
         return self.section.departure_station
 
     def arrival_station(self) -> str:
         return self.section.arrival_station
+
+    def arrival_column(self) -> str:
+        return f"Arrival {self.arrival_station()}"
+
+    def departure_column(self) -> str:
+        return f"Departure {self.departure_station()}"
 
     def connects_to(self, other):
         """
@@ -567,9 +616,20 @@ class TrainRun:
         self.train = t
         self.sections_runs = section_runs
 
-        for prev, curr in zip(self.sections_runs, self.sections_runs[1:]):
-            if not prev.connects_to(curr):
-                raise TomError(f"Section run {prev} must connect to {curr}")
+        cs = list(filter(lambda x: x.section.is_construction_start, section_runs))
+        if len(cs) == 0:
+            raise TomError(f"No route construction start for train run {self}.")
+        rcs, *rest = cs
+        if len(rest) > 1:
+            raise TomError(f"Can only have one construction begin in train run {self}. "
+                           f"List of construction begins: {cs}.")
+        pos = -1
+        for sr in section_runs:
+            sr.construction_start_section_run = rcs
+            if sr.position_relative_to_construction_start == 0:
+                pos = 1
+            else:
+                sr.position_relative_to_construction_start = pos
 
     def __str__(self):
         return self.train_id()
@@ -586,11 +646,11 @@ class TrainRun:
     def first_run(self):
         return self.sections_runs[0]
 
-    def time_table(self) -> Dict[str, datetime]:
-        fr = self.first_run()
-        result = {fr.departure_station(): fr.departure_time}
+    def time_table(self) -> Dict[str, str]:
+        result = {}
         for sr in self.sections_runs:
-            result[sr.arrival_station()] = sr.arrival_time()
+            result[sr.arrival_column()] = sr.arrival_with_otr()
+            result[sr.departure_column()] = sr.departure_with_otr()
         return result
 
     def location_iterator(self):

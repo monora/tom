@@ -5,8 +5,8 @@
 from typing import Any, Union
 
 import pandas as pd
-from tom import config
 
+from tom import config
 from tom.tom import Train, RouteSection
 
 
@@ -101,22 +101,13 @@ def test_train_to_df(yml_train):
         'TR-30AB-1': 2,
     }
     t = yml_train
-    # if t.id() == 'TR-ID1-2':
-    #     sec_dfs = t.section_dataframes()
+    # if t.id() == 'TR-30AB-1':
+    #    sec_dfs = t.section_dataframes()
+    #    assert(len(sec_dfs)) > 0
     df = t.to_dataframe()
     df.to_excel(config.output_file(f"train-{t.id()}", subdir=t.id(), suffix="xlsx"))
-    _to_csv(df, t)
+    for c in df.columns:
+        df[c] = df[c].apply(lambda x: f"``{x}``")
+    df.to_csv(config.output_file(f"train-{t.id()}", subdir=t.id(), suffix="csv"))
     assert len(df) == expected[t.id()]
 
-
-def _fmt_timestamp(x):
-    try:
-        return x.strftime("``%a %d.%m.%y %H:%M``")
-    except ValueError:
-        return ''
-
-
-def _to_csv(df: pd.DataFrame, t: Train):
-    for c in df.columns:
-        df[c] = df[c].apply(_fmt_timestamp)
-    df.to_csv(config.output_file(f"train-{t.id()}", subdir=t.id(), suffix="csv"))

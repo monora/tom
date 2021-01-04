@@ -15,13 +15,13 @@ Overview
 
 The routing planning process starts with a first version of a `RoutingInfo` of a train. For each
 version and each section the `Path Planning Process` between `ApplicantRU` and `ResponseIM` of the
-section is carried out until the section is completeley *covered* with allocated paths. We use an
+section is carried out until the section is completely *covered* with allocated paths. We use an
 `UML sequence diagram`_ to describe the message flow:
 
 .. uml:: uml/rp-05-basic-msg-exchange-pattern.puml
    :caption: Basis message exchange pattern between involved parties
 
-If in between the partipiants find out, that a planned version of a RoutingInfo cannot be
+If in between the participants find out, that a planned version of a RoutingInfo cannot be
 constructed, a new version is created and communicated by the `LeadRU` to the `ApplicantRUs`
 (Harmonisation). These in turn inform their `ResponseIMs` with each `PathRequest` containing also
 the new version of the `RoutingInfo`.
