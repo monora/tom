@@ -104,3 +104,4 @@ ENV/
 /train-*.*
 ~$*
 poetry.lock
+auto_examples/

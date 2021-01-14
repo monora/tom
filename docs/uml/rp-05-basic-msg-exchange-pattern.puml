@@ -1,13 +1,16 @@
 skinparam BoxPadding 25
 hide footbox
 
-loop for each version RI-$i of a trains RoutingInfo
+loop for each version RI-v$i of a train RoutingInfo
 group Harmonisation
-    LeadRU -> ApplicantRUs: RoutingInfo RI-$i
+    LeadRU -> ApplicantRUs: RoutingInfo RI-v$i
+end
+group Inform ResponsibleIMs
+    LeadRU -> ResponsibleIMs: RoutingInfo RI-v$i
 end
 
 group "Path Planning RU/IM"
-    loop for each section RS-$j of RI-$i
+    loop for each changed or new section RS-$j of RI-v$i
         ApplicantRUs -> ResponsibleIMs: PathRequest for RS-$j together with RoutingInfo
         ResponsibleIMs -> ApplicantRUs: PathDetails for PathRequest
     end

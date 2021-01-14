@@ -10,19 +10,23 @@ participant RU2 order 40
 participant IM2 order 50
 end box
 
-group Harmonisation (Lead RU sends new version (RI-2) of RoutingInfo to applicant RU2)
-    RU1 -> RU2: RIM(RI-2)
+group Harmonisation (Lead RU sends new version (RI-v2) of RoutingInfo to applicant RU2)
+    RU1 -> RU2: RIM(RI-v2)
     note left
         Sections updates: {10,20,30}.01v2, {10,20,30}.02v2
         New       sections: {11,31}.01v1, {11,31}.02v1
     end note
 end
+group Inform IM1, IM2 about new RI version
+    RU1 -> IM1: RIM(RI-v2)
+    RU1 -> IM2: RIM(RI-v2)
+end
 group "Path Re-Planning RU1/IM1"
     loop "for $i in {10,20,30}"
-        RU1 -> IM1: PRM(RI-2, RS-$i.01v2)
+        RU1 -> IM1: PRM(RI-v2, RS-$i.01v2)
     end
-    RU1 -> IM1: PRM(RI-2, RS-11.01v1)
-    RU1 -> IM1: PRM(RI-2, RS-31.01v1)
+    RU1 -> IM1: PRM(RI-v2, RS-11.01v1)
+    RU1 -> IM1: PRM(RI-v2, RS-31.01v1)
     par "for $i in {10,20,30}"
         IM1 -> RU1: PDM(RS-$i.01v2)
     end
@@ -31,10 +35,10 @@ group "Path Re-Planning RU1/IM1"
 end
 group "Path Re-Planning RU2/IM2"
     loop "for $i in {10,20,30}"
-        RU2 -> IM2: PRM(RI-2, RS-$i.02v2)
+        RU2 -> IM2: PRM(RI-v2, RS-$i.02v2)
     end
-    RU2 -> IM2: PRM(RI-2, RS-11.02v1)
-    RU2 -> IM2: PRM(RI-2, RS-31.02v1)
+    RU2 -> IM2: PRM(RI-v2, RS-11.02v1)
+    RU2 -> IM2: PRM(RI-v2, RS-31.02v1)
     par "for $i in {10,20,30}"
         IM2 -> RU2: PDM(RS-$i.2v2)
     end

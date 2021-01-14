@@ -1,50 +1,45 @@
 ---
 coreID: 12AB
 lead_ru: 1080 # DB FV
+# initial revision of RoutingInfo. Alle sections
+# also have version 1
 version: 1
 sections:
-    - id: 10.01
-      applicant_ru: 1084 # NS
-      planning_im: 0084 # Prorail
+    - id: 10.01 # Could also
       version: 1
       departure_station: AC
-      departure_time: '23:50:00'
       arrival_station: EMM
-      travel_time: 02:10:00
-      calendar:
-        begin: &ac-begin '2021-12-01'
-        end: &ac-end '2021-12-31'
-        mask: 'Mon Tue Wed Thu'
+      travel_time: '02:10:00'
       succ:
           - 10.02
     - id: 10.02
       version: 1
-      applicant_ru: 1080 # DB FV
-      planning_im: 0080 # DB Netz
       departure_station: EMM
       arrival_station: FF
-      travel_time: 10:00:00
+      departure_time: '02:00:00' # => Route Construction Start
+      # Not stop_time => pass through
+      travel_time: '10:00:00'
+      calendar:
+        # Start in Amsterdam is 1.12.2021 23:50
+        begin: '2021-12-02'
+        end: '2021-12-31'
+        mask: 'Tue Wed Thu Fri'
 
     - id: 20.01
       version: 1
-      applicant_ru: 1084 # NS
-      planning_im: 0084 # Prorail
       departure_station: AC
-      departure_time: '23:50:00'
       arrival_station: Venlo
-      travel_time: 02:05:00
-      calendar:
-        begin: *ac-begin
-        end: *ac-end
-        mask: 'Fri Sat Sun'
+      travel_time: '01:10:00'
       succ:
           - 20.02
     - id: 20.02
       version: 1
-      applicant_ru: 1080 # DB FV
-      planning_im: 0080 # DB Netz
       departure_station: Venlo
       arrival_station: FF
-      travel_time: '10:00:00'
-      stop_time: 00:05:00
-
+      travel_time: '07:00:00'
+      departure_time: '05:00:00' # => Route Construction Start
+      stop_time: '04:00:00' # => 4 hours stop in Venlo
+      calendar:
+        begin: '2021-12-02'
+        end: '2022-01-01'
+        mask: 'Sat Sun Mon'

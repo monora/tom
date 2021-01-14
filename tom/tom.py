@@ -14,7 +14,7 @@ This module defines the TOM domain model. The main classes are:
 import logging
 from datetime import datetime, timedelta, date
 from pathlib import PosixPath
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 import networkx as nx
 import pandas as pd
@@ -447,18 +447,25 @@ class Train:
         for path in nx.all_simple_paths(g, source=SingleSource, target=SingleTarget):
             yield TrainRun(self, path[1:-1])
 
-    def to_dataframe(self) -> pd.DataFrame:
+    def to_dataframe(self, format_time=True) -> pd.DataFrame:
         train_runs = sorted(self.train_run_iterator(), key=TrainRun.start_date)
         train_ids = list(map(TrainRun.train_id, train_runs))
         result = pd.DataFrame(index=train_ids,
-                              dtype=str,
                               columns=self.__time_table_columns())
         for tr in train_runs:
-            result.loc[tr.train_id()] = tr.time_table()
-        return result.fillna('')
+            result.loc[tr.train_id()] = tr.time_table(format_time=format_time)
+        if format_time:
+            result = result.fillna('')
+        return result
 
     def section_dataframes(self) -> List[pd.DataFrame]:
         return [sec.to_dataframe() for sec in self.sections]
+
+    def calender(self):
+        result = pd.DatetimeIndex([])
+        for section in self.sections:
+            result = result.union(section.calendar)
+        return result
 
     def __time_table_columns(self) -> List[str]:
         col_graph = nx.DiGraph()
@@ -646,17 +653,33 @@ class TrainRun:
     def first_run(self):
         return self.sections_runs[0]
 
-    def time_table(self) -> Dict[str, str]:
+    def time_table(self, format_time=True) -> Dict[str, str]:
         result = {}
         for sr in self.sections_runs:
-            result[sr.arrival_column()] = sr.arrival_with_otr()
-            result[sr.departure_column()] = sr.departure_with_otr()
+            arr = sr.arrival_with_otr() if format_time else sr.arrival_time()
+            dep = sr.departure_with_otr() if format_time else sr.departure_time
+            result[sr.arrival_column()] = arr
+            result[sr.departure_column()] = dep
         return result
+
+    def time_table_events(self) -> Tuple[List[str], List[pd.Timestamp]]:
+        stations: List[str] = []
+        timestamps: List[pd.Timestamp] = []
+        for station, ts in self.time_table_event_iterator():
+            stations.append(station)
+            timestamps.append(ts)
+        return stations, timestamps
 
     def location_iterator(self):
         yield self.first_run().departure_station()
         for sr in self.sections_runs:
             yield sr.arrival_station()
+
+    def time_table_event_iterator(self):
+        sr: SectionRun
+        for sr in self.sections_runs:
+            yield sr.departure_station(), sr.departure_time
+            yield sr.arrival_station(), sr.arrival_time()
 
 
 class Route:

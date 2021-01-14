@@ -4,13 +4,11 @@ lead_ru: 1080 # DB FV
 version: 2
 sections:
     - id: 10.01
-      applicant_ru: 1084 # NS
-      planning_im: 0084 # Prorail
       version: 2
       departure_station: Utrecht
       departure_time: '00:50:00'
       arrival_station: EMM
-      travel_time: 01:10:00
+      travel_time: '01:10:00'
       calendar:
         begin: &ac-begin '2021-12-01'
         end: &ac-end '2021-12-31'
@@ -21,7 +19,6 @@ sections:
     - id: 10.02
       version: 1
       applicant_ru: 1080 # DB FV
-      planning_im: 0080 # DB Netz
       departure_station: EMM
       arrival_station: FF
       travel_time: 10:00:00
@@ -29,11 +26,10 @@ sections:
     - id: 20.01
       version: 1
       applicant_ru: 1084 # NS
-      planning_im: 0084 # Prorail
       departure_station: AC
       departure_time: '23:50:00'
       arrival_station: Venlo
-      travel_time: 02:05:00
+      travel_time: '02:05:00'
       calendar:
         begin: *ac-begin
         end: *ac-end
@@ -43,9 +39,8 @@ sections:
     - id: 20.02
       version: 1
       applicant_ru: 1080 # DB FV
-      planning_im: 0080 # DB Netz
       departure_station: Venlo
       arrival_station: FF
       travel_time: '10:00:00'
-      stop_time: 00:05:00
+      stop_time: '00:05:00'
 

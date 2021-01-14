@@ -1,6 +1,4 @@
 * Train Object Model version:
-* Python version:
-* Operating System:
 
 ### Description
 

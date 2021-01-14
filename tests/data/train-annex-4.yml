@@ -5,8 +5,6 @@ version: 1 # RoutingInfo version
 sections:
     - id: 10.01
       version: 1 # RouteSection version
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: S
       departure_time: '00:10:00' # => Route Construction Start
       arrival_station: H1
@@ -18,15 +16,11 @@ sections:
           - 10.02
     - id: 10.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: &s2-tt 07:30:00
     - id: 20.01
       version: 1
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: S
       departure_time: '23:50:00' # => Route Construction Start
       arrival_station: H1
@@ -38,15 +32,11 @@ sections:
           - 20.02
     - id: 20.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
     - id: 30.01
       version: 1
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: D
       departure_time: '02:00:00' # => Route Construction Start
       arrival_station: H1
@@ -58,8 +48,6 @@ sections:
           - 30.02
     - id: 30.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt

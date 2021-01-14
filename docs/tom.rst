@@ -20,10 +20,26 @@ tom.config module
    :undoc-members:
    :show-inheritance:
 
+tom.plot module
+---------------
+
+.. automodule:: tom.plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tom.tom module
 --------------
 
 .. automodule:: tom.tom
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tom.util module
+---------------
+
+.. automodule:: tom.util
    :members:
    :undoc-members:
    :show-inheritance:

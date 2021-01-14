@@ -11,14 +11,18 @@ box "RU2/IM2"
 end box
 
 group Harmonisation
-    RU1 -> RU2: RIM(RI-1)
+    RU1 -> RU2: RIM(RI-v1)
+end
+group Inform IM1, IM2
+    RU1 -> IM1: RIM(RI-v1)
+    RU1 -> IM2: RIM(RI-v1)
 end
 group "Path Planning RU1/IM1"
     loop "for $i in {10,20,30}"
-        RU1 -> IM1: PRM(RI-1, RS-$i.01)
+        RU1 -> IM1: PRM(RI-v1, RS-$i.01)
         note left
             Send whole RoutingInfo
-            RI-1 within PRM
+            RI-v1 within PRM
         end note
     end
     par "for $i in {10,20,30}"
@@ -27,7 +31,7 @@ group "Path Planning RU1/IM1"
 end
 group "Path Planning RU2/IM2"
     loop "for $i in {10,20,30}"
-        RU2 -> IM2: PRM(RI-1, RS-$i.02)
+        RU2 -> IM2: PRM(RI-v1, RS-$i.02)
     end
     par "for $i in {10,20,30}"
         IM2 -> RU2: PDM(RS-$i.02)

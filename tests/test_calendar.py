@@ -46,6 +46,13 @@ def test_train_from_yml(train_ac_ff):
     assert str(rs.first_day()) == '2021-12-01'
     assert str(rs.last_day()) == '2021-12-30'
 
+    rs = t.sections[1]
+    assert rs.departure_station == 'EMM'
+    assert rs.arrival_station == 'FF'
+    assert str(rs.departure_time()) == '2021-12-02 02:00:00'
+    assert str(rs.arrival_time()) == '2021-12-02 12:00:00'
+    assert rs.departure_stop_time == pd.Timedelta('00:00:00')
+
     rs = t.sections[2]
     assert rs.departure_station == 'AC'
     assert rs.arrival_station == 'Venlo'
@@ -54,13 +61,15 @@ def test_train_from_yml(train_ac_ff):
     assert str(rs.departure_time()) == '2021-12-03 23:50:00'
     # 0 is default stop time
     assert rs.departure_stop_time == pd.Timedelta(0)
-    assert str(rs.arrival_time()) == '2021-12-04 01:55:00'
+    assert str(rs.arrival_time()) == '2021-12-04 01:00:00'
 
     assert str(rs.first_day()) == '2021-12-03'
     assert str(rs.last_day()) == '2021-12-31'
 
     rs = t.sections[3]
-    assert rs.departure_stop_time == pd.Timedelta('00:05:00')
+    assert str(rs.departure_time()) == '2021-12-04 05:00:00'
+    assert str(rs.arrival_time()) == '2021-12-04 12:00:00'
+    assert rs.departure_stop_time == pd.Timedelta('04:00:00')
 
 
 def _check_to_df(t: Train, index: int, size: int, cols):

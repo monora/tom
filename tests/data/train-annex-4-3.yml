@@ -5,8 +5,6 @@ version: 3
 sections:
     - id: 12.01
       version: 2
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: S
       departure_time: '00:20:00'
       arrival_station: H2
@@ -18,15 +16,11 @@ sections:
           - 12.02
     - id: 12.02
       version: 2
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H2
       arrival_station: T
-      travel_time: &s2-tt 07:30:00
+      travel_time: &s2-tt '07:30:00'
     - id: 11.01
       version: 1
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: S
       departure_time: '23:30:00'
       arrival_station: H1
@@ -38,17 +32,13 @@ sections:
           - 11.02
     - id: 11.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
-      travel_time: 07:30:00
+      travel_time: '07:30:00'
     # Sec 3-4: Shorten calender
     # Change departure times
     - id: 20.01
       version: 2
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: S
       departure_time: '23:55:00'
       arrival_station: H1
@@ -60,16 +50,12 @@ sections:
           - 20.02
     - id: 20.02
       version: 2
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
     # Shorten calender of D-T
     - id: 30.01
       version: 2
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: D
       departure_time: '01:45:00'
       arrival_station: H1
@@ -81,15 +67,11 @@ sections:
           - 30.02
     - id: 30.02
       version: 2
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
     - id: 31.01
       version: 1
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: D
       departure_time: '01:10:00'
       arrival_station: H1
@@ -101,8 +83,6 @@ sections:
           - 31.02
     - id: 31.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt

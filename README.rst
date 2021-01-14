@@ -1,6 +1,6 @@
-==================
-Train Object Model
-==================
+=======================
+Extended Combined Model
+=======================
 
 .. _TOM Jupyter Notebook: https://mybinder.org/v2/gh/monora/tom/master?filepath=notebooks%2Ftom.ipynb
 .. _Gitpod: https://gitpod.io/#https://github.com/monora/tom
@@ -28,7 +28,7 @@ Train Object Model
 .. _Example 2: https://monora.github.io/tom/domainmodel.html#example-train-with-three-ims
 .. _Example 3: https://monora.github.io/tom/domainmodel.html#example-train-annex-4
 
-This repository contains a proposition to extend the *Combined Route Model* of the JSG_ *Train Object
+This repository contains a proposition to extend the *Combined Model* of the JSG_ *Train Object
 Model*. See `Route Domain Model`_.
 
 We provide examples which can be tested and investigated. See
@@ -57,7 +57,7 @@ Features
 
 You can try out the library with:
 
-* `TOM Jupyter Notebook`_ (no account necessary)
+* `TOM Jupyter Notebook`_ (no account necessary). Can take some time to launch.
 * `Gitpod`_ Github account needed. You get a VS-Code workspace with all libraries installed.
 
 Credits
