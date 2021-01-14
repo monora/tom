@@ -4,9 +4,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Index &mdash; Train Object Model 0.1.0 documentation</title>
   
@@ -14,10 +14,17 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -50,7 +57,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Train Object Model
+            <a href="index.html" class="icon icon-home"> Train Object Model
           
 
           
@@ -92,6 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domainmodel.html">Route Domain Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="routing-planning-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">ECM example trains</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">tom</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
@@ -136,6 +144,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -147,7 +157,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -169,10 +179,13 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -223,6 +236,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.RouteSection.calendar">calendar (tom.tom.RouteSection attribute)</a>
+</li>
+      <li><a href="tom.html#tom.tom.Train.calender">calender() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.RouteSection.can_connect_to">can_connect_to() (tom.tom.RouteSection method)</a>
 </li>
@@ -280,6 +295,10 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.util.example">example() (in module tom.util)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.Train.extended_train_run_graph">extended_train_run_graph() (tom.tom.Train method)</a>
 </li>
   </ul></td>
@@ -293,6 +312,14 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.TrainRun.first_run">first_run() (tom.tom.TrainRun method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.plot.SectionColorChooser.get_color_for_section">get_color_for_section() (tom.plot.SectionColorChooser method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -318,10 +345,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.RouteSection.last_day">last_day() (tom.tom.RouteSection method)</a>
 </li>
-      <li><a href="tom.html#tom.tom.Train.lead_ru">lead_ru (tom.tom.Train attribute)</a>
+      <li><a href="tom.html#tom.plot.SectionColorChooser.last_section">last_section (tom.plot.SectionColorChooser attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.Train.lead_ru">lead_ru (tom.tom.Train attribute)</a>
+</li>
       <li><a href="tom.html#tom.tom.Train.location_graph">location_graph() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.TrainRun.location_iterator">location_iterator() (tom.tom.TrainRun method)</a>
@@ -333,6 +362,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.make_train_from_yml">make_train_from_yml() (in module tom.tom)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.plot.SectionColorChooser.no_colors">no_colors (tom.plot.SectionColorChooser attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -349,6 +386,14 @@
       <li><a href="tom.html#tom.config.output_dir">output_dir() (in module tom.config)</a>
 </li>
       <li><a href="tom.html#tom.config.output_file">output_file() (in module tom.config)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.plot.plot_train">plot_train() (in module tom.plot)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -372,6 +417,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.SectionRun.section">section (tom.tom.SectionRun attribute)</a>
 </li>
+      <li><a href="tom.html#tom.plot.SectionColorChooser.section2color">section2color (tom.plot.SectionColorChooser attribute)</a>
+</li>
       <li><a href="tom.html#tom.tom.Train.section_dataframes">section_dataframes() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.Train.section_graph">section_graph() (tom.tom.Train method)</a>
@@ -386,6 +433,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.plot.SectionColorChooser">SectionColorChooser (class in tom.plot)</a>
+</li>
       <li><a href="tom.html#tom.tom.SectionRun">SectionRun (class in tom.tom)</a>
 </li>
       <li><a href="tom.html#tom.tom.Route.sections">sections (tom.tom.Route attribute)</a>
@@ -412,6 +461,10 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.TrainRun.time_table">time_table() (tom.tom.TrainRun method)</a>
 </li>
+      <li><a href="tom.html#tom.tom.TrainRun.time_table_event_iterator">time_table_event_iterator() (tom.tom.TrainRun method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.TrainRun.time_table_events">time_table_events() (tom.tom.TrainRun method)</a>
+</li>
       <li><a href="tom.html#tom.tom.Train.timetable_year">timetable_year() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.RouteSection.to_dataframe">to_dataframe() (tom.tom.RouteSection method)</a>
@@ -426,12 +479,16 @@
 </li>
       <li><a href="tom.html#module-tom.config">tom.config (module)</a>
 </li>
-      <li><a href="tom.html#module-tom.tom">tom.tom (module)</a>
+      <li><a href="tom.html#module-tom.plot">tom.plot (module)</a>
 </li>
-      <li><a href="tom.html#tom.tom.TomError">TomError</a>
+      <li><a href="tom.html#module-tom.tom">tom.tom (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#module-tom.util">tom.util (module)</a>
+</li>
+      <li><a href="tom.html#tom.tom.TomError">TomError</a>
+</li>
       <li><a href="tom.html#tom.tom.Train">Train (class in tom.tom)</a>
 </li>
       <li><a href="tom.html#tom.tom.TrainRun.train">train (tom.tom.TrainRun attribute)</a>
@@ -479,28 +536,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Horst Duchene
+        &#169; Copyright 2020, Horst Duchene.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

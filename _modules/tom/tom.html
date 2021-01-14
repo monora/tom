@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>tom.tom &mdash; Train Object Model 0.1.0 documentation</title>
   
@@ -13,10 +13,17 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -49,7 +56,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Train Object Model
+            <a href="../../index.html" class="icon icon-home"> Train Object Model
           
 
           
@@ -91,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../domainmodel.html">Route Domain Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../routing-planning-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">ECM example trains</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">tom</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
@@ -120,6 +128,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -175,7 +185,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">date</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PosixPath</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -608,18 +618,25 @@
         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_simple_paths</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">SingleSource</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">SingleTarget</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">TrainRun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Train.to_dataframe"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="Train.to_dataframe"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_time</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="n">train_runs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">TrainRun</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
         <span class="n">train_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">TrainRun</span><span class="o">.</span><span class="n">train_id</span><span class="p">,</span> <span class="n">train_runs</span><span class="p">))</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">train_ids</span><span class="p">,</span>
-                              <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
                               <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__time_table_columns</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">train_runs</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">train_id</span><span class="p">()]</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">time_table</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+            <span class="n">result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">train_id</span><span class="p">()]</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">time_table</span><span class="p">(</span><span class="n">format_time</span><span class="o">=</span><span class="n">format_time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">format_time</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="Train.section_dataframes"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.section_dataframes">[docs]</a>    <span class="k">def</span> <span class="nf">section_dataframes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">sec</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Train.calender"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.calender">[docs]</a>    <span class="k">def</span> <span class="nf">calender</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">([])</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="k">def</span> <span class="nf">__time_table_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">col_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
@@ -807,17 +824,33 @@
 <div class="viewcode-block" id="TrainRun.first_run"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.first_run">[docs]</a>    <span class="k">def</span> <span class="nf">first_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="TrainRun.time_table"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.time_table">[docs]</a>    <span class="k">def</span> <span class="nf">time_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="TrainRun.time_table"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.time_table">[docs]</a>    <span class="k">def</span> <span class="nf">time_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_time</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
-            <span class="n">result</span><span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">arrival_column</span><span class="p">()]</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_with_otr</span><span class="p">()</span>
-            <span class="n">result</span><span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">departure_column</span><span class="p">()]</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">departure_with_otr</span><span class="p">()</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_with_otr</span><span class="p">()</span> <span class="k">if</span> <span class="n">format_time</span> <span class="k">else</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span>
+            <span class="n">dep</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">departure_with_otr</span><span class="p">()</span> <span class="k">if</span> <span class="n">format_time</span> <span class="k">else</span> <span class="n">sr</span><span class="o">.</span><span class="n">departure_time</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">arrival_column</span><span class="p">()]</span> <span class="o">=</span> <span class="n">arr</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">sr</span><span class="o">.</span><span class="n">departure_column</span><span class="p">()]</span> <span class="o">=</span> <span class="n">dep</span>
         <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="TrainRun.time_table_events"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.time_table_events">[docs]</a>    <span class="k">def</span> <span class="nf">time_table_events</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]]:</span>
+        <span class="n">stations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">timestamps</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">station</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_table_event_iterator</span><span class="p">():</span>
+            <span class="n">stations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">)</span>
+            <span class="n">timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stations</span><span class="p">,</span> <span class="n">timestamps</span></div>
 
 <div class="viewcode-block" id="TrainRun.location_iterator"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.location_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">location_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_run</span><span class="p">()</span><span class="o">.</span><span class="n">departure_station</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">()</span></div></div>
+            <span class="k">yield</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TrainRun.time_table_event_iterator"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.time_table_event_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">time_table_event_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sr</span><span class="p">:</span> <span class="n">SectionRun</span>
+        <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">sr</span><span class="o">.</span><span class="n">departure_station</span><span class="p">(),</span> <span class="n">sr</span><span class="o">.</span><span class="n">departure_time</span>
+            <span class="k">yield</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">(),</span> <span class="n">sr</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="Route"><a class="viewcode-back" href="../../tom.html#tom.tom.Route">[docs]</a><span class="k">class</span> <span class="nc">Route</span><span class="p">:</span>
@@ -909,28 +942,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Horst Duchene
+        &#169; Copyright 2020, Horst Duchene.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

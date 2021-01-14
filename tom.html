@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>tom package &mdash; Train Object Model 0.1.0 documentation</title>
   
@@ -13,10 +13,17 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -51,7 +58,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Train Object Model
+            <a href="index.html" class="icon icon-home"> Train Object Model
           
 
           
@@ -93,12 +100,15 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domainmodel.html">Route Domain Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="routing-planning-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">ECM example trains</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">tom</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">tom package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-tom.cli">tom.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-tom.config">tom.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tom.plot">tom.plot module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-tom.tom">tom.tom module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tom.util">tom.util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-tom">Module contents</a></li>
 </ul>
 </li>
@@ -147,6 +157,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -160,7 +172,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/tom.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -193,6 +205,40 @@
 <dl class="function">
 <dt id="tom.config.output_file">
 <code class="sig-prename descclassname">tom.config.</code><code class="sig-name descname">output_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">subdir: str = '.'</em>, <em class="sig-param">suffix: str = ''</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/tom/config.html#output_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.config.output_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-tom.plot">
+<span id="tom-plot-module"></span><h2>tom.plot module<a class="headerlink" href="#module-tom.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tom.plot.SectionColorChooser">
+<em class="property">class </em><code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">SectionColorChooser</code><a class="reference internal" href="_modules/tom/plot.html#SectionColorChooser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.SectionColorChooser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="tom.plot.SectionColorChooser.get_color_for_section">
+<code class="sig-name descname">get_color_for_section</code><span class="sig-paren">(</span><em class="sig-param">section</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#SectionColorChooser.get_color_for_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.SectionColorChooser.get_color_for_section" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tom.plot.SectionColorChooser.last_section">
+<code class="sig-name descname">last_section</code><em class="property"> = -1</em><a class="headerlink" href="#tom.plot.SectionColorChooser.last_section" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tom.plot.SectionColorChooser.no_colors">
+<code class="sig-name descname">no_colors</code><em class="property"> = 10</em><a class="headerlink" href="#tom.plot.SectionColorChooser.no_colors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tom.plot.SectionColorChooser.section2color">
+<code class="sig-name descname">section2color</code><em class="property"> = {&lt;tom.tom.RouteSection object&gt;: 0}</em><a class="headerlink" href="#tom.plot.SectionColorChooser.section2color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="tom.plot.plot_train">
+<code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">plot_train</code><span class="sig-paren">(</span><em class="sig-param">t: tom.tom.Train</em>, <em class="sig-param">no_of_runs=-1</em>, <em class="sig-param">plot_all=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#plot_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.plot_train" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -575,6 +621,11 @@ is running is this section.</p>
 <code class="sig-name descname">basic_section_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; networkx.classes.digraph.DiGraph<a class="reference internal" href="_modules/tom/tom.html#Train.basic_section_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.basic_section_graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="tom.tom.Train.calender">
+<code class="sig-name descname">calender</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Train.calender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.calender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="tom.tom.Train.core_id">
 <code class="sig-name descname">core_id</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.Train.core_id" title="Permalink to this definition">¶</a></dt>
@@ -632,7 +683,7 @@ is running is this section.</p>
 
 <dl class="method">
 <dt id="tom.tom.Train.to_dataframe">
-<code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/tom/tom.html#Train.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">format_time=True</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/tom/tom.html#Train.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.to_dataframe" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -700,7 +751,17 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 
 <dl class="method">
 <dt id="tom.tom.TrainRun.time_table">
-<code class="sig-name descname">time_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict[str, str]<a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_table</code><span class="sig-paren">(</span><em class="sig-param">format_time=True</em><span class="sig-paren">)</span> &#x2192; Dict[str, str]<a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.TrainRun.time_table_event_iterator">
+<code class="sig-name descname">time_table_event_iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table_event_iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table_event_iterator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.TrainRun.time_table_events">
+<code class="sig-name descname">time_table_events</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[List[str], List[pandas._libs.tslibs.timestamps.Timestamp]]<a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table_events" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -726,6 +787,14 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 <dd></dd></dl>
 
 </div>
+<div class="section" id="module-tom.util">
+<span id="tom-util-module"></span><h2>tom.util module<a class="headerlink" href="#module-tom.util" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="tom.util.example">
+<code class="sig-prename descclassname">tom.util.</code><code class="sig-name descname">example</code><span class="sig-paren">(</span><em class="sig-param">data_dir</em>, <em class="sig-param">pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/util.html#example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.util.example" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="module-tom">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tom" title="Permalink to this headline">¶</a></h2>
 <p>Top-level package for Train Object Model.</p>
@@ -737,37 +806,29 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="modules.html" class="btn btn-neutral float-left" title="tom" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="tom" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Horst Duchene
+        &#169; Copyright 2020, Horst Duchene.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

@@ -10,6 +10,7 @@ Welcome to Train Object Model's documentation!
    usage
    domainmodel
    routing-planning-process
+   auto_examples/index
    modules
    contributing
    authors

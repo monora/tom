@@ -1,0 +1,797 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Example Train Annex 4 &mdash; Train Object Model 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example: Train with three IMs" href="plot_a_f.html" />
+    <link rel="prev" title="Example showing OTR anomalie" href="plot_otr_test.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Train Object Model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Train Object Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../domainmodel.html">Route Domain Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_otr_test.html">Example showing OTR anomalie</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example Train Annex 4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-graph">Section graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">tom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Train Object Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">ECM example trains</a> &raquo;</li>
+        
+      <li>Example Train Annex 4</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/auto_examples/plot_annex_4.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-annex-4-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-train-annex-4">
+<span id="sphx-glr-auto-examples-plot-annex-4-py"></span><h1>Example Train Annex 4<a class="headerlink" href="#example-train-annex-4" title="Permalink to this headline">¶</a></h1>
+<p>Here we investigate the routing specification for example from
+<cite>train-annex-4.yml</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span>
+<span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span>
+</pre></div>
+</div>
+<p>Load example annex 4 from yaml specification
+Notice the route sections which have a departure time.
+These are considered as route construction starts
+Only one section in a route may be a construction start.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;annex-4.yml&#39;</span>
+<span class="n">train_specs</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>---
+coreID: ID1
+lead_ru: RU1
+version: 1 # RoutingInfo version
+sections:
+    - id: 10.01
+      version: 1 # RouteSection version
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: S
+      departure_time: &#39;00:10:00&#39; # =&gt; Route Construction Start
+      arrival_station: H1
+      travel_time: &amp;s1-tt &#39;24:20:00&#39;
+      calendar:
+        begin: &#39;2021-02-01&#39;
+        end: &#39;2021-02-07&#39;
+      succ:
+          - 10.02
+    - id: 10.02
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      arrival_station: T
+      travel_time: &amp;s2-tt 07:30:00
+    - id: 20.01
+      version: 1
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: S
+      departure_time: &#39;23:50:00&#39; # =&gt; Route Construction Start
+      arrival_station: H1
+      travel_time: *s1-tt
+      calendar:
+        begin: &#39;2021-02-07&#39;
+        end: &#39;2021-02-13&#39;
+      succ:
+          - 20.02
+    - id: 20.02
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      arrival_station: T
+      travel_time: *s2-tt
+    - id: 30.01
+      version: 1
+      applicant_ru: RU1
+      planning_im: IM1
+      departure_station: D
+      departure_time: &#39;02:00:00&#39; # =&gt; Route Construction Start
+      arrival_station: H1
+      travel_time: &#39;22:30:00&#39;
+      calendar:
+        begin: &#39;2021-02-15&#39;
+        end: &#39;2021-02-20&#39;
+      succ:
+          - 30.02
+    - id: 30.02
+      version: 1
+      applicant_ru: RU2
+      planning_im: IM2
+      departure_station: H1
+      arrival_station: T
+      travel_time: *s2-tt
+</pre></div>
+</div>
+<p>Create train object and show its train id.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">make_train_from_yml</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/ID1/2021&#39;
+</pre></div>
+</div>
+<div class="section" id="timetable">
+<h2>Timetable<a class="headerlink" href="#timetable" title="Permalink to this headline">¶</a></h2>
+<p>Show timetable as dataframe</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Departure D</th>
+      <th>Departure S</th>
+      <th>Arrival H1</th>
+      <th>Departure H1</th>
+      <th>Arrival T</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>TR/8350/ID1/2021/10.01/2021-02-01</th>
+      <td></td>
+      <td>Mo 01.02.21 00:10</td>
+      <td>Di 02.02.21 00:30</td>
+      <td>Di 02.02.21 00:30</td>
+      <td>Di 02.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/10.01/2021-02-02</th>
+      <td></td>
+      <td>Di 02.02.21 00:10</td>
+      <td>Mi 03.02.21 00:30</td>
+      <td>Mi 03.02.21 00:30</td>
+      <td>Mi 03.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/10.01/2021-02-03</th>
+      <td></td>
+      <td>Mi 03.02.21 00:10</td>
+      <td>Do 04.02.21 00:30</td>
+      <td>Do 04.02.21 00:30</td>
+      <td>Do 04.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/10.01/2021-02-04</th>
+      <td></td>
+      <td>Do 04.02.21 00:10</td>
+      <td>Fr 05.02.21 00:30</td>
+      <td>Fr 05.02.21 00:30</td>
+      <td>Fr 05.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/10.01/2021-02-05</th>
+      <td></td>
+      <td>Fr 05.02.21 00:10</td>
+      <td>Sa 06.02.21 00:30</td>
+      <td>Sa 06.02.21 00:30</td>
+      <td>Sa 06.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/10.01/2021-02-06</th>
+      <td></td>
+      <td>Sa 06.02.21 00:10</td>
+      <td>So 07.02.21 00:30</td>
+      <td>So 07.02.21 00:30</td>
+      <td>So 07.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/10.01/2021-02-07</th>
+      <td></td>
+      <td>So 07.02.21 00:10</td>
+      <td>Mo 08.02.21 00:30</td>
+      <td>Mo 08.02.21 00:30</td>
+      <td>Mo 08.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/20.01/2021-02-07</th>
+      <td></td>
+      <td>So 07.02.21 23:50</td>
+      <td>Di 09.02.21 00:10</td>
+      <td>Di 09.02.21 00:10</td>
+      <td>Di 09.02.21 07:40</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/20.01/2021-02-08</th>
+      <td></td>
+      <td>Mo 08.02.21 23:50</td>
+      <td>Mi 10.02.21 00:10</td>
+      <td>Mi 10.02.21 00:10</td>
+      <td>Mi 10.02.21 07:40</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/20.01/2021-02-09</th>
+      <td></td>
+      <td>Di 09.02.21 23:50</td>
+      <td>Do 11.02.21 00:10</td>
+      <td>Do 11.02.21 00:10</td>
+      <td>Do 11.02.21 07:40</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/20.01/2021-02-10</th>
+      <td></td>
+      <td>Mi 10.02.21 23:50</td>
+      <td>Fr 12.02.21 00:10</td>
+      <td>Fr 12.02.21 00:10</td>
+      <td>Fr 12.02.21 07:40</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/20.01/2021-02-11</th>
+      <td></td>
+      <td>Do 11.02.21 23:50</td>
+      <td>Sa 13.02.21 00:10</td>
+      <td>Sa 13.02.21 00:10</td>
+      <td>Sa 13.02.21 07:40</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/20.01/2021-02-12</th>
+      <td></td>
+      <td>Fr 12.02.21 23:50</td>
+      <td>So 14.02.21 00:10</td>
+      <td>So 14.02.21 00:10</td>
+      <td>So 14.02.21 07:40</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/20.01/2021-02-13</th>
+      <td></td>
+      <td>Sa 13.02.21 23:50</td>
+      <td>Mo 15.02.21 00:10</td>
+      <td>Mo 15.02.21 00:10</td>
+      <td>Mo 15.02.21 07:40</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/30.01/2021-02-15</th>
+      <td>Mo 15.02.21 02:00</td>
+      <td></td>
+      <td>Di 16.02.21 00:30</td>
+      <td>Di 16.02.21 00:30</td>
+      <td>Di 16.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/30.01/2021-02-16</th>
+      <td>Di 16.02.21 02:00</td>
+      <td></td>
+      <td>Mi 17.02.21 00:30</td>
+      <td>Mi 17.02.21 00:30</td>
+      <td>Mi 17.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/30.01/2021-02-17</th>
+      <td>Mi 17.02.21 02:00</td>
+      <td></td>
+      <td>Do 18.02.21 00:30</td>
+      <td>Do 18.02.21 00:30</td>
+      <td>Do 18.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/30.01/2021-02-18</th>
+      <td>Do 18.02.21 02:00</td>
+      <td></td>
+      <td>Fr 19.02.21 00:30</td>
+      <td>Fr 19.02.21 00:30</td>
+      <td>Fr 19.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/30.01/2021-02-19</th>
+      <td>Fr 19.02.21 02:00</td>
+      <td></td>
+      <td>Sa 20.02.21 00:30</td>
+      <td>Sa 20.02.21 00:30</td>
+      <td>Sa 20.02.21 08:00</td>
+    </tr>
+    <tr>
+      <th>TR/8350/ID1/2021/30.01/2021-02-20</th>
+      <td>Sa 20.02.21 02:00</td>
+      <td></td>
+      <td>So 21.02.21 00:30</td>
+      <td>So 21.02.21 00:30</td>
+      <td>So 21.02.21 08:00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>Show timetable as plot</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Timetable TR/8350/ID1/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_annex_4_001.png" />
+</div>
+<div class="section" id="route-sections">
+<h2>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h2>
+<p>From which sections the train is composed?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span>
+<span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.01v1
+Calender  : 01/02 to 07/02
+Start   at: 00:10 in S
+Arrival at: 00:30 in H1
+Successors: [10.02]
+
+ID        : 10.02v1
+Calender  : 02/02 to 08/02
+Start   at: 00:30 in H1
+Arrival at: 08:00 in T
+Successors: []
+
+ID        : 20.01v1
+Calender  : 07/02 to 13/02
+Start   at: 23:50 in S
+Arrival at: 00:10 in H1
+Successors: [20.02]
+
+ID        : 20.02v1
+Calender  : 09/02 to 15/02
+Start   at: 00:10 in H1
+Arrival at: 07:40 in T
+Successors: []
+
+ID        : 30.01v1
+Calender  : 15/02 to 20/02
+Start   at: 02:00 in D
+Arrival at: 00:30 in H1
+Successors: [30.02]
+
+ID        : 30.02v1
+Calender  : 16/02 to 21/02
+Start   at: 00:30 in H1
+Arrival at: 08:00 in T
+Successors: []
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-graph">
+<h2>Section graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h2>
+<p>The section graph is computed using the successor relation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sg</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">section_graph</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(&#39;10.01v1&#39;, &#39;10.02v1&#39;), (&#39;20.01v1&#39;, &#39;20.02v1&#39;), (&#39;30.01v1&#39;, &#39;30.02v1&#39;)]
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-runs">
+<h2>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h2>
+<p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
+The section runs are the rows of RouteSection.to_dataframe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10.01: S-H1
+               ID                   S                  H1
+2021-02-01  10.01 2021-02-01 00:10:00 2021-02-02 00:30:00
+2021-02-02  10.01 2021-02-02 00:10:00 2021-02-03 00:30:00
+2021-02-03  10.01 2021-02-03 00:10:00 2021-02-04 00:30:00
+2021-02-04  10.01 2021-02-04 00:10:00 2021-02-05 00:30:00
+2021-02-05  10.01 2021-02-05 00:10:00 2021-02-06 00:30:00
+2021-02-06  10.01 2021-02-06 00:10:00 2021-02-07 00:30:00
+2021-02-07  10.01 2021-02-07 00:10:00 2021-02-08 00:30:00
+
+10.02: H1-T
+               ID                  H1                   T
+2021-02-02  10.02 2021-02-02 00:30:00 2021-02-02 08:00:00
+2021-02-03  10.02 2021-02-03 00:30:00 2021-02-03 08:00:00
+2021-02-04  10.02 2021-02-04 00:30:00 2021-02-04 08:00:00
+2021-02-05  10.02 2021-02-05 00:30:00 2021-02-05 08:00:00
+2021-02-06  10.02 2021-02-06 00:30:00 2021-02-06 08:00:00
+2021-02-07  10.02 2021-02-07 00:30:00 2021-02-07 08:00:00
+2021-02-08  10.02 2021-02-08 00:30:00 2021-02-08 08:00:00
+
+20.01: S-H1
+               ID                   S                  H1
+2021-02-07  20.01 2021-02-07 23:50:00 2021-02-09 00:10:00
+2021-02-08  20.01 2021-02-08 23:50:00 2021-02-10 00:10:00
+2021-02-09  20.01 2021-02-09 23:50:00 2021-02-11 00:10:00
+2021-02-10  20.01 2021-02-10 23:50:00 2021-02-12 00:10:00
+2021-02-11  20.01 2021-02-11 23:50:00 2021-02-13 00:10:00
+2021-02-12  20.01 2021-02-12 23:50:00 2021-02-14 00:10:00
+2021-02-13  20.01 2021-02-13 23:50:00 2021-02-15 00:10:00
+
+20.02: H1-T
+               ID                  H1                   T
+2021-02-09  20.02 2021-02-09 00:10:00 2021-02-09 07:40:00
+2021-02-10  20.02 2021-02-10 00:10:00 2021-02-10 07:40:00
+2021-02-11  20.02 2021-02-11 00:10:00 2021-02-11 07:40:00
+2021-02-12  20.02 2021-02-12 00:10:00 2021-02-12 07:40:00
+2021-02-13  20.02 2021-02-13 00:10:00 2021-02-13 07:40:00
+2021-02-14  20.02 2021-02-14 00:10:00 2021-02-14 07:40:00
+2021-02-15  20.02 2021-02-15 00:10:00 2021-02-15 07:40:00
+
+30.01: D-H1
+               ID                   D                  H1
+2021-02-15  30.01 2021-02-15 02:00:00 2021-02-16 00:30:00
+2021-02-16  30.01 2021-02-16 02:00:00 2021-02-17 00:30:00
+2021-02-17  30.01 2021-02-17 02:00:00 2021-02-18 00:30:00
+2021-02-18  30.01 2021-02-18 02:00:00 2021-02-19 00:30:00
+2021-02-19  30.01 2021-02-19 02:00:00 2021-02-20 00:30:00
+2021-02-20  30.01 2021-02-20 02:00:00 2021-02-21 00:30:00
+
+30.02: H1-T
+               ID                  H1                   T
+2021-02-16  30.02 2021-02-16 00:30:00 2021-02-16 08:00:00
+2021-02-17  30.02 2021-02-17 00:30:00 2021-02-17 08:00:00
+2021-02-18  30.02 2021-02-18 00:30:00 2021-02-18 08:00:00
+2021-02-19  30.02 2021-02-19 00:30:00 2021-02-19 08:00:00
+2021-02-20  30.02 2021-02-20 00:30:00 2021-02-20 08:00:00
+2021-02-21  30.02 2021-02-21 00:30:00 2021-02-21 08:00:00
+</pre></div>
+</div>
+</div>
+<div class="section" id="trainruns">
+<h2>TrainRuns<a class="headerlink" href="#trainruns" title="Permalink to this headline">¶</a></h2>
+<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
+<span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/ID1/2021/10.01/2021-02-01
+10.01v1:2021-02-01 00:10 OTR=0 S-H1 2021-02-02 00:30 OTR=1
+10.02v1:2021-02-02 00:30 OTR=1 H1-T 2021-02-02 08:00 OTR=1
+
+
+TR/8350/ID1/2021/10.01/2021-02-02
+10.01v1:2021-02-02 00:10 OTR=0 S-H1 2021-02-03 00:30 OTR=1
+10.02v1:2021-02-03 00:30 OTR=1 H1-T 2021-02-03 08:00 OTR=1
+
+
+TR/8350/ID1/2021/10.01/2021-02-03
+10.01v1:2021-02-03 00:10 OTR=0 S-H1 2021-02-04 00:30 OTR=1
+10.02v1:2021-02-04 00:30 OTR=1 H1-T 2021-02-04 08:00 OTR=1
+
+
+TR/8350/ID1/2021/10.01/2021-02-04
+10.01v1:2021-02-04 00:10 OTR=0 S-H1 2021-02-05 00:30 OTR=1
+10.02v1:2021-02-05 00:30 OTR=1 H1-T 2021-02-05 08:00 OTR=1
+
+
+TR/8350/ID1/2021/10.01/2021-02-05
+10.01v1:2021-02-05 00:10 OTR=0 S-H1 2021-02-06 00:30 OTR=1
+10.02v1:2021-02-06 00:30 OTR=1 H1-T 2021-02-06 08:00 OTR=1
+
+
+TR/8350/ID1/2021/10.01/2021-02-06
+10.01v1:2021-02-06 00:10 OTR=0 S-H1 2021-02-07 00:30 OTR=1
+10.02v1:2021-02-07 00:30 OTR=1 H1-T 2021-02-07 08:00 OTR=1
+
+
+TR/8350/ID1/2021/10.01/2021-02-07
+10.01v1:2021-02-07 00:10 OTR=0 S-H1 2021-02-08 00:30 OTR=1
+10.02v1:2021-02-08 00:30 OTR=1 H1-T 2021-02-08 08:00 OTR=1
+
+
+TR/8350/ID1/2021/20.01/2021-02-07
+20.01v1:2021-02-07 23:50 OTR=0 S-H1 2021-02-09 00:10 OTR=2
+20.02v1:2021-02-09 00:10 OTR=2 H1-T 2021-02-09 07:40 OTR=2
+
+
+TR/8350/ID1/2021/20.01/2021-02-08
+20.01v1:2021-02-08 23:50 OTR=0 S-H1 2021-02-10 00:10 OTR=2
+20.02v1:2021-02-10 00:10 OTR=2 H1-T 2021-02-10 07:40 OTR=2
+
+
+TR/8350/ID1/2021/20.01/2021-02-09
+20.01v1:2021-02-09 23:50 OTR=0 S-H1 2021-02-11 00:10 OTR=2
+20.02v1:2021-02-11 00:10 OTR=2 H1-T 2021-02-11 07:40 OTR=2
+
+
+TR/8350/ID1/2021/20.01/2021-02-10
+20.01v1:2021-02-10 23:50 OTR=0 S-H1 2021-02-12 00:10 OTR=2
+20.02v1:2021-02-12 00:10 OTR=2 H1-T 2021-02-12 07:40 OTR=2
+
+
+TR/8350/ID1/2021/20.01/2021-02-11
+20.01v1:2021-02-11 23:50 OTR=0 S-H1 2021-02-13 00:10 OTR=2
+20.02v1:2021-02-13 00:10 OTR=2 H1-T 2021-02-13 07:40 OTR=2
+
+
+TR/8350/ID1/2021/20.01/2021-02-12
+20.01v1:2021-02-12 23:50 OTR=0 S-H1 2021-02-14 00:10 OTR=2
+20.02v1:2021-02-14 00:10 OTR=2 H1-T 2021-02-14 07:40 OTR=2
+
+
+TR/8350/ID1/2021/20.01/2021-02-13
+20.01v1:2021-02-13 23:50 OTR=0 S-H1 2021-02-15 00:10 OTR=2
+20.02v1:2021-02-15 00:10 OTR=2 H1-T 2021-02-15 07:40 OTR=2
+
+
+TR/8350/ID1/2021/30.01/2021-02-15
+30.01v1:2021-02-15 02:00 OTR=0 D-H1 2021-02-16 00:30 OTR=1
+30.02v1:2021-02-16 00:30 OTR=1 H1-T 2021-02-16 08:00 OTR=1
+
+
+TR/8350/ID1/2021/30.01/2021-02-16
+30.01v1:2021-02-16 02:00 OTR=0 D-H1 2021-02-17 00:30 OTR=1
+30.02v1:2021-02-17 00:30 OTR=1 H1-T 2021-02-17 08:00 OTR=1
+
+
+TR/8350/ID1/2021/30.01/2021-02-17
+30.01v1:2021-02-17 02:00 OTR=0 D-H1 2021-02-18 00:30 OTR=1
+30.02v1:2021-02-18 00:30 OTR=1 H1-T 2021-02-18 08:00 OTR=1
+
+
+TR/8350/ID1/2021/30.01/2021-02-18
+30.01v1:2021-02-18 02:00 OTR=0 D-H1 2021-02-19 00:30 OTR=1
+30.02v1:2021-02-19 00:30 OTR=1 H1-T 2021-02-19 08:00 OTR=1
+
+
+TR/8350/ID1/2021/30.01/2021-02-19
+30.01v1:2021-02-19 02:00 OTR=0 D-H1 2021-02-20 00:30 OTR=1
+30.02v1:2021-02-20 00:30 OTR=1 H1-T 2021-02-20 08:00 OTR=1
+
+
+TR/8350/ID1/2021/30.01/2021-02-20
+30.01v1:2021-02-20 02:00 OTR=0 D-H1 2021-02-21 00:30 OTR=1
+30.02v1:2021-02-21 00:30 OTR=1 H1-T 2021-02-21 08:00 OTR=1
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.180 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-annex-4-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/5643e63d75b812d980b176a3c596eff0/plot_annex_4.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_annex_4.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/169b4f184a60ca8796c4901ad34aa30e/plot_annex_4.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_annex_4.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="plot_a_f.html" class="btn btn-neutral float-right" title="Example: Train with three IMs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_otr_test.html" class="btn btn-neutral float-left" title="Example showing OTR anomalie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Horst Duchene.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1077 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Example: Train with three IMs &mdash; Train Object Model 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Train Object Model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Train Object Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../domainmodel.html">Route Domain Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">ECM example trains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">tom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Train Object Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Example: Train with three IMs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/auto_examples/plot_example_a_f.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-example-a-f-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-train-with-three-ims">
+<span id="sphx-glr-auto-examples-plot-example-a-f-py"></span><h1>Example: Train with three IMs<a class="headerlink" href="#example-train-with-three-ims" title="Permalink to this headline">¶</a></h1>
+<p>Here we investigate the routing specification for example from
+<cite>train-a-f.yml</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span>
+<span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span>
+</pre></div>
+</div>
+<p>Load example 4 from yaml specification</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;a-f.yml&#39;</span>
+<span class="n">train_specs</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>---
+coreID: 13AB
+sections:
+    - departure_station: B
+      arrival_station: C
+      travel_time: &#39;01:00:00&#39;
+      calendar:
+        begin: &amp;b-begin &#39;2020-12-01&#39;
+        end: &amp;b-end &#39;2020-12-31&#39;
+        # Sundays the train starting from A passes B
+        mask: &#39;Mon Tue Wed Thu Fri Sat&#39;
+      id: 10.01
+      succ:
+          - 10.02
+    - departure_station: A
+      arrival_station: C
+      travel_time: &#39;02:00:00&#39;
+      calendar:
+        begin: *b-begin
+        end: *b-end
+        # Sunday in B =&gt; Saturday start in A
+        mask: &#39;Sat&#39;
+      id: 20.01
+      succ:
+          - 10.02
+    - departure_station: C
+      departure_time: &#39;01:30:00&#39;
+      arrival_station: E
+      travel_time: &#39;23:00:00&#39;
+      calendar:
+        begin: *b-begin
+        end: *b-end
+        # no mask =&gt; daily
+      id: 10.02
+      succ:
+          - 10.03
+          - 30.03
+    - departure_station: E
+      arrival_station: F
+      travel_time: &#39;04:00:00&#39;
+      calendar:
+        # 1.12. must be be excluded und 1.1. included
+        begin: &amp;e-begin &#39;2020-12-02&#39;
+        end: &amp;e-end &#39;2021-01-01&#39;
+        # Not on tuesday. On tuesdays section E-G is used.
+        mask: &#39;Wed Thu Fri Sat Sun Mon&#39;
+      id: 10.03
+    - departure_station: E
+      arrival_station: G
+      travel_time: &#39;08:00:00&#39;
+      calendar:
+        begin: *e-begin
+        end: *e-end
+        mask: &#39;Tue&#39;
+      id: 30.03
+</pre></div>
+</div>
+<p>Create train object and show its train id.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">make_train_from_yml</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/13AB/2020&#39;
+</pre></div>
+</div>
+<div class="section" id="timetable">
+<h2>Timetable<a class="headerlink" href="#timetable" title="Permalink to this headline">¶</a></h2>
+<p>Show timetable as dataframe</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Departure A</th>
+      <th>Departure B</th>
+      <th>Arrival C</th>
+      <th>Departure C</th>
+      <th>Arrival E</th>
+      <th>Departure E</th>
+      <th>Arrival G</th>
+      <th>Arrival F</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-01</th>
+      <td></td>
+      <td>Di 01.12.20 00:30</td>
+      <td>Di 01.12.20 01:30</td>
+      <td>Di 01.12.20 01:30</td>
+      <td>Mi 02.12.20 00:30</td>
+      <td>Mi 02.12.20 00:30</td>
+      <td></td>
+      <td>Mi 02.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-02</th>
+      <td></td>
+      <td>Mi 02.12.20 00:30</td>
+      <td>Mi 02.12.20 01:30</td>
+      <td>Mi 02.12.20 01:30</td>
+      <td>Do 03.12.20 00:30</td>
+      <td>Do 03.12.20 00:30</td>
+      <td></td>
+      <td>Do 03.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-03</th>
+      <td></td>
+      <td>Do 03.12.20 00:30</td>
+      <td>Do 03.12.20 01:30</td>
+      <td>Do 03.12.20 01:30</td>
+      <td>Fr 04.12.20 00:30</td>
+      <td>Fr 04.12.20 00:30</td>
+      <td></td>
+      <td>Fr 04.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-04</th>
+      <td></td>
+      <td>Fr 04.12.20 00:30</td>
+      <td>Fr 04.12.20 01:30</td>
+      <td>Fr 04.12.20 01:30</td>
+      <td>Sa 05.12.20 00:30</td>
+      <td>Sa 05.12.20 00:30</td>
+      <td></td>
+      <td>Sa 05.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-05</th>
+      <td></td>
+      <td>Sa 05.12.20 00:30</td>
+      <td>Sa 05.12.20 01:30</td>
+      <td>Sa 05.12.20 01:30</td>
+      <td>So 06.12.20 00:30</td>
+      <td>So 06.12.20 00:30</td>
+      <td></td>
+      <td>So 06.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/20.01/2020-12-05</th>
+      <td>Sa 05.12.20 23:30</td>
+      <td></td>
+      <td>So 06.12.20 01:30</td>
+      <td>So 06.12.20 01:30</td>
+      <td>Mo 07.12.20 00:30</td>
+      <td>Mo 07.12.20 00:30</td>
+      <td></td>
+      <td>Mo 07.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-07</th>
+      <td></td>
+      <td>Mo 07.12.20 00:30</td>
+      <td>Mo 07.12.20 01:30</td>
+      <td>Mo 07.12.20 01:30</td>
+      <td>Di 08.12.20 00:30</td>
+      <td>Di 08.12.20 00:30</td>
+      <td>Di 08.12.20 08:30</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-08</th>
+      <td></td>
+      <td>Di 08.12.20 00:30</td>
+      <td>Di 08.12.20 01:30</td>
+      <td>Di 08.12.20 01:30</td>
+      <td>Mi 09.12.20 00:30</td>
+      <td>Mi 09.12.20 00:30</td>
+      <td></td>
+      <td>Mi 09.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-09</th>
+      <td></td>
+      <td>Mi 09.12.20 00:30</td>
+      <td>Mi 09.12.20 01:30</td>
+      <td>Mi 09.12.20 01:30</td>
+      <td>Do 10.12.20 00:30</td>
+      <td>Do 10.12.20 00:30</td>
+      <td></td>
+      <td>Do 10.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-10</th>
+      <td></td>
+      <td>Do 10.12.20 00:30</td>
+      <td>Do 10.12.20 01:30</td>
+      <td>Do 10.12.20 01:30</td>
+      <td>Fr 11.12.20 00:30</td>
+      <td>Fr 11.12.20 00:30</td>
+      <td></td>
+      <td>Fr 11.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-11</th>
+      <td></td>
+      <td>Fr 11.12.20 00:30</td>
+      <td>Fr 11.12.20 01:30</td>
+      <td>Fr 11.12.20 01:30</td>
+      <td>Sa 12.12.20 00:30</td>
+      <td>Sa 12.12.20 00:30</td>
+      <td></td>
+      <td>Sa 12.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-12</th>
+      <td></td>
+      <td>Sa 12.12.20 00:30</td>
+      <td>Sa 12.12.20 01:30</td>
+      <td>Sa 12.12.20 01:30</td>
+      <td>So 13.12.20 00:30</td>
+      <td>So 13.12.20 00:30</td>
+      <td></td>
+      <td>So 13.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/20.01/2020-12-12</th>
+      <td>Sa 12.12.20 23:30</td>
+      <td></td>
+      <td>So 13.12.20 01:30</td>
+      <td>So 13.12.20 01:30</td>
+      <td>Mo 14.12.20 00:30</td>
+      <td>Mo 14.12.20 00:30</td>
+      <td></td>
+      <td>Mo 14.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-14</th>
+      <td></td>
+      <td>Mo 14.12.20 00:30</td>
+      <td>Mo 14.12.20 01:30</td>
+      <td>Mo 14.12.20 01:30</td>
+      <td>Di 15.12.20 00:30</td>
+      <td>Di 15.12.20 00:30</td>
+      <td>Di 15.12.20 08:30</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-15</th>
+      <td></td>
+      <td>Di 15.12.20 00:30</td>
+      <td>Di 15.12.20 01:30</td>
+      <td>Di 15.12.20 01:30</td>
+      <td>Mi 16.12.20 00:30</td>
+      <td>Mi 16.12.20 00:30</td>
+      <td></td>
+      <td>Mi 16.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-16</th>
+      <td></td>
+      <td>Mi 16.12.20 00:30</td>
+      <td>Mi 16.12.20 01:30</td>
+      <td>Mi 16.12.20 01:30</td>
+      <td>Do 17.12.20 00:30</td>
+      <td>Do 17.12.20 00:30</td>
+      <td></td>
+      <td>Do 17.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-17</th>
+      <td></td>
+      <td>Do 17.12.20 00:30</td>
+      <td>Do 17.12.20 01:30</td>
+      <td>Do 17.12.20 01:30</td>
+      <td>Fr 18.12.20 00:30</td>
+      <td>Fr 18.12.20 00:30</td>
+      <td></td>
+      <td>Fr 18.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-18</th>
+      <td></td>
+      <td>Fr 18.12.20 00:30</td>
+      <td>Fr 18.12.20 01:30</td>
+      <td>Fr 18.12.20 01:30</td>
+      <td>Sa 19.12.20 00:30</td>
+      <td>Sa 19.12.20 00:30</td>
+      <td></td>
+      <td>Sa 19.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-19</th>
+      <td></td>
+      <td>Sa 19.12.20 00:30</td>
+      <td>Sa 19.12.20 01:30</td>
+      <td>Sa 19.12.20 01:30</td>
+      <td>So 20.12.20 00:30</td>
+      <td>So 20.12.20 00:30</td>
+      <td></td>
+      <td>So 20.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/20.01/2020-12-19</th>
+      <td>Sa 19.12.20 23:30</td>
+      <td></td>
+      <td>So 20.12.20 01:30</td>
+      <td>So 20.12.20 01:30</td>
+      <td>Mo 21.12.20 00:30</td>
+      <td>Mo 21.12.20 00:30</td>
+      <td></td>
+      <td>Mo 21.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-21</th>
+      <td></td>
+      <td>Mo 21.12.20 00:30</td>
+      <td>Mo 21.12.20 01:30</td>
+      <td>Mo 21.12.20 01:30</td>
+      <td>Di 22.12.20 00:30</td>
+      <td>Di 22.12.20 00:30</td>
+      <td>Di 22.12.20 08:30</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-22</th>
+      <td></td>
+      <td>Di 22.12.20 00:30</td>
+      <td>Di 22.12.20 01:30</td>
+      <td>Di 22.12.20 01:30</td>
+      <td>Mi 23.12.20 00:30</td>
+      <td>Mi 23.12.20 00:30</td>
+      <td></td>
+      <td>Mi 23.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-23</th>
+      <td></td>
+      <td>Mi 23.12.20 00:30</td>
+      <td>Mi 23.12.20 01:30</td>
+      <td>Mi 23.12.20 01:30</td>
+      <td>Do 24.12.20 00:30</td>
+      <td>Do 24.12.20 00:30</td>
+      <td></td>
+      <td>Do 24.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-24</th>
+      <td></td>
+      <td>Do 24.12.20 00:30</td>
+      <td>Do 24.12.20 01:30</td>
+      <td>Do 24.12.20 01:30</td>
+      <td>Fr 25.12.20 00:30</td>
+      <td>Fr 25.12.20 00:30</td>
+      <td></td>
+      <td>Fr 25.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-25</th>
+      <td></td>
+      <td>Fr 25.12.20 00:30</td>
+      <td>Fr 25.12.20 01:30</td>
+      <td>Fr 25.12.20 01:30</td>
+      <td>Sa 26.12.20 00:30</td>
+      <td>Sa 26.12.20 00:30</td>
+      <td></td>
+      <td>Sa 26.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-26</th>
+      <td></td>
+      <td>Sa 26.12.20 00:30</td>
+      <td>Sa 26.12.20 01:30</td>
+      <td>Sa 26.12.20 01:30</td>
+      <td>So 27.12.20 00:30</td>
+      <td>So 27.12.20 00:30</td>
+      <td></td>
+      <td>So 27.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/20.01/2020-12-26</th>
+      <td>Sa 26.12.20 23:30</td>
+      <td></td>
+      <td>So 27.12.20 01:30</td>
+      <td>So 27.12.20 01:30</td>
+      <td>Mo 28.12.20 00:30</td>
+      <td>Mo 28.12.20 00:30</td>
+      <td></td>
+      <td>Mo 28.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-28</th>
+      <td></td>
+      <td>Mo 28.12.20 00:30</td>
+      <td>Mo 28.12.20 01:30</td>
+      <td>Mo 28.12.20 01:30</td>
+      <td>Di 29.12.20 00:30</td>
+      <td>Di 29.12.20 00:30</td>
+      <td>Di 29.12.20 08:30</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-29</th>
+      <td></td>
+      <td>Di 29.12.20 00:30</td>
+      <td>Di 29.12.20 01:30</td>
+      <td>Di 29.12.20 01:30</td>
+      <td>Mi 30.12.20 00:30</td>
+      <td>Mi 30.12.20 00:30</td>
+      <td></td>
+      <td>Mi 30.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-30</th>
+      <td></td>
+      <td>Mi 30.12.20 00:30</td>
+      <td>Mi 30.12.20 01:30</td>
+      <td>Mi 30.12.20 01:30</td>
+      <td>Do 31.12.20 00:30</td>
+      <td>Do 31.12.20 00:30</td>
+      <td></td>
+      <td>Do 31.12.20 04:30</td>
+    </tr>
+    <tr>
+      <th>TR/8350/13AB/2020/10.01/2020-12-31</th>
+      <td></td>
+      <td>Do 31.12.20 00:30</td>
+      <td>Do 31.12.20 01:30</td>
+      <td>Do 31.12.20 01:30</td>
+      <td>Fr 01.01.21 00:30</td>
+      <td>Fr 01.01.21 00:30</td>
+      <td></td>
+      <td>Fr 01.01.21 04:30</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>Show timetable as plot</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Timetable TR/8350/13AB/2020 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_example_a_f_001.png" />
+</div>
+<div class="section" id="route-sections">
+<h2>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h2>
+<p>From which sections the train is composed?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span>
+<span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.01v1
+Calender  : 01/12 to 31/12
+Start   at: 00:30 in B
+Arrival at: 01:30 in C
+Successors: [10.02]
+
+ID        : 20.01v1
+Calender  : 05/12 to 26/12
+Start   at: 23:30 in A
+Arrival at: 01:30 in C
+Successors: [10.02]
+
+ID        : 10.02v1
+Calender  : 01/12 to 31/12
+Start   at: 01:30 in C
+Arrival at: 00:30 in E
+Successors: [10.03, 30.03]
+
+ID        : 10.03v1
+Calender  : 02/12 to 01/01
+Start   at: 00:30 in E
+Arrival at: 04:30 in F
+Successors: []
+
+ID        : 30.03v1
+Calender  : 08/12 to 29/12
+Start   at: 00:30 in E
+Arrival at: 08:30 in G
+Successors: []
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-graph">
+<h2>Section graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h2>
+<p>The section graph is computed using the successor relation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sg</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">section_graph</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(&#39;10.01v1&#39;, &#39;10.02v1&#39;), (&#39;10.02v1&#39;, &#39;10.03v1&#39;), (&#39;10.02v1&#39;, &#39;30.03v1&#39;), (&#39;20.01v1&#39;, &#39;10.02v1&#39;)]
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-runs">
+<h2>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h2>
+<p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
+The section runs are the rows of RouteSection.to_dataframe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10.01: B-C
+               ID                   B                   C
+2020-12-01  10.01 2020-12-01 00:30:00 2020-12-01 01:30:00
+2020-12-02  10.01 2020-12-02 00:30:00 2020-12-02 01:30:00
+2020-12-03  10.01 2020-12-03 00:30:00 2020-12-03 01:30:00
+2020-12-04  10.01 2020-12-04 00:30:00 2020-12-04 01:30:00
+2020-12-05  10.01 2020-12-05 00:30:00 2020-12-05 01:30:00
+2020-12-07  10.01 2020-12-07 00:30:00 2020-12-07 01:30:00
+2020-12-08  10.01 2020-12-08 00:30:00 2020-12-08 01:30:00
+2020-12-09  10.01 2020-12-09 00:30:00 2020-12-09 01:30:00
+2020-12-10  10.01 2020-12-10 00:30:00 2020-12-10 01:30:00
+2020-12-11  10.01 2020-12-11 00:30:00 2020-12-11 01:30:00
+2020-12-12  10.01 2020-12-12 00:30:00 2020-12-12 01:30:00
+2020-12-14  10.01 2020-12-14 00:30:00 2020-12-14 01:30:00
+2020-12-15  10.01 2020-12-15 00:30:00 2020-12-15 01:30:00
+2020-12-16  10.01 2020-12-16 00:30:00 2020-12-16 01:30:00
+2020-12-17  10.01 2020-12-17 00:30:00 2020-12-17 01:30:00
+2020-12-18  10.01 2020-12-18 00:30:00 2020-12-18 01:30:00
+2020-12-19  10.01 2020-12-19 00:30:00 2020-12-19 01:30:00
+2020-12-21  10.01 2020-12-21 00:30:00 2020-12-21 01:30:00
+2020-12-22  10.01 2020-12-22 00:30:00 2020-12-22 01:30:00
+2020-12-23  10.01 2020-12-23 00:30:00 2020-12-23 01:30:00
+2020-12-24  10.01 2020-12-24 00:30:00 2020-12-24 01:30:00
+2020-12-25  10.01 2020-12-25 00:30:00 2020-12-25 01:30:00
+2020-12-26  10.01 2020-12-26 00:30:00 2020-12-26 01:30:00
+2020-12-28  10.01 2020-12-28 00:30:00 2020-12-28 01:30:00
+2020-12-29  10.01 2020-12-29 00:30:00 2020-12-29 01:30:00
+2020-12-30  10.01 2020-12-30 00:30:00 2020-12-30 01:30:00
+2020-12-31  10.01 2020-12-31 00:30:00 2020-12-31 01:30:00
+
+20.01: A-C
+               ID                   A                   C
+2020-12-05  20.01 2020-12-05 23:30:00 2020-12-06 01:30:00
+2020-12-12  20.01 2020-12-12 23:30:00 2020-12-13 01:30:00
+2020-12-19  20.01 2020-12-19 23:30:00 2020-12-20 01:30:00
+2020-12-26  20.01 2020-12-26 23:30:00 2020-12-27 01:30:00
+
+10.02: C-E
+               ID                   C                   E
+2020-12-01  10.02 2020-12-01 01:30:00 2020-12-02 00:30:00
+2020-12-02  10.02 2020-12-02 01:30:00 2020-12-03 00:30:00
+2020-12-03  10.02 2020-12-03 01:30:00 2020-12-04 00:30:00
+2020-12-04  10.02 2020-12-04 01:30:00 2020-12-05 00:30:00
+2020-12-05  10.02 2020-12-05 01:30:00 2020-12-06 00:30:00
+2020-12-06  10.02 2020-12-06 01:30:00 2020-12-07 00:30:00
+2020-12-07  10.02 2020-12-07 01:30:00 2020-12-08 00:30:00
+2020-12-08  10.02 2020-12-08 01:30:00 2020-12-09 00:30:00
+2020-12-09  10.02 2020-12-09 01:30:00 2020-12-10 00:30:00
+2020-12-10  10.02 2020-12-10 01:30:00 2020-12-11 00:30:00
+2020-12-11  10.02 2020-12-11 01:30:00 2020-12-12 00:30:00
+2020-12-12  10.02 2020-12-12 01:30:00 2020-12-13 00:30:00
+2020-12-13  10.02 2020-12-13 01:30:00 2020-12-14 00:30:00
+2020-12-14  10.02 2020-12-14 01:30:00 2020-12-15 00:30:00
+2020-12-15  10.02 2020-12-15 01:30:00 2020-12-16 00:30:00
+2020-12-16  10.02 2020-12-16 01:30:00 2020-12-17 00:30:00
+2020-12-17  10.02 2020-12-17 01:30:00 2020-12-18 00:30:00
+2020-12-18  10.02 2020-12-18 01:30:00 2020-12-19 00:30:00
+2020-12-19  10.02 2020-12-19 01:30:00 2020-12-20 00:30:00
+2020-12-20  10.02 2020-12-20 01:30:00 2020-12-21 00:30:00
+2020-12-21  10.02 2020-12-21 01:30:00 2020-12-22 00:30:00
+2020-12-22  10.02 2020-12-22 01:30:00 2020-12-23 00:30:00
+2020-12-23  10.02 2020-12-23 01:30:00 2020-12-24 00:30:00
+2020-12-24  10.02 2020-12-24 01:30:00 2020-12-25 00:30:00
+2020-12-25  10.02 2020-12-25 01:30:00 2020-12-26 00:30:00
+2020-12-26  10.02 2020-12-26 01:30:00 2020-12-27 00:30:00
+2020-12-27  10.02 2020-12-27 01:30:00 2020-12-28 00:30:00
+2020-12-28  10.02 2020-12-28 01:30:00 2020-12-29 00:30:00
+2020-12-29  10.02 2020-12-29 01:30:00 2020-12-30 00:30:00
+2020-12-30  10.02 2020-12-30 01:30:00 2020-12-31 00:30:00
+2020-12-31  10.02 2020-12-31 01:30:00 2021-01-01 00:30:00
+
+10.03: E-F
+               ID                   E                   F
+2020-12-02  10.03 2020-12-02 00:30:00 2020-12-02 04:30:00
+2020-12-03  10.03 2020-12-03 00:30:00 2020-12-03 04:30:00
+2020-12-04  10.03 2020-12-04 00:30:00 2020-12-04 04:30:00
+2020-12-05  10.03 2020-12-05 00:30:00 2020-12-05 04:30:00
+2020-12-06  10.03 2020-12-06 00:30:00 2020-12-06 04:30:00
+2020-12-07  10.03 2020-12-07 00:30:00 2020-12-07 04:30:00
+2020-12-09  10.03 2020-12-09 00:30:00 2020-12-09 04:30:00
+2020-12-10  10.03 2020-12-10 00:30:00 2020-12-10 04:30:00
+2020-12-11  10.03 2020-12-11 00:30:00 2020-12-11 04:30:00
+2020-12-12  10.03 2020-12-12 00:30:00 2020-12-12 04:30:00
+2020-12-13  10.03 2020-12-13 00:30:00 2020-12-13 04:30:00
+2020-12-14  10.03 2020-12-14 00:30:00 2020-12-14 04:30:00
+2020-12-16  10.03 2020-12-16 00:30:00 2020-12-16 04:30:00
+2020-12-17  10.03 2020-12-17 00:30:00 2020-12-17 04:30:00
+2020-12-18  10.03 2020-12-18 00:30:00 2020-12-18 04:30:00
+2020-12-19  10.03 2020-12-19 00:30:00 2020-12-19 04:30:00
+2020-12-20  10.03 2020-12-20 00:30:00 2020-12-20 04:30:00
+2020-12-21  10.03 2020-12-21 00:30:00 2020-12-21 04:30:00
+2020-12-23  10.03 2020-12-23 00:30:00 2020-12-23 04:30:00
+2020-12-24  10.03 2020-12-24 00:30:00 2020-12-24 04:30:00
+2020-12-25  10.03 2020-12-25 00:30:00 2020-12-25 04:30:00
+2020-12-26  10.03 2020-12-26 00:30:00 2020-12-26 04:30:00
+2020-12-27  10.03 2020-12-27 00:30:00 2020-12-27 04:30:00
+2020-12-28  10.03 2020-12-28 00:30:00 2020-12-28 04:30:00
+2020-12-30  10.03 2020-12-30 00:30:00 2020-12-30 04:30:00
+2020-12-31  10.03 2020-12-31 00:30:00 2020-12-31 04:30:00
+2021-01-01  10.03 2021-01-01 00:30:00 2021-01-01 04:30:00
+
+30.03: E-G
+               ID                   E                   G
+2020-12-08  30.03 2020-12-08 00:30:00 2020-12-08 08:30:00
+2020-12-15  30.03 2020-12-15 00:30:00 2020-12-15 08:30:00
+2020-12-22  30.03 2020-12-22 00:30:00 2020-12-22 08:30:00
+2020-12-29  30.03 2020-12-29 00:30:00 2020-12-29 08:30:00
+</pre></div>
+</div>
+</div>
+<div class="section" id="trainruns">
+<h2>TrainRuns<a class="headerlink" href="#trainruns" title="Permalink to this headline">¶</a></h2>
+<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
+<span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/13AB/2020/10.01/2020-12-01
+10.01v1:2020-12-01 00:30 OTR=0 B-C 2020-12-01 01:30 OTR=0
+10.02v1:2020-12-01 01:30 OTR=0 C-E 2020-12-02 00:30 OTR=1
+10.03v1:2020-12-02 00:30 OTR=1 E-F 2020-12-02 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-02
+10.01v1:2020-12-02 00:30 OTR=0 B-C 2020-12-02 01:30 OTR=0
+10.02v1:2020-12-02 01:30 OTR=0 C-E 2020-12-03 00:30 OTR=1
+10.03v1:2020-12-03 00:30 OTR=1 E-F 2020-12-03 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-03
+10.01v1:2020-12-03 00:30 OTR=0 B-C 2020-12-03 01:30 OTR=0
+10.02v1:2020-12-03 01:30 OTR=0 C-E 2020-12-04 00:30 OTR=1
+10.03v1:2020-12-04 00:30 OTR=1 E-F 2020-12-04 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-04
+10.01v1:2020-12-04 00:30 OTR=0 B-C 2020-12-04 01:30 OTR=0
+10.02v1:2020-12-04 01:30 OTR=0 C-E 2020-12-05 00:30 OTR=1
+10.03v1:2020-12-05 00:30 OTR=1 E-F 2020-12-05 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-05
+10.01v1:2020-12-05 00:30 OTR=0 B-C 2020-12-05 01:30 OTR=0
+10.02v1:2020-12-05 01:30 OTR=0 C-E 2020-12-06 00:30 OTR=1
+10.03v1:2020-12-06 00:30 OTR=1 E-F 2020-12-06 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-07
+10.01v1:2020-12-07 00:30 OTR=0 B-C 2020-12-07 01:30 OTR=0
+10.02v1:2020-12-07 01:30 OTR=0 C-E 2020-12-08 00:30 OTR=1
+30.03v1:2020-12-08 00:30 OTR=1 E-G 2020-12-08 08:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-08
+10.01v1:2020-12-08 00:30 OTR=0 B-C 2020-12-08 01:30 OTR=0
+10.02v1:2020-12-08 01:30 OTR=0 C-E 2020-12-09 00:30 OTR=1
+10.03v1:2020-12-09 00:30 OTR=1 E-F 2020-12-09 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-09
+10.01v1:2020-12-09 00:30 OTR=0 B-C 2020-12-09 01:30 OTR=0
+10.02v1:2020-12-09 01:30 OTR=0 C-E 2020-12-10 00:30 OTR=1
+10.03v1:2020-12-10 00:30 OTR=1 E-F 2020-12-10 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-10
+10.01v1:2020-12-10 00:30 OTR=0 B-C 2020-12-10 01:30 OTR=0
+10.02v1:2020-12-10 01:30 OTR=0 C-E 2020-12-11 00:30 OTR=1
+10.03v1:2020-12-11 00:30 OTR=1 E-F 2020-12-11 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-11
+10.01v1:2020-12-11 00:30 OTR=0 B-C 2020-12-11 01:30 OTR=0
+10.02v1:2020-12-11 01:30 OTR=0 C-E 2020-12-12 00:30 OTR=1
+10.03v1:2020-12-12 00:30 OTR=1 E-F 2020-12-12 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-12
+10.01v1:2020-12-12 00:30 OTR=0 B-C 2020-12-12 01:30 OTR=0
+10.02v1:2020-12-12 01:30 OTR=0 C-E 2020-12-13 00:30 OTR=1
+10.03v1:2020-12-13 00:30 OTR=1 E-F 2020-12-13 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-14
+10.01v1:2020-12-14 00:30 OTR=0 B-C 2020-12-14 01:30 OTR=0
+10.02v1:2020-12-14 01:30 OTR=0 C-E 2020-12-15 00:30 OTR=1
+30.03v1:2020-12-15 00:30 OTR=1 E-G 2020-12-15 08:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-15
+10.01v1:2020-12-15 00:30 OTR=0 B-C 2020-12-15 01:30 OTR=0
+10.02v1:2020-12-15 01:30 OTR=0 C-E 2020-12-16 00:30 OTR=1
+10.03v1:2020-12-16 00:30 OTR=1 E-F 2020-12-16 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-16
+10.01v1:2020-12-16 00:30 OTR=0 B-C 2020-12-16 01:30 OTR=0
+10.02v1:2020-12-16 01:30 OTR=0 C-E 2020-12-17 00:30 OTR=1
+10.03v1:2020-12-17 00:30 OTR=1 E-F 2020-12-17 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-17
+10.01v1:2020-12-17 00:30 OTR=0 B-C 2020-12-17 01:30 OTR=0
+10.02v1:2020-12-17 01:30 OTR=0 C-E 2020-12-18 00:30 OTR=1
+10.03v1:2020-12-18 00:30 OTR=1 E-F 2020-12-18 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-18
+10.01v1:2020-12-18 00:30 OTR=0 B-C 2020-12-18 01:30 OTR=0
+10.02v1:2020-12-18 01:30 OTR=0 C-E 2020-12-19 00:30 OTR=1
+10.03v1:2020-12-19 00:30 OTR=1 E-F 2020-12-19 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-19
+10.01v1:2020-12-19 00:30 OTR=0 B-C 2020-12-19 01:30 OTR=0
+10.02v1:2020-12-19 01:30 OTR=0 C-E 2020-12-20 00:30 OTR=1
+10.03v1:2020-12-20 00:30 OTR=1 E-F 2020-12-20 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-21
+10.01v1:2020-12-21 00:30 OTR=0 B-C 2020-12-21 01:30 OTR=0
+10.02v1:2020-12-21 01:30 OTR=0 C-E 2020-12-22 00:30 OTR=1
+30.03v1:2020-12-22 00:30 OTR=1 E-G 2020-12-22 08:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-22
+10.01v1:2020-12-22 00:30 OTR=0 B-C 2020-12-22 01:30 OTR=0
+10.02v1:2020-12-22 01:30 OTR=0 C-E 2020-12-23 00:30 OTR=1
+10.03v1:2020-12-23 00:30 OTR=1 E-F 2020-12-23 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-23
+10.01v1:2020-12-23 00:30 OTR=0 B-C 2020-12-23 01:30 OTR=0
+10.02v1:2020-12-23 01:30 OTR=0 C-E 2020-12-24 00:30 OTR=1
+10.03v1:2020-12-24 00:30 OTR=1 E-F 2020-12-24 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-24
+10.01v1:2020-12-24 00:30 OTR=0 B-C 2020-12-24 01:30 OTR=0
+10.02v1:2020-12-24 01:30 OTR=0 C-E 2020-12-25 00:30 OTR=1
+10.03v1:2020-12-25 00:30 OTR=1 E-F 2020-12-25 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-25
+10.01v1:2020-12-25 00:30 OTR=0 B-C 2020-12-25 01:30 OTR=0
+10.02v1:2020-12-25 01:30 OTR=0 C-E 2020-12-26 00:30 OTR=1
+10.03v1:2020-12-26 00:30 OTR=1 E-F 2020-12-26 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-26
+10.01v1:2020-12-26 00:30 OTR=0 B-C 2020-12-26 01:30 OTR=0
+10.02v1:2020-12-26 01:30 OTR=0 C-E 2020-12-27 00:30 OTR=1
+10.03v1:2020-12-27 00:30 OTR=1 E-F 2020-12-27 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-28
+10.01v1:2020-12-28 00:30 OTR=0 B-C 2020-12-28 01:30 OTR=0
+10.02v1:2020-12-28 01:30 OTR=0 C-E 2020-12-29 00:30 OTR=1
+30.03v1:2020-12-29 00:30 OTR=1 E-G 2020-12-29 08:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-29
+10.01v1:2020-12-29 00:30 OTR=0 B-C 2020-12-29 01:30 OTR=0
+10.02v1:2020-12-29 01:30 OTR=0 C-E 2020-12-30 00:30 OTR=1
+10.03v1:2020-12-30 00:30 OTR=1 E-F 2020-12-30 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-30
+10.01v1:2020-12-30 00:30 OTR=0 B-C 2020-12-30 01:30 OTR=0
+10.02v1:2020-12-30 01:30 OTR=0 C-E 2020-12-31 00:30 OTR=1
+10.03v1:2020-12-31 00:30 OTR=1 E-F 2020-12-31 04:30 OTR=1
+
+
+TR/8350/13AB/2020/10.01/2020-12-31
+10.01v1:2020-12-31 00:30 OTR=0 B-C 2020-12-31 01:30 OTR=0
+10.02v1:2020-12-31 01:30 OTR=0 C-E 2021-01-01 00:30 OTR=1
+10.03v1:2021-01-01 00:30 OTR=1 E-F 2021-01-01 04:30 OTR=1
+
+
+TR/8350/13AB/2020/20.01/2020-12-05
+20.01v1:2020-12-05 23:30 OTR=-1 A-C 2020-12-06 01:30 OTR=0
+10.02v1:2020-12-06 01:30 OTR=0 C-E 2020-12-07 00:30 OTR=1
+10.03v1:2020-12-07 00:30 OTR=1 E-F 2020-12-07 04:30 OTR=1
+
+
+TR/8350/13AB/2020/20.01/2020-12-12
+20.01v1:2020-12-12 23:30 OTR=-1 A-C 2020-12-13 01:30 OTR=0
+10.02v1:2020-12-13 01:30 OTR=0 C-E 2020-12-14 00:30 OTR=1
+10.03v1:2020-12-14 00:30 OTR=1 E-F 2020-12-14 04:30 OTR=1
+
+
+TR/8350/13AB/2020/20.01/2020-12-19
+20.01v1:2020-12-19 23:30 OTR=-1 A-C 2020-12-20 01:30 OTR=0
+10.02v1:2020-12-20 01:30 OTR=0 C-E 2020-12-21 00:30 OTR=1
+10.03v1:2020-12-21 00:30 OTR=1 E-F 2020-12-21 04:30 OTR=1
+
+
+TR/8350/13AB/2020/20.01/2020-12-26
+20.01v1:2020-12-26 23:30 OTR=-1 A-C 2020-12-27 01:30 OTR=0
+10.02v1:2020-12-27 01:30 OTR=0 C-E 2020-12-28 00:30 OTR=1
+10.03v1:2020-12-28 00:30 OTR=1 E-F 2020-12-28 04:30 OTR=1
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.233 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-example-a-f-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/e5461458ceb35a3f5ceaeda79ede2cf4/plot_example_a_f.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_example_a_f.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/a00ffff211fd90c620cab62a0e4cb461/plot_example_a_f.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_example_a_f.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Horst Duchene.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
