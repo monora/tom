@@ -17,10 +17,10 @@ Below is a gallery of train examples
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_otr_test_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_test_otr_thumb.png
      :alt: Example showing OTR anomalie
 
-     :ref:`sphx_glr_auto_examples_plot_otr_test.py`
+     :ref:`sphx_glr_auto_examples_plot_test_otr.py`
 
 .. raw:: html
 
@@ -30,7 +30,7 @@ Below is a gallery of train examples
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_otr_test
+   /auto_examples/plot_test_otr
 
 .. raw:: html
 

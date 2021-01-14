@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Example: Train with three IMs" href="plot_a_f.html" />
-    <link rel="prev" title="Example showing OTR anomalie" href="plot_otr_test.html" /> 
+    <link rel="prev" title="Example showing OTR anomalie" href="plot_test_otr.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -95,13 +95,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../readme.html">Train Object Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Extended Combined Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../domainmodel.html">Route Domain Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="plot_otr_test.html">Example showing OTR anomalie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Example Train Annex 4</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
@@ -218,8 +218,6 @@ version: 1 # RoutingInfo version
 sections:
     - id: 10.01
       version: 1 # RouteSection version
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: S
       departure_time: &#39;00:10:00&#39; # =&gt; Route Construction Start
       arrival_station: H1
@@ -231,15 +229,11 @@ sections:
           - 10.02
     - id: 10.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: &amp;s2-tt 07:30:00
     - id: 20.01
       version: 1
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: S
       departure_time: &#39;23:50:00&#39; # =&gt; Route Construction Start
       arrival_station: H1
@@ -251,15 +245,11 @@ sections:
           - 20.02
     - id: 20.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
     - id: 30.01
       version: 1
-      applicant_ru: RU1
-      planning_im: IM1
       departure_station: D
       departure_time: &#39;02:00:00&#39; # =&gt; Route Construction Start
       arrival_station: H1
@@ -271,8 +261,6 @@ sections:
           - 30.02
     - id: 30.02
       version: 1
-      applicant_ru: RU2
-      planning_im: IM2
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
@@ -324,162 +312,162 @@ sections:
     <tr>
       <th>TR/8350/ID1/2021/10.01/2021-02-01</th>
       <td></td>
-      <td>Mo 01.02.21 00:10</td>
-      <td>Di 02.02.21 00:30</td>
-      <td>Di 02.02.21 00:30</td>
-      <td>Di 02.02.21 08:00</td>
+      <td>Mo 01.02.21 00:10  0</td>
+      <td>Di 02.02.21 00:30  1</td>
+      <td>Di 02.02.21 00:30  1</td>
+      <td>Di 02.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/10.01/2021-02-02</th>
       <td></td>
-      <td>Di 02.02.21 00:10</td>
-      <td>Mi 03.02.21 00:30</td>
-      <td>Mi 03.02.21 00:30</td>
-      <td>Mi 03.02.21 08:00</td>
+      <td>Di 02.02.21 00:10  0</td>
+      <td>Mi 03.02.21 00:30  1</td>
+      <td>Mi 03.02.21 00:30  1</td>
+      <td>Mi 03.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/10.01/2021-02-03</th>
       <td></td>
-      <td>Mi 03.02.21 00:10</td>
-      <td>Do 04.02.21 00:30</td>
-      <td>Do 04.02.21 00:30</td>
-      <td>Do 04.02.21 08:00</td>
+      <td>Mi 03.02.21 00:10  0</td>
+      <td>Do 04.02.21 00:30  1</td>
+      <td>Do 04.02.21 00:30  1</td>
+      <td>Do 04.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/10.01/2021-02-04</th>
       <td></td>
-      <td>Do 04.02.21 00:10</td>
-      <td>Fr 05.02.21 00:30</td>
-      <td>Fr 05.02.21 00:30</td>
-      <td>Fr 05.02.21 08:00</td>
+      <td>Do 04.02.21 00:10  0</td>
+      <td>Fr 05.02.21 00:30  1</td>
+      <td>Fr 05.02.21 00:30  1</td>
+      <td>Fr 05.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/10.01/2021-02-05</th>
       <td></td>
-      <td>Fr 05.02.21 00:10</td>
-      <td>Sa 06.02.21 00:30</td>
-      <td>Sa 06.02.21 00:30</td>
-      <td>Sa 06.02.21 08:00</td>
+      <td>Fr 05.02.21 00:10  0</td>
+      <td>Sa 06.02.21 00:30  1</td>
+      <td>Sa 06.02.21 00:30  1</td>
+      <td>Sa 06.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/10.01/2021-02-06</th>
       <td></td>
-      <td>Sa 06.02.21 00:10</td>
-      <td>So 07.02.21 00:30</td>
-      <td>So 07.02.21 00:30</td>
-      <td>So 07.02.21 08:00</td>
+      <td>Sa 06.02.21 00:10  0</td>
+      <td>So 07.02.21 00:30  1</td>
+      <td>So 07.02.21 00:30  1</td>
+      <td>So 07.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/10.01/2021-02-07</th>
       <td></td>
-      <td>So 07.02.21 00:10</td>
-      <td>Mo 08.02.21 00:30</td>
-      <td>Mo 08.02.21 00:30</td>
-      <td>Mo 08.02.21 08:00</td>
+      <td>So 07.02.21 00:10  0</td>
+      <td>Mo 08.02.21 00:30  1</td>
+      <td>Mo 08.02.21 00:30  1</td>
+      <td>Mo 08.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/20.01/2021-02-07</th>
       <td></td>
-      <td>So 07.02.21 23:50</td>
-      <td>Di 09.02.21 00:10</td>
-      <td>Di 09.02.21 00:10</td>
-      <td>Di 09.02.21 07:40</td>
+      <td>So 07.02.21 23:50  0</td>
+      <td>Di 09.02.21 00:10  2</td>
+      <td>Di 09.02.21 00:10  2</td>
+      <td>Di 09.02.21 07:40  2</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/20.01/2021-02-08</th>
       <td></td>
-      <td>Mo 08.02.21 23:50</td>
-      <td>Mi 10.02.21 00:10</td>
-      <td>Mi 10.02.21 00:10</td>
-      <td>Mi 10.02.21 07:40</td>
+      <td>Mo 08.02.21 23:50  0</td>
+      <td>Mi 10.02.21 00:10  2</td>
+      <td>Mi 10.02.21 00:10  2</td>
+      <td>Mi 10.02.21 07:40  2</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/20.01/2021-02-09</th>
       <td></td>
-      <td>Di 09.02.21 23:50</td>
-      <td>Do 11.02.21 00:10</td>
-      <td>Do 11.02.21 00:10</td>
-      <td>Do 11.02.21 07:40</td>
+      <td>Di 09.02.21 23:50  0</td>
+      <td>Do 11.02.21 00:10  2</td>
+      <td>Do 11.02.21 00:10  2</td>
+      <td>Do 11.02.21 07:40  2</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/20.01/2021-02-10</th>
       <td></td>
-      <td>Mi 10.02.21 23:50</td>
-      <td>Fr 12.02.21 00:10</td>
-      <td>Fr 12.02.21 00:10</td>
-      <td>Fr 12.02.21 07:40</td>
+      <td>Mi 10.02.21 23:50  0</td>
+      <td>Fr 12.02.21 00:10  2</td>
+      <td>Fr 12.02.21 00:10  2</td>
+      <td>Fr 12.02.21 07:40  2</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/20.01/2021-02-11</th>
       <td></td>
-      <td>Do 11.02.21 23:50</td>
-      <td>Sa 13.02.21 00:10</td>
-      <td>Sa 13.02.21 00:10</td>
-      <td>Sa 13.02.21 07:40</td>
+      <td>Do 11.02.21 23:50  0</td>
+      <td>Sa 13.02.21 00:10  2</td>
+      <td>Sa 13.02.21 00:10  2</td>
+      <td>Sa 13.02.21 07:40  2</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/20.01/2021-02-12</th>
       <td></td>
-      <td>Fr 12.02.21 23:50</td>
-      <td>So 14.02.21 00:10</td>
-      <td>So 14.02.21 00:10</td>
-      <td>So 14.02.21 07:40</td>
+      <td>Fr 12.02.21 23:50  0</td>
+      <td>So 14.02.21 00:10  2</td>
+      <td>So 14.02.21 00:10  2</td>
+      <td>So 14.02.21 07:40  2</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/20.01/2021-02-13</th>
       <td></td>
-      <td>Sa 13.02.21 23:50</td>
-      <td>Mo 15.02.21 00:10</td>
-      <td>Mo 15.02.21 00:10</td>
-      <td>Mo 15.02.21 07:40</td>
+      <td>Sa 13.02.21 23:50  0</td>
+      <td>Mo 15.02.21 00:10  2</td>
+      <td>Mo 15.02.21 00:10  2</td>
+      <td>Mo 15.02.21 07:40  2</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/30.01/2021-02-15</th>
-      <td>Mo 15.02.21 02:00</td>
+      <td>Mo 15.02.21 02:00  0</td>
       <td></td>
-      <td>Di 16.02.21 00:30</td>
-      <td>Di 16.02.21 00:30</td>
-      <td>Di 16.02.21 08:00</td>
+      <td>Di 16.02.21 00:30  1</td>
+      <td>Di 16.02.21 00:30  1</td>
+      <td>Di 16.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/30.01/2021-02-16</th>
-      <td>Di 16.02.21 02:00</td>
+      <td>Di 16.02.21 02:00  0</td>
       <td></td>
-      <td>Mi 17.02.21 00:30</td>
-      <td>Mi 17.02.21 00:30</td>
-      <td>Mi 17.02.21 08:00</td>
+      <td>Mi 17.02.21 00:30  1</td>
+      <td>Mi 17.02.21 00:30  1</td>
+      <td>Mi 17.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/30.01/2021-02-17</th>
-      <td>Mi 17.02.21 02:00</td>
+      <td>Mi 17.02.21 02:00  0</td>
       <td></td>
-      <td>Do 18.02.21 00:30</td>
-      <td>Do 18.02.21 00:30</td>
-      <td>Do 18.02.21 08:00</td>
+      <td>Do 18.02.21 00:30  1</td>
+      <td>Do 18.02.21 00:30  1</td>
+      <td>Do 18.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/30.01/2021-02-18</th>
-      <td>Do 18.02.21 02:00</td>
+      <td>Do 18.02.21 02:00  0</td>
       <td></td>
-      <td>Fr 19.02.21 00:30</td>
-      <td>Fr 19.02.21 00:30</td>
-      <td>Fr 19.02.21 08:00</td>
+      <td>Fr 19.02.21 00:30  1</td>
+      <td>Fr 19.02.21 00:30  1</td>
+      <td>Fr 19.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/30.01/2021-02-19</th>
-      <td>Fr 19.02.21 02:00</td>
+      <td>Fr 19.02.21 02:00  0</td>
       <td></td>
-      <td>Sa 20.02.21 00:30</td>
-      <td>Sa 20.02.21 00:30</td>
-      <td>Sa 20.02.21 08:00</td>
+      <td>Sa 20.02.21 00:30  1</td>
+      <td>Sa 20.02.21 00:30  1</td>
+      <td>Sa 20.02.21 08:00  1</td>
     </tr>
     <tr>
       <th>TR/8350/ID1/2021/30.01/2021-02-20</th>
-      <td>Sa 20.02.21 02:00</td>
+      <td>Sa 20.02.21 02:00  0</td>
       <td></td>
-      <td>So 21.02.21 00:30</td>
-      <td>So 21.02.21 00:30</td>
-      <td>So 21.02.21 08:00</td>
+      <td>So 21.02.21 00:30  1</td>
+      <td>So 21.02.21 00:30  1</td>
+      <td>So 21.02.21 08:00  1</td>
     </tr>
   </tbody>
 </table>
@@ -733,7 +721,7 @@ TR/8350/ID1/2021/30.01/2021-02-20
 30.02v1:2021-02-21 00:30 OTR=1 H1-T 2021-02-21 08:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.180 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.267 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-annex-4-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5643e63d75b812d980b176a3c596eff0/plot_annex_4.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_annex_4.py</span></code></a></p>
@@ -753,7 +741,7 @@ TR/8350/ID1/2021/30.01/2021-02-20
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="plot_a_f.html" class="btn btn-neutral float-right" title="Example: Train with three IMs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="plot_otr_test.html" class="btn btn-neutral float-left" title="Example showing OTR anomalie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_test_otr.html" class="btn btn-neutral float-left" title="Example showing OTR anomalie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

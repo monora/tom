@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Example showing OTR anomalie &mdash; Train Object Model 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example Train Annex 4" href="plot_annex_4.html" />
+    <link rel="prev" title="ECM example trains" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Train Object Model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Extended Combined Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../domainmodel.html">Route Domain Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example showing OTR anomalie</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-graph">Section graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">tom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Train Object Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">ECM example trains</a> &raquo;</li>
+        
+      <li>Example showing OTR anomalie</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/auto_examples/plot_test_otr.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-test-otr-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-showing-otr-anomalie">
+<span id="sphx-glr-auto-examples-plot-test-otr-py"></span><h1>Example showing OTR anomalie<a class="headerlink" href="#example-showing-otr-anomalie" title="Permalink to this headline">¶</a></h1>
+<p>Here we investigate the routing specification for a train
+with interesting OTRs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span>
+<span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span>
+</pre></div>
+</div>
+<p>Load example from yaml specification</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;otr-test&#39;</span>
+<span class="n">train_specs</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>---
+coreID: 30AB
+version: 1
+sections:
+    - departure_station: A
+      arrival_station: B
+      travel_time: &#39;01:00:00&#39;
+      calendar:
+        begin: &#39;2020-12-01&#39;
+        end: &#39;2020-12-02&#39;
+      id: &#39;10.10&#39;
+      succ:
+          - &#39;10.20&#39;
+          - &#39;11.20&#39;
+    - departure_station: B
+      arrival_station: C
+      departure_time: &#39;00:30:00&#39;
+      travel_time: &#39;12:00:00&#39;
+      calendar:
+        begin: &#39;2020-12-02&#39;
+        end: &#39;2020-12-02&#39;
+      id: &#39;10.20&#39;
+      succ:
+        - &#39;10.30&#39;
+    - departure_station: B
+      arrival_station: C
+      departure_time: &#39;00:30:00&#39;
+      travel_time: &#39;12:00:00&#39;
+      stop_time: &#39;24:00:00&#39;
+      calendar:
+        begin: &#39;2020-12-04&#39;
+        end: &#39;2020-12-04&#39;
+      id: &#39;11.20&#39;
+      succ:
+        - &#39;10.30&#39;
+    - departure_station: C
+      arrival_station: D
+      travel_time: &#39;12:00:00&#39;
+      calendar:
+        begin: &#39;2020-12-02&#39;
+        end: &#39;2020-12-04&#39;
+        # Exclude Thu 3.12. No section run on this day!
+        mask: &#39;Wed Fri&#39;
+      id: &#39;10.30&#39;
+</pre></div>
+</div>
+<p>Create train object and show its train id.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">make_train_from_yml</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/30AB/2020&#39;
+</pre></div>
+</div>
+<div class="section" id="timetable">
+<h2>Timetable<a class="headerlink" href="#timetable" title="Permalink to this headline">¶</a></h2>
+<p>Show timetable as dataframe</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Departure A</th>
+      <th>Arrival B</th>
+      <th>Departure B</th>
+      <th>Arrival C</th>
+      <th>Departure C</th>
+      <th>Arrival D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>TR/8350/30AB/2020/10.10/2020-12-01</th>
+      <td>Di 01.12.20 23:30 -1</td>
+      <td>Mi 02.12.20 00:30  0</td>
+      <td>Mi 02.12.20 00:30  0</td>
+      <td>Mi 02.12.20 12:30  0</td>
+      <td>Mi 02.12.20 12:30  0</td>
+      <td>Do 03.12.20 00:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/30AB/2020/10.10/2020-12-02</th>
+      <td>Mi 02.12.20 23:30 -2</td>
+      <td>Do 03.12.20 00:30 -1</td>
+      <td>Fr 04.12.20 00:30  0</td>
+      <td>Fr 04.12.20 12:30  0</td>
+      <td>Fr 04.12.20 12:30  0</td>
+      <td>Sa 05.12.20 00:30  1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>Show timetable as plot</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Timetable TR/8350/30AB/2020 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_test_otr_001.png" />
+</div>
+<div class="section" id="route-sections">
+<h2>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h2>
+<p>From which sections the train is composed?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span>
+<span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.10v1
+Calender  : 01/12 to 02/12
+Start   at: 23:30 in A
+Arrival at: 00:30 in B
+Successors: [&#39;10.20&#39;, &#39;11.20&#39;]
+
+ID        : 10.20v1
+Calender  : 02/12 to 02/12
+Start   at: 00:30 in B
+Arrival at: 12:30 in C
+Successors: [&#39;10.30&#39;]
+
+ID        : 11.20v1
+Calender  : 04/12 to 04/12
+Start   at: 00:30 in B
+Arrival at: 12:30 in C
+Successors: [&#39;10.30&#39;]
+
+ID        : 10.30v1
+Calender  : 02/12 to 04/12
+Start   at: 12:30 in C
+Arrival at: 00:30 in D
+Successors: []
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-graph">
+<h2>Section graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h2>
+<p>The section graph is computed using the successor relation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sg</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">section_graph</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(&#39;10.10v1&#39;, &#39;10.20v1&#39;), (&#39;10.10v1&#39;, &#39;11.20v1&#39;), (&#39;10.20v1&#39;, &#39;10.30v1&#39;), (&#39;11.20v1&#39;, &#39;10.30v1&#39;)]
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-runs">
+<h2>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h2>
+<p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
+The section runs are the rows of RouteSection.to_dataframe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10.10: A-B
+              ID                   A                   B
+2020-12-01  10.1 2020-12-01 23:30:00 2020-12-02 00:30:00
+2020-12-02  10.1 2020-12-02 23:30:00 2020-12-03 00:30:00
+
+10.20: B-C
+              ID                   B                   C
+2020-12-02  10.2 2020-12-02 00:30:00 2020-12-02 12:30:00
+
+11.20: B-C
+              ID                   B                   C
+2020-12-04  11.2 2020-12-04 00:30:00 2020-12-04 12:30:00
+
+10.30: C-D
+              ID                   C                   D
+2020-12-02  10.3 2020-12-02 12:30:00 2020-12-03 00:30:00
+2020-12-04  10.3 2020-12-04 12:30:00 2020-12-05 00:30:00
+</pre></div>
+</div>
+</div>
+<div class="section" id="trainruns">
+<h2>TrainRuns<a class="headerlink" href="#trainruns" title="Permalink to this headline">¶</a></h2>
+<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
+<span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/30AB/2020/10.10/2020-12-01
+10.10v1:2020-12-01 23:30 OTR=-1 A-B 2020-12-02 00:30 OTR=0
+10.20v1:2020-12-02 00:30 OTR=0 B-C 2020-12-02 12:30 OTR=0
+10.30v1:2020-12-02 12:30 OTR=0 C-D 2020-12-03 00:30 OTR=1
+
+
+TR/8350/30AB/2020/10.10/2020-12-02
+10.10v1:2020-12-02 23:30 OTR=-2 A-B 2020-12-03 00:30 OTR=-1
+11.20v1:2020-12-04 00:30 OTR=0 B-C 2020-12-04 12:30 OTR=0
+10.30v1:2020-12-04 12:30 OTR=0 C-D 2020-12-05 00:30 OTR=1
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.763 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-test-otr-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/610027346a8002eb51e8cc68f2f77e61/plot_test_otr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_test_otr.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/6f1df3096ba683f98f65bbc1d25f7611/plot_test_otr.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_test_otr.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="plot_annex_4.html" class="btn btn-neutral float-right" title="Example Train Annex 4" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="ECM example trains" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Horst Duchene.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

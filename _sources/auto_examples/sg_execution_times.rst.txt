@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**00:00.823** total execution time for **auto_examples** files:
+**00:02.175** total execution time for **auto_examples** files:
 
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_otr_test.py` (``plot_otr_test.py``) | 00:00.823 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_test_otr.py` (``plot_test_otr.py``) | 00:00.763 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_a_f.py` (``plot_a_f.py``)           | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_a_f.py` (``plot_a_f.py``)           | 00:00.695 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_ac_ff.py` (``plot_ac_ff.py``)       | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_ac_ff.py` (``plot_ac_ff.py``)       | 00:00.451 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_annex_4.py` (``plot_annex_4.py``)   | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_annex_4.py` (``plot_annex_4.py``)   | 00:00.267 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
