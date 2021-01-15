@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tom"
-version = "0.1.0"
+version = "0.1.1"
 description = "Test and investigate FTEs Train Object Model"
 authors = ["Horst Duchene <monora@gmail.com>"]
 license = "MIT license"
