@@ -362,11 +362,14 @@ Show timetable as dataframe
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-35
+.. GENERATED FROM PYTHON SOURCE LINES 34-38
 
+.. _Bildfahrplan: https://de.wikipedia.org/wiki/Bildfahrplan
+`Bildfahrplan`_
+^^^^^^^^^^^^^^
 Show timetable as plot
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-37
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 .. code-block:: default
 
@@ -383,13 +386,13 @@ Show timetable as plot
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-41
+.. GENERATED FROM PYTHON SOURCE LINES 41-44
 
 Route Sections
 ^^^^^^^^^^^^^^
 From which sections the train is composed?
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-45
+.. GENERATED FROM PYTHON SOURCE LINES 44-48
 
 .. code-block:: default
 
@@ -447,13 +450,13 @@ From which sections the train is composed?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-49
+.. GENERATED FROM PYTHON SOURCE LINES 49-52
 
 Section graph
 ^^^^^^^^^^^^^
 The section graph is computed using the successor relation:
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-53
+.. GENERATED FROM PYTHON SOURCE LINES 52-56
 
 .. code-block:: default
 
@@ -476,14 +479,14 @@ The section graph is computed using the successor relation:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-58
+.. GENERATED FROM PYTHON SOURCE LINES 57-61
 
 Section runs
 ^^^^^^^^^^^^
 For each day of the calendar of a section a `SectionRun` is created.
 The section runs are the rows of RouteSection.to_dataframe:
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-62
+.. GENERATED FROM PYTHON SOURCE LINES 61-65
 
 .. code-block:: default
 
@@ -563,13 +566,13 @@ The section runs are the rows of RouteSection.to_dataframe:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-66
+.. GENERATED FROM PYTHON SOURCE LINES 66-69
 
 TrainRuns
 ^^^^^^^^^
 Each `TrainRun` defines a row in the timetable of the train above
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-72
+.. GENERATED FROM PYTHON SOURCE LINES 69-75
 
 .. code-block:: default
 
@@ -696,7 +699,7 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.267 seconds)
+   **Total running time of the script:** ( 0 minutes  0.264 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_annex_4.py:

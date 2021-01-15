@@ -471,11 +471,13 @@ Show timetable as dataframe
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-32
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
+Bildfahrplan
+^^^^^^^^^^^^
 Show timetable as plot
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-34
+.. GENERATED FROM PYTHON SOURCE LINES 34-36
 
 .. code-block:: default
 
@@ -492,11 +494,11 @@ Show timetable as plot
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 37-38
 
 Show only the first week
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 .. code-block:: default
 
@@ -513,13 +515,13 @@ Show only the first week
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-42
+.. GENERATED FROM PYTHON SOURCE LINES 41-44
 
 Route Sections
 ^^^^^^^^^^^^^^
 From which sections the train is composed?
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-46
+.. GENERATED FROM PYTHON SOURCE LINES 44-48
 
 .. code-block:: default
 
@@ -565,13 +567,13 @@ From which sections the train is composed?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-50
+.. GENERATED FROM PYTHON SOURCE LINES 49-52
 
 Section graph
 ^^^^^^^^^^^^^
 The section graph is computed using the successor relation:
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-54
+.. GENERATED FROM PYTHON SOURCE LINES 52-56
 
 .. code-block:: default
 
@@ -594,14 +596,14 @@ The section graph is computed using the successor relation:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-59
+.. GENERATED FROM PYTHON SOURCE LINES 57-61
 
 Section runs
 ^^^^^^^^^^^^
 For each day of the calendar of a section a `SectionRun` is created.
 The section runs are the rows of RouteSection.to_dataframe:
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-63
+.. GENERATED FROM PYTHON SOURCE LINES 61-65
 
 .. code-block:: default
 
@@ -697,13 +699,13 @@ The section runs are the rows of RouteSection.to_dataframe:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-67
+.. GENERATED FROM PYTHON SOURCE LINES 66-69
 
 TrainRuns
 ^^^^^^^^^
 Each `TrainRun` defines a row in the timetable of the train above
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-73
+.. GENERATED FROM PYTHON SOURCE LINES 69-75
 
 .. code-block:: default
 
@@ -885,7 +887,7 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.451 seconds)
+   **Total running time of the script:** ( 0 minutes  0.440 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_ac_ff.py:

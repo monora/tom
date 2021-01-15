@@ -209,11 +209,13 @@ Show timetable as dataframe
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-32
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
+Bildfahrplan
+^^^^^^^^^^^^
 Show timetable as plot
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-34
+.. GENERATED FROM PYTHON SOURCE LINES 34-36
 
 .. code-block:: default
 
@@ -230,13 +232,13 @@ Show timetable as plot
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-38
+.. GENERATED FROM PYTHON SOURCE LINES 37-40
 
 Route Sections
 ^^^^^^^^^^^^^^
 From which sections the train is composed?
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-42
+.. GENERATED FROM PYTHON SOURCE LINES 40-44
 
 .. code-block:: default
 
@@ -282,13 +284,13 @@ From which sections the train is composed?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-46
+.. GENERATED FROM PYTHON SOURCE LINES 45-48
 
 Section graph
 ^^^^^^^^^^^^^
 The section graph is computed using the successor relation:
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-50
+.. GENERATED FROM PYTHON SOURCE LINES 48-52
 
 .. code-block:: default
 
@@ -311,14 +313,14 @@ The section graph is computed using the successor relation:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-55
+.. GENERATED FROM PYTHON SOURCE LINES 53-57
 
 Section runs
 ^^^^^^^^^^^^
 For each day of the calendar of a section a `SectionRun` is created.
 The section runs are the rows of RouteSection.to_dataframe:
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-59
+.. GENERATED FROM PYTHON SOURCE LINES 57-61
 
 .. code-block:: default
 
@@ -358,13 +360,13 @@ The section runs are the rows of RouteSection.to_dataframe:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-63
+.. GENERATED FROM PYTHON SOURCE LINES 62-65
 
 TrainRuns
 ^^^^^^^^^
 Each `TrainRun` defines a row in the timetable of the train above
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-69
+.. GENERATED FROM PYTHON SOURCE LINES 65-71
 
 .. code-block:: default
 
@@ -403,7 +405,7 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.763 seconds)
+   **Total running time of the script:** ( 0 minutes  0.714 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_test_otr.py:
