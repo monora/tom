@@ -28,6 +28,8 @@ df = t.to_dataframe()
 df
 
 # %%
+# Bildfahrplan
+# ^^^^^^^^^^^^
 # Show timetable as plot
 plot_train(t)
 

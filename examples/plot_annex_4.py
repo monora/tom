@@ -31,6 +31,9 @@ df = t.to_dataframe()
 df
 
 # %%
+# .. _Bildfahrplan: https://de.wikipedia.org/wiki/Bildfahrplan
+# `Bildfahrplan`_
+# ^^^^^^^^^^^^^^
 # Show timetable as plot
 plot_train(t)
 
