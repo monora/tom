@@ -525,6 +525,17 @@ class Train:
                     logging.error("Arrivals: %s", in_neighbors)
                 raise TomError(f"Invalid section run design for: {v}")
 
+    def routes(self) -> List['Route']:
+        route_key_to_route = {}
+        for tr in self.train_run_iterator():
+            route_key = tr.route_key()
+            route = route_key_to_route.get(route_key, None)
+            if route is None:
+                route = Route(list(map(lambda sr: sr.section, tr.sections_runs)))
+                route_key_to_route[route_key] = route
+            route.add_date(tr.start_date())
+        return route_key_to_route.values()
+
 
 class SectionRun:
     section: RouteSection
@@ -560,7 +571,7 @@ class SectionRun:
         return self.__otr_at(self.departure_time)
 
     def section_id(self):
-        return self.section.section_id
+        return str(self.section.section_id)
 
     def arrival_time(self) -> datetime:
         return self.departure_time + self.section.travel_time
@@ -582,7 +593,7 @@ class SectionRun:
         """
         return self.departure_time - self.section.departure_stop_time
 
-    def block_timedelta(self) -> pd.Timedelta:
+    def block_timedelta(self) -> timedelta:
         return self.section.departure_stop_time + self.section.travel_time
 
     def departure_station(self) -> str:
@@ -647,6 +658,9 @@ class TrainRun:
     def train_run_id(self):
         return f"{self.first_run().section_id()}/{self.start_date()}"
 
+    def route_key(self):
+        return '-'.join(map(SectionRun.section_id, self.sections_runs))
+
     def start_date(self):
         return self.first_run().departure_time.strftime("%F")
 
@@ -662,9 +676,9 @@ class TrainRun:
             result[sr.departure_column()] = dep
         return result
 
-    def time_table_events(self) -> Tuple[List[str], List[pd.Timestamp]]:
+    def time_table_events(self) -> Tuple[List[str], List[datetime]]:
         stations: List[str] = []
-        timestamps: List[pd.Timestamp] = []
+        timestamps: List[datetime] = []
         for station, ts in self.time_table_event_iterator():
             stations.append(station)
             timestamps.append(ts)
@@ -695,6 +709,7 @@ class Route:
 
     """
     sections: List[RouteSection]
+    calendar: DatetimeIndex = DatetimeIndex([])
 
     def __init__(self, sections: List[RouteSection]):
         if len(sections) == 0:
@@ -706,7 +721,36 @@ class Route:
         self.sections = sections
 
     def __str__(self):
-        return ','.join([str(s) for s in self.sections])
+        return self.sections[0].departure_station + \
+               '-' + \
+               '-'.join([s.arrival_station for s in self.sections])
+
+    def add_date(self, d: datetime):
+        self.calendar = self.calendar.union(DatetimeIndex([d]))
+
+    def route_key(self):
+        return '-'.join(map(lambda s: str(s.section_id), self.sections))
+
+    def description(self) -> str:
+        first_section = self.sections[0]
+        last_section = self.sections[-1]
+        dep = first_section.departure_time().strftime("%H:%M")
+        fd = self.first_day().strftime("%d/%m")
+        ld = self.last_day().strftime("%d/%m")
+        result =  f"Route     : {self}\n"
+        result += f"Key       : {self.route_key()}\n"
+        result += f"Calendar  : {fd} to {ld}\n"
+        result += f"Start   at: {dep} in {first_section.departure_station}\n"
+        for sec in self.sections:
+            arr = sec.arrival_time().strftime("%H:%M")
+            result += f"Arrival at: {arr} in {sec.arrival_station}\n"
+        return result
+
+    def first_day(self):
+        return datetime.date(self.calendar[0])
+
+    def last_day(self):
+        return datetime.date(self.calendar[-1])
 
 
 def __make_section_from_dict(section: dict) -> RouteSection:

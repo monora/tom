@@ -6,7 +6,7 @@ Here we investigate the routing specification for example from
 `train-annex-4.yml`
 """
 from tom.util import example
-from tom.tom import make_train_from_yml, TrainRun, RouteSection
+from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
 from tom.plot import plot_train
 
 # %%
@@ -52,6 +52,15 @@ for section in t.sections:
 
 sg = t.section_graph()
 print(sg.edges)
+
+# %%
+# Routes
+# ^^^^^^
+# Print all possible routes.
+# Routes are calculated from all possible paths in the section graph.
+route: Route
+for route in t.routes():
+    print(route.description(), "\n")
 
 # %%
 # Section runs
