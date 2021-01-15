@@ -107,6 +107,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id1">Bildfahrplan</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-graph">Section graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#routes">Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
 </ul>
@@ -198,7 +199,7 @@ to download the full example code</p>
 <p>Here we investigate the routing specification for example from
 <cite>train-annex-4.yml</cite></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
-<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span>
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
 <span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span>
 </pre></div>
 </div>
@@ -543,6 +544,41 @@ Successors: []
 </pre></div>
 </div>
 </div>
+<div class="section" id="routes">
+<h2>Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h2>
+<p>Print all possible routes.
+Routes are calculated from all possible paths in the section graph.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">route</span><span class="p">:</span> <span class="n">Route</span>
+<span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">routes</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">route</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : S-H1-T
+Key       : 10.01-10.02
+Calendar  : 01/02 to 07/02
+Start   at: 00:10 in S
+Arrival at: 00:30 in H1
+Arrival at: 08:00 in T
+
+
+Route     : S-H1-T
+Key       : 20.01-20.02
+Calendar  : 07/02 to 13/02
+Start   at: 23:50 in S
+Arrival at: 00:10 in H1
+Arrival at: 07:40 in T
+
+
+Route     : D-H1-T
+Key       : 30.01-30.02
+Calendar  : 15/02 to 20/02
+Start   at: 02:00 in D
+Arrival at: 00:30 in H1
+Arrival at: 08:00 in T
+</pre></div>
+</div>
+</div>
 <div class="section" id="section-runs">
 <h2>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h2>
 <p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
@@ -725,7 +761,7 @@ TR/8350/ID1/2021/30.01/2021-02-20
 30.02v1:2021-02-21 00:30 OTR=1 H1-T 2021-02-21 08:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.264 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.275 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-annex-4-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5643e63d75b812d980b176a3c596eff0/plot_annex_4.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_annex_4.py</span></code></a></p>

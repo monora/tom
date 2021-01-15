@@ -108,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-graph">Section graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#routes">Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
 </ul>
@@ -198,7 +199,7 @@ to download the full example code</p>
 <p>Here we investigate the routing specification for example from
 <cite>train-a-f.yml</cite></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
-<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span>
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
 <span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span>
 </pre></div>
 </div>
@@ -725,6 +726,44 @@ Successors: []
 </pre></div>
 </div>
 </div>
+<div class="section" id="routes">
+<h2>Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h2>
+<p>Print all possible routes.
+Routes are calculated from all possible paths in the section graph.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">route</span><span class="p">:</span> <span class="n">Route</span>
+<span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">routes</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">route</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : B-C-E-F
+Key       : 10.01-10.02-10.03
+Calendar  : 01/12 to 31/12
+Start   at: 00:30 in B
+Arrival at: 01:30 in C
+Arrival at: 00:30 in E
+Arrival at: 04:30 in F
+
+
+Route     : B-C-E-G
+Key       : 10.01-10.02-30.03
+Calendar  : 07/12 to 28/12
+Start   at: 00:30 in B
+Arrival at: 01:30 in C
+Arrival at: 00:30 in E
+Arrival at: 08:30 in G
+
+
+Route     : A-C-E-F
+Key       : 20.01-10.02-10.03
+Calendar  : 05/12 to 26/12
+Start   at: 23:30 in A
+Arrival at: 01:30 in C
+Arrival at: 00:30 in E
+Arrival at: 04:30 in F
+</pre></div>
+</div>
+</div>
 <div class="section" id="section-runs">
 <h2>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h2>
 <p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
@@ -1043,7 +1082,7 @@ TR/8350/13AB/2020/20.01/2020-12-26
 10.03v1:2020-12-28 00:30 OTR=1 E-F 2020-12-28 04:30 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.690 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.736 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-a-f-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/838a623f11c392aaf0f66cc641e743ba/plot_a_f.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_a_f.py</span></code></a></p>

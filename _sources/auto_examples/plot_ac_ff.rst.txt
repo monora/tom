@@ -29,7 +29,7 @@ Here we investigate the routing specification for example from
 .. code-block:: default
 
     from tom.util import example
-    from tom.tom import make_train_from_yml, TrainRun, RouteSection
+    from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
     from tom.plot import plot_train
 
 
@@ -598,12 +598,57 @@ The section graph is computed using the successor relation:
 
 .. GENERATED FROM PYTHON SOURCE LINES 57-61
 
+Routes
+^^^^^^
+Print all possible routes.
+Routes are calculated from all possible paths in the section graph.
+
+.. GENERATED FROM PYTHON SOURCE LINES 61-65
+
+.. code-block:: default
+
+    route: Route
+    for route in t.routes():
+        print(route.description(), "\n")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Route     : AC-EMM-FF
+    Key       : 10.01-10.02
+    Calendar  : 01/12 to 30/12
+    Start   at: 23:50 in AC
+    Arrival at: 02:00 in EMM
+    Arrival at: 12:00 in FF
+ 
+
+    Route     : AC-Venlo-FF
+    Key       : 20.01-20.02
+    Calendar  : 03/12 to 31/12
+    Start   at: 23:50 in AC
+    Arrival at: 01:00 in Venlo
+    Arrival at: 12:00 in FF
+ 
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 66-70
+
 Section runs
 ^^^^^^^^^^^^
 For each day of the calendar of a section a `SectionRun` is created.
 The section runs are the rows of RouteSection.to_dataframe:
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-65
+.. GENERATED FROM PYTHON SOURCE LINES 70-74
 
 .. code-block:: default
 
@@ -699,13 +744,13 @@ The section runs are the rows of RouteSection.to_dataframe:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-69
+.. GENERATED FROM PYTHON SOURCE LINES 75-78
 
 TrainRuns
 ^^^^^^^^^
 Each `TrainRun` defines a row in the timetable of the train above
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-75
+.. GENERATED FROM PYTHON SOURCE LINES 78-84
 
 .. code-block:: default
 
@@ -887,7 +932,7 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.440 seconds)
+   **Total running time of the script:** ( 0 minutes  0.474 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_ac_ff.py:

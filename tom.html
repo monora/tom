@@ -264,6 +264,36 @@ the train.</p></li>
 </div></blockquote>
 <p>NOTE: The here proposed TOM model does not need routes! They are instead modeled as TrainRuns
 which are computed from RouteSection (see Train.train_run_iterator)</p>
+<dl class="method">
+<dt id="tom.tom.Route.add_date">
+<code class="sig-name descname">add_date</code><span class="sig-paren">(</span><em class="sig-param">d: datetime.datetime</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Route.add_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Route.add_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tom.tom.Route.calendar">
+<code class="sig-name descname">calendar</code><em class="property">: pandas.core.indexes.datetimes.DatetimeIndex</em><em class="property"> = DatetimeIndex([], dtype='datetime64[ns]', freq=None)</em><a class="headerlink" href="#tom.tom.Route.calendar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.Route.description">
+<code class="sig-name descname">description</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/tom/tom.html#Route.description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Route.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.Route.first_day">
+<code class="sig-name descname">first_day</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Route.first_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Route.first_day" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.Route.last_day">
+<code class="sig-name descname">last_day</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Route.last_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Route.last_day" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.Route.route_key">
+<code class="sig-name descname">route_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Route.route_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Route.route_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="tom.tom.Route.sections">
 <code class="sig-name descname">sections</code><em class="property">: List[RouteSection]</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.Route.sections" title="Permalink to this definition">¶</a></dt>
@@ -522,7 +552,7 @@ is running is this section.</p>
 
 <dl class="method">
 <dt id="tom.tom.SectionRun.block_timedelta">
-<code class="sig-name descname">block_timedelta</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas._libs.tslibs.timedeltas.Timedelta<a class="reference internal" href="_modules/tom/tom.html#SectionRun.block_timedelta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.block_timedelta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">block_timedelta</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; datetime.timedelta<a class="reference internal" href="_modules/tom/tom.html#SectionRun.block_timedelta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.SectionRun.block_timedelta" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -652,6 +682,11 @@ is running is this section.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="tom.tom.Train.routes">
+<code class="sig-name descname">routes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[tom.tom.Route]<a class="reference internal" href="_modules/tom/tom.html#Train.routes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.routes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.Train.section_dataframes">
 <code class="sig-name descname">section_dataframes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[pandas.core.frame.DataFrame]<a class="reference internal" href="_modules/tom/tom.html#Train.section_dataframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.section_dataframes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -739,6 +774,11 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 <code class="sig-name descname">location_iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#TrainRun.location_iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.location_iterator" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="tom.tom.TrainRun.route_key">
+<code class="sig-name descname">route_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#TrainRun.route_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.route_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="tom.tom.TrainRun.sections_runs">
 <code class="sig-name descname">sections_runs</code><em class="property">: List[SectionRun]</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.TrainRun.sections_runs" title="Permalink to this definition">¶</a></dt>
@@ -761,7 +801,7 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 
 <dl class="method">
 <dt id="tom.tom.TrainRun.time_table_events">
-<code class="sig-name descname">time_table_events</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[List[str], List[pandas._libs.tslibs.timestamps.Timestamp]]<a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table_events" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_table_events</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[List[str], List[datetime.datetime]]<a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table_events" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

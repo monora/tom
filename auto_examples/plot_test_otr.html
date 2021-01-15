@@ -106,6 +106,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-graph">Section graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#routes">Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
 </ul>
@@ -198,7 +199,7 @@ to download the full example code</p>
 <p>Here we investigate the routing specification for a train
 with interesting OTRs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
-<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span>
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
 <span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span>
 </pre></div>
 </div>
@@ -378,6 +379,35 @@ Successors: []
 </pre></div>
 </div>
 </div>
+<div class="section" id="routes">
+<h2>Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h2>
+<p>Print all possible routes.
+Routes are calculated from all possible paths in the section graph.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">route</span><span class="p">:</span> <span class="n">Route</span>
+<span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">routes</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">route</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : A-B-C-D
+Key       : 10.10-10.20-10.30
+Calendar  : 01/12 to 01/12
+Start   at: 23:30 in A
+Arrival at: 00:30 in B
+Arrival at: 12:30 in C
+Arrival at: 00:30 in D
+
+
+Route     : A-B-C-D
+Key       : 10.10-11.20-10.30
+Calendar  : 02/12 to 02/12
+Start   at: 23:30 in A
+Arrival at: 00:30 in B
+Arrival at: 12:30 in C
+Arrival at: 00:30 in D
+</pre></div>
+</div>
+</div>
 <div class="section" id="section-runs">
 <h2>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h2>
 <p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
@@ -432,7 +462,7 @@ TR/8350/30AB/2020/10.10/2020-12-02
 10.30v1:2020-12-04 12:30 OTR=0 C-D 2020-12-05 00:30 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.714 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.773 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-test-otr-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/610027346a8002eb51e8cc68f2f77e61/plot_test_otr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_test_otr.py</span></code></a></p>
