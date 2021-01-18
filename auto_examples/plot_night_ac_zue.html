@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Example showing OTR anomalie &mdash; Train Object Model 0.1.1 documentation</title>
+  <title>Example: Night Train from Amsterdam to Zürich &mdash; Train Object Model 0.1.1 documentation</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example Train Annex 4" href="plot_annex_4.html" />
-    <link rel="prev" title="ECM example trains" href="index.html" /> 
+    <link rel="next" title="Example: Train with three IMs" href="plot_a_f.html" />
+    <link rel="prev" title="Example: Train from Amsterdam to Frankfurt" href="plot_ac_ff.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -101,7 +101,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../domainmodel.html">Route Domain Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Example showing OTR anomalie</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example: Night Train from Amsterdam to Zürich</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
@@ -111,9 +114,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_night_ac_zue.html">Example: Night Train from Amsterdam to Zürich</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
 </ul>
 </li>
@@ -171,13 +171,13 @@
         
           <li><a href="index.html">ECM example trains</a> &raquo;</li>
         
-      <li>Example showing OTR anomalie</li>
+      <li>Example: Night Train from Amsterdam to Zürich</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/auto_examples/plot_test_otr.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/auto_examples/plot_night_ac_zue.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -192,72 +192,67 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-test-otr-py"><span class="std std-ref">here</span></a>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-night-ac-zue-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="example-showing-otr-anomalie">
-<span id="sphx-glr-auto-examples-plot-test-otr-py"></span><h1>Example showing OTR anomalie<a class="headerlink" href="#example-showing-otr-anomalie" title="Permalink to this headline">¶</a></h1>
-<p>Here we investigate the routing specification for a train
-with interesting OTRs.</p>
+<div class="sphx-glr-example-title section" id="example-night-train-from-amsterdam-to-zurich">
+<span id="sphx-glr-auto-examples-plot-night-ac-zue-py"></span><h1>Example: Night Train from Amsterdam to Zürich<a class="headerlink" href="#example-night-train-from-amsterdam-to-zurich" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span><span class="p">,</span> <span class="n">plot_graph</span>
 <span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
 <span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
 </pre></div>
 </div>
-<p>Load example from yaml specification</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;otr-test&#39;</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<p>Load example nigth train 2021/22 from yaml specification</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="s1">&#39;ac-zue&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>---
-coreID: 30AB
-version: 1
+coreID: 402403
 sections:
-    - departure_station: A
-      arrival_station: B
-      travel_time: &#39;01:00:00&#39;
+    - departure_station: XNAC
+      arrival_station: EEM
+      id: 10
+      departure_time: &#39;20:00:00&#39;
+      travel_time: &#39;01:30:00&#39;
       calendar:
-        begin: &#39;2020-12-01&#39;
-        end: &#39;2020-12-02&#39;
-      id: &#39;10.10&#39;
+        begin: &amp;b-begin &#39;2021-12-12&#39;
+        end: &amp;b-end &#39;2021-12-31&#39;
+        mask: &#39;Fri Sat&#39;
       color: salmon
       succ:
-          - &#39;10.20&#39;
-          - &#39;11.20&#39;
-    - departure_station: B
-      arrival_station: C
-      departure_time: &#39;00:30:00&#39;
-      travel_time: &#39;12:00:00&#39;
+          - 30
+    - departure_station: XNU # Utrecht
+      arrival_station: XNVL # Venlo
+      id: 20
+      departure_time: &#39;20:30:00&#39;
+      travel_time: &#39;01:30:00&#39;
       calendar:
-        begin: &#39;2020-12-02&#39;
-        end: &#39;2020-12-02&#39;
-      id: &#39;10.20&#39;
+        begin: *b-begin
+        end: *b-end
+        mask: &#39;Sun&#39;
       color: red
       succ:
-        - &#39;10.30&#39;
-    - departure_station: B
-      arrival_station: C
-      departure_time: &#39;00:30:00&#39;
-      travel_time: &#39;12:00:00&#39;
-      stop_time: &#39;24:00:00&#39;
-      calendar:
-        begin: &#39;2020-12-04&#39;
-        end: &#39;2020-12-04&#39;
-      id: &#39;11.20&#39;
+          - 40
+    - departure_station: EEM
+      arrival_station: RXBA # Basel Grenze
+      id: 30
+      travel_time: &#39;06:00:00&#39;
       color: green
       succ:
-        - &#39;10.30&#39;
-    - departure_station: C
-      arrival_station: D
-      travel_time: &#39;12:00:00&#39;
-      calendar:
-        begin: &#39;2020-12-02&#39;
-        end: &#39;2020-12-04&#39;
-        # Exclude Thu 3.12. No section run on this day!
-        mask: &#39;Wed Fri&#39;
-      id: &#39;10.30&#39;
+          - 50
+    - departure_station: XNVL
+      arrival_station: RXBA
+      id: 40
+      travel_time: &#39;06:00:00&#39;
+      color: green
+      succ:
+          - 50
+    - departure_station: RXBA
+      arrival_station: XSZH # Zürich HB
+      id: 50
+      travel_time: &#39;01:00:00&#39;
       color: blue
 </pre></div>
 </div>
@@ -267,7 +262,7 @@ sections:
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/30AB/2020&#39;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/402403/2021&#39;
 </pre></div>
 </div>
 <div class="section" id="timetable">
@@ -296,32 +291,113 @@ sections:
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Departure A</th>
-      <th>Arrival B</th>
-      <th>Departure B</th>
-      <th>Arrival C</th>
-      <th>Departure C</th>
-      <th>Arrival D</th>
+      <th>Departure XNU</th>
+      <th>Arrival XNVL</th>
+      <th>Departure XNVL</th>
+      <th>Departure XNAC</th>
+      <th>Arrival EEM</th>
+      <th>Departure EEM</th>
+      <th>Arrival RXBA</th>
+      <th>Departure RXBA</th>
+      <th>Arrival XSZH</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>TR/8350/30AB/2020/10.10/2020-12-01</th>
-      <td>Di 01.12.20 23:30 -1</td>
-      <td>Mi 02.12.20 00:30  0</td>
-      <td>Mi 02.12.20 00:30  0</td>
-      <td>Mi 02.12.20 12:30  0</td>
-      <td>Mi 02.12.20 12:30  0</td>
-      <td>Do 03.12.20 00:30  1</td>
+      <th>TR/8350/402403/2021/20/2021-12-12</th>
+      <td>So 12.12.21 20:30  0</td>
+      <td>So 12.12.21 22:00  0</td>
+      <td>So 12.12.21 22:00  0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Mo 13.12.21 04:00  1</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
-      <th>TR/8350/30AB/2020/10.10/2020-12-02</th>
-      <td>Mi 02.12.20 23:30 -2</td>
-      <td>Do 03.12.20 00:30 -1</td>
-      <td>Fr 04.12.20 00:30  0</td>
-      <td>Fr 04.12.20 12:30  0</td>
-      <td>Fr 04.12.20 12:30  0</td>
-      <td>Sa 05.12.20 00:30  1</td>
+      <th>TR/8350/402403/2021/10/2021-12-17</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Fr 17.12.21 20:00  0</td>
+      <td>Fr 17.12.21 21:30  0</td>
+      <td>Fr 17.12.21 21:30  0</td>
+      <td>Sa 18.12.21 03:30  1</td>
+      <td>Sa 18.12.21 03:30  1</td>
+      <td>Sa 18.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-18</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Sa 18.12.21 20:00  0</td>
+      <td>Sa 18.12.21 21:30  0</td>
+      <td>Sa 18.12.21 21:30  0</td>
+      <td>So 19.12.21 03:30  1</td>
+      <td>So 19.12.21 03:30  1</td>
+      <td>So 19.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/20/2021-12-19</th>
+      <td>So 19.12.21 20:30  0</td>
+      <td>So 19.12.21 22:00  0</td>
+      <td>So 19.12.21 22:00  0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Mo 20.12.21 04:00  1</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-24</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Fr 24.12.21 20:00  0</td>
+      <td>Fr 24.12.21 21:30  0</td>
+      <td>Fr 24.12.21 21:30  0</td>
+      <td>Sa 25.12.21 03:30  1</td>
+      <td>Sa 25.12.21 03:30  1</td>
+      <td>Sa 25.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-25</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Sa 25.12.21 20:00  0</td>
+      <td>Sa 25.12.21 21:30  0</td>
+      <td>Sa 25.12.21 21:30  0</td>
+      <td>So 26.12.21 03:30  1</td>
+      <td>So 26.12.21 03:30  1</td>
+      <td>So 26.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/20/2021-12-26</th>
+      <td>So 26.12.21 20:30  0</td>
+      <td>So 26.12.21 22:00  0</td>
+      <td>So 26.12.21 22:00  0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Mo 27.12.21 04:00  1</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-31</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Fr 31.12.21 20:00  0</td>
+      <td>Fr 31.12.21 21:30  0</td>
+      <td>Fr 31.12.21 21:30  0</td>
+      <td>Sa 01.01.22 03:30  1</td>
+      <td>Sa 01.01.22 03:30  1</td>
+      <td>Sa 01.01.22 04:30  1</td>
     </tr>
   </tbody>
 </table>
@@ -332,10 +408,11 @@ sections:
 <div class="section" id="bildfahrplan">
 <h2>Bildfahrplan<a class="headerlink" href="#bildfahrplan" title="Permalink to this headline">¶</a></h2>
 <p>Show timetable as plot</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;XNAC&#39;</span><span class="p">,</span> <span class="s1">&#39;XNU&#39;</span><span class="p">,</span> <span class="s1">&#39;EEM&#39;</span><span class="p">,</span> <span class="s1">&#39;XNVL&#39;</span><span class="p">,</span> <span class="s1">&#39;RXBA&#39;</span><span class="p">,</span> <span class="s1">&#39;XSZH&#39;</span><span class="p">]</span>
+<span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Timetable TR/8350/30AB/2020 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_test_otr_001.png" />
+<img alt="Timetable TR/8350/402403/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_001.png" />
 </div>
 <div class="section" id="route-sections">
 <h2>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h2>
@@ -346,28 +423,34 @@ sections:
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.10v1
-Calender  : 01/12 to 02/12
-Start   at: 23:30 in A
-Arrival at: 00:30 in B
-Successors: [&#39;10.20&#39;, &#39;11.20&#39;]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10v1
+Calender  : 17/12 to 31/12
+Start   at: 20:00 in XNAC
+Arrival at: 21:30 in EEM
+Successors: [30]
 
-ID        : 10.20v1
-Calender  : 02/12 to 02/12
-Start   at: 00:30 in B
-Arrival at: 12:30 in C
-Successors: [&#39;10.30&#39;]
+ID        : 20v1
+Calender  : 12/12 to 26/12
+Start   at: 20:30 in XNU
+Arrival at: 22:00 in XNVL
+Successors: [40]
 
-ID        : 11.20v1
-Calender  : 04/12 to 04/12
-Start   at: 00:30 in B
-Arrival at: 12:30 in C
-Successors: [&#39;10.30&#39;]
+ID        : 30v1
+Calender  : 17/12 to 31/12
+Start   at: 21:30 in EEM
+Arrival at: 03:30 in RXBA
+Successors: [50]
 
-ID        : 10.30v1
-Calender  : 02/12 to 04/12
-Start   at: 12:30 in C
-Arrival at: 00:30 in D
+ID        : 40v1
+Calender  : 12/12 to 26/12
+Start   at: 22:00 in XNVL
+Arrival at: 04:00 in RXBA
+Successors: [50]
+
+ID        : 50v1
+Calender  : 18/12 to 01/01
+Start   at: 03:30 in RXBA
+Arrival at: 04:30 in XSZH
 Successors: []
 </pre></div>
 </div>
@@ -379,7 +462,7 @@ Successors: []
 <span class="n">plot_graph</span><span class="p">(</span><span class="n">sg</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot test otr" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_test_otr_002.png" />
+<img alt="plot night ac zue" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_002.png" />
 </div>
 <div class="section" id="routes">
 <h2>Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h2>
@@ -391,22 +474,21 @@ Routes are calculated from all possible paths in the section graph.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : A-B-C-D
-Key       : 10.10-10.20-10.30
-Calendar  : 01/12 to 01/12
-Start   at: 23:30 in A
-Arrival at: 00:30 in B
-Arrival at: 12:30 in C
-Arrival at: 00:30 in D
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : XNAC-EEM-RXBA-XSZH
+Key       : 10-30-50
+Calendar  : 17/12 to 31/12
+Start   at: 20:00 in XNAC
+Arrival at: 21:30 in EEM
+Arrival at: 03:30 in RXBA
+Arrival at: 04:30 in XSZH
 
 
-Route     : A-B-C-D
-Key       : 10.10-11.20-10.30
-Calendar  : 02/12 to 02/12
-Start   at: 23:30 in A
-Arrival at: 00:30 in B
-Arrival at: 12:30 in C
-Arrival at: 00:30 in D
+Route     : XNU-XNVL-RXBA
+Key       : 20-40
+Calendar  : 12/12 to 26/12
+Start   at: 20:30 in XNU
+Arrival at: 22:00 in XNVL
+Arrival at: 04:00 in RXBA
 </pre></div>
 </div>
 </div>
@@ -420,29 +502,47 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10.10: A-B
-              ID                   A                   B
-2020-12-01  10.1 2020-12-01 23:30:00 2020-12-02 00:30:00
-2020-12-02  10.1 2020-12-02 23:30:00 2020-12-03 00:30:00
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10: XNAC-EEM
+            ID                XNAC                 EEM
+2021-12-17  10 2021-12-17 20:00:00 2021-12-17 21:30:00
+2021-12-18  10 2021-12-18 20:00:00 2021-12-18 21:30:00
+2021-12-24  10 2021-12-24 20:00:00 2021-12-24 21:30:00
+2021-12-25  10 2021-12-25 20:00:00 2021-12-25 21:30:00
+2021-12-31  10 2021-12-31 20:00:00 2021-12-31 21:30:00
 
-10.20: B-C
-              ID                   B                   C
-2020-12-02  10.2 2020-12-02 00:30:00 2020-12-02 12:30:00
+20: XNU-XNVL
+            ID                 XNU                XNVL
+2021-12-12  20 2021-12-12 20:30:00 2021-12-12 22:00:00
+2021-12-19  20 2021-12-19 20:30:00 2021-12-19 22:00:00
+2021-12-26  20 2021-12-26 20:30:00 2021-12-26 22:00:00
 
-11.20: B-C
-              ID                   B                   C
-2020-12-04  11.2 2020-12-04 00:30:00 2020-12-04 12:30:00
+30: EEM-RXBA
+            ID                 EEM                RXBA
+2021-12-17  30 2021-12-17 21:30:00 2021-12-18 03:30:00
+2021-12-18  30 2021-12-18 21:30:00 2021-12-19 03:30:00
+2021-12-24  30 2021-12-24 21:30:00 2021-12-25 03:30:00
+2021-12-25  30 2021-12-25 21:30:00 2021-12-26 03:30:00
+2021-12-31  30 2021-12-31 21:30:00 2022-01-01 03:30:00
 
-10.30: C-D
-              ID                   C                   D
-2020-12-02  10.3 2020-12-02 12:30:00 2020-12-03 00:30:00
-2020-12-04  10.3 2020-12-04 12:30:00 2020-12-05 00:30:00
+40: XNVL-RXBA
+            ID                XNVL                RXBA
+2021-12-12  40 2021-12-12 22:00:00 2021-12-13 04:00:00
+2021-12-19  40 2021-12-19 22:00:00 2021-12-20 04:00:00
+2021-12-26  40 2021-12-26 22:00:00 2021-12-27 04:00:00
+
+50: RXBA-XSZH
+            ID                RXBA                XSZH
+2021-12-18  50 2021-12-18 03:30:00 2021-12-18 04:30:00
+2021-12-19  50 2021-12-19 03:30:00 2021-12-19 04:30:00
+2021-12-25  50 2021-12-25 03:30:00 2021-12-25 04:30:00
+2021-12-26  50 2021-12-26 03:30:00 2021-12-26 04:30:00
+2022-01-01  50 2022-01-01 03:30:00 2022-01-01 04:30:00
 </pre></div>
 </div>
 </div>
 <div class="section" id="trainruns">
 <h2>TrainRuns<a class="headerlink" href="#trainruns" title="Permalink to this headline">¶</a></h2>
-<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above</p>
+<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
 <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
@@ -452,25 +552,58 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/30AB/2020/10.10/2020-12-01
-10.10v1:2020-12-01 23:30 OTR=-1 A-B 2020-12-02 00:30 OTR=0
-10.20v1:2020-12-02 00:30 OTR=0 B-C 2020-12-02 12:30 OTR=0
-10.30v1:2020-12-02 12:30 OTR=0 C-D 2020-12-03 00:30 OTR=1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/2021/10/2021-12-17
+10v1:2021-12-17 20:00 OTR=0 XNAC-EEM 2021-12-17 21:30 OTR=0
+30v1:2021-12-17 21:30 OTR=0 EEM-RXBA 2021-12-18 03:30 OTR=1
+50v1:2021-12-18 03:30 OTR=1 RXBA-XSZH 2021-12-18 04:30 OTR=1
 
 
-TR/8350/30AB/2020/10.10/2020-12-02
-10.10v1:2020-12-02 23:30 OTR=-2 A-B 2020-12-03 00:30 OTR=-1
-11.20v1:2020-12-04 00:30 OTR=0 B-C 2020-12-04 12:30 OTR=0
-10.30v1:2020-12-04 12:30 OTR=0 C-D 2020-12-05 00:30 OTR=1
+TR/8350/402403/2021/10/2021-12-18
+10v1:2021-12-18 20:00 OTR=0 XNAC-EEM 2021-12-18 21:30 OTR=0
+30v1:2021-12-18 21:30 OTR=0 EEM-RXBA 2021-12-19 03:30 OTR=1
+50v1:2021-12-19 03:30 OTR=1 RXBA-XSZH 2021-12-19 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-24
+10v1:2021-12-24 20:00 OTR=0 XNAC-EEM 2021-12-24 21:30 OTR=0
+30v1:2021-12-24 21:30 OTR=0 EEM-RXBA 2021-12-25 03:30 OTR=1
+50v1:2021-12-25 03:30 OTR=1 RXBA-XSZH 2021-12-25 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-25
+10v1:2021-12-25 20:00 OTR=0 XNAC-EEM 2021-12-25 21:30 OTR=0
+30v1:2021-12-25 21:30 OTR=0 EEM-RXBA 2021-12-26 03:30 OTR=1
+50v1:2021-12-26 03:30 OTR=1 RXBA-XSZH 2021-12-26 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-31
+10v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
+30v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=1
+50v1:2022-01-01 03:30 OTR=1 RXBA-XSZH 2022-01-01 04:30 OTR=1
+
+
+TR/8350/402403/2021/20/2021-12-12
+20v1:2021-12-12 20:30 OTR=0 XNU-XNVL 2021-12-12 22:00 OTR=0
+40v1:2021-12-12 22:00 OTR=0 XNVL-RXBA 2021-12-13 04:00 OTR=1
+
+
+TR/8350/402403/2021/20/2021-12-19
+20v1:2021-12-19 20:30 OTR=0 XNU-XNVL 2021-12-19 22:00 OTR=0
+40v1:2021-12-19 22:00 OTR=0 XNVL-RXBA 2021-12-20 04:00 OTR=1
+
+
+TR/8350/402403/2021/20/2021-12-26
+20v1:2021-12-26 20:30 OTR=0 XNU-XNVL 2021-12-26 22:00 OTR=0
+40v1:2021-12-26 22:00 OTR=0 XNVL-RXBA 2021-12-27 04:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.943 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-test-otr-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.712 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-night-ac-zue-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/610027346a8002eb51e8cc68f2f77e61/plot_test_otr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_test_otr.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/a62acb79e721bb2eecbdd07d58314349/plot_night_ac_zue.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_night_ac_zue.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/6f1df3096ba683f98f65bbc1d25f7611/plot_test_otr.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_test_otr.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/60f17f0d3d1e5c4d0b6355b770d9e2bb/plot_night_ac_zue.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_night_ac_zue.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -483,8 +616,8 @@ TR/8350/30AB/2020/10.10/2020-12-02
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_annex_4.html" class="btn btn-neutral float-right" title="Example Train Annex 4" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.html" class="btn btn-neutral float-left" title="ECM example trains" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_a_f.html" class="btn btn-neutral float-right" title="Example: Train with three IMs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_ac_ff.html" class="btn btn-neutral float-left" title="Example: Train from Amsterdam to Frankfurt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

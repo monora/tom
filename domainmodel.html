@@ -611,6 +611,7 @@ CoreID <cite>12AB</cite>:</p>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">EMM</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;02:10:00&#39;</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lightgreen</span>
       <span class="nt">succ</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
@@ -625,12 +626,14 @@ CoreID <cite>12AB</cite>:</p>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-12-02&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-12-31&#39;</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri&#39;</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
 
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AC</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Venlo</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;01:10:00&#39;</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cyan</span>
       <span class="nt">succ</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.02</span>
@@ -644,6 +647,7 @@ CoreID <cite>12AB</cite>:</p>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-12-02&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2022-01-01&#39;</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">salmon</span>
 </pre></div>
 </div>
 </div>
@@ -982,6 +986,7 @@ a role in the routing planning process because it is no origin, destination or h
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;00:10:00&#39;</span> <span class="c1"># =&gt; Route Construction Start</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s1-tt</span> <span class="s">&#39;24:20:00&#39;</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-01&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
@@ -992,12 +997,14 @@ a role in the routing planning process because it is no origin, destination or h
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nl">&amp;s2-tt</span> <span class="l l-Scalar l-Scalar-Plain">07:30:00</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lightgreen</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">S</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;23:50:00&#39;</span> <span class="c1"># =&gt; Route Construction Start</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s1-tt</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">blue</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-07&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-13&#39;</span>
@@ -1008,12 +1015,14 @@ a role in the routing planning process because it is no origin, destination or h
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lightblue</span>
     <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.01</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">D</span>
       <span class="nt">departure_time</span><span class="p">:</span> <span class="s">&#39;02:00:00&#39;</span> <span class="c1"># =&gt; Route Construction Start</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;22:30:00&#39;</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
       <span class="nt">calendar</span><span class="p">:</span>
         <span class="nt">begin</span><span class="p">:</span> <span class="s">&#39;2021-02-15&#39;</span>
         <span class="nt">end</span><span class="p">:</span> <span class="s">&#39;2021-02-20&#39;</span>
@@ -1024,6 +1033,7 @@ a role in the routing planning process because it is no origin, destination or h
       <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">H1</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">T</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="nv">*s2-tt</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">salmon</span>
 </pre></div>
 </div>
 </div>
@@ -1319,6 +1329,7 @@ eg &lt;.. n1
         <span class="c1"># Sundays the train starting from A passes B</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Mon</span><span class="nv"> </span><span class="s">Tue</span><span class="nv"> </span><span class="s">Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat&#39;</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.01</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">salmon</span>
       <span class="nt">succ</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A</span>
@@ -1330,6 +1341,7 @@ eg &lt;.. n1
         <span class="c1"># Sunday in B =&gt; Saturday start in A</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Sat&#39;</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.01</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">red</span>
       <span class="nt">succ</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
@@ -1341,6 +1353,7 @@ eg &lt;.. n1
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*b-end</span>
         <span class="c1"># no mask =&gt; daily</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.02</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cyan</span>
       <span class="nt">succ</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10.03</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">30.03</span>
@@ -1354,6 +1367,7 @@ eg &lt;.. n1
         <span class="c1"># Not on tuesday. On tuesdays section E-G is used.</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Wed</span><span class="nv"> </span><span class="s">Thu</span><span class="nv"> </span><span class="s">Fri</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Sun</span><span class="nv"> </span><span class="s">Mon&#39;</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.03</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">green</span>
     <span class="p p-Indicator">-</span> <span class="nt">departure_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">E</span>
       <span class="nt">arrival_station</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">G</span>
       <span class="nt">travel_time</span><span class="p">:</span> <span class="s">&#39;08:00:00&#39;</span>
@@ -1362,6 +1376,7 @@ eg &lt;.. n1
         <span class="nt">end</span><span class="p">:</span> <span class="nv">*e-end</span>
         <span class="nt">mask</span><span class="p">:</span> <span class="s">&#39;Tue&#39;</span>
       <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.03</span>
+      <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lightgreen</span>
 </pre></div>
 </div>
 </div>

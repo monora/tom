@@ -1,18 +1,15 @@
 """
-Example: Train with three IMs
-=============================
+Example: Night Train from Amsterdam to Zürich
+=============================================
 
-Here we investigate the routing specification for example from
-`train-a-f.yml`
 """
 from tom.plot import plot_train, plot_graph
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
 from tom.util import example
 
 # %%
-# Load example 4 from yaml specification
-pattern = 'a-f.yml'
-_, t_spec_file = example('../tests/data', pattern)
+# Load example nigth train 2021/22 from yaml specification
+_, t_spec_file = example('../tests/data', 'ac-zue')
 print(t_spec_file.read_text())
 
 # %%
@@ -31,12 +28,8 @@ df
 # Bildfahrplan
 # ^^^^^^^^^^^^
 # Show timetable as plot
-stations = sorted(t.all_stations())
+stations = ['XNAC', 'XNU', 'EEM', 'XNVL', 'RXBA', 'XSZH']
 plot_train(t, all_stations=stations)
-
-# %%
-# Show only the first week
-plot_train(t, no_of_runs=7, all_stations=stations)
 
 # %%
 # Route Sections

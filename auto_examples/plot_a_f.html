@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example: Train from Amsterdam to Frankfurt" href="plot_ac_ff.html" />
-    <link rel="prev" title="Example Train Annex 4" href="plot_annex_4.html" /> 
+    <link rel="next" title="tom" href="../modules.html" />
+    <link rel="prev" title="Example: Night Train from Amsterdam to Zürich" href="plot_night_ac_zue.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -103,6 +103,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_night_ac_zue.html">Example: Night Train from Amsterdam to Zürich</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Example: Train with three IMs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
@@ -113,7 +115,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">tom</a></li>
@@ -198,14 +199,14 @@ to download the full example code</p>
 <span id="sphx-glr-auto-examples-plot-a-f-py"></span><h1>Example: Train with three IMs<a class="headerlink" href="#example-train-with-three-ims" title="Permalink to this headline">¶</a></h1>
 <p>Here we investigate the routing specification for example from
 <cite>train-a-f.yml</cite></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span><span class="p">,</span> <span class="n">plot_graph</span>
 <span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
-<span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span>
+<span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
 </pre></div>
 </div>
 <p>Load example 4 from yaml specification</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;a-f.yml&#39;</span>
-<span class="n">train_specs</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -222,6 +223,7 @@ sections:
         # Sundays the train starting from A passes B
         mask: &#39;Mon Tue Wed Thu Fri Sat&#39;
       id: 10.01
+      color: salmon
       succ:
           - 10.02
     - departure_station: A
@@ -233,6 +235,7 @@ sections:
         # Sunday in B =&gt; Saturday start in A
         mask: &#39;Sat&#39;
       id: 20.01
+      color: red
       succ:
           - 10.02
     - departure_station: C
@@ -244,6 +247,7 @@ sections:
         end: *b-end
         # no mask =&gt; daily
       id: 10.02
+      color: cyan
       succ:
           - 10.03
           - 30.03
@@ -257,6 +261,7 @@ sections:
         # Not on tuesday. On tuesdays section E-G is used.
         mask: &#39;Wed Thu Fri Sat Sun Mon&#39;
       id: 10.03
+      color: green
     - departure_station: E
       arrival_station: G
       travel_time: &#39;08:00:00&#39;
@@ -265,6 +270,7 @@ sections:
         end: *e-end
         mask: &#39;Tue&#39;
       id: 30.03
+      color: lightgreen
 </pre></div>
 </div>
 <p>Create train object and show its train id.</p>
@@ -663,12 +669,13 @@ sections:
 <div class="section" id="bildfahrplan">
 <h2>Bildfahrplan<a class="headerlink" href="#bildfahrplan" title="Permalink to this headline">¶</a></h2>
 <p>Show timetable as plot</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">all_stations</span><span class="p">())</span>
+<span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="Timetable TR/8350/13AB/2020 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_a_f_001.png" />
 <p>Show only the first week</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">no_of_runs</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">no_of_runs</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="Timetable TR/8350/13AB/2020 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_a_f_002.png" />
@@ -718,13 +725,10 @@ Successors: []
 <h2>Section graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h2>
 <p>The section graph is computed using the successor relation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sg</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">section_graph</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="n">plot_graph</span><span class="p">(</span><span class="n">sg</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(&#39;10.01v1&#39;, &#39;10.02v1&#39;), (&#39;10.02v1&#39;, &#39;10.03v1&#39;), (&#39;10.02v1&#39;, &#39;30.03v1&#39;), (&#39;20.01v1&#39;, &#39;10.02v1&#39;)]
-</pre></div>
-</div>
+<img alt="plot a f" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_a_f_003.png" />
 </div>
 <div class="section" id="routes">
 <h2>Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h2>
@@ -886,7 +890,7 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </div>
 <div class="section" id="trainruns">
 <h2>TrainRuns<a class="headerlink" href="#trainruns" title="Permalink to this headline">¶</a></h2>
-<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above</p>
+<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
 <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
@@ -1082,7 +1086,7 @@ TR/8350/13AB/2020/20.01/2020-12-26
 10.03v1:2020-12-28 00:30 OTR=1 E-F 2020-12-28 04:30 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.736 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.537 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-a-f-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/838a623f11c392aaf0f66cc641e743ba/plot_a_f.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_a_f.py</span></code></a></p>
@@ -1101,8 +1105,8 @@ TR/8350/13AB/2020/20.01/2020-12-26
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_ac_ff.html" class="btn btn-neutral float-right" title="Example: Train from Amsterdam to Frankfurt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="plot_annex_4.html" class="btn btn-neutral float-left" title="Example Train Annex 4" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules.html" class="btn btn-neutral float-right" title="tom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_night_ac_zue.html" class="btn btn-neutral float-left" title="Example: Night Train from Amsterdam to Zürich" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

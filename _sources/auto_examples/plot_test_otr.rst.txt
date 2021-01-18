@@ -28,9 +28,9 @@ with interesting OTRs.
 
 .. code-block:: default
 
-    from tom.util import example
+    from tom.plot import plot_train, plot_graph
     from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-    from tom.plot import plot_train
+    from tom.util import example
 
 
 
@@ -48,7 +48,7 @@ Load example from yaml specification
 .. code-block:: default
 
     pattern = 'otr-test'
-    train_specs, t_spec_file = example('../tests/data', pattern)
+    _, t_spec_file = example('../tests/data', pattern)
     print(t_spec_file.read_text())
 
 
@@ -72,6 +72,7 @@ Load example from yaml specification
             begin: '2020-12-01'
             end: '2020-12-02'
           id: '10.10'
+          color: salmon
           succ:
               - '10.20'
               - '11.20'
@@ -83,6 +84,7 @@ Load example from yaml specification
             begin: '2020-12-02'
             end: '2020-12-02'
           id: '10.20'
+          color: red
           succ:
             - '10.30'
         - departure_station: B
@@ -94,6 +96,7 @@ Load example from yaml specification
             begin: '2020-12-04'
             end: '2020-12-04'
           id: '11.20'
+          color: green
           succ:
             - '10.30'
         - departure_station: C
@@ -105,6 +108,7 @@ Load example from yaml specification
             # Exclude Thu 3.12. No section run on this day!
             mask: 'Wed Fri'
           id: '10.30'
+          color: blue
 
 
 
@@ -296,19 +300,15 @@ The section graph is computed using the successor relation:
 
 
     sg = t.section_graph()
-    print(sg.edges)
+    plot_graph(sg)
 
 
 
 
+.. image:: /auto_examples/images/sphx_glr_plot_test_otr_002.png
+    :alt: plot test otr
+    :class: sphx-glr-single-img
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    [('10.10v1', '10.20v1'), ('10.10v1', '11.20v1'), ('10.20v1', '10.30v1'), ('11.20v1', '10.30v1')]
 
 
 
@@ -452,7 +452,7 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.773 seconds)
+   **Total running time of the script:** ( 0 minutes  1.943 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_test_otr.py:

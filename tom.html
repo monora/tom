@@ -210,35 +210,24 @@
 </div>
 <div class="section" id="module-tom.plot">
 <span id="tom-plot-module"></span><h2>tom.plot module<a class="headerlink" href="#module-tom.plot" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="tom.plot.SectionColorChooser">
-<em class="property">class </em><code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">SectionColorChooser</code><a class="reference internal" href="_modules/tom/plot.html#SectionColorChooser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.SectionColorChooser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="tom.plot.SectionColorChooser.get_color_for_section">
-<code class="sig-name descname">get_color_for_section</code><span class="sig-paren">(</span><em class="sig-param">section</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#SectionColorChooser.get_color_for_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.SectionColorChooser.get_color_for_section" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="tom.plot.annotate_train_run">
+<code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">annotate_train_run</code><span class="sig-paren">(</span><em class="sig-param">ax: matplotlib.axes._axes.Axes</em>, <em class="sig-param">tr: tom.tom.TrainRun</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#annotate_train_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.annotate_train_run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="tom.plot.SectionColorChooser.last_section">
-<code class="sig-name descname">last_section</code><em class="property"> = -1</em><a class="headerlink" href="#tom.plot.SectionColorChooser.last_section" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="tom.plot.get_color_for_section">
+<code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">get_color_for_section</code><span class="sig-paren">(</span><em class="sig-param">section</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#get_color_for_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.get_color_for_section" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="tom.plot.SectionColorChooser.no_colors">
-<code class="sig-name descname">no_colors</code><em class="property"> = 10</em><a class="headerlink" href="#tom.plot.SectionColorChooser.no_colors" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="tom.plot.plot_graph">
+<code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">plot_graph</code><span class="sig-paren">(</span><em class="sig-param">g: networkx.classes.digraph.DiGraph</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#plot_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.plot_graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="attribute">
-<dt id="tom.plot.SectionColorChooser.section2color">
-<code class="sig-name descname">section2color</code><em class="property"> = {&lt;tom.tom.RouteSection object&gt;: 0, &lt;tom.tom.RouteSection object&gt;: 0, &lt;tom.tom.RouteSection object&gt;: 1, &lt;tom.tom.RouteSection object&gt;: 2, &lt;tom.tom.RouteSection object&gt;: 0, &lt;tom.tom.RouteSection object&gt;: 1, &lt;tom.tom.RouteSection object&gt;: 0, &lt;tom.tom.RouteSection object&gt;: 1}</em><a class="headerlink" href="#tom.plot.SectionColorChooser.section2color" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 <dl class="function">
 <dt id="tom.plot.plot_train">
-<code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">plot_train</code><span class="sig-paren">(</span><em class="sig-param">t: tom.tom.Train</em>, <em class="sig-param">no_of_runs=-1</em>, <em class="sig-param">plot_all=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#plot_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.plot_train" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tom.plot.</code><code class="sig-name descname">plot_train</code><span class="sig-paren">(</span><em class="sig-param">t: tom.tom.Train</em>, <em class="sig-param">no_of_runs=-1</em>, <em class="sig-param">plot_all=True</em>, <em class="sig-param">all_stations=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/plot.html#plot_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.plot.plot_train" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -349,6 +338,11 @@ is running is this section.</p>
 <dl class="method">
 <dt id="tom.tom.RouteSection.check_invariant">
 <code class="sig-name descname">check_invariant</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#RouteSection.check_invariant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.RouteSection.check_invariant" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tom.tom.RouteSection.color">
+<code class="sig-name descname">color</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#tom.tom.RouteSection.color" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -647,6 +641,16 @@ is running is this section.</p>
 <em class="property">class </em><code class="sig-prename descclassname">tom.tom.</code><code class="sig-name descname">Train</code><span class="sig-paren">(</span><em class="sig-param">core_id: str, sections: List[tom.tom.RouteSection]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#Train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
+<dt id="tom.tom.Train.all_stations">
+<code class="sig-name descname">all_stations</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="_modules/tom/tom.html#Train.all_stations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.all_stations" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of all stations of the train</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="tom.tom.Train.basic_section_graph">
 <code class="sig-name descname">basic_section_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; networkx.classes.digraph.DiGraph<a class="reference internal" href="_modules/tom/tom.html#Train.basic_section_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.Train.basic_section_graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -797,6 +801,11 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 <dl class="method">
 <dt id="tom.tom.TrainRun.time_table_event_iterator">
 <code class="sig-name descname">time_table_event_iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table_event_iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table_event_iterator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tom.tom.TrainRun.time_table_event_iterator2">
+<code class="sig-name descname">time_table_event_iterator2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#TrainRun.time_table_event_iterator2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.TrainRun.time_table_event_iterator2" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

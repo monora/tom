@@ -169,55 +169,109 @@
            <div itemprop="articleBody">
             
   <h1>Source code for tom.plot</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+<span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">Train</span><span class="p">,</span> <span class="n">TrainRun</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.labelbottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.top&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.labeltop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="c1"># Set figure size in inches</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">/</span> <span class="mf">2.54</span><span class="p">,</span> <span class="mi">20</span> <span class="o">/</span> <span class="mf">2.54</span>
+
+<div class="viewcode-block" id="get_color_for_section"><a class="viewcode-back" href="../../tom.html#tom.plot.get_color_for_section">[docs]</a><span class="k">def</span> <span class="nf">get_color_for_section</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">CSS4_COLORS</span>
+    <span class="k">return</span> <span class="n">cmap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
+                    <span class="n">cmap</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">])</span></div>
 
 
-<div class="viewcode-block" id="SectionColorChooser"><a class="viewcode-back" href="../../tom.html#tom.plot.SectionColorChooser">[docs]</a><span class="k">class</span> <span class="nc">SectionColorChooser</span><span class="p">:</span>
-    <span class="n">no_colors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">])</span>
-    <span class="n">section2color</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">last_section</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-
-<div class="viewcode-block" id="SectionColorChooser.get_color_for_section"><a class="viewcode-back" href="../../tom.html#tom.plot.SectionColorChooser.get_color_for_section">[docs]</a>    <span class="k">def</span> <span class="nf">get_color_for_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">section2color</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">last_section</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">section2color</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_section</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;C</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span></div></div>
+<div class="viewcode-block" id="annotate_train_run"><a class="viewcode-back" href="../../tom.html#tom.plot.annotate_train_run">[docs]</a><span class="k">def</span> <span class="nf">annotate_train_run</span><span class="p">(</span><span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span> <span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">first_run</span><span class="p">()</span><span class="o">.</span><span class="n">departure_station</span><span class="p">()</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">first_run</span><span class="p">()</span><span class="o">.</span><span class="n">departure_time</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="plot_train"><a class="viewcode-back" href="../../tom.html#tom.plot.plot_train">[docs]</a><span class="k">def</span> <span class="nf">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="n">Train</span><span class="p">,</span> <span class="n">no_of_runs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">plot_all</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="n">sc_chooser</span> <span class="o">=</span> <span class="n">SectionColorChooser</span><span class="p">()</span>
+<div class="viewcode-block" id="plot_train"><a class="viewcode-back" href="../../tom.html#tom.plot.plot_train">[docs]</a><span class="k">def</span> <span class="nf">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="n">Train</span><span class="p">,</span> <span class="n">no_of_runs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">plot_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.labelbottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.top&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;xtick.labeltop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># Set figure size in inches</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">/</span> <span class="mf">2.54</span><span class="p">,</span> <span class="mi">20</span> <span class="o">/</span> <span class="mf">2.54</span>
+
+    <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">all_stations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">location_graph</span><span class="p">()))</span>
-    <span class="n">first_date</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">calender</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">all_ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_date</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">all_stations</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">all_stations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">all_stations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">location_graph</span><span class="p">()))</span>
+
     <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Timetable </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span><span class="si">}</span><span class="s2"> v</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Timestamps&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;From Origins over Handovers to Destinations&quot;</span><span class="p">)</span>
+    <span class="c1"># Plot invisible line to get the complete x-axis</span>
+    <span class="n">first_date</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">calender</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">all_ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_date</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">all_stations</span><span class="p">]</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">all_stations</span><span class="p">,</span> <span class="n">all_ts</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+
     <span class="n">trs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">()),</span> <span class="n">key</span><span class="o">=</span><span class="n">TrainRun</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
     <span class="n">no_of_runs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trs</span><span class="p">)</span> <span class="k">if</span> <span class="n">no_of_runs</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">no_of_runs</span>
-    <span class="n">last_section</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">trs</span><span class="p">[:</span><span class="n">no_of_runs</span><span class="p">]:</span>
-        <span class="n">stations</span><span class="p">,</span> <span class="n">tt</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">time_table_events</span><span class="p">()</span>
-        <span class="n">current_section</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">first_run</span><span class="p">()</span><span class="o">.</span><span class="n">section</span>
-        <span class="k">if</span> <span class="n">plot_all</span> <span class="ow">or</span> <span class="n">current_section</span> <span class="o">!=</span> <span class="n">last_section</span><span class="p">:</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="n">sc_chooser</span><span class="o">.</span><span class="n">get_color_for_section</span><span class="p">(</span><span class="n">current_section</span><span class="p">)</span>
-            <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span> <span class="k">if</span> <span class="n">current_section</span><span class="o">.</span><span class="n">is_construction_start</span> <span class="k">else</span> <span class="s1">&#39;.&#39;</span>
+        <span class="k">for</span> <span class="n">stations</span><span class="p">,</span> <span class="n">tt</span><span class="p">,</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">time_table_event_iterator2</span><span class="p">():</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">get_color_for_section</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+            <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span> <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">is_construction_start</span> <span class="k">else</span> <span class="s1">&#39;.&#39;</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stations</span><span class="p">,</span> <span class="n">tt</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-        <span class="n">last_section</span> <span class="o">=</span> <span class="n">current_section</span>
+        <span class="n">annotate_train_run</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">tr</span><span class="p">)</span>
+    <span class="c1"># format y-axis</span>
+    <span class="n">week_locator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">WeekdayLocator</span><span class="p">(</span><span class="n">byweekday</span><span class="o">=</span><span class="n">mdates</span><span class="o">.</span><span class="n">SUNDAY</span><span class="p">)</span>
+    <span class="n">week_formatter</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%a</span><span class="s2"> </span><span class="si">%d</span><span class="s2">/%m/%Y&quot;</span><span class="p">)</span>
+    <span class="n">day_locator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">DayLocator</span><span class="p">()</span>
+    <span class="n">day_formatter</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%a</span><span class="s2"> </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">week_locator</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">week_formatter</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">day_locator</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_formatter</span><span class="p">(</span><span class="n">day_formatter</span><span class="p">)</span>
+
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="nn">mimg</span>
+
+
+<div class="viewcode-block" id="plot_graph"><a class="viewcode-back" href="../../tom.html#tom.plot.plot_graph">[docs]</a><span class="k">def</span> <span class="nf">plot_graph</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
+    <span class="c1"># convert from networkx -&gt; pydot</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="c1"># Set defaults for pydot</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># &#39;fontname&#39;: &#39;helvetia&#39;,</span>
+        <span class="s1">&#39;rankdir&#39;</span><span class="p">:</span> <span class="s1">&#39;LR&#39;</span>
+    <span class="p">}</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="s1">&#39;box&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="s1">&#39;filled&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;fontname&#39;</span><span class="p">:</span> <span class="s1">&#39;fixed&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;fillcolor&#39;</span><span class="p">:</span> <span class="s1">&#39;white&#39;</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;\l&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;\l&quot;</span>
+
+    <span class="n">pydot_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">nx_pydot</span><span class="o">.</span><span class="n">to_pydot</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="c1"># render pydot by calling dot, no file saved to disk</span>
+    <span class="n">png_str</span> <span class="o">=</span> <span class="n">pydot_graph</span><span class="o">.</span><span class="n">create_png</span><span class="p">()</span>
+
+    <span class="c1"># treat the dot output string as an image file</span>
+    <span class="n">sio</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">sio</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">png_str</span><span class="p">)</span>
+    <span class="n">sio</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">mimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">sio</span><span class="p">)</span>
+
+    <span class="c1"># plot the image</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

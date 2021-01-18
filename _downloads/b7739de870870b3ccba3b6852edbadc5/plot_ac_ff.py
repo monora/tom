@@ -3,11 +3,11 @@ Example: Train from Amsterdam to Frankfurt
 ==========================================
 
 Here we investigate the routing specification for example from
-`train-ac-ff.yml`
+`train-ac-ff.yml`.
 """
 from tom.util import example
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-from tom.plot import plot_train
+from tom.plot import plot_train, plot_graph
 
 # %%
 # Load example 4 from yaml specification
@@ -51,7 +51,7 @@ for section in t.sections:
 # The section graph is computed using the successor relation:
 
 sg = t.section_graph()
-print(sg.edges)
+plot_graph(sg)
 
 # %%
 # Routes

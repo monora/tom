@@ -28,9 +28,9 @@ Here we investigate the routing specification for example from
 
 .. code-block:: default
 
-    from tom.util import example
+    from tom.plot import plot_train, plot_graph
     from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-    from tom.plot import plot_train
+    from tom.util import example
 
 
 
@@ -48,7 +48,7 @@ Load example 4 from yaml specification
 .. code-block:: default
 
     pattern = 'a-f.yml'
-    train_specs, t_spec_file = example('../tests/data', pattern)
+    _, t_spec_file = example('../tests/data', pattern)
     print(t_spec_file.read_text())
 
 
@@ -73,6 +73,7 @@ Load example 4 from yaml specification
             # Sundays the train starting from A passes B
             mask: 'Mon Tue Wed Thu Fri Sat'
           id: 10.01
+          color: salmon
           succ:
               - 10.02
         - departure_station: A
@@ -84,6 +85,7 @@ Load example 4 from yaml specification
             # Sunday in B => Saturday start in A
             mask: 'Sat'
           id: 20.01
+          color: red
           succ:
               - 10.02
         - departure_station: C
@@ -95,6 +97,7 @@ Load example 4 from yaml specification
             end: *b-end
             # no mask => daily
           id: 10.02
+          color: cyan
           succ:
               - 10.03
               - 30.03
@@ -108,6 +111,7 @@ Load example 4 from yaml specification
             # Not on tuesday. On tuesdays section E-G is used.
             mask: 'Wed Thu Fri Sat Sun Mon'
           id: 10.03
+          color: green
         - departure_station: E
           arrival_station: G
           travel_time: '08:00:00'
@@ -116,6 +120,9 @@ Load example 4 from yaml specification
             end: *e-end
             mask: 'Tue'
           id: 30.03
+          color: lightgreen
+
+
 
 
 
@@ -551,11 +558,12 @@ Bildfahrplan
 ^^^^^^^^^^^^
 Show timetable as plot
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-36
+.. GENERATED FROM PYTHON SOURCE LINES 34-37
 
 .. code-block:: default
 
-    plot_train(t)
+    stations = sorted(t.all_stations())
+    plot_train(t, all_stations=stations)
 
 
 
@@ -568,15 +576,15 @@ Show timetable as plot
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Show only the first week
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-40
+.. GENERATED FROM PYTHON SOURCE LINES 39-41
 
 .. code-block:: default
 
-    plot_train(t, no_of_runs=7)
+    plot_train(t, no_of_runs=7, all_stations=stations)
 
 
 
@@ -589,13 +597,13 @@ Show only the first week
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-44
+.. GENERATED FROM PYTHON SOURCE LINES 42-45
 
 Route Sections
 ^^^^^^^^^^^^^^
 From which sections the train is composed?
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-48
+.. GENERATED FROM PYTHON SOURCE LINES 45-49
 
 .. code-block:: default
 
@@ -647,43 +655,39 @@ From which sections the train is composed?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-52
+.. GENERATED FROM PYTHON SOURCE LINES 50-53
 
 Section graph
 ^^^^^^^^^^^^^
 The section graph is computed using the successor relation:
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-56
+.. GENERATED FROM PYTHON SOURCE LINES 53-57
 
 .. code-block:: default
 
 
     sg = t.section_graph()
-    print(sg.edges)
+    plot_graph(sg)
+
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_a_f_003.png
+    :alt: plot a f
+    :class: sphx-glr-single-img
 
 
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    [('10.01v1', '10.02v1'), ('10.02v1', '10.03v1'), ('10.02v1', '30.03v1'), ('20.01v1', '10.02v1')]
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-61
+.. GENERATED FROM PYTHON SOURCE LINES 58-62
 
 Routes
 ^^^^^^
 Print all possible routes.
 Routes are calculated from all possible paths in the section graph.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-65
+.. GENERATED FROM PYTHON SOURCE LINES 62-66
 
 .. code-block:: default
 
@@ -732,14 +736,14 @@ Routes are calculated from all possible paths in the section graph.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-70
+.. GENERATED FROM PYTHON SOURCE LINES 67-71
 
 Section runs
 ^^^^^^^^^^^^
 For each day of the calendar of a section a `SectionRun` is created.
 The section runs are the rows of RouteSection.to_dataframe:
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-74
+.. GENERATED FROM PYTHON SOURCE LINES 71-75
 
 .. code-block:: default
 
@@ -869,13 +873,13 @@ The section runs are the rows of RouteSection.to_dataframe:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-78
+.. GENERATED FROM PYTHON SOURCE LINES 76-79
 
 TrainRuns
 ^^^^^^^^^
-Each `TrainRun` defines a row in the timetable of the train above
+Each `TrainRun` defines a row in the timetable of the train above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-84
+.. GENERATED FROM PYTHON SOURCE LINES 79-85
 
 .. code-block:: default
 
@@ -1088,7 +1092,7 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.736 seconds)
+   **Total running time of the script:** ( 0 minutes  1.537 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_a_f.py:

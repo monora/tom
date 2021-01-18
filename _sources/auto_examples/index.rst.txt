@@ -55,6 +55,48 @@ Below is a gallery of train examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Here we investigate the routing specification for example from train-ac-ff.yml.">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_ac_ff_thumb.png
+     :alt: Example: Train from Amsterdam to Frankfurt
+
+     :ref:`sphx_glr_auto_examples_plot_ac_ff.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_ac_ff
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example: Night Train from Amsterdam to Zürich">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_night_ac_zue_thumb.png
+     :alt: Example: Night Train from Amsterdam to Zürich
+
+     :ref:`sphx_glr_auto_examples_plot_night_ac_zue.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_night_ac_zue
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Here we investigate the routing specification for example from train-a-f.yml">
 
 .. only:: html
@@ -73,27 +115,6 @@ Below is a gallery of train examples
    :hidden:
 
    /auto_examples/plot_a_f
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Here we investigate the routing specification for example from train-ac-ff.yml">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_ac_ff_thumb.png
-     :alt: Example: Train from Amsterdam to Frankfurt
-
-     :ref:`sphx_glr_auto_examples_plot_ac_ff.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_ac_ff
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

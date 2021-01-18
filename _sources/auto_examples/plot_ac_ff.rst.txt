@@ -22,7 +22,7 @@ Example: Train from Amsterdam to Frankfurt
 ==========================================
 
 Here we investigate the routing specification for example from
-`train-ac-ff.yml`
+`train-ac-ff.yml`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 8-12
 
@@ -30,7 +30,7 @@ Here we investigate the routing specification for example from
 
     from tom.util import example
     from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-    from tom.plot import plot_train
+    from tom.plot import plot_train, plot_graph
 
 
 
@@ -73,6 +73,7 @@ Load example 4 from yaml specification
           departure_station: AC
           arrival_station: EMM
           travel_time: '02:10:00'
+          color: lightgreen
           succ:
               - 10.02
         - id: 10.02
@@ -87,12 +88,14 @@ Load example 4 from yaml specification
             begin: '2021-12-02'
             end: '2021-12-31'
             mask: 'Tue Wed Thu Fri'
+          color: green
 
         - id: 20.01
           version: 1
           departure_station: AC
           arrival_station: Venlo
           travel_time: '01:10:00'
+          color: cyan
           succ:
               - 20.02
         - id: 20.02
@@ -106,6 +109,7 @@ Load example 4 from yaml specification
             begin: '2021-12-02'
             end: '2022-01-01'
             mask: 'Sat Sun Mon'
+          color: salmon
 
 
 
@@ -579,19 +583,15 @@ The section graph is computed using the successor relation:
 
 
     sg = t.section_graph()
-    print(sg.edges)
+    plot_graph(sg)
 
 
 
 
+.. image:: /auto_examples/images/sphx_glr_plot_ac_ff_003.png
+    :alt: plot ac ff
+    :class: sphx-glr-single-img
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    [('10.01v1', '10.02v1'), ('20.01v1', '20.02v1')]
 
 
 
@@ -932,7 +932,7 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.474 seconds)
+   **Total running time of the script:** ( 0 minutes  1.233 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_ac_ff.py:
