@@ -5,14 +5,14 @@ Example showing OTR anomalie
 Here we investigate the routing specification for a train
 with interesting OTRs.
 """
-from tom.util import example
+from tom.plot import plot_train, plot_graph
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-from tom.plot import plot_train
+from tom.util import example
 
 # %%
 # Load example from yaml specification
 pattern = 'otr-test'
-train_specs, t_spec_file = example('../tests/data', pattern)
+_, t_spec_file = example('../tests/data', pattern)
 print(t_spec_file.read_text())
 
 # %%
@@ -47,7 +47,7 @@ for section in t.sections:
 # The section graph is computed using the successor relation:
 
 sg = t.section_graph()
-print(sg.edges)
+plot_graph(sg)
 
 # %%
 # Routes

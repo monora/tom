@@ -5,9 +5,11 @@ Example Train Annex 4
 Here we investigate the routing specification for example from
 `train-annex-4.yml`
 """
+from networkx import DiGraph
+
 from tom.util import example
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-from tom.plot import plot_train
+from tom.plot import *
 
 # %%
 # Load example annex 4 from yaml specification
@@ -50,8 +52,8 @@ for section in t.sections:
 # ^^^^^^^^^^^^^
 # The section graph is computed using the successor relation:
 
-sg = t.section_graph()
-print(sg.edges)
+sg: DiGraph = t.section_graph()
+plot_graph(sg)
 
 # %%
 # Routes

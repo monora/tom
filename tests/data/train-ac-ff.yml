@@ -10,6 +10,7 @@ sections:
       departure_station: AC
       arrival_station: EMM
       travel_time: '02:10:00'
+      color: lightgreen
       succ:
           - 10.02
     - id: 10.02
@@ -24,12 +25,14 @@ sections:
         begin: '2021-12-02'
         end: '2021-12-31'
         mask: 'Tue Wed Thu Fri'
+      color: green
 
     - id: 20.01
       version: 1
       departure_station: AC
       arrival_station: Venlo
       travel_time: '01:10:00'
+      color: cyan
       succ:
           - 20.02
     - id: 20.02
@@ -43,3 +46,4 @@ sections:
         begin: '2021-12-02'
         end: '2022-01-01'
         mask: 'Sat Sun Mon'
+      color: salmon

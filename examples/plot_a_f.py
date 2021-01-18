@@ -5,14 +5,14 @@ Example: Train with three IMs
 Here we investigate the routing specification for example from
 `train-a-f.yml`
 """
-from tom.util import example
+from tom.plot import plot_train, plot_graph
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-from tom.plot import plot_train
+from tom.util import example
 
 # %%
 # Load example 4 from yaml specification
 pattern = 'a-f.yml'
-train_specs, t_spec_file = example('../tests/data', pattern)
+_, t_spec_file = example('../tests/data', pattern)
 print(t_spec_file.read_text())
 
 # %%
@@ -31,11 +31,12 @@ df
 # Bildfahrplan
 # ^^^^^^^^^^^^
 # Show timetable as plot
-plot_train(t)
+stations = sorted(t.all_stations())
+plot_train(t, all_stations=stations)
 
 # %%
 # Show only the first week
-plot_train(t, no_of_runs=7)
+plot_train(t, no_of_runs=7, all_stations=stations)
 
 # %%
 # Route Sections
@@ -51,7 +52,7 @@ for section in t.sections:
 # The section graph is computed using the successor relation:
 
 sg = t.section_graph()
-print(sg.edges)
+plot_graph(sg)
 
 # %%
 # Routes
@@ -74,7 +75,7 @@ for section in t.sections:
 # %%
 # TrainRuns
 # ^^^^^^^^^
-# Each `TrainRun` defines a row in the timetable of the train above
+# Each `TrainRun` defines a row in the timetable of the train above.
 tr: TrainRun
 for tr in t.train_run_iterator():
     print(tr)

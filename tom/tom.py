@@ -48,6 +48,7 @@ class RouteSection:
     is_section_complete: bool = False
     is_construction_start: bool = False
     successors: List[str] = []
+    color: str = None
 
     def __init__(self, departure_station: str,
                  arrival_station: str,
@@ -184,6 +185,7 @@ class RouteSection:
         if self.is_section_complete:
             return
 
+        self.__complete_color_from(pred)
         dts = self.departure_times_from_predecessor(pred)
         self.__adjust_departure_times(dts)
 
@@ -197,6 +199,7 @@ class RouteSection:
         if self.is_section_complete:
             return
 
+        self.__complete_color_from(succ)
         dts = self.departures_times_from_successor(succ)
         self.__adjust_departure_times(dts)
 
@@ -265,6 +268,10 @@ class RouteSection:
                         self, self.version_info(),
                         len(self.calendar), len(self.departure_timestamps))
         self.calendar = self.__compute_calendar(self.departure_timestamps)
+
+    def __complete_color_from(self, other):
+        if self.color is None:
+            self.color = other.color
 
 
 class SingleSource:
@@ -341,8 +348,11 @@ class Train:
 
     def train_run_graph(self) -> nx.DiGraph:
         result = nx.DiGraph()
-
         section_runs = list(self.section_run_iterator())
+        for v in section_runs:
+            result.add_node(v)
+            vi = v.section.version_info()
+            result.nodes[v]['fillcolor'] = v.section.color or 'white'
         for u in section_runs:
             for v in section_runs:
                 if u.connects_to(v):
@@ -368,6 +378,7 @@ class Train:
             sg.nodes[vi]['id'] = vi
             sg.nodes[vi]['label'] = v.section.description()
             sg.nodes[vi]['route_id'] = v.section.route_id()
+            sg.nodes[vi]['fillcolor'] = v.section.color or 'white'
         for u, v in trg.edges:
             u: SectionRun
             v: SectionRun
@@ -536,6 +547,12 @@ class Train:
             route.add_date(tr.start_date())
         return route_key_to_route.values()
 
+    def all_stations(self) -> List[str]:
+        """
+        :return: list of all stations of the train
+        """
+        return self.location_graph().nodes
+
 
 class SectionRun:
     section: RouteSection
@@ -695,6 +712,20 @@ class TrainRun:
             yield sr.departure_station(), sr.departure_time
             yield sr.arrival_station(), sr.arrival_time()
 
+    def time_table_event_iterator2(self):
+        sr: SectionRun
+        zero_delta = pd.Timedelta(0)
+        for sr in self.sections_runs:
+            ds = sr.departure_station()
+            dt = sr.departure_time
+            section = sr.section
+            stop_time = section.departure_stop_time
+            if stop_time > zero_delta:
+                yield [ds, ds], \
+                      [dt, dt - stop_time], section
+            yield [ds, sr.arrival_station()], \
+                  [dt, sr.arrival_time()], section
+
 
 class Route:
     """
@@ -737,7 +768,7 @@ class Route:
         dep = first_section.departure_time().strftime("%H:%M")
         fd = self.first_day().strftime("%d/%m")
         ld = self.last_day().strftime("%d/%m")
-        result =  f"Route     : {self}\n"
+        result = f"Route     : {self}\n"
         result += f"Key       : {self.route_key()}\n"
         result += f"Calendar  : {fd} to {ld}\n"
         result += f"Start   at: {dep} in {first_section.departure_station}\n"
@@ -772,6 +803,7 @@ def __make_section_from_dict(section: dict) -> RouteSection:
     result.section_id = section.get('id', None)
     result.version = section.get('version', result.version)
     result.successors = section.get('succ', [])
+    result.color = section.get('color', None)
     return result
 
 

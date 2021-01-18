@@ -9,6 +9,7 @@ sections:
       departure_time: '00:10:00' # => Route Construction Start
       arrival_station: H1
       travel_time: &s1-tt '24:20:00'
+      color: green
       calendar:
         begin: '2021-02-01'
         end: '2021-02-07'
@@ -19,12 +20,14 @@ sections:
       departure_station: H1
       arrival_station: T
       travel_time: &s2-tt 07:30:00
+      color: lightgreen
     - id: 20.01
       version: 1
       departure_station: S
       departure_time: '23:50:00' # => Route Construction Start
       arrival_station: H1
       travel_time: *s1-tt
+      color: blue
       calendar:
         begin: '2021-02-07'
         end: '2021-02-13'
@@ -35,12 +38,14 @@ sections:
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
+      color: lightblue
     - id: 30.01
       version: 1
       departure_station: D
       departure_time: '02:00:00' # => Route Construction Start
       arrival_station: H1
       travel_time: '22:30:00'
+      color: red
       calendar:
         begin: '2021-02-15'
         end: '2021-02-20'
@@ -51,3 +56,4 @@ sections:
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
+      color: salmon

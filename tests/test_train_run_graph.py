@@ -11,7 +11,8 @@ from tom.tom import Train, SectionRun
 def test_train_run_graph_zero(train_ac_to_emm: Train):
     g = train_ac_to_emm.train_run_graph()
     assert isinstance(g, nx.DiGraph)
-    assert len(g) == 0
+    assert len(g.nodes) == 31
+    assert len(g.edges) == 0
 
 
 def test_train_run_graph_ac_ff(train_ac_ff: Train):

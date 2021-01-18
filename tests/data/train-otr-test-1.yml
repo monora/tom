@@ -9,6 +9,7 @@ sections:
         begin: '2020-12-01'
         end: '2020-12-02'
       id: '10.10'
+      color: salmon
       succ:
           - '10.20'
           - '11.20'
@@ -20,6 +21,7 @@ sections:
         begin: '2020-12-02'
         end: '2020-12-02'
       id: '10.20'
+      color: red
       succ:
         - '10.30'
     - departure_station: B
@@ -31,6 +33,7 @@ sections:
         begin: '2020-12-04'
         end: '2020-12-04'
       id: '11.20'
+      color: green
       succ:
         - '10.30'
     - departure_station: C
@@ -42,3 +45,4 @@ sections:
         # Exclude Thu 3.12. No section run on this day!
         mask: 'Wed Fri'
       id: '10.30'
+      color: blue
