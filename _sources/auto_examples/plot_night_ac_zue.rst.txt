@@ -21,7 +21,36 @@
 Example: Night Train from Amsterdam to Zürich
 =============================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-10
+*Standard schedule* 2021/22 from Amsterdam over Emmerich, Basel to Zürich (a single route) on
+fridays, saturdays and sundays::
+
+    Route     : XNAC-EEM-RXBA-XSZH
+    Calendar  : 12/12/2021 to 12/12/2022 Fri, Sat, Sun
+    Start   at: 20:00 in XNAC
+    Arrival at: 21:30 in EEM
+    Arrival at: 03:30 in RXBA
+    Arrival at: 04:30 in XSZH
+
+*Update schedule* due to construction work between Amsterdam and Utrecht on sundays from
+12/04/2022 on:
+
+The train on sundays starts in Utrecht with destination Basel and handover Venlo.
+Therefore we need to routes from April on: ::
+
+    Route     : XNAC-EEM-RXBA-XSZH
+    Calendar  : 12/04/2022 to 12/12/2022 Fri, Sat
+    Start   at: 20:00 in XNAC
+    Arrival at: 21:30 in EEM
+    Arrival at: 03:30 in RXBA
+    Arrival at: 04:30 in XSZH
+
+    Route     : XNU-XNVL-RXBA
+    Calendar  : 12/04/2022 to 12/12/2022 Sun
+    Start   at: 20:30 in XNU
+    Arrival at: 22:00 in XNVL
+    Arrival at: 04:00 in RXBA
+
+.. GENERATED FROM PYTHON SOURCE LINES 34-38
 
 .. code-block:: default
 
@@ -36,15 +65,18 @@ Example: Night Train from Amsterdam to Zürich
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-12
+.. GENERATED FROM PYTHON SOURCE LINES 39-43
 
-Load example nigth train 2021/22 from yaml specification
+Standard schedule (version 1)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-15
+Load example night train 2021/22 standard schedule (version 1) from yaml specification
+
+.. GENERATED FROM PYTHON SOURCE LINES 43-46
 
 .. code-block:: default
 
-    _, t_spec_file = example('../tests/data', 'ac-zue')
+    _, t_spec_file = example('../tests/data', 'ac-zue-1')
     print(t_spec_file.read_text())
 
 
@@ -58,42 +90,27 @@ Load example nigth train 2021/22 from yaml specification
  .. code-block:: none
 
     ---
+    # Nighttrain from Amsterdam to Zürich
     coreID: 402403
+    version: 1
     sections:
         - departure_station: XNAC
           arrival_station: EEM
           id: 10
+          version: 1
           departure_time: '20:00:00'
           travel_time: '01:30:00'
           calendar:
             begin: &b-begin '2021-12-12'
             end: &b-end '2021-12-31'
-            mask: 'Fri Sat'
+            mask: 'Fri Sat Sun'
           color: salmon
           succ:
               - 30
-        - departure_station: XNU # Utrecht
-          arrival_station: XNVL # Venlo
-          id: 20
-          departure_time: '20:30:00'
-          travel_time: '01:30:00'
-          calendar:
-            begin: *b-begin
-            end: *b-end
-            mask: 'Sun'
-          color: red
-          succ:
-              - 40
         - departure_station: EEM
           arrival_station: RXBA # Basel Grenze
           id: 30
-          travel_time: '06:00:00'
-          color: green
-          succ:
-              - 50
-        - departure_station: XNVL
-          arrival_station: RXBA
-          id: 40
+          version: 1
           travel_time: '06:00:00'
           color: green
           succ:
@@ -101,6 +118,7 @@ Load example nigth train 2021/22 from yaml specification
         - departure_station: RXBA
           arrival_station: XSZH # Zürich HB
           id: 50
+          version: 1
           travel_time: '01:00:00'
           color: blue
 
@@ -109,11 +127,11 @@ Load example nigth train 2021/22 from yaml specification
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-17
+.. GENERATED FROM PYTHON SOURCE LINES 47-48
 
-Create train object and show its train id.
+Create train object and show its train id
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-20
+.. GENERATED FROM PYTHON SOURCE LINES 48-51
 
 .. code-block:: default
 
@@ -135,13 +153,501 @@ Create train object and show its train id.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-24
+.. GENERATED FROM PYTHON SOURCE LINES 52-55
 
-Timetable
-^^^^^^^^^
+Timetable V1
+^^^^^^^^^^^^
 Show timetable as dataframe
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-27
+.. GENERATED FROM PYTHON SOURCE LINES 55-58
+
+.. code-block:: default
+
+    df = t.to_dataframe()
+    df
+
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>Departure XNAC</th>
+          <th>Arrival EEM</th>
+          <th>Departure EEM</th>
+          <th>Arrival RXBA</th>
+          <th>Departure RXBA</th>
+          <th>Arrival XSZH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-12</th>
+          <td>So 12.12.21 20:00  0</td>
+          <td>So 12.12.21 21:30  0</td>
+          <td>So 12.12.21 21:30  0</td>
+          <td>Mo 13.12.21 03:30  1</td>
+          <td>Mo 13.12.21 03:30  1</td>
+          <td>Mo 13.12.21 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-17</th>
+          <td>Fr 17.12.21 20:00  0</td>
+          <td>Fr 17.12.21 21:30  0</td>
+          <td>Fr 17.12.21 21:30  0</td>
+          <td>Sa 18.12.21 03:30  1</td>
+          <td>Sa 18.12.21 03:30  1</td>
+          <td>Sa 18.12.21 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-18</th>
+          <td>Sa 18.12.21 20:00  0</td>
+          <td>Sa 18.12.21 21:30  0</td>
+          <td>Sa 18.12.21 21:30  0</td>
+          <td>So 19.12.21 03:30  1</td>
+          <td>So 19.12.21 03:30  1</td>
+          <td>So 19.12.21 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-19</th>
+          <td>So 19.12.21 20:00  0</td>
+          <td>So 19.12.21 21:30  0</td>
+          <td>So 19.12.21 21:30  0</td>
+          <td>Mo 20.12.21 03:30  1</td>
+          <td>Mo 20.12.21 03:30  1</td>
+          <td>Mo 20.12.21 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-24</th>
+          <td>Fr 24.12.21 20:00  0</td>
+          <td>Fr 24.12.21 21:30  0</td>
+          <td>Fr 24.12.21 21:30  0</td>
+          <td>Sa 25.12.21 03:30  1</td>
+          <td>Sa 25.12.21 03:30  1</td>
+          <td>Sa 25.12.21 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-25</th>
+          <td>Sa 25.12.21 20:00  0</td>
+          <td>Sa 25.12.21 21:30  0</td>
+          <td>Sa 25.12.21 21:30  0</td>
+          <td>So 26.12.21 03:30  1</td>
+          <td>So 26.12.21 03:30  1</td>
+          <td>So 26.12.21 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-26</th>
+          <td>So 26.12.21 20:00  0</td>
+          <td>So 26.12.21 21:30  0</td>
+          <td>So 26.12.21 21:30  0</td>
+          <td>Mo 27.12.21 03:30  1</td>
+          <td>Mo 27.12.21 03:30  1</td>
+          <td>Mo 27.12.21 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2021/10/2021-12-31</th>
+          <td>Fr 31.12.21 20:00  0</td>
+          <td>Fr 31.12.21 21:30  0</td>
+          <td>Fr 31.12.21 21:30  0</td>
+          <td>Sa 01.01.22 03:30  1</td>
+          <td>Sa 01.01.22 03:30  1</td>
+          <td>Sa 01.01.22 04:30  1</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 59-63
+
+Bildfahrplan
+^^^^^^^^^^^^
+Show timetable as plot.
+No sections from Utrecht over Venlo here.
+
+.. GENERATED FROM PYTHON SOURCE LINES 63-66
+
+.. code-block:: default
+
+    stations = ['XNAC', 'XNU', 'EEM', 'XNVL', 'RXBA', 'XSZH']
+    plot_train(t, all_stations=stations)
+
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_night_ac_zue_001.png
+    :alt: Timetable TR/8350/402403/2021 v1
+    :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 67-70
+
+Route Sections
+^^^^^^^^^^^^^^
+From which sections the train is composed?
+
+.. GENERATED FROM PYTHON SOURCE LINES 70-74
+
+.. code-block:: default
+
+    section: RouteSection
+    for section in t.sections:
+        print(section.description(), "\n")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ID        : 10v1
+    Calender  : 12/12 to 31/12
+    Start   at: 20:00 in XNAC
+    Arrival at: 21:30 in EEM
+    Successors: [30] 
+
+    ID        : 30v1
+    Calender  : 12/12 to 31/12
+    Start   at: 21:30 in EEM
+    Arrival at: 03:30 in RXBA
+    Successors: [50] 
+
+    ID        : 50v1
+    Calender  : 13/12 to 01/01
+    Start   at: 03:30 in RXBA
+    Arrival at: 04:30 in XSZH
+    Successors: [] 
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 75-78
+
+Section graph
+^^^^^^^^^^^^^
+The section graph is computed using the successor relation:
+
+.. GENERATED FROM PYTHON SOURCE LINES 78-82
+
+.. code-block:: default
+
+
+    sg = t.section_graph()
+    plot_graph(sg)
+
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_night_ac_zue_002.png
+    :alt: plot night ac zue
+    :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 83-88
+
+Routes
+^^^^^^
+Print all possible routes.
+Routes are calculated from all possible paths in the section graph.
+Version 1 has only one route with three sections.
+
+.. GENERATED FROM PYTHON SOURCE LINES 88-92
+
+.. code-block:: default
+
+    route: Route
+    for route in t.routes():
+        print(route.description(), "\n")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Route     : XNAC-EEM-RXBA-XSZH
+    Key       : 10-30-50
+    Calendar  : 12/12 to 31/12
+    Start   at: 20:00 in XNAC
+    Arrival at: 21:30 in EEM
+    Arrival at: 03:30 in RXBA
+    Arrival at: 04:30 in XSZH
+ 
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 93-98
+
+Section runs
+^^^^^^^^^^^^
+For each day of the calendar of a section a `SectionRun` is created.
+The section runs are the rows of RouteSection.to_dataframe.
+We only show the section run in december here.
+
+.. GENERATED FROM PYTHON SOURCE LINES 98-102
+
+.. code-block:: default
+
+    for section in t.sections:
+        print(f"{section.section_id}: {section}")
+        print(section.to_dataframe(), "\n")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    10: XNAC-EEM
+                ID                XNAC                 EEM
+    2021-12-12  10 2021-12-12 20:00:00 2021-12-12 21:30:00
+    2021-12-17  10 2021-12-17 20:00:00 2021-12-17 21:30:00
+    2021-12-18  10 2021-12-18 20:00:00 2021-12-18 21:30:00
+    2021-12-19  10 2021-12-19 20:00:00 2021-12-19 21:30:00
+    2021-12-24  10 2021-12-24 20:00:00 2021-12-24 21:30:00
+    2021-12-25  10 2021-12-25 20:00:00 2021-12-25 21:30:00
+    2021-12-26  10 2021-12-26 20:00:00 2021-12-26 21:30:00
+    2021-12-31  10 2021-12-31 20:00:00 2021-12-31 21:30:00 
+
+    30: EEM-RXBA
+                ID                 EEM                RXBA
+    2021-12-12  30 2021-12-12 21:30:00 2021-12-13 03:30:00
+    2021-12-17  30 2021-12-17 21:30:00 2021-12-18 03:30:00
+    2021-12-18  30 2021-12-18 21:30:00 2021-12-19 03:30:00
+    2021-12-19  30 2021-12-19 21:30:00 2021-12-20 03:30:00
+    2021-12-24  30 2021-12-24 21:30:00 2021-12-25 03:30:00
+    2021-12-25  30 2021-12-25 21:30:00 2021-12-26 03:30:00
+    2021-12-26  30 2021-12-26 21:30:00 2021-12-27 03:30:00
+    2021-12-31  30 2021-12-31 21:30:00 2022-01-01 03:30:00 
+
+    50: RXBA-XSZH
+                ID                RXBA                XSZH
+    2021-12-13  50 2021-12-13 03:30:00 2021-12-13 04:30:00
+    2021-12-18  50 2021-12-18 03:30:00 2021-12-18 04:30:00
+    2021-12-19  50 2021-12-19 03:30:00 2021-12-19 04:30:00
+    2021-12-20  50 2021-12-20 03:30:00 2021-12-20 04:30:00
+    2021-12-25  50 2021-12-25 03:30:00 2021-12-25 04:30:00
+    2021-12-26  50 2021-12-26 03:30:00 2021-12-26 04:30:00
+    2021-12-27  50 2021-12-27 03:30:00 2021-12-27 04:30:00
+    2022-01-01  50 2022-01-01 03:30:00 2022-01-01 04:30:00 
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 103-106
+
+TrainRuns
+^^^^^^^^^
+Each `TrainRun` defines a row in the timetable of the train above.
+
+.. GENERATED FROM PYTHON SOURCE LINES 106-113
+
+.. code-block:: default
+
+    tr: TrainRun
+    for tr in t.train_run_iterator():
+        print(tr)
+        for sr in tr.sections_runs:
+            print(sr)
+        print("\n")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    TR/8350/402403/2021/10/2021-12-12
+    10v1:2021-12-12 20:00 OTR=0 XNAC-EEM 2021-12-12 21:30 OTR=0
+    30v1:2021-12-12 21:30 OTR=0 EEM-RXBA 2021-12-13 03:30 OTR=1
+    50v1:2021-12-13 03:30 OTR=1 RXBA-XSZH 2021-12-13 04:30 OTR=1
+
+
+    TR/8350/402403/2021/10/2021-12-17
+    10v1:2021-12-17 20:00 OTR=0 XNAC-EEM 2021-12-17 21:30 OTR=0
+    30v1:2021-12-17 21:30 OTR=0 EEM-RXBA 2021-12-18 03:30 OTR=1
+    50v1:2021-12-18 03:30 OTR=1 RXBA-XSZH 2021-12-18 04:30 OTR=1
+
+
+    TR/8350/402403/2021/10/2021-12-18
+    10v1:2021-12-18 20:00 OTR=0 XNAC-EEM 2021-12-18 21:30 OTR=0
+    30v1:2021-12-18 21:30 OTR=0 EEM-RXBA 2021-12-19 03:30 OTR=1
+    50v1:2021-12-19 03:30 OTR=1 RXBA-XSZH 2021-12-19 04:30 OTR=1
+
+
+    TR/8350/402403/2021/10/2021-12-19
+    10v1:2021-12-19 20:00 OTR=0 XNAC-EEM 2021-12-19 21:30 OTR=0
+    30v1:2021-12-19 21:30 OTR=0 EEM-RXBA 2021-12-20 03:30 OTR=1
+    50v1:2021-12-20 03:30 OTR=1 RXBA-XSZH 2021-12-20 04:30 OTR=1
+
+
+    TR/8350/402403/2021/10/2021-12-24
+    10v1:2021-12-24 20:00 OTR=0 XNAC-EEM 2021-12-24 21:30 OTR=0
+    30v1:2021-12-24 21:30 OTR=0 EEM-RXBA 2021-12-25 03:30 OTR=1
+    50v1:2021-12-25 03:30 OTR=1 RXBA-XSZH 2021-12-25 04:30 OTR=1
+
+
+    TR/8350/402403/2021/10/2021-12-25
+    10v1:2021-12-25 20:00 OTR=0 XNAC-EEM 2021-12-25 21:30 OTR=0
+    30v1:2021-12-25 21:30 OTR=0 EEM-RXBA 2021-12-26 03:30 OTR=1
+    50v1:2021-12-26 03:30 OTR=1 RXBA-XSZH 2021-12-26 04:30 OTR=1
+
+
+    TR/8350/402403/2021/10/2021-12-26
+    10v1:2021-12-26 20:00 OTR=0 XNAC-EEM 2021-12-26 21:30 OTR=0
+    30v1:2021-12-26 21:30 OTR=0 EEM-RXBA 2021-12-27 03:30 OTR=1
+    50v1:2021-12-27 03:30 OTR=1 RXBA-XSZH 2021-12-27 04:30 OTR=1
+
+
+    TR/8350/402403/2021/10/2021-12-31
+    10v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
+    30v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=1
+    50v1:2022-01-01 03:30 OTR=1 RXBA-XSZH 2022-01-01 04:30 OTR=1
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 114-118
+
+Update schedule (version 2)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Version 2 of the train contains the update from april on.
+
+.. GENERATED FROM PYTHON SOURCE LINES 118-122
+
+.. code-block:: default
+
+    _, t_spec_file = example('../tests/data', 'ac-zue-2')
+    print(t_spec_file.read_text())
+    t = make_train_from_yml(t_spec_file)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ---
+    # Nighttrain from Amsterdam to Zürich
+    coreID: 402403
+    version: 2
+    sections:
+        - departure_station: XNAC
+          arrival_station: EEM
+          id: 10
+          version: 2
+          departure_time: '20:00:00'
+          travel_time: '01:30:00'
+          calendar:
+            begin: &b-begin '2022-04-12'
+            end: &b-end '2022-05-12'
+            mask: 'Fri Sat'
+          color: salmon
+          succ:
+              - 30
+        - departure_station: XNU # Utrecht
+          arrival_station: XNVL # Venlo
+          id: 20
+          version: 1
+          departure_time: '20:30:00'
+          travel_time: '01:30:00'
+          calendar:
+            begin: *b-begin
+            end: *b-end
+            mask: 'Sun'
+          color: red
+          succ:
+              - 40
+        - departure_station: EEM
+          arrival_station: RXBA # Basel Grenze
+          id: 30
+          version: 2
+          travel_time: '06:00:00'
+          color: green
+          succ:
+              - 50
+        - departure_station: XNVL
+          arrival_station: RXBA
+          id: 40
+          version: 1
+          travel_time: '06:00:00'
+          color: green
+          succ:
+              - 50
+        - departure_station: RXBA
+          arrival_station: XSZH # Zürich HB
+          version: 2
+          id: 50
+          travel_time: '01:00:00'
+          color: blue
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 123-126
+
+Timetable V2
+^^^^^^^^^^^^
+Version 2 has train runs on sundays from Utrecht to Basel.
+
+.. GENERATED FROM PYTHON SOURCE LINES 126-129
 
 .. code-block:: default
 
@@ -187,100 +693,148 @@ Show timetable as dataframe
       </thead>
       <tbody>
         <tr>
-          <th>TR/8350/402403/2021/20/2021-12-12</th>
-          <td>So 12.12.21 20:30  0</td>
-          <td>So 12.12.21 22:00  0</td>
-          <td>So 12.12.21 22:00  0</td>
+          <th>TR/8350/402403/2022/10/2022-04-15</th>
           <td></td>
           <td></td>
           <td></td>
-          <td>Mo 13.12.21 04:00  1</td>
+          <td>Fr 15.04.22 20:00  0</td>
+          <td>Fr 15.04.22 21:30  0</td>
+          <td>Fr 15.04.22 21:30  0</td>
+          <td>Sa 16.04.22 03:30  1</td>
+          <td>Sa 16.04.22 03:30  1</td>
+          <td>Sa 16.04.22 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2022/10/2022-04-16</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Sa 16.04.22 20:00  0</td>
+          <td>Sa 16.04.22 21:30  0</td>
+          <td>Sa 16.04.22 21:30  0</td>
+          <td>So 17.04.22 03:30  1</td>
+          <td>So 17.04.22 03:30  1</td>
+          <td>So 17.04.22 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2022/20/2022-04-17</th>
+          <td>So 17.04.22 20:30  0</td>
+          <td>So 17.04.22 22:00  0</td>
+          <td>So 17.04.22 22:00  0</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Mo 18.04.22 04:00  1</td>
           <td></td>
           <td></td>
         </tr>
         <tr>
-          <th>TR/8350/402403/2021/10/2021-12-17</th>
+          <th>TR/8350/402403/2022/10/2022-04-22</th>
           <td></td>
           <td></td>
           <td></td>
-          <td>Fr 17.12.21 20:00  0</td>
-          <td>Fr 17.12.21 21:30  0</td>
-          <td>Fr 17.12.21 21:30  0</td>
-          <td>Sa 18.12.21 03:30  1</td>
-          <td>Sa 18.12.21 03:30  1</td>
-          <td>Sa 18.12.21 04:30  1</td>
+          <td>Fr 22.04.22 20:00  0</td>
+          <td>Fr 22.04.22 21:30  0</td>
+          <td>Fr 22.04.22 21:30  0</td>
+          <td>Sa 23.04.22 03:30  1</td>
+          <td>Sa 23.04.22 03:30  1</td>
+          <td>Sa 23.04.22 04:30  1</td>
         </tr>
         <tr>
-          <th>TR/8350/402403/2021/10/2021-12-18</th>
+          <th>TR/8350/402403/2022/10/2022-04-23</th>
           <td></td>
           <td></td>
           <td></td>
-          <td>Sa 18.12.21 20:00  0</td>
-          <td>Sa 18.12.21 21:30  0</td>
-          <td>Sa 18.12.21 21:30  0</td>
-          <td>So 19.12.21 03:30  1</td>
-          <td>So 19.12.21 03:30  1</td>
-          <td>So 19.12.21 04:30  1</td>
+          <td>Sa 23.04.22 20:00  0</td>
+          <td>Sa 23.04.22 21:30  0</td>
+          <td>Sa 23.04.22 21:30  0</td>
+          <td>So 24.04.22 03:30  1</td>
+          <td>So 24.04.22 03:30  1</td>
+          <td>So 24.04.22 04:30  1</td>
         </tr>
         <tr>
-          <th>TR/8350/402403/2021/20/2021-12-19</th>
-          <td>So 19.12.21 20:30  0</td>
-          <td>So 19.12.21 22:00  0</td>
-          <td>So 19.12.21 22:00  0</td>
+          <th>TR/8350/402403/2022/20/2022-04-24</th>
+          <td>So 24.04.22 20:30  0</td>
+          <td>So 24.04.22 22:00  0</td>
+          <td>So 24.04.22 22:00  0</td>
           <td></td>
           <td></td>
           <td></td>
-          <td>Mo 20.12.21 04:00  1</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th>TR/8350/402403/2021/10/2021-12-24</th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>Fr 24.12.21 20:00  0</td>
-          <td>Fr 24.12.21 21:30  0</td>
-          <td>Fr 24.12.21 21:30  0</td>
-          <td>Sa 25.12.21 03:30  1</td>
-          <td>Sa 25.12.21 03:30  1</td>
-          <td>Sa 25.12.21 04:30  1</td>
-        </tr>
-        <tr>
-          <th>TR/8350/402403/2021/10/2021-12-25</th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>Sa 25.12.21 20:00  0</td>
-          <td>Sa 25.12.21 21:30  0</td>
-          <td>Sa 25.12.21 21:30  0</td>
-          <td>So 26.12.21 03:30  1</td>
-          <td>So 26.12.21 03:30  1</td>
-          <td>So 26.12.21 04:30  1</td>
-        </tr>
-        <tr>
-          <th>TR/8350/402403/2021/20/2021-12-26</th>
-          <td>So 26.12.21 20:30  0</td>
-          <td>So 26.12.21 22:00  0</td>
-          <td>So 26.12.21 22:00  0</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>Mo 27.12.21 04:00  1</td>
+          <td>Mo 25.04.22 04:00  1</td>
           <td></td>
           <td></td>
         </tr>
         <tr>
-          <th>TR/8350/402403/2021/10/2021-12-31</th>
+          <th>TR/8350/402403/2022/10/2022-04-29</th>
           <td></td>
           <td></td>
           <td></td>
-          <td>Fr 31.12.21 20:00  0</td>
-          <td>Fr 31.12.21 21:30  0</td>
-          <td>Fr 31.12.21 21:30  0</td>
-          <td>Sa 01.01.22 03:30  1</td>
-          <td>Sa 01.01.22 03:30  1</td>
-          <td>Sa 01.01.22 04:30  1</td>
+          <td>Fr 29.04.22 20:00  0</td>
+          <td>Fr 29.04.22 21:30  0</td>
+          <td>Fr 29.04.22 21:30  0</td>
+          <td>Sa 30.04.22 03:30  1</td>
+          <td>Sa 30.04.22 03:30  1</td>
+          <td>Sa 30.04.22 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2022/10/2022-04-30</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Sa 30.04.22 20:00  0</td>
+          <td>Sa 30.04.22 21:30  0</td>
+          <td>Sa 30.04.22 21:30  0</td>
+          <td>So 01.05.22 03:30  1</td>
+          <td>So 01.05.22 03:30  1</td>
+          <td>So 01.05.22 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2022/20/2022-05-01</th>
+          <td>So 01.05.22 20:30  0</td>
+          <td>So 01.05.22 22:00  0</td>
+          <td>So 01.05.22 22:00  0</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Mo 02.05.22 04:00  1</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2022/10/2022-05-06</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Fr 06.05.22 20:00  0</td>
+          <td>Fr 06.05.22 21:30  0</td>
+          <td>Fr 06.05.22 21:30  0</td>
+          <td>Sa 07.05.22 03:30  1</td>
+          <td>Sa 07.05.22 03:30  1</td>
+          <td>Sa 07.05.22 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2022/10/2022-05-07</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Sa 07.05.22 20:00  0</td>
+          <td>Sa 07.05.22 21:30  0</td>
+          <td>Sa 07.05.22 21:30  0</td>
+          <td>So 08.05.22 03:30  1</td>
+          <td>So 08.05.22 03:30  1</td>
+          <td>So 08.05.22 04:30  1</td>
+        </tr>
+        <tr>
+          <th>TR/8350/402403/2022/20/2022-05-08</th>
+          <td>So 08.05.22 20:30  0</td>
+          <td>So 08.05.22 22:00  0</td>
+          <td>So 08.05.22 22:00  0</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Mo 09.05.22 04:00  1</td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
@@ -289,37 +843,38 @@ Show timetable as dataframe
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-31
+.. GENERATED FROM PYTHON SOURCE LINES 130-133
 
 Bildfahrplan
 ^^^^^^^^^^^^
-Show timetable as plot
+On sundays the trains only go to Basel from Utrecht over Venlo.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-34
+.. GENERATED FROM PYTHON SOURCE LINES 133-135
 
 .. code-block:: default
 
-    stations = ['XNAC', 'XNU', 'EEM', 'XNVL', 'RXBA', 'XSZH']
     plot_train(t, all_stations=stations)
 
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_night_ac_zue_001.png
-    :alt: Timetable TR/8350/402403/2021 v1
+.. image:: /auto_examples/images/sphx_glr_plot_night_ac_zue_003.png
+    :alt: Timetable TR/8350/402403/2022 v2
     :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-38
+.. GENERATED FROM PYTHON SOURCE LINES 136-141
 
 Route Sections
 ^^^^^^^^^^^^^^
-From which sections the train is composed?
+To realize the schedule we need two new section (with ID 20 and 40)
+All oteher section have a new version 2, because the calender had to
+shortened by sunday.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-42
+.. GENERATED FROM PYTHON SOURCE LINES 141-145
 
 .. code-block:: default
 
@@ -337,32 +892,32 @@ From which sections the train is composed?
 
  .. code-block:: none
 
-    ID        : 10v1
-    Calender  : 17/12 to 31/12
+    ID        : 10v2
+    Calender  : 15/04 to 07/05
     Start   at: 20:00 in XNAC
     Arrival at: 21:30 in EEM
     Successors: [30] 
 
     ID        : 20v1
-    Calender  : 12/12 to 26/12
+    Calender  : 17/04 to 08/05
     Start   at: 20:30 in XNU
     Arrival at: 22:00 in XNVL
     Successors: [40] 
 
-    ID        : 30v1
-    Calender  : 17/12 to 31/12
+    ID        : 30v2
+    Calender  : 15/04 to 07/05
     Start   at: 21:30 in EEM
     Arrival at: 03:30 in RXBA
     Successors: [50] 
 
     ID        : 40v1
-    Calender  : 12/12 to 26/12
+    Calender  : 17/04 to 08/05
     Start   at: 22:00 in XNVL
     Arrival at: 04:00 in RXBA
     Successors: [50] 
 
-    ID        : 50v1
-    Calender  : 18/12 to 01/01
+    ID        : 50v2
+    Calender  : 16/04 to 08/05
     Start   at: 03:30 in RXBA
     Arrival at: 04:30 in XSZH
     Successors: [] 
@@ -371,16 +926,15 @@ From which sections the train is composed?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-46
+.. GENERATED FROM PYTHON SOURCE LINES 146-149
 
 Section graph
 ^^^^^^^^^^^^^
-The section graph is computed using the successor relation:
+The section graph now has two new sections, which define the second route.
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-50
+.. GENERATED FROM PYTHON SOURCE LINES 149-152
 
 .. code-block:: default
-
 
     sg = t.section_graph()
     plot_graph(sg)
@@ -388,7 +942,7 @@ The section graph is computed using the successor relation:
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_night_ac_zue_002.png
+.. image:: /auto_examples/images/sphx_glr_plot_night_ac_zue_004.png
     :alt: plot night ac zue
     :class: sphx-glr-single-img
 
@@ -396,14 +950,13 @@ The section graph is computed using the successor relation:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-55
+.. GENERATED FROM PYTHON SOURCE LINES 153-156
 
 Routes
 ^^^^^^
-Print all possible routes.
-Routes are calculated from all possible paths in the section graph.
+From april on we have one new route:
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-59
+.. GENERATED FROM PYTHON SOURCE LINES 156-160
 
 .. code-block:: default
 
@@ -423,7 +976,7 @@ Routes are calculated from all possible paths in the section graph.
 
     Route     : XNAC-EEM-RXBA-XSZH
     Key       : 10-30-50
-    Calendar  : 17/12 to 31/12
+    Calendar  : 15/04 to 07/05
     Start   at: 20:00 in XNAC
     Arrival at: 21:30 in EEM
     Arrival at: 03:30 in RXBA
@@ -432,7 +985,7 @@ Routes are calculated from all possible paths in the section graph.
 
     Route     : XNU-XNVL-RXBA
     Key       : 20-40
-    Calendar  : 12/12 to 26/12
+    Calendar  : 17/04 to 08/05
     Start   at: 20:30 in XNU
     Arrival at: 22:00 in XNVL
     Arrival at: 04:00 in RXBA
@@ -442,14 +995,12 @@ Routes are calculated from all possible paths in the section graph.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-64
+.. GENERATED FROM PYTHON SOURCE LINES 161-163
 
 Section runs
 ^^^^^^^^^^^^
-For each day of the calendar of a section a `SectionRun` is created.
-The section runs are the rows of RouteSection.to_dataframe:
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-68
+.. GENERATED FROM PYTHON SOURCE LINES 163-167
 
 .. code-block:: default
 
@@ -469,51 +1020,61 @@ The section runs are the rows of RouteSection.to_dataframe:
 
     10: XNAC-EEM
                 ID                XNAC                 EEM
-    2021-12-17  10 2021-12-17 20:00:00 2021-12-17 21:30:00
-    2021-12-18  10 2021-12-18 20:00:00 2021-12-18 21:30:00
-    2021-12-24  10 2021-12-24 20:00:00 2021-12-24 21:30:00
-    2021-12-25  10 2021-12-25 20:00:00 2021-12-25 21:30:00
-    2021-12-31  10 2021-12-31 20:00:00 2021-12-31 21:30:00 
+    2022-04-15  10 2022-04-15 20:00:00 2022-04-15 21:30:00
+    2022-04-16  10 2022-04-16 20:00:00 2022-04-16 21:30:00
+    2022-04-22  10 2022-04-22 20:00:00 2022-04-22 21:30:00
+    2022-04-23  10 2022-04-23 20:00:00 2022-04-23 21:30:00
+    2022-04-29  10 2022-04-29 20:00:00 2022-04-29 21:30:00
+    2022-04-30  10 2022-04-30 20:00:00 2022-04-30 21:30:00
+    2022-05-06  10 2022-05-06 20:00:00 2022-05-06 21:30:00
+    2022-05-07  10 2022-05-07 20:00:00 2022-05-07 21:30:00 
 
     20: XNU-XNVL
                 ID                 XNU                XNVL
-    2021-12-12  20 2021-12-12 20:30:00 2021-12-12 22:00:00
-    2021-12-19  20 2021-12-19 20:30:00 2021-12-19 22:00:00
-    2021-12-26  20 2021-12-26 20:30:00 2021-12-26 22:00:00 
+    2022-04-17  20 2022-04-17 20:30:00 2022-04-17 22:00:00
+    2022-04-24  20 2022-04-24 20:30:00 2022-04-24 22:00:00
+    2022-05-01  20 2022-05-01 20:30:00 2022-05-01 22:00:00
+    2022-05-08  20 2022-05-08 20:30:00 2022-05-08 22:00:00 
 
     30: EEM-RXBA
                 ID                 EEM                RXBA
-    2021-12-17  30 2021-12-17 21:30:00 2021-12-18 03:30:00
-    2021-12-18  30 2021-12-18 21:30:00 2021-12-19 03:30:00
-    2021-12-24  30 2021-12-24 21:30:00 2021-12-25 03:30:00
-    2021-12-25  30 2021-12-25 21:30:00 2021-12-26 03:30:00
-    2021-12-31  30 2021-12-31 21:30:00 2022-01-01 03:30:00 
+    2022-04-15  30 2022-04-15 21:30:00 2022-04-16 03:30:00
+    2022-04-16  30 2022-04-16 21:30:00 2022-04-17 03:30:00
+    2022-04-22  30 2022-04-22 21:30:00 2022-04-23 03:30:00
+    2022-04-23  30 2022-04-23 21:30:00 2022-04-24 03:30:00
+    2022-04-29  30 2022-04-29 21:30:00 2022-04-30 03:30:00
+    2022-04-30  30 2022-04-30 21:30:00 2022-05-01 03:30:00
+    2022-05-06  30 2022-05-06 21:30:00 2022-05-07 03:30:00
+    2022-05-07  30 2022-05-07 21:30:00 2022-05-08 03:30:00 
 
     40: XNVL-RXBA
                 ID                XNVL                RXBA
-    2021-12-12  40 2021-12-12 22:00:00 2021-12-13 04:00:00
-    2021-12-19  40 2021-12-19 22:00:00 2021-12-20 04:00:00
-    2021-12-26  40 2021-12-26 22:00:00 2021-12-27 04:00:00 
+    2022-04-17  40 2022-04-17 22:00:00 2022-04-18 04:00:00
+    2022-04-24  40 2022-04-24 22:00:00 2022-04-25 04:00:00
+    2022-05-01  40 2022-05-01 22:00:00 2022-05-02 04:00:00
+    2022-05-08  40 2022-05-08 22:00:00 2022-05-09 04:00:00 
 
     50: RXBA-XSZH
                 ID                RXBA                XSZH
-    2021-12-18  50 2021-12-18 03:30:00 2021-12-18 04:30:00
-    2021-12-19  50 2021-12-19 03:30:00 2021-12-19 04:30:00
-    2021-12-25  50 2021-12-25 03:30:00 2021-12-25 04:30:00
-    2021-12-26  50 2021-12-26 03:30:00 2021-12-26 04:30:00
-    2022-01-01  50 2022-01-01 03:30:00 2022-01-01 04:30:00 
+    2022-04-16  50 2022-04-16 03:30:00 2022-04-16 04:30:00
+    2022-04-17  50 2022-04-17 03:30:00 2022-04-17 04:30:00
+    2022-04-23  50 2022-04-23 03:30:00 2022-04-23 04:30:00
+    2022-04-24  50 2022-04-24 03:30:00 2022-04-24 04:30:00
+    2022-04-30  50 2022-04-30 03:30:00 2022-04-30 04:30:00
+    2022-05-01  50 2022-05-01 03:30:00 2022-05-01 04:30:00
+    2022-05-07  50 2022-05-07 03:30:00 2022-05-07 04:30:00
+    2022-05-08  50 2022-05-08 03:30:00 2022-05-08 04:30:00 
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-72
+.. GENERATED FROM PYTHON SOURCE LINES 168-170
 
 TrainRuns
 ^^^^^^^^^
-Each `TrainRun` defines a row in the timetable of the train above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-78
+.. GENERATED FROM PYTHON SOURCE LINES 170-176
 
 .. code-block:: default
 
@@ -533,49 +1094,72 @@ Each `TrainRun` defines a row in the timetable of the train above.
 
  .. code-block:: none
 
-    TR/8350/402403/2021/10/2021-12-17
-    10v1:2021-12-17 20:00 OTR=0 XNAC-EEM 2021-12-17 21:30 OTR=0
-    30v1:2021-12-17 21:30 OTR=0 EEM-RXBA 2021-12-18 03:30 OTR=1
-    50v1:2021-12-18 03:30 OTR=1 RXBA-XSZH 2021-12-18 04:30 OTR=1
+    TR/8350/402403/2022/10/2022-04-15
+    10v2:2022-04-15 20:00 OTR=0 XNAC-EEM 2022-04-15 21:30 OTR=0
+    30v2:2022-04-15 21:30 OTR=0 EEM-RXBA 2022-04-16 03:30 OTR=1
+    50v2:2022-04-16 03:30 OTR=1 RXBA-XSZH 2022-04-16 04:30 OTR=1
 
 
-    TR/8350/402403/2021/10/2021-12-18
-    10v1:2021-12-18 20:00 OTR=0 XNAC-EEM 2021-12-18 21:30 OTR=0
-    30v1:2021-12-18 21:30 OTR=0 EEM-RXBA 2021-12-19 03:30 OTR=1
-    50v1:2021-12-19 03:30 OTR=1 RXBA-XSZH 2021-12-19 04:30 OTR=1
+    TR/8350/402403/2022/10/2022-04-16
+    10v2:2022-04-16 20:00 OTR=0 XNAC-EEM 2022-04-16 21:30 OTR=0
+    30v2:2022-04-16 21:30 OTR=0 EEM-RXBA 2022-04-17 03:30 OTR=1
+    50v2:2022-04-17 03:30 OTR=1 RXBA-XSZH 2022-04-17 04:30 OTR=1
 
 
-    TR/8350/402403/2021/10/2021-12-24
-    10v1:2021-12-24 20:00 OTR=0 XNAC-EEM 2021-12-24 21:30 OTR=0
-    30v1:2021-12-24 21:30 OTR=0 EEM-RXBA 2021-12-25 03:30 OTR=1
-    50v1:2021-12-25 03:30 OTR=1 RXBA-XSZH 2021-12-25 04:30 OTR=1
+    TR/8350/402403/2022/10/2022-04-22
+    10v2:2022-04-22 20:00 OTR=0 XNAC-EEM 2022-04-22 21:30 OTR=0
+    30v2:2022-04-22 21:30 OTR=0 EEM-RXBA 2022-04-23 03:30 OTR=1
+    50v2:2022-04-23 03:30 OTR=1 RXBA-XSZH 2022-04-23 04:30 OTR=1
 
 
-    TR/8350/402403/2021/10/2021-12-25
-    10v1:2021-12-25 20:00 OTR=0 XNAC-EEM 2021-12-25 21:30 OTR=0
-    30v1:2021-12-25 21:30 OTR=0 EEM-RXBA 2021-12-26 03:30 OTR=1
-    50v1:2021-12-26 03:30 OTR=1 RXBA-XSZH 2021-12-26 04:30 OTR=1
+    TR/8350/402403/2022/10/2022-04-23
+    10v2:2022-04-23 20:00 OTR=0 XNAC-EEM 2022-04-23 21:30 OTR=0
+    30v2:2022-04-23 21:30 OTR=0 EEM-RXBA 2022-04-24 03:30 OTR=1
+    50v2:2022-04-24 03:30 OTR=1 RXBA-XSZH 2022-04-24 04:30 OTR=1
 
 
-    TR/8350/402403/2021/10/2021-12-31
-    10v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
-    30v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=1
-    50v1:2022-01-01 03:30 OTR=1 RXBA-XSZH 2022-01-01 04:30 OTR=1
+    TR/8350/402403/2022/10/2022-04-29
+    10v2:2022-04-29 20:00 OTR=0 XNAC-EEM 2022-04-29 21:30 OTR=0
+    30v2:2022-04-29 21:30 OTR=0 EEM-RXBA 2022-04-30 03:30 OTR=1
+    50v2:2022-04-30 03:30 OTR=1 RXBA-XSZH 2022-04-30 04:30 OTR=1
 
 
-    TR/8350/402403/2021/20/2021-12-12
-    20v1:2021-12-12 20:30 OTR=0 XNU-XNVL 2021-12-12 22:00 OTR=0
-    40v1:2021-12-12 22:00 OTR=0 XNVL-RXBA 2021-12-13 04:00 OTR=1
+    TR/8350/402403/2022/10/2022-04-30
+    10v2:2022-04-30 20:00 OTR=0 XNAC-EEM 2022-04-30 21:30 OTR=0
+    30v2:2022-04-30 21:30 OTR=0 EEM-RXBA 2022-05-01 03:30 OTR=1
+    50v2:2022-05-01 03:30 OTR=1 RXBA-XSZH 2022-05-01 04:30 OTR=1
 
 
-    TR/8350/402403/2021/20/2021-12-19
-    20v1:2021-12-19 20:30 OTR=0 XNU-XNVL 2021-12-19 22:00 OTR=0
-    40v1:2021-12-19 22:00 OTR=0 XNVL-RXBA 2021-12-20 04:00 OTR=1
+    TR/8350/402403/2022/10/2022-05-06
+    10v2:2022-05-06 20:00 OTR=0 XNAC-EEM 2022-05-06 21:30 OTR=0
+    30v2:2022-05-06 21:30 OTR=0 EEM-RXBA 2022-05-07 03:30 OTR=1
+    50v2:2022-05-07 03:30 OTR=1 RXBA-XSZH 2022-05-07 04:30 OTR=1
 
 
-    TR/8350/402403/2021/20/2021-12-26
-    20v1:2021-12-26 20:30 OTR=0 XNU-XNVL 2021-12-26 22:00 OTR=0
-    40v1:2021-12-26 22:00 OTR=0 XNVL-RXBA 2021-12-27 04:00 OTR=1
+    TR/8350/402403/2022/10/2022-05-07
+    10v2:2022-05-07 20:00 OTR=0 XNAC-EEM 2022-05-07 21:30 OTR=0
+    30v2:2022-05-07 21:30 OTR=0 EEM-RXBA 2022-05-08 03:30 OTR=1
+    50v2:2022-05-08 03:30 OTR=1 RXBA-XSZH 2022-05-08 04:30 OTR=1
+
+
+    TR/8350/402403/2022/20/2022-04-17
+    20v1:2022-04-17 20:30 OTR=0 XNU-XNVL 2022-04-17 22:00 OTR=0
+    40v1:2022-04-17 22:00 OTR=0 XNVL-RXBA 2022-04-18 04:00 OTR=1
+
+
+    TR/8350/402403/2022/20/2022-04-24
+    20v1:2022-04-24 20:30 OTR=0 XNU-XNVL 2022-04-24 22:00 OTR=0
+    40v1:2022-04-24 22:00 OTR=0 XNVL-RXBA 2022-04-25 04:00 OTR=1
+
+
+    TR/8350/402403/2022/20/2022-05-01
+    20v1:2022-05-01 20:30 OTR=0 XNU-XNVL 2022-05-01 22:00 OTR=0
+    40v1:2022-05-01 22:00 OTR=0 XNVL-RXBA 2022-05-02 04:00 OTR=1
+
+
+    TR/8350/402403/2022/20/2022-05-08
+    20v1:2022-05-08 20:30 OTR=0 XNU-XNVL 2022-05-08 22:00 OTR=0
+    40v1:2022-05-08 22:00 OTR=0 XNVL-RXBA 2022-05-09 04:00 OTR=1
 
 
 
@@ -585,7 +1169,7 @@ Each `TrainRun` defines a row in the timetable of the train above.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.712 seconds)
+   **Total running time of the script:** ( 0 minutes  1.600 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_night_ac_zue.py:

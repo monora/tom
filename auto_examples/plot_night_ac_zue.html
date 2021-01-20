@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example: Train with three IMs" href="plot_a_f.html" />
-    <link rel="prev" title="Example: Train from Amsterdam to Frankfurt" href="plot_ac_ff.html" /> 
+    <link rel="next" title="tom" href="../modules.html" />
+    <link rel="prev" title="Example: Train with three IMs" href="plot_a_f.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -104,17 +104,30 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Example: Night Train from Amsterdam to Zürich</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#section-graph">Section graph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#routes">Routes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#standard-schedule-version-1">Standard schedule (version 1)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timetable-v1">Timetable V1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#route-sections">Route Sections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-graph">Section graph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#routes">Routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-runs">Section runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#update-schedule-version-2">Update schedule (version 2)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timetable-v2">Timetable V2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Bildfahrplan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Route Sections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Section graph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Section runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">TrainRuns</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">tom</a></li>
@@ -197,28 +210,403 @@ to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-night-train-from-amsterdam-to-zurich">
 <span id="sphx-glr-auto-examples-plot-night-ac-zue-py"></span><h1>Example: Night Train from Amsterdam to Zürich<a class="headerlink" href="#example-night-train-from-amsterdam-to-zurich" title="Permalink to this headline">¶</a></h1>
+<p><em>Standard schedule</em> 2021/22 from Amsterdam over Emmerich, Basel to Zürich (a single route) on
+fridays, saturdays and sundays:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Route</span>     <span class="p">:</span> <span class="n">XNAC</span><span class="o">-</span><span class="n">EEM</span><span class="o">-</span><span class="n">RXBA</span><span class="o">-</span><span class="n">XSZH</span>
+<span class="n">Calendar</span>  <span class="p">:</span> <span class="mi">12</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">2021</span> <span class="n">to</span> <span class="mi">12</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">2022</span> <span class="n">Fri</span><span class="p">,</span> <span class="n">Sat</span><span class="p">,</span> <span class="n">Sun</span>
+<span class="n">Start</span>   <span class="n">at</span><span class="p">:</span> <span class="mi">20</span><span class="p">:</span><span class="mi">00</span> <span class="ow">in</span> <span class="n">XNAC</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">21</span><span class="p">:</span><span class="mi">30</span> <span class="ow">in</span> <span class="n">EEM</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">03</span><span class="p">:</span><span class="mi">30</span> <span class="ow">in</span> <span class="n">RXBA</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">04</span><span class="p">:</span><span class="mi">30</span> <span class="ow">in</span> <span class="n">XSZH</span>
+</pre></div>
+</div>
+<p><em>Update schedule</em> due to construction work between Amsterdam and Utrecht on sundays from
+12/04/2022 on:</p>
+<p>The train on sundays starts in Utrecht with destination Basel and handover Venlo.
+Therefore we need to routes from April on:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Route</span>     <span class="p">:</span> <span class="n">XNAC</span><span class="o">-</span><span class="n">EEM</span><span class="o">-</span><span class="n">RXBA</span><span class="o">-</span><span class="n">XSZH</span>
+<span class="n">Calendar</span>  <span class="p">:</span> <span class="mi">12</span><span class="o">/</span><span class="mi">04</span><span class="o">/</span><span class="mi">2022</span> <span class="n">to</span> <span class="mi">12</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">2022</span> <span class="n">Fri</span><span class="p">,</span> <span class="n">Sat</span>
+<span class="n">Start</span>   <span class="n">at</span><span class="p">:</span> <span class="mi">20</span><span class="p">:</span><span class="mi">00</span> <span class="ow">in</span> <span class="n">XNAC</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">21</span><span class="p">:</span><span class="mi">30</span> <span class="ow">in</span> <span class="n">EEM</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">03</span><span class="p">:</span><span class="mi">30</span> <span class="ow">in</span> <span class="n">RXBA</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">04</span><span class="p">:</span><span class="mi">30</span> <span class="ow">in</span> <span class="n">XSZH</span>
+
+<span class="n">Route</span>     <span class="p">:</span> <span class="n">XNU</span><span class="o">-</span><span class="n">XNVL</span><span class="o">-</span><span class="n">RXBA</span>
+<span class="n">Calendar</span>  <span class="p">:</span> <span class="mi">12</span><span class="o">/</span><span class="mi">04</span><span class="o">/</span><span class="mi">2022</span> <span class="n">to</span> <span class="mi">12</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">2022</span> <span class="n">Sun</span>
+<span class="n">Start</span>   <span class="n">at</span><span class="p">:</span> <span class="mi">20</span><span class="p">:</span><span class="mi">30</span> <span class="ow">in</span> <span class="n">XNU</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">22</span><span class="p">:</span><span class="mi">00</span> <span class="ow">in</span> <span class="n">XNVL</span>
+<span class="n">Arrival</span> <span class="n">at</span><span class="p">:</span> <span class="mi">04</span><span class="p">:</span><span class="mi">00</span> <span class="ow">in</span> <span class="n">RXBA</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span><span class="p">,</span> <span class="n">plot_graph</span>
 <span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
 <span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
 </pre></div>
 </div>
-<p>Load example nigth train 2021/22 from yaml specification</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="s1">&#39;ac-zue&#39;</span><span class="p">)</span>
+<div class="section" id="standard-schedule-version-1">
+<h2>Standard schedule (version 1)<a class="headerlink" href="#standard-schedule-version-1" title="Permalink to this headline">¶</a></h2>
+<p>Load example night train 2021/22 standard schedule (version 1) from yaml specification</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="s1">&#39;ac-zue-1&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>---
+# Nighttrain from Amsterdam to Zürich
 coreID: 402403
+version: 1
 sections:
     - departure_station: XNAC
       arrival_station: EEM
       id: 10
+      version: 1
       departure_time: &#39;20:00:00&#39;
       travel_time: &#39;01:30:00&#39;
       calendar:
         begin: &amp;b-begin &#39;2021-12-12&#39;
         end: &amp;b-end &#39;2021-12-31&#39;
+        mask: &#39;Fri Sat Sun&#39;
+      color: salmon
+      succ:
+          - 30
+    - departure_station: EEM
+      arrival_station: RXBA # Basel Grenze
+      id: 30
+      version: 1
+      travel_time: &#39;06:00:00&#39;
+      color: green
+      succ:
+          - 50
+    - departure_station: RXBA
+      arrival_station: XSZH # Zürich HB
+      id: 50
+      version: 1
+      travel_time: &#39;01:00:00&#39;
+      color: blue
+</pre></div>
+</div>
+<p>Create train object and show its train id</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">make_train_from_yml</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/402403/2021&#39;
+</pre></div>
+</div>
+<div class="section" id="timetable-v1">
+<h3>Timetable V1<a class="headerlink" href="#timetable-v1" title="Permalink to this headline">¶</a></h3>
+<p>Show timetable as dataframe</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Departure XNAC</th>
+      <th>Arrival EEM</th>
+      <th>Departure EEM</th>
+      <th>Arrival RXBA</th>
+      <th>Departure RXBA</th>
+      <th>Arrival XSZH</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-12</th>
+      <td>So 12.12.21 20:00  0</td>
+      <td>So 12.12.21 21:30  0</td>
+      <td>So 12.12.21 21:30  0</td>
+      <td>Mo 13.12.21 03:30  1</td>
+      <td>Mo 13.12.21 03:30  1</td>
+      <td>Mo 13.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-17</th>
+      <td>Fr 17.12.21 20:00  0</td>
+      <td>Fr 17.12.21 21:30  0</td>
+      <td>Fr 17.12.21 21:30  0</td>
+      <td>Sa 18.12.21 03:30  1</td>
+      <td>Sa 18.12.21 03:30  1</td>
+      <td>Sa 18.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-18</th>
+      <td>Sa 18.12.21 20:00  0</td>
+      <td>Sa 18.12.21 21:30  0</td>
+      <td>Sa 18.12.21 21:30  0</td>
+      <td>So 19.12.21 03:30  1</td>
+      <td>So 19.12.21 03:30  1</td>
+      <td>So 19.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-19</th>
+      <td>So 19.12.21 20:00  0</td>
+      <td>So 19.12.21 21:30  0</td>
+      <td>So 19.12.21 21:30  0</td>
+      <td>Mo 20.12.21 03:30  1</td>
+      <td>Mo 20.12.21 03:30  1</td>
+      <td>Mo 20.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-24</th>
+      <td>Fr 24.12.21 20:00  0</td>
+      <td>Fr 24.12.21 21:30  0</td>
+      <td>Fr 24.12.21 21:30  0</td>
+      <td>Sa 25.12.21 03:30  1</td>
+      <td>Sa 25.12.21 03:30  1</td>
+      <td>Sa 25.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-25</th>
+      <td>Sa 25.12.21 20:00  0</td>
+      <td>Sa 25.12.21 21:30  0</td>
+      <td>Sa 25.12.21 21:30  0</td>
+      <td>So 26.12.21 03:30  1</td>
+      <td>So 26.12.21 03:30  1</td>
+      <td>So 26.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-26</th>
+      <td>So 26.12.21 20:00  0</td>
+      <td>So 26.12.21 21:30  0</td>
+      <td>So 26.12.21 21:30  0</td>
+      <td>Mo 27.12.21 03:30  1</td>
+      <td>Mo 27.12.21 03:30  1</td>
+      <td>Mo 27.12.21 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2021/10/2021-12-31</th>
+      <td>Fr 31.12.21 20:00  0</td>
+      <td>Fr 31.12.21 21:30  0</td>
+      <td>Fr 31.12.21 21:30  0</td>
+      <td>Sa 01.01.22 03:30  1</td>
+      <td>Sa 01.01.22 03:30  1</td>
+      <td>Sa 01.01.22 04:30  1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /></div>
+<div class="section" id="bildfahrplan">
+<h3>Bildfahrplan<a class="headerlink" href="#bildfahrplan" title="Permalink to this headline">¶</a></h3>
+<p>Show timetable as plot.
+No sections from Utrecht over Venlo here.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;XNAC&#39;</span><span class="p">,</span> <span class="s1">&#39;XNU&#39;</span><span class="p">,</span> <span class="s1">&#39;EEM&#39;</span><span class="p">,</span> <span class="s1">&#39;XNVL&#39;</span><span class="p">,</span> <span class="s1">&#39;RXBA&#39;</span><span class="p">,</span> <span class="s1">&#39;XSZH&#39;</span><span class="p">]</span>
+<span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Timetable TR/8350/402403/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_001.png" />
+</div>
+<div class="section" id="route-sections">
+<h3>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h3>
+<p>From which sections the train is composed?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span>
+<span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10v1
+Calender  : 12/12 to 31/12
+Start   at: 20:00 in XNAC
+Arrival at: 21:30 in EEM
+Successors: [30]
+
+ID        : 30v1
+Calender  : 12/12 to 31/12
+Start   at: 21:30 in EEM
+Arrival at: 03:30 in RXBA
+Successors: [50]
+
+ID        : 50v1
+Calender  : 13/12 to 01/01
+Start   at: 03:30 in RXBA
+Arrival at: 04:30 in XSZH
+Successors: []
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-graph">
+<h3>Section graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h3>
+<p>The section graph is computed using the successor relation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sg</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">section_graph</span><span class="p">()</span>
+<span class="n">plot_graph</span><span class="p">(</span><span class="n">sg</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="plot night ac zue" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_002.png" />
+</div>
+<div class="section" id="routes">
+<h3>Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h3>
+<p>Print all possible routes.
+Routes are calculated from all possible paths in the section graph.
+Version 1 has only one route with three sections.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">route</span><span class="p">:</span> <span class="n">Route</span>
+<span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">routes</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">route</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : XNAC-EEM-RXBA-XSZH
+Key       : 10-30-50
+Calendar  : 12/12 to 31/12
+Start   at: 20:00 in XNAC
+Arrival at: 21:30 in EEM
+Arrival at: 03:30 in RXBA
+Arrival at: 04:30 in XSZH
+</pre></div>
+</div>
+</div>
+<div class="section" id="section-runs">
+<h3>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h3>
+<p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
+The section runs are the rows of RouteSection.to_dataframe.
+We only show the section run in december here.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10: XNAC-EEM
+            ID                XNAC                 EEM
+2021-12-12  10 2021-12-12 20:00:00 2021-12-12 21:30:00
+2021-12-17  10 2021-12-17 20:00:00 2021-12-17 21:30:00
+2021-12-18  10 2021-12-18 20:00:00 2021-12-18 21:30:00
+2021-12-19  10 2021-12-19 20:00:00 2021-12-19 21:30:00
+2021-12-24  10 2021-12-24 20:00:00 2021-12-24 21:30:00
+2021-12-25  10 2021-12-25 20:00:00 2021-12-25 21:30:00
+2021-12-26  10 2021-12-26 20:00:00 2021-12-26 21:30:00
+2021-12-31  10 2021-12-31 20:00:00 2021-12-31 21:30:00
+
+30: EEM-RXBA
+            ID                 EEM                RXBA
+2021-12-12  30 2021-12-12 21:30:00 2021-12-13 03:30:00
+2021-12-17  30 2021-12-17 21:30:00 2021-12-18 03:30:00
+2021-12-18  30 2021-12-18 21:30:00 2021-12-19 03:30:00
+2021-12-19  30 2021-12-19 21:30:00 2021-12-20 03:30:00
+2021-12-24  30 2021-12-24 21:30:00 2021-12-25 03:30:00
+2021-12-25  30 2021-12-25 21:30:00 2021-12-26 03:30:00
+2021-12-26  30 2021-12-26 21:30:00 2021-12-27 03:30:00
+2021-12-31  30 2021-12-31 21:30:00 2022-01-01 03:30:00
+
+50: RXBA-XSZH
+            ID                RXBA                XSZH
+2021-12-13  50 2021-12-13 03:30:00 2021-12-13 04:30:00
+2021-12-18  50 2021-12-18 03:30:00 2021-12-18 04:30:00
+2021-12-19  50 2021-12-19 03:30:00 2021-12-19 04:30:00
+2021-12-20  50 2021-12-20 03:30:00 2021-12-20 04:30:00
+2021-12-25  50 2021-12-25 03:30:00 2021-12-25 04:30:00
+2021-12-26  50 2021-12-26 03:30:00 2021-12-26 04:30:00
+2021-12-27  50 2021-12-27 03:30:00 2021-12-27 04:30:00
+2022-01-01  50 2022-01-01 03:30:00 2022-01-01 04:30:00
+</pre></div>
+</div>
+</div>
+<div class="section" id="trainruns">
+<h3>TrainRuns<a class="headerlink" href="#trainruns" title="Permalink to this headline">¶</a></h3>
+<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
+<span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/2021/10/2021-12-12
+10v1:2021-12-12 20:00 OTR=0 XNAC-EEM 2021-12-12 21:30 OTR=0
+30v1:2021-12-12 21:30 OTR=0 EEM-RXBA 2021-12-13 03:30 OTR=1
+50v1:2021-12-13 03:30 OTR=1 RXBA-XSZH 2021-12-13 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-17
+10v1:2021-12-17 20:00 OTR=0 XNAC-EEM 2021-12-17 21:30 OTR=0
+30v1:2021-12-17 21:30 OTR=0 EEM-RXBA 2021-12-18 03:30 OTR=1
+50v1:2021-12-18 03:30 OTR=1 RXBA-XSZH 2021-12-18 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-18
+10v1:2021-12-18 20:00 OTR=0 XNAC-EEM 2021-12-18 21:30 OTR=0
+30v1:2021-12-18 21:30 OTR=0 EEM-RXBA 2021-12-19 03:30 OTR=1
+50v1:2021-12-19 03:30 OTR=1 RXBA-XSZH 2021-12-19 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-19
+10v1:2021-12-19 20:00 OTR=0 XNAC-EEM 2021-12-19 21:30 OTR=0
+30v1:2021-12-19 21:30 OTR=0 EEM-RXBA 2021-12-20 03:30 OTR=1
+50v1:2021-12-20 03:30 OTR=1 RXBA-XSZH 2021-12-20 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-24
+10v1:2021-12-24 20:00 OTR=0 XNAC-EEM 2021-12-24 21:30 OTR=0
+30v1:2021-12-24 21:30 OTR=0 EEM-RXBA 2021-12-25 03:30 OTR=1
+50v1:2021-12-25 03:30 OTR=1 RXBA-XSZH 2021-12-25 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-25
+10v1:2021-12-25 20:00 OTR=0 XNAC-EEM 2021-12-25 21:30 OTR=0
+30v1:2021-12-25 21:30 OTR=0 EEM-RXBA 2021-12-26 03:30 OTR=1
+50v1:2021-12-26 03:30 OTR=1 RXBA-XSZH 2021-12-26 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-26
+10v1:2021-12-26 20:00 OTR=0 XNAC-EEM 2021-12-26 21:30 OTR=0
+30v1:2021-12-26 21:30 OTR=0 EEM-RXBA 2021-12-27 03:30 OTR=1
+50v1:2021-12-27 03:30 OTR=1 RXBA-XSZH 2021-12-27 04:30 OTR=1
+
+
+TR/8350/402403/2021/10/2021-12-31
+10v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
+30v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=1
+50v1:2022-01-01 03:30 OTR=1 RXBA-XSZH 2022-01-01 04:30 OTR=1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="update-schedule-version-2">
+<h2>Update schedule (version 2)<a class="headerlink" href="#update-schedule-version-2" title="Permalink to this headline">¶</a></h2>
+<p>Version 2 of the train contains the update from april on.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="s1">&#39;ac-zue-2&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">make_train_from_yml</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>---
+# Nighttrain from Amsterdam to Zürich
+coreID: 402403
+version: 2
+sections:
+    - departure_station: XNAC
+      arrival_station: EEM
+      id: 10
+      version: 2
+      departure_time: &#39;20:00:00&#39;
+      travel_time: &#39;01:30:00&#39;
+      calendar:
+        begin: &amp;b-begin &#39;2022-04-12&#39;
+        end: &amp;b-end &#39;2022-05-12&#39;
         mask: &#39;Fri Sat&#39;
       color: salmon
       succ:
@@ -226,6 +614,7 @@ sections:
     - departure_station: XNU # Utrecht
       arrival_station: XNVL # Venlo
       id: 20
+      version: 1
       departure_time: &#39;20:30:00&#39;
       travel_time: &#39;01:30:00&#39;
       calendar:
@@ -238,6 +627,7 @@ sections:
     - departure_station: EEM
       arrival_station: RXBA # Basel Grenze
       id: 30
+      version: 2
       travel_time: &#39;06:00:00&#39;
       color: green
       succ:
@@ -245,29 +635,22 @@ sections:
     - departure_station: XNVL
       arrival_station: RXBA
       id: 40
+      version: 1
       travel_time: &#39;06:00:00&#39;
       color: green
       succ:
           - 50
     - departure_station: RXBA
       arrival_station: XSZH # Zürich HB
+      version: 2
       id: 50
       travel_time: &#39;01:00:00&#39;
       color: blue
 </pre></div>
 </div>
-<p>Create train object and show its train id.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">make_train_from_yml</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span>
-<span class="n">t</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/402403/2021&#39;
-</pre></div>
-</div>
-<div class="section" id="timetable">
-<h2>Timetable<a class="headerlink" href="#timetable" title="Permalink to this headline">¶</a></h2>
-<p>Show timetable as dataframe</p>
+<div class="section" id="timetable-v2">
+<h3>Timetable V2<a class="headerlink" href="#timetable-v2" title="Permalink to this headline">¶</a></h3>
+<p>Version 2 has train runs on sundays from Utrecht to Basel.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 <span class="n">df</span>
 </pre></div>
@@ -304,100 +687,148 @@ sections:
   </thead>
   <tbody>
     <tr>
-      <th>TR/8350/402403/2021/20/2021-12-12</th>
-      <td>So 12.12.21 20:30  0</td>
-      <td>So 12.12.21 22:00  0</td>
-      <td>So 12.12.21 22:00  0</td>
+      <th>TR/8350/402403/2022/10/2022-04-15</th>
       <td></td>
       <td></td>
       <td></td>
-      <td>Mo 13.12.21 04:00  1</td>
+      <td>Fr 15.04.22 20:00  0</td>
+      <td>Fr 15.04.22 21:30  0</td>
+      <td>Fr 15.04.22 21:30  0</td>
+      <td>Sa 16.04.22 03:30  1</td>
+      <td>Sa 16.04.22 03:30  1</td>
+      <td>Sa 16.04.22 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2022/10/2022-04-16</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Sa 16.04.22 20:00  0</td>
+      <td>Sa 16.04.22 21:30  0</td>
+      <td>Sa 16.04.22 21:30  0</td>
+      <td>So 17.04.22 03:30  1</td>
+      <td>So 17.04.22 03:30  1</td>
+      <td>So 17.04.22 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2022/20/2022-04-17</th>
+      <td>So 17.04.22 20:30  0</td>
+      <td>So 17.04.22 22:00  0</td>
+      <td>So 17.04.22 22:00  0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Mo 18.04.22 04:00  1</td>
       <td></td>
       <td></td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-17</th>
+      <th>TR/8350/402403/2022/10/2022-04-22</th>
       <td></td>
       <td></td>
       <td></td>
-      <td>Fr 17.12.21 20:00  0</td>
-      <td>Fr 17.12.21 21:30  0</td>
-      <td>Fr 17.12.21 21:30  0</td>
-      <td>Sa 18.12.21 03:30  1</td>
-      <td>Sa 18.12.21 03:30  1</td>
-      <td>Sa 18.12.21 04:30  1</td>
+      <td>Fr 22.04.22 20:00  0</td>
+      <td>Fr 22.04.22 21:30  0</td>
+      <td>Fr 22.04.22 21:30  0</td>
+      <td>Sa 23.04.22 03:30  1</td>
+      <td>Sa 23.04.22 03:30  1</td>
+      <td>Sa 23.04.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-18</th>
+      <th>TR/8350/402403/2022/10/2022-04-23</th>
       <td></td>
       <td></td>
       <td></td>
-      <td>Sa 18.12.21 20:00  0</td>
-      <td>Sa 18.12.21 21:30  0</td>
-      <td>Sa 18.12.21 21:30  0</td>
-      <td>So 19.12.21 03:30  1</td>
-      <td>So 19.12.21 03:30  1</td>
-      <td>So 19.12.21 04:30  1</td>
+      <td>Sa 23.04.22 20:00  0</td>
+      <td>Sa 23.04.22 21:30  0</td>
+      <td>Sa 23.04.22 21:30  0</td>
+      <td>So 24.04.22 03:30  1</td>
+      <td>So 24.04.22 03:30  1</td>
+      <td>So 24.04.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/20/2021-12-19</th>
-      <td>So 19.12.21 20:30  0</td>
-      <td>So 19.12.21 22:00  0</td>
-      <td>So 19.12.21 22:00  0</td>
+      <th>TR/8350/402403/2022/20/2022-04-24</th>
+      <td>So 24.04.22 20:30  0</td>
+      <td>So 24.04.22 22:00  0</td>
+      <td>So 24.04.22 22:00  0</td>
       <td></td>
       <td></td>
       <td></td>
-      <td>Mo 20.12.21 04:00  1</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>TR/8350/402403/2021/10/2021-12-24</th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>Fr 24.12.21 20:00  0</td>
-      <td>Fr 24.12.21 21:30  0</td>
-      <td>Fr 24.12.21 21:30  0</td>
-      <td>Sa 25.12.21 03:30  1</td>
-      <td>Sa 25.12.21 03:30  1</td>
-      <td>Sa 25.12.21 04:30  1</td>
-    </tr>
-    <tr>
-      <th>TR/8350/402403/2021/10/2021-12-25</th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>Sa 25.12.21 20:00  0</td>
-      <td>Sa 25.12.21 21:30  0</td>
-      <td>Sa 25.12.21 21:30  0</td>
-      <td>So 26.12.21 03:30  1</td>
-      <td>So 26.12.21 03:30  1</td>
-      <td>So 26.12.21 04:30  1</td>
-    </tr>
-    <tr>
-      <th>TR/8350/402403/2021/20/2021-12-26</th>
-      <td>So 26.12.21 20:30  0</td>
-      <td>So 26.12.21 22:00  0</td>
-      <td>So 26.12.21 22:00  0</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>Mo 27.12.21 04:00  1</td>
+      <td>Mo 25.04.22 04:00  1</td>
       <td></td>
       <td></td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-31</th>
+      <th>TR/8350/402403/2022/10/2022-04-29</th>
       <td></td>
       <td></td>
       <td></td>
-      <td>Fr 31.12.21 20:00  0</td>
-      <td>Fr 31.12.21 21:30  0</td>
-      <td>Fr 31.12.21 21:30  0</td>
-      <td>Sa 01.01.22 03:30  1</td>
-      <td>Sa 01.01.22 03:30  1</td>
-      <td>Sa 01.01.22 04:30  1</td>
+      <td>Fr 29.04.22 20:00  0</td>
+      <td>Fr 29.04.22 21:30  0</td>
+      <td>Fr 29.04.22 21:30  0</td>
+      <td>Sa 30.04.22 03:30  1</td>
+      <td>Sa 30.04.22 03:30  1</td>
+      <td>Sa 30.04.22 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2022/10/2022-04-30</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Sa 30.04.22 20:00  0</td>
+      <td>Sa 30.04.22 21:30  0</td>
+      <td>Sa 30.04.22 21:30  0</td>
+      <td>So 01.05.22 03:30  1</td>
+      <td>So 01.05.22 03:30  1</td>
+      <td>So 01.05.22 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2022/20/2022-05-01</th>
+      <td>So 01.05.22 20:30  0</td>
+      <td>So 01.05.22 22:00  0</td>
+      <td>So 01.05.22 22:00  0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Mo 02.05.22 04:00  1</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2022/10/2022-05-06</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Fr 06.05.22 20:00  0</td>
+      <td>Fr 06.05.22 21:30  0</td>
+      <td>Fr 06.05.22 21:30  0</td>
+      <td>Sa 07.05.22 03:30  1</td>
+      <td>Sa 07.05.22 03:30  1</td>
+      <td>Sa 07.05.22 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2022/10/2022-05-07</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Sa 07.05.22 20:00  0</td>
+      <td>Sa 07.05.22 21:30  0</td>
+      <td>Sa 07.05.22 21:30  0</td>
+      <td>So 08.05.22 03:30  1</td>
+      <td>So 08.05.22 03:30  1</td>
+      <td>So 08.05.22 04:30  1</td>
+    </tr>
+    <tr>
+      <th>TR/8350/402403/2022/20/2022-05-08</th>
+      <td>So 08.05.22 20:30  0</td>
+      <td>So 08.05.22 22:00  0</td>
+      <td>So 08.05.22 22:00  0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Mo 09.05.22 04:00  1</td>
+      <td></td>
+      <td></td>
     </tr>
   </tbody>
 </table>
@@ -405,69 +836,69 @@ sections:
 </div>
 <br />
 <br /></div>
-<div class="section" id="bildfahrplan">
-<h2>Bildfahrplan<a class="headerlink" href="#bildfahrplan" title="Permalink to this headline">¶</a></h2>
-<p>Show timetable as plot</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;XNAC&#39;</span><span class="p">,</span> <span class="s1">&#39;XNU&#39;</span><span class="p">,</span> <span class="s1">&#39;EEM&#39;</span><span class="p">,</span> <span class="s1">&#39;XNVL&#39;</span><span class="p">,</span> <span class="s1">&#39;RXBA&#39;</span><span class="p">,</span> <span class="s1">&#39;XSZH&#39;</span><span class="p">]</span>
-<span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
+<div class="section" id="id1">
+<h3>Bildfahrplan<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>On sundays the trains only go to Basel from Utrecht over Venlo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Timetable TR/8350/402403/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_001.png" />
+<img alt="Timetable TR/8350/402403/2022 v2" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_003.png" />
 </div>
-<div class="section" id="route-sections">
-<h2>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h2>
-<p>From which sections the train is composed?</p>
+<div class="section" id="id2">
+<h3>Route Sections<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>To realize the schedule we need two new section (with ID 20 and 40)
+All oteher section have a new version 2, because the calender had to
+shortened by sunday.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span>
 <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10v1
-Calender  : 17/12 to 31/12
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10v2
+Calender  : 15/04 to 07/05
 Start   at: 20:00 in XNAC
 Arrival at: 21:30 in EEM
 Successors: [30]
 
 ID        : 20v1
-Calender  : 12/12 to 26/12
+Calender  : 17/04 to 08/05
 Start   at: 20:30 in XNU
 Arrival at: 22:00 in XNVL
 Successors: [40]
 
-ID        : 30v1
-Calender  : 17/12 to 31/12
+ID        : 30v2
+Calender  : 15/04 to 07/05
 Start   at: 21:30 in EEM
 Arrival at: 03:30 in RXBA
 Successors: [50]
 
 ID        : 40v1
-Calender  : 12/12 to 26/12
+Calender  : 17/04 to 08/05
 Start   at: 22:00 in XNVL
 Arrival at: 04:00 in RXBA
 Successors: [50]
 
-ID        : 50v1
-Calender  : 18/12 to 01/01
+ID        : 50v2
+Calender  : 16/04 to 08/05
 Start   at: 03:30 in RXBA
 Arrival at: 04:30 in XSZH
 Successors: []
 </pre></div>
 </div>
 </div>
-<div class="section" id="section-graph">
-<h2>Section graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h2>
-<p>The section graph is computed using the successor relation:</p>
+<div class="section" id="id3">
+<h3>Section graph<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>The section graph now has two new sections, which define the second route.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sg</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">section_graph</span><span class="p">()</span>
 <span class="n">plot_graph</span><span class="p">(</span><span class="n">sg</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="plot night ac zue" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_002.png" />
+<img alt="plot night ac zue" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_004.png" />
 </div>
-<div class="section" id="routes">
-<h2>Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h2>
-<p>Print all possible routes.
-Routes are calculated from all possible paths in the section graph.</p>
+<div class="section" id="id4">
+<h3>Routes<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>From april on we have one new route:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">route</span><span class="p">:</span> <span class="n">Route</span>
 <span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">routes</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">route</span><span class="o">.</span><span class="n">description</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -476,7 +907,7 @@ Routes are calculated from all possible paths in the section graph.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : XNAC-EEM-RXBA-XSZH
 Key       : 10-30-50
-Calendar  : 17/12 to 31/12
+Calendar  : 15/04 to 07/05
 Start   at: 20:00 in XNAC
 Arrival at: 21:30 in EEM
 Arrival at: 03:30 in RXBA
@@ -485,17 +916,15 @@ Arrival at: 04:30 in XSZH
 
 Route     : XNU-XNVL-RXBA
 Key       : 20-40
-Calendar  : 12/12 to 26/12
+Calendar  : 17/04 to 08/05
 Start   at: 20:30 in XNU
 Arrival at: 22:00 in XNVL
 Arrival at: 04:00 in RXBA
 </pre></div>
 </div>
 </div>
-<div class="section" id="section-runs">
-<h2>Section runs<a class="headerlink" href="#section-runs" title="Permalink to this headline">¶</a></h2>
-<p>For each day of the calendar of a section a <cite>SectionRun</cite> is created.
-The section runs are the rows of RouteSection.to_dataframe:</p>
+<div class="section" id="id5">
+<h3>Section runs<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -504,45 +933,55 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10: XNAC-EEM
             ID                XNAC                 EEM
-2021-12-17  10 2021-12-17 20:00:00 2021-12-17 21:30:00
-2021-12-18  10 2021-12-18 20:00:00 2021-12-18 21:30:00
-2021-12-24  10 2021-12-24 20:00:00 2021-12-24 21:30:00
-2021-12-25  10 2021-12-25 20:00:00 2021-12-25 21:30:00
-2021-12-31  10 2021-12-31 20:00:00 2021-12-31 21:30:00
+2022-04-15  10 2022-04-15 20:00:00 2022-04-15 21:30:00
+2022-04-16  10 2022-04-16 20:00:00 2022-04-16 21:30:00
+2022-04-22  10 2022-04-22 20:00:00 2022-04-22 21:30:00
+2022-04-23  10 2022-04-23 20:00:00 2022-04-23 21:30:00
+2022-04-29  10 2022-04-29 20:00:00 2022-04-29 21:30:00
+2022-04-30  10 2022-04-30 20:00:00 2022-04-30 21:30:00
+2022-05-06  10 2022-05-06 20:00:00 2022-05-06 21:30:00
+2022-05-07  10 2022-05-07 20:00:00 2022-05-07 21:30:00
 
 20: XNU-XNVL
             ID                 XNU                XNVL
-2021-12-12  20 2021-12-12 20:30:00 2021-12-12 22:00:00
-2021-12-19  20 2021-12-19 20:30:00 2021-12-19 22:00:00
-2021-12-26  20 2021-12-26 20:30:00 2021-12-26 22:00:00
+2022-04-17  20 2022-04-17 20:30:00 2022-04-17 22:00:00
+2022-04-24  20 2022-04-24 20:30:00 2022-04-24 22:00:00
+2022-05-01  20 2022-05-01 20:30:00 2022-05-01 22:00:00
+2022-05-08  20 2022-05-08 20:30:00 2022-05-08 22:00:00
 
 30: EEM-RXBA
             ID                 EEM                RXBA
-2021-12-17  30 2021-12-17 21:30:00 2021-12-18 03:30:00
-2021-12-18  30 2021-12-18 21:30:00 2021-12-19 03:30:00
-2021-12-24  30 2021-12-24 21:30:00 2021-12-25 03:30:00
-2021-12-25  30 2021-12-25 21:30:00 2021-12-26 03:30:00
-2021-12-31  30 2021-12-31 21:30:00 2022-01-01 03:30:00
+2022-04-15  30 2022-04-15 21:30:00 2022-04-16 03:30:00
+2022-04-16  30 2022-04-16 21:30:00 2022-04-17 03:30:00
+2022-04-22  30 2022-04-22 21:30:00 2022-04-23 03:30:00
+2022-04-23  30 2022-04-23 21:30:00 2022-04-24 03:30:00
+2022-04-29  30 2022-04-29 21:30:00 2022-04-30 03:30:00
+2022-04-30  30 2022-04-30 21:30:00 2022-05-01 03:30:00
+2022-05-06  30 2022-05-06 21:30:00 2022-05-07 03:30:00
+2022-05-07  30 2022-05-07 21:30:00 2022-05-08 03:30:00
 
 40: XNVL-RXBA
             ID                XNVL                RXBA
-2021-12-12  40 2021-12-12 22:00:00 2021-12-13 04:00:00
-2021-12-19  40 2021-12-19 22:00:00 2021-12-20 04:00:00
-2021-12-26  40 2021-12-26 22:00:00 2021-12-27 04:00:00
+2022-04-17  40 2022-04-17 22:00:00 2022-04-18 04:00:00
+2022-04-24  40 2022-04-24 22:00:00 2022-04-25 04:00:00
+2022-05-01  40 2022-05-01 22:00:00 2022-05-02 04:00:00
+2022-05-08  40 2022-05-08 22:00:00 2022-05-09 04:00:00
 
 50: RXBA-XSZH
             ID                RXBA                XSZH
-2021-12-18  50 2021-12-18 03:30:00 2021-12-18 04:30:00
-2021-12-19  50 2021-12-19 03:30:00 2021-12-19 04:30:00
-2021-12-25  50 2021-12-25 03:30:00 2021-12-25 04:30:00
-2021-12-26  50 2021-12-26 03:30:00 2021-12-26 04:30:00
-2022-01-01  50 2022-01-01 03:30:00 2022-01-01 04:30:00
+2022-04-16  50 2022-04-16 03:30:00 2022-04-16 04:30:00
+2022-04-17  50 2022-04-17 03:30:00 2022-04-17 04:30:00
+2022-04-23  50 2022-04-23 03:30:00 2022-04-23 04:30:00
+2022-04-24  50 2022-04-24 03:30:00 2022-04-24 04:30:00
+2022-04-30  50 2022-04-30 03:30:00 2022-04-30 04:30:00
+2022-05-01  50 2022-05-01 03:30:00 2022-05-01 04:30:00
+2022-05-07  50 2022-05-07 03:30:00 2022-05-07 04:30:00
+2022-05-08  50 2022-05-08 03:30:00 2022-05-08 04:30:00
 </pre></div>
 </div>
 </div>
-<div class="section" id="trainruns">
-<h2>TrainRuns<a class="headerlink" href="#trainruns" title="Permalink to this headline">¶</a></h2>
-<p>Each <cite>TrainRun</cite> defines a row in the timetable of the train above.</p>
+<div class="section" id="id6">
+<h3>TrainRuns<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="p">:</span> <span class="n">TrainRun</span>
 <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
@@ -552,52 +991,75 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/2021/10/2021-12-17
-10v1:2021-12-17 20:00 OTR=0 XNAC-EEM 2021-12-17 21:30 OTR=0
-30v1:2021-12-17 21:30 OTR=0 EEM-RXBA 2021-12-18 03:30 OTR=1
-50v1:2021-12-18 03:30 OTR=1 RXBA-XSZH 2021-12-18 04:30 OTR=1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/2022/10/2022-04-15
+10v2:2022-04-15 20:00 OTR=0 XNAC-EEM 2022-04-15 21:30 OTR=0
+30v2:2022-04-15 21:30 OTR=0 EEM-RXBA 2022-04-16 03:30 OTR=1
+50v2:2022-04-16 03:30 OTR=1 RXBA-XSZH 2022-04-16 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-18
-10v1:2021-12-18 20:00 OTR=0 XNAC-EEM 2021-12-18 21:30 OTR=0
-30v1:2021-12-18 21:30 OTR=0 EEM-RXBA 2021-12-19 03:30 OTR=1
-50v1:2021-12-19 03:30 OTR=1 RXBA-XSZH 2021-12-19 04:30 OTR=1
+TR/8350/402403/2022/10/2022-04-16
+10v2:2022-04-16 20:00 OTR=0 XNAC-EEM 2022-04-16 21:30 OTR=0
+30v2:2022-04-16 21:30 OTR=0 EEM-RXBA 2022-04-17 03:30 OTR=1
+50v2:2022-04-17 03:30 OTR=1 RXBA-XSZH 2022-04-17 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-24
-10v1:2021-12-24 20:00 OTR=0 XNAC-EEM 2021-12-24 21:30 OTR=0
-30v1:2021-12-24 21:30 OTR=0 EEM-RXBA 2021-12-25 03:30 OTR=1
-50v1:2021-12-25 03:30 OTR=1 RXBA-XSZH 2021-12-25 04:30 OTR=1
+TR/8350/402403/2022/10/2022-04-22
+10v2:2022-04-22 20:00 OTR=0 XNAC-EEM 2022-04-22 21:30 OTR=0
+30v2:2022-04-22 21:30 OTR=0 EEM-RXBA 2022-04-23 03:30 OTR=1
+50v2:2022-04-23 03:30 OTR=1 RXBA-XSZH 2022-04-23 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-25
-10v1:2021-12-25 20:00 OTR=0 XNAC-EEM 2021-12-25 21:30 OTR=0
-30v1:2021-12-25 21:30 OTR=0 EEM-RXBA 2021-12-26 03:30 OTR=1
-50v1:2021-12-26 03:30 OTR=1 RXBA-XSZH 2021-12-26 04:30 OTR=1
+TR/8350/402403/2022/10/2022-04-23
+10v2:2022-04-23 20:00 OTR=0 XNAC-EEM 2022-04-23 21:30 OTR=0
+30v2:2022-04-23 21:30 OTR=0 EEM-RXBA 2022-04-24 03:30 OTR=1
+50v2:2022-04-24 03:30 OTR=1 RXBA-XSZH 2022-04-24 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-31
-10v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
-30v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=1
-50v1:2022-01-01 03:30 OTR=1 RXBA-XSZH 2022-01-01 04:30 OTR=1
+TR/8350/402403/2022/10/2022-04-29
+10v2:2022-04-29 20:00 OTR=0 XNAC-EEM 2022-04-29 21:30 OTR=0
+30v2:2022-04-29 21:30 OTR=0 EEM-RXBA 2022-04-30 03:30 OTR=1
+50v2:2022-04-30 03:30 OTR=1 RXBA-XSZH 2022-04-30 04:30 OTR=1
 
 
-TR/8350/402403/2021/20/2021-12-12
-20v1:2021-12-12 20:30 OTR=0 XNU-XNVL 2021-12-12 22:00 OTR=0
-40v1:2021-12-12 22:00 OTR=0 XNVL-RXBA 2021-12-13 04:00 OTR=1
+TR/8350/402403/2022/10/2022-04-30
+10v2:2022-04-30 20:00 OTR=0 XNAC-EEM 2022-04-30 21:30 OTR=0
+30v2:2022-04-30 21:30 OTR=0 EEM-RXBA 2022-05-01 03:30 OTR=1
+50v2:2022-05-01 03:30 OTR=1 RXBA-XSZH 2022-05-01 04:30 OTR=1
 
 
-TR/8350/402403/2021/20/2021-12-19
-20v1:2021-12-19 20:30 OTR=0 XNU-XNVL 2021-12-19 22:00 OTR=0
-40v1:2021-12-19 22:00 OTR=0 XNVL-RXBA 2021-12-20 04:00 OTR=1
+TR/8350/402403/2022/10/2022-05-06
+10v2:2022-05-06 20:00 OTR=0 XNAC-EEM 2022-05-06 21:30 OTR=0
+30v2:2022-05-06 21:30 OTR=0 EEM-RXBA 2022-05-07 03:30 OTR=1
+50v2:2022-05-07 03:30 OTR=1 RXBA-XSZH 2022-05-07 04:30 OTR=1
 
 
-TR/8350/402403/2021/20/2021-12-26
-20v1:2021-12-26 20:30 OTR=0 XNU-XNVL 2021-12-26 22:00 OTR=0
-40v1:2021-12-26 22:00 OTR=0 XNVL-RXBA 2021-12-27 04:00 OTR=1
+TR/8350/402403/2022/10/2022-05-07
+10v2:2022-05-07 20:00 OTR=0 XNAC-EEM 2022-05-07 21:30 OTR=0
+30v2:2022-05-07 21:30 OTR=0 EEM-RXBA 2022-05-08 03:30 OTR=1
+50v2:2022-05-08 03:30 OTR=1 RXBA-XSZH 2022-05-08 04:30 OTR=1
+
+
+TR/8350/402403/2022/20/2022-04-17
+20v1:2022-04-17 20:30 OTR=0 XNU-XNVL 2022-04-17 22:00 OTR=0
+40v1:2022-04-17 22:00 OTR=0 XNVL-RXBA 2022-04-18 04:00 OTR=1
+
+
+TR/8350/402403/2022/20/2022-04-24
+20v1:2022-04-24 20:30 OTR=0 XNU-XNVL 2022-04-24 22:00 OTR=0
+40v1:2022-04-24 22:00 OTR=0 XNVL-RXBA 2022-04-25 04:00 OTR=1
+
+
+TR/8350/402403/2022/20/2022-05-01
+20v1:2022-05-01 20:30 OTR=0 XNU-XNVL 2022-05-01 22:00 OTR=0
+40v1:2022-05-01 22:00 OTR=0 XNVL-RXBA 2022-05-02 04:00 OTR=1
+
+
+TR/8350/402403/2022/20/2022-05-08
+20v1:2022-05-08 20:30 OTR=0 XNU-XNVL 2022-05-08 22:00 OTR=0
+40v1:2022-05-08 22:00 OTR=0 XNVL-RXBA 2022-05-09 04:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.712 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.600 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-night-ac-zue-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a62acb79e721bb2eecbdd07d58314349/plot_night_ac_zue.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_night_ac_zue.py</span></code></a></p>
@@ -609,6 +1071,7 @@ TR/8350/402403/2021/20/2021-12-26
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 </div>
+</div>
 
 
            </div>
@@ -616,8 +1079,8 @@ TR/8350/402403/2021/20/2021-12-26
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_a_f.html" class="btn btn-neutral float-right" title="Example: Train with three IMs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="plot_ac_ff.html" class="btn btn-neutral float-left" title="Example: Train from Amsterdam to Frankfurt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules.html" class="btn btn-neutral float-right" title="tom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_a_f.html" class="btn btn-neutral float-left" title="Example: Train with three IMs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
