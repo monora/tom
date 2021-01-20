@@ -1,14 +1,17 @@
 ---
+# Nighttrain from Amsterdam to Zürich
 coreID: 402403
+version: 2
 sections:
     - departure_station: XNAC
       arrival_station: EEM
       id: 10
+      version: 2
       departure_time: '20:00:00'
       travel_time: '01:30:00'
       calendar:
-        begin: &b-begin '2021-12-12'
-        end: &b-end '2021-12-31'
+        begin: &b-begin '2022-04-12'
+        end: &b-end '2022-05-12'
         mask: 'Fri Sat'
       color: salmon
       succ:
@@ -16,6 +19,7 @@ sections:
     - departure_station: XNU # Utrecht
       arrival_station: XNVL # Venlo
       id: 20
+      version: 1
       departure_time: '20:30:00'
       travel_time: '01:30:00'
       calendar:
@@ -28,6 +32,7 @@ sections:
     - departure_station: EEM
       arrival_station: RXBA # Basel Grenze
       id: 30
+      version: 2
       travel_time: '06:00:00'
       color: green
       succ:
@@ -35,12 +40,14 @@ sections:
     - departure_station: XNVL
       arrival_station: RXBA
       id: 40
+      version: 1
       travel_time: '06:00:00'
       color: green
       succ:
           - 50
     - departure_station: RXBA
       arrival_station: XSZH # Zürich HB
+      version: 2
       id: 50
       travel_time: '01:00:00'
       color: blue
