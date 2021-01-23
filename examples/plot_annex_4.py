@@ -40,7 +40,7 @@ t.train_id()
 # ^^^^^^^^^
 #
 # This is the timetable of version 1 of TR-ID1. Notice the two train runs with ID
-# `TR/8350/ID1/2021/10/2021-02-07` and `TR/8350/ID1/2021/20/2021-02-07`. They both start on
+# `TR/8350/ID1/10/2021/2021-02-07` and `TR/8350/ID1/20/2021/2021-02-07`. They both start on
 # `07/02`. To make the daily train ID unique on this operating day, we propose to add the
 # `section_id` to be
 # part of `TrainRun.train_id()`. Here `10` for the train starting at `00:10` and `20` for the

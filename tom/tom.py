@@ -43,7 +43,7 @@ class RouteSection:
     arrival_station: str
     departure_timestamps: DatetimeIndex = DatetimeIndex([])
     calendar: DatetimeIndex = None
-    section_id: str = '0'
+    section_id: str = '00'
     version: int = 1
     is_section_complete: bool = False
     is_construction_start: bool = False
@@ -324,7 +324,7 @@ class Train:
     def __str__(self):
         return self.train_id()
 
-    def train_id(self) -> str:
+    def train_id(self, variant='00') -> str:
         """
         **Attention:**
 
@@ -336,7 +336,7 @@ class Train:
 
         :return: Unique ID of this train (LeadRU/CoreID/TimetableYear)
         """
-        return f"TR/{self.lead_ru}/{self.core_id}/{self.timetable_year()}"
+        return f"TR/{self.lead_ru}/{self.core_id}/{variant}/{self.timetable_year()}"
 
     def id(self):
         return f"TR-{self.core_id}-{self.version}"
@@ -670,10 +670,7 @@ class TrainRun:
         return self.train_id()
 
     def train_id(self):
-        return f"{self.train.train_id()}/{self.train_run_id()}"
-
-    def train_run_id(self):
-        return f"{self.first_run().section_id()}/{self.start_date()}"
+        return f"{self.train.train_id(variant=self.first_run().section_id())}/{self.start_date()}"
 
     def route_key(self):
         return '-'.join(map(SectionRun.section_id, self.sections_runs))

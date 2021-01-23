@@ -11,10 +11,10 @@ def test_train_section_ids_not_unique(ac_to_emm: RouteSection):
         Train('12AB', sections=[s1, s2])
 
     # Fix errors
-    s2.section_id = '1'
+    s2.section_id = '11'
     s2.departure_station = s2.departure_station + "_"
     t = Train('12AB', sections=[s1, s2])
-    assert [s.section_id for s in t.sections] == ['0', '1']
+    assert [s.section_id for s in t.sections] == ['00', '11']
 
 
 def test_train_section_keys_not_unique(ac_to_emm: RouteSection):
@@ -42,4 +42,4 @@ def test_timetable_year(train_ac_ff):
     assert tty == 2021
 
     tr_id = train_ac_ff.train_id()
-    assert tr_id == "TR/8350/12AB/2021"
+    assert tr_id == "TR/8350/12AB/00/2021"
