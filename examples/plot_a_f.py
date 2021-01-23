@@ -4,6 +4,15 @@ Example: Train with three IMs
 
 Here we investigate the routing specification for example from
 `train-a-f.yml`
+
+Given this infrastructure:
+
+.. uml:: ../uml/tom-05-example-a-f-infrastructure.puml
+
+This object diagramm shows a szenario for a train from A,B to F,G which is planned to operate in
+december 2020.
+
+.. uml:: ../uml/tom-05-example-a-f.puml
 """
 from tom.plot import plot_train, plot_graph
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
@@ -49,8 +58,9 @@ for section in t.sections:
 # %%
 # Section graph
 # ^^^^^^^^^^^^^
-# The section graph is computed using the successor relation:
-
+#    Sections of example with 3 IMs. This example shows a situation, where the middle section ist
+#    used
+#    by both starting and ending sections.
 sg = t.section_graph()
 plot_graph(sg)
 

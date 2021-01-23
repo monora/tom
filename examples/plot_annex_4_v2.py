@@ -1,33 +1,25 @@
 """
-Example: Train from Amsterdam to Frankfurt
-==========================================
+Example Train Annex 4 v2
+========================
 
-Here we investigate the routing specification for example from
-`train-ac-ff-v1.yml`.
+Version 2 of example annex 4
 
-Given this infrastructure:
-
-.. uml:: ../uml/tom-04-example-ac-ff-infrastructure.puml
-
-This object diagramm shows a szenario for a train from AC to Frankfurt FF which is planned to
-operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu handover is Venlo.
-
-.. uml:: ../uml/tom-04-example-ac-ff.puml
-
-.. _Pandas DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
 """
+from networkx import DiGraph
+
 from tom.util import example
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-from tom.plot import plot_train, plot_graph
+from tom.plot import *
 
 # %%
-# Load example 4 from yaml specification
-pattern = 'ac-ff-v1'
-train_specs, t_spec_file = example('../tests/data', pattern)
+# Load example annex 4 version 2 from yaml specification
+pattern = 'annex-4-2'
+_, t_spec_file = example('../tests/data', pattern)
 print(t_spec_file.read_text())
 
 # %%
-# Create train object and show its train id.
+#
+# Now create train object and show its train id.
 t = make_train_from_yml(t_spec_file)
 t.train_id()
 
@@ -35,20 +27,14 @@ t.train_id()
 # Timetable
 # ^^^^^^^^^
 #
-# With :meth:`~tom.tom.Train.to_dataframe` you can create a `Pandas DataFrame`_ which you can
-# export to excel.
 df = t.to_dataframe()
 df
 
 # %%
 # Bildfahrplan
 # ^^^^^^^^^^^^
-# Show timetable as plot
+# Show timetable
 plot_train(t)
-
-# %%
-# Show only the first week
-plot_train(t, no_of_runs=7)
 
 # %%
 # Route Sections
@@ -61,9 +47,8 @@ for section in t.sections:
 # %%
 # Section graph
 # ^^^^^^^^^^^^^
-# The section graph is computed using the successor relation:
-
-sg = t.section_graph()
+# The section graph is computed using the successor relation.
+sg: DiGraph = t.section_graph()
 plot_graph(sg)
 
 # %%

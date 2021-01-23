@@ -9,10 +9,11 @@ sections:
         end: &b-end '2020-12-31'
         # Sundays the train starting from A passes B
         mask: 'Mon Tue Wed Thu Fri Sat'
-      id: 10.01
+      id: 10
+      version: 1
       color: salmon
       succ:
-          - 10.02
+          - 50
     - departure_station: A
       arrival_station: C
       travel_time: '02:00:00'
@@ -21,10 +22,10 @@ sections:
         end: *b-end
         # Sunday in B => Saturday start in A
         mask: 'Sat'
-      id: 20.01
+      id: 20
       color: red
       succ:
-          - 10.02
+          - 50
     - departure_station: C
       departure_time: '01:30:00'
       arrival_station: E
@@ -33,11 +34,11 @@ sections:
         begin: *b-begin
         end: *b-end
         # no mask => daily
-      id: 10.02
+      id: 50
       color: cyan
       succ:
-          - 10.03
-          - 30.03
+          - 11
+          - 21
     - departure_station: E
       arrival_station: F
       travel_time: '04:00:00'
@@ -47,7 +48,7 @@ sections:
         end: &e-end '2021-01-01'
         # Not on tuesday. On tuesdays section E-G is used.
         mask: 'Wed Thu Fri Sat Sun Mon'
-      id: 10.03
+      id: 11
       color: green
     - departure_station: E
       arrival_station: G
@@ -56,7 +57,7 @@ sections:
         begin: *e-begin
         end: *e-end
         mask: 'Tue'
-      id: 30.03
-      color: lightgreen
+      id: 21
+      color: yellowgreen
 
 

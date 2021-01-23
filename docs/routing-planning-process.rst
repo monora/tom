@@ -35,8 +35,9 @@ done for sections with a new version or totally new sections.
 Example: Route Planning of Train Annex 4
 ----------------------------------------
 
-The initial planned routing of Train `ID1` was described in `Example Train Annex 4
-<domainmodel.html#example-annex-4-1>`_.
+.. _Example Train Annex 4: auto_examples/plot_annex_4.html#bildfahrplan
+
+The initial planned routing of Train `ID1` is shown in `Example Train Annex 4`_.
 
 Planning Process for version 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,8 +54,12 @@ train must now be communicated by the lead RU, which is specified in the next ch
 RoutingInfo of example Annex 4 v2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. _Example Train Annex 4 Version 2: auto_examples/plot_annex_4_v2.html#bildfahrplan
+.. _section graph version 2: auto_examples/plot_annex_4_v2.html##section-graph
+
 The updated routing info specification describes the planned final status. You can download it here:
-:download:`../tests/data/train-annex-4-2.yml`
+:download:`../tests/data/train-annex-4-2.yml`.
+See `Example Train Annex 4 Version 2`_ for details.
 
 Look at the resulting new section graph to see the differences (marked in yellow):
 
@@ -63,29 +68,8 @@ Look at the resulting new section graph to see the differences (marked in yellow
 
    Section graph Annex 4 version 2
 
-TrainRun Graph v2
-~~~~~~~~~~~~~~~~~
-
-These are the resulting new train runs:
-
-.. figure:: examples/example-annex-4-2-train-run-graph.png
-   :alt: Example train run graph Annex 4 final state
-
-   TrainRun graph of example Annex 4 version 2.
-
-You can download this graph as GraphML_ here: :download:`examples/train-TR-ID1-2.graphml`.
-
-Timetable v2
-~~~~~~~~~~~~
-
-.. csv-table:: Timetable TR-ID1-2
-   :file: ../build/TR-ID1-2/train-TR-ID1-2.csv
-   :header-rows: 1
-
-Download the time table for `Train-ID1v2` here: :download:`examples/train-TR-ID1-2.xlsx`.
-
-Planning Process v2
-~~~~~~~~~~~~~~~~~~~
+Planning Process for version 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following messages have to be exchanged by the involved companies to reach the state defined by
 version 2 of the routing info:

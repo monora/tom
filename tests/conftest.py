@@ -29,7 +29,7 @@ def _make_train(d: PosixPath, yml: str) -> Train:
 
 @pytest.fixture
 def train_ac_ff(shared_datadir):
-    return _make_train(shared_datadir, 'train-ac-ff')
+    return _make_train(shared_datadir, 'train-ac-ff-v1')
 
 
 @pytest.fixture
@@ -57,7 +57,7 @@ def train_otr(shared_datadir):
     return _make_train(shared_datadir, 'train-otr-test-1')
 
 
-@pytest.fixture(params=["train-ac-ff",
+@pytest.fixture(params=["train-ac-ff-v1",
                         "train-a-f",
                         "train-ac-ff-v2",
                         "train-a-f-v2",

@@ -13,21 +13,19 @@ sections:
         begin: &b-begin '2021-12-12'
         end: &b-end '2021-12-31'
         mask: 'Fri Sat Sun'
-      color: salmon
-      succ:
-          - 30
-    - departure_station: EEM
-      arrival_station: RXBA # Basel Grenze
-      id: 30
-      version: 1
-      travel_time: '06:00:00'
       color: green
       succ:
-          - 50
+          - 11
+    - departure_station: EEM
+      arrival_station: RXBA # Basel Grenze
+      id: 11
+      version: 1
+      travel_time: '06:00:00'
+      succ:
+          - 12
     - departure_station: RXBA
       arrival_station: XSZH # Zürich HB
-      id: 50
+      id: 12
       version: 1
       travel_time: '01:00:00'
-      color: blue
 

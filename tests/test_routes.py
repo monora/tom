@@ -15,7 +15,7 @@ def test_routes_ac_ff(train_ac_ff: Train):
     r: Route
     r = routes[0]
     assert str(r) == 'AC-EMM-FF'
-    assert r.route_key() == '10.01-10.02'
+    assert r.route_key() == '10-11'
 
     assert len(r.calendar) == 18
     assert str(r.calendar[0]) == '2021-12-01 00:00:00'
@@ -23,7 +23,7 @@ def test_routes_ac_ff(train_ac_ff: Train):
 
     r = routes[1]
     assert str(r) == 'AC-Venlo-FF'
-    assert r.route_key() == '20.01-20.02'
+    assert r.route_key() == '20-21'
 
     assert len(r.calendar) == 13
     assert str(r.calendar[0]) == '2021-12-03 00:00:00'

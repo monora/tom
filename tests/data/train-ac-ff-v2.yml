@@ -3,44 +3,44 @@ coreID: 12AB
 lead_ru: 1080 # DB FV
 version: 2
 sections:
-    - id: 10.01
-      version: 2
-      departure_station: Utrecht
-      departure_time: '00:50:00'
+    - id: 10
+      version: 1
+      departure_station: AC
       arrival_station: EMM
       travel_time: '01:10:00'
-      calendar:
-        begin: &ac-begin '2021-12-01'
-        end: &ac-end '2021-12-31'
-        # train now starts one day later => Tue-Fri
-        mask: 'Tue Wed Thu Fri'
       succ:
-          - 10.02
-    - id: 10.02
+          - 11
+    - id: 11
       version: 1
-      applicant_ru: 1080 # DB FV
       departure_station: EMM
       arrival_station: FF
-      travel_time: 10:00:00
-
-    - id: 20.01
-      version: 1
-      applicant_ru: 1084 # NS
-      departure_station: AC
-      departure_time: '23:50:00'
-      arrival_station: Venlo
-      travel_time: '02:05:00'
+      departure_time: '02:00:00' # => Route Construction Start
+      travel_time: '03:00:00'
       calendar:
-        begin: *ac-begin
-        end: *ac-end
-        mask: 'Sat Sun Mon'
-      succ:
-          - 20.02
-    - id: 20.02
+        # Start in Amsterdam is 1.12.2021 23:50
+        begin: '2021-12-02'
+        end: '2021-12-31'
+        # train now starts one day later => Tue-Fri
+        mask: 'Tue Wed Thu Fri'
+      color: green
+
+    - id: 20
       version: 1
-      applicant_ru: 1080 # DB FV
+      departure_station: AC
+      arrival_station: Venlo
+      travel_time: '01:10:00'
+      succ:
+          - 21
+    - id: 21
+      version: 1
       departure_station: Venlo
       arrival_station: FF
-      travel_time: '10:00:00'
-      stop_time: '00:05:00'
+      departure_time: '02:00:00' # => Route Construction Start
+      stop_time: '01:00:00' # => 1 hour stop in Venlo
+      travel_time: '03:00:00'
+      calendar:
+        begin: '2021-12-02'
+        end: '2022-01-01'
+        mask: 'Sat Sun Mon'
+      color: salmon
 
