@@ -12,9 +12,10 @@ This module defines the TOM domain model. The main classes are:
 
 """
 import logging
+import xml.etree.ElementTree as ElemTree
 from datetime import datetime, timedelta, date
 from pathlib import PosixPath
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, ValuesView
 
 import networkx as nx
 import pandas as pd
@@ -25,6 +26,94 @@ from pandas import DatetimeIndex
 class TomError(ValueError):
     """Constraint violation in the TOM Model are signalled using this error"""
     pass
+
+
+TSI_SCHEMA_VERSION = '2.3.0'
+"""
+New Schema version proposed for change of element TrainInformation
+"""
+TSI_LOCATION_TYPE_CODES = {
+    'Origin': '01',
+    'Handover': '04',
+    'Destination': '03',
+}
+
+
+class LocationIdGenerator:
+    location_name_to_code = {}
+    location_last = 9999
+
+    def map_location_name_to_code(self, name: str) -> str:
+        result = self.location_name_to_code.get(name, None)
+        if result is None:
+            self.location_last += 1
+            result = self.location_last
+            self.location_name_to_code[name] = result
+        return str(result)
+
+
+__ID_GENERATOR = LocationIdGenerator()
+
+
+def __compute_bitmap_days(calendar: pd.DatetimeIndex) -> str:
+    """
+    :param calendar:
+    :return: Bitmap string containing 1 and 0
+    """
+    first = calendar[0]
+    last = calendar[-1]
+    result = ""
+    for day in pd.date_range(first, last):
+        result += '1' if day in calendar else '0'
+    return result
+
+
+def xml_simple_element(parent: ElemTree.Element, name: str, text: str = None):
+    result = ElemTree.SubElement(parent, name)
+    if text:
+        result.text = str(text)
+    return result
+
+
+def xml_add_calendar(tom_object, parent: ElemTree.Element):
+    cal = xml_simple_element(parent, 'PlannedCalendar')
+    xml_simple_element(cal, 'BitmapDays',
+                       text=__compute_bitmap_days(tom_object.calendar))
+
+    period = xml_simple_element(cal, 'ValidityPeriod')
+    iso_format = "%Y-%m-%dT00:00:00"
+    xml_simple_element(period, 'StartDateTime',
+                       tom_object.first_day().strftime(iso_format))
+    xml_simple_element(period, 'EndDateTime',
+                       tom_object.last_day().strftime(iso_format))
+
+
+def xml_add_journey_location(parent: ElemTree.Element,
+                             station: str,
+                             t: datetime,
+                             offset: int = 0,
+                             type_code='04'):
+    """
+    Add XML Element PlannedJourneyLocation
+
+    :param parent: RouteSection
+    :param station: name of destination or arrival
+    :param t: timestamp
+    :param offset: in days to departure
+    :param type_code: JourneyLocationTypeCode (default ist Handover == 04)
+    """
+    loc = xml_simple_element(parent, 'PlannedJourneyLocation')
+    # Set this only if really needed, because it can be computed from the successor relation
+    # loc.set('JourneyLocationTypeCode', type_code) # FIXME
+    xml_simple_element(loc, 'CountryCodeISO', 'DE')  # FIXME
+    xml_simple_element(loc, 'LocationPrimaryCode',
+                       __ID_GENERATOR.map_location_name_to_code(station))
+    xml_simple_element(loc, 'PrimaryLocationName', station)
+
+    time = xml_simple_element(loc, 'TimingAtLocation')
+    time = xml_simple_element(time, 'Timing')
+    xml_simple_element(time, 'Time', t.strftime("%H:%M:%S"))
+    xml_simple_element(time, 'Offset', str(offset))
 
 
 class RouteSection:
@@ -273,6 +362,31 @@ class RouteSection:
         if self.color is None:
             self.color = other.color
 
+    def to_xml(self, root: ElemTree.Element):
+        rs = ElemTree.SubElement(root, 'RouteSection', {'SectionVersion': str(self.version)})
+        if self.is_construction_start:
+            rs.set('IsStartOfConstruction', 'true')
+        section_id = xml_simple_element(rs, 'SectionID')
+        xml_simple_element(section_id, 'Variant', self.section_id),
+        xml_add_journey_location(rs,
+                                 self.departure_station,
+                                 self.departure_time())
+        xml_add_journey_location(rs,
+                                 self.arrival_station,
+                                 self.arrival_time(),
+                                 offset=self.arrival_time_offset())
+        xml_add_calendar(self, rs)
+        if len(self.successors) > 0:
+            successors = xml_simple_element(rs, 'Successor')
+            for s in self.successors:
+                xml_simple_element(successors, 'Variant', s),
+
+    def arrival_time_offset(self) -> int:
+        """
+        :return: Offset in days of arrival relativ to departure time (must be positiv)
+        """
+        return day_offset(self.arrival_time(), self.departure_time())
+
 
 class SingleSource:
     """Used as sentinel object in `Train.extended_train_run_graph`.
@@ -351,7 +465,7 @@ class Train:
         section_runs = list(self.section_run_iterator())
         for v in section_runs:
             result.add_node(v)
-            vi = v.section.version_info()
+            # vi = v.section.version_info()
             result.nodes[v]['fillcolor'] = v.section.color or 'white'
         for u in section_runs:
             for v in section_runs:
@@ -536,7 +650,7 @@ class Train:
                     logging.error("Arrivals: %s", in_neighbors)
                 raise TomError(f"Invalid section run design for: {v}")
 
-    def routes(self) -> List['Route']:
+    def routes(self) -> ValuesView['Route']:
         route_key_to_route = {}
         for tr in self.train_run_iterator():
             route_key = tr.route_key()
@@ -552,6 +666,28 @@ class Train:
         :return: list of all stations of the train
         """
         return self.location_graph().nodes
+
+    def routing_info_to_xml(self, schema: str) -> ElemTree.Element:
+        jsg = "http://taf-jsg.info/schemes"
+        result = ElemTree.Element('TrainInformation', attrib={
+            'xmlns': jsg,
+            'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance",
+            'xsi:schemaLocation': f"{jsg} {schema}/taf_cat_complete_sector.xsd",
+            'RouteInfoVersion': str(self.version),
+        })
+
+        for sec in self.sections:
+            sec.to_xml(result)
+        for route in self.routes():
+            route.to_xml(result)
+        return result
+
+
+def day_offset(departure: datetime, arrival: datetime) -> int:
+    """
+    Return number of night shifts between two timestamps
+    """
+    return abs(arrival.date().day - departure.date().day)
 
 
 class SectionRun:
@@ -578,7 +714,7 @@ class SectionRun:
     def __otr_at(self, timestamp):
         dep_time_at_rcs = self.construction_start_section_run.departure_time
         pos = self.position_relative_to_construction_start
-        otr = abs((timestamp.date() - dep_time_at_rcs.date()).days)
+        otr = day_offset(dep_time_at_rcs, timestamp)
         return otr if pos == 0 else pos * otr
 
     def otr_at_arrival(self):
@@ -753,7 +889,7 @@ class Route:
                '-' + \
                '-'.join([s.arrival_station for s in self.sections])
 
-    def add_date(self, d: datetime):
+    def add_date(self, d: str):
         self.calendar = self.calendar.union(DatetimeIndex([d]))
 
     def route_key(self):
@@ -761,7 +897,6 @@ class Route:
 
     def description(self) -> str:
         first_section = self.sections[0]
-        last_section = self.sections[-1]
         dep = first_section.departure_time().strftime("%H:%M")
         fd = self.first_day().strftime("%d/%m")
         ld = self.last_day().strftime("%d/%m")
@@ -779,6 +914,26 @@ class Route:
 
     def last_day(self):
         return datetime.date(self.calendar[-1])
+
+    def to_xml(self, parent: ElemTree.Element):
+        route = ElemTree.SubElement(parent, 'Route', {'key': self.route_key()})
+        xml_add_calendar(self, route)
+        for loc, t, tc, offset in self.journey_location_iter():
+            xml_add_journey_location(route, loc, t, type_code=tc, offset=offset)
+
+    def journey_location_iter(self):
+        first_section = self.sections[0]
+        last_section = self.sections[-1]
+        yield first_section.departure_station, \
+              first_section.departure_time(), \
+              TSI_LOCATION_TYPE_CODES['Origin'], 0
+
+        for sec in self.sections:
+            tc_arrival = 'Destination' if last_section == sec else 'Handover'
+            yield sec.arrival_station, \
+                  sec.arrival_time(), \
+                  TSI_LOCATION_TYPE_CODES[tc_arrival], \
+                  day_offset(sec.arrival_time(), sec.departure_time())
 
 
 def __make_section_from_dict(section: dict) -> RouteSection:

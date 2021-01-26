@@ -7,7 +7,7 @@ Version 2 of example annex 4
 """
 from networkx import DiGraph
 
-from tom.util import example
+from tom.util import example, dump_routing_info_as_xml
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
 from tom.plot import *
 
@@ -79,3 +79,12 @@ for tr in t.train_run_iterator():
     for sr in tr.sections_runs:
         print(sr)
     print("\n")
+
+# %%
+# RoutingInformation as TrainInformation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# An XML Dump of the routing information of this example according a new version of the TSI XSD.
+#
+# See `Routing planning <../routing-planning-process.html#routininformation-as-traininformation>`_
+# for more details.
+dump_routing_info_as_xml(t)

@@ -57,16 +57,29 @@ def train_otr(shared_datadir):
     return _make_train(shared_datadir, 'train-otr-test-1')
 
 
-@pytest.fixture(params=["train-ac-ff-v1",
-                        "train-a-f",
-                        "train-ac-ff-v2",
-                        "train-a-f-v2",
-                        "train-annex-4",
-                        "train-annex-4-2",
-                        "train-annex-4-3",
-                        "train-condensed-1",
-                        "train-condensed-2",
-                        "train-otr-test-1",
-                        ])
+ALL_TEST_TRAINS = ["train-ac-ff-v1",
+                   "train-a-f",
+                   "train-ac-ff-v2",
+                   "train-a-f-v2",
+                   "train-annex-4",
+                   "train-annex-4-2",
+                   "train-annex-4-3",
+                   "train-condensed-1",
+                   "train-condensed-2",
+                   "train-otr-test-1",
+                   ]
+
+ALL_TRAINS = ALL_TEST_TRAINS + ["train-ac-zue-1",
+                                "train-ac-zue-2",
+                                "train-ac-ff-without-timing",
+                                ]
+
+
+@pytest.fixture(params=ALL_TEST_TRAINS)
 def yml_train(shared_datadir, request) -> Train:
+    return _make_train(shared_datadir, request.param)
+
+
+@pytest.fixture(params=ALL_TRAINS)
+def all_trains(shared_datadir, request) -> Train:
     return _make_train(shared_datadir, request.param)

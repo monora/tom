@@ -16,9 +16,9 @@ operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu handover is Ven
 
 .. _Pandas DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
 """
-from tom.util import example
-from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
 from tom.plot import plot_train, plot_graph
+from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
+from tom.util import example, dump_routing_info_as_xml
 
 # %%
 # Load example 4 from yaml specification
@@ -94,3 +94,12 @@ for tr in t.train_run_iterator():
     for sr in tr.sections_runs:
         print(sr)
     print("\n")
+
+# %%
+# RoutingInformation as TrainInformation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# An XML Dump of the routing information of this example according a new version of the TSI XSD.
+#
+# See `Routing planning <../routing-planning-process.html#routininformation-as-traininformation>`_
+# for more details.
+dump_routing_info_as_xml(t)

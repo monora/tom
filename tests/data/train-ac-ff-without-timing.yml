@@ -1,0 +1,50 @@
+---
+# This example demonstrates, how to use ECM without the need to specify
+# exact departure and travel times.
+# Just always use as departure time 12:00 and travel time 24h if the train
+# should have a night shift.
+coreID: 00AB
+lead_ru: 1080 # DB FV
+# initial revision of RoutingInfo. Alle sections
+# also have version 1
+version: 1
+sections:
+    - id: 10
+      version: 1
+      departure_station: AC
+      arrival_station: EMM
+      travel_time: '24:00:00'
+      color: yellowgreen
+      succ:
+          - 20
+    - id: 20
+      version: 1
+      departure_station: EMM
+      arrival_station: FF
+      departure_time: '12:00:00' # => Route Construction Start
+      travel_time: '24:00:00'
+      calendar:
+        begin: '2021-12-02'
+        end: '2021-12-31'
+        mask: 'Tue Wed Thu Fri'
+      color: green
+
+    - id: 30
+      version: 1
+      departure_station: AC
+      arrival_station: Venlo
+      travel_time: '24:00:00'
+      color: cyan
+      succ:
+          - 40
+    - id: 40
+      version: 1
+      departure_station: Venlo
+      arrival_station: FF
+      travel_time: '24:00:00'
+      departure_time: '12:00:00' # => Route Construction Start
+      calendar:
+        begin: '2021-12-02'
+        end: '2022-01-01'
+        mask: 'Sat Sun Mon'
+      color: salmon
