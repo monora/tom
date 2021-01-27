@@ -102,4 +102,4 @@ for tr in t.train_run_iterator():
 #
 # See `Routing planning <../routing-planning-process.html#routininformation-as-traininformation>`_
 # for more details.
-dump_routing_info_as_xml(t)
+print(dump_routing_info_as_xml(t))

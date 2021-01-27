@@ -16,9 +16,9 @@ a role in the routing planning process because it is no origin, destination or h
 """
 from networkx import DiGraph
 
-from tom.util import example, dump_routing_info_as_xml
-from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
 from tom.plot import *
+from tom.tom import make_train_from_yml, RouteSection, Route
+from tom.util import example, dump_routing_info_as_xml
 
 # %%
 # Load example annex 4 from yaml specification
@@ -51,7 +51,7 @@ df
 # %%
 # Bildfahrplan
 # ^^^^^^^^^^^^
-# Show timetable as `Bildfahrplan <https://de.wikipedia.org/wiki/Bildfahrplan`>_.
+# Show timetable as `Bildfahrplan <https://de.wikipedia.org/wiki/Bildfahrplan>`_.
 plot_train(t)
 
 # %%
@@ -105,4 +105,4 @@ for tr in t.train_run_iterator():
 #
 # See `Routing planning <../routing-planning-process.html#routininformation-as-traininformation>`_
 # for more details.
-dump_routing_info_as_xml(t)
+print(dump_routing_info_as_xml(t))

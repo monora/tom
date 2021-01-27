@@ -55,7 +55,7 @@ class LocationIdGenerator:
 __ID_GENERATOR = LocationIdGenerator()
 
 
-def __compute_bitmap_days(calendar: pd.DatetimeIndex) -> str:
+def compute_bitmap_days(calendar: pd.DatetimeIndex) -> str:
     """
     :param calendar:
     :return: Bitmap string containing 1 and 0
@@ -78,7 +78,7 @@ def xml_simple_element(parent: ElemTree.Element, name: str, text: str = None):
 def xml_add_calendar(tom_object, parent: ElemTree.Element):
     cal = xml_simple_element(parent, 'PlannedCalendar')
     xml_simple_element(cal, 'BitmapDays',
-                       text=__compute_bitmap_days(tom_object.calendar))
+                       text=compute_bitmap_days(tom_object.calendar))
 
     period = xml_simple_element(cal, 'ValidityPeriod')
     iso_format = "%Y-%m-%dT00:00:00"
@@ -138,6 +138,7 @@ class RouteSection:
     is_construction_start: bool = False
     successors: List[str] = []
     color: str = None
+    train = None
 
     def __init__(self, departure_station: str,
                  arrival_station: str,
@@ -183,7 +184,7 @@ class RouteSection:
         return self.is_section_complete
 
     def version_info(self):
-        return f"{self.section_id}v{self.version}"
+        return f"{self.section_id}.v{self.version}"
 
     def route_id(self):
         route_id = str(self.section_id).split('.')[:-1]
@@ -192,13 +193,14 @@ class RouteSection:
         else:
             return self.section_id
 
-    def description(self) -> str:
+    def description(self, with_bitmap=True) -> str:
         dep = self.departure_time().strftime("%H:%M")
         arr = self.arrival_time().strftime("%H:%M")
         fd = self.first_day().strftime("%d/%m")
         ld = self.last_day().strftime("%d/%m")
+        bitmap = ' ' + compute_bitmap_days(self.calendar) if with_bitmap else ''
         result = f"ID        : {self.version_info()}\n"
-        result += f"Calender  : {fd} to {ld}\n"
+        result += f"Calender  : {fd} to {ld}{bitmap}\n"
         result += f"Start   at: {dep} in {self.departure_station}\n"
         result += f"Arrival at: {arr} in {self.arrival_station}\n"
         result += f"Successors: {self.successors}"
@@ -362,12 +364,20 @@ class RouteSection:
         if self.color is None:
             self.color = other.color
 
+    def xml_add_id(self, parent: ElemTree.Element):
+        sec_id = xml_simple_element(parent, 'SectionID')
+        xml_simple_element(sec_id, 'ObjectType', 'RS')
+        xml_simple_element(sec_id, 'Company', self.train.lead_ru)
+        ci = "{:>12}".format(self.train.core_id).replace(' ', '-')
+        xml_simple_element(sec_id, 'Core', ci)
+        xml_simple_element(sec_id, 'Variant', self.section_id)
+        xml_simple_element(sec_id, 'TimetableYear', self.train.timetable_year())
+
     def to_xml(self, root: ElemTree.Element):
         rs = ElemTree.SubElement(root, 'RouteSection', {'SectionVersion': str(self.version)})
         if self.is_construction_start:
             rs.set('IsStartOfConstruction', 'true')
-        section_id = xml_simple_element(rs, 'SectionID')
-        xml_simple_element(section_id, 'Variant', self.section_id),
+        self.xml_add_id(rs)
         xml_add_journey_location(rs,
                                  self.departure_station,
                                  self.departure_time())
@@ -377,9 +387,11 @@ class RouteSection:
                                  offset=self.arrival_time_offset())
         xml_add_calendar(self, rs)
         if len(self.successors) > 0:
-            successors = xml_simple_element(rs, 'Successor')
-            for s in self.successors:
-                xml_simple_element(successors, 'Variant', s),
+            successors = xml_simple_element(rs, 'Successors')
+            for sec_id in self.successors:
+                section: RouteSection
+                section = self.train.id_to_sec[sec_id]
+                section.xml_add_id(successors)
 
     def arrival_time_offset(self) -> int:
         """
@@ -407,6 +419,7 @@ class Train:
     core_id: str
     version: int
     sections: List[RouteSection] = []
+    id_to_sec: Dict[str, RouteSection] = {}
     lead_ru: int = 8350
 
     def __init__(self, core_id: str, sections: List[RouteSection]):
@@ -417,6 +430,8 @@ class Train:
         sg: nx.DiGraph = self.__repair_incomplete_sections()
         # After repair all sections must have a departure time
         for section in self.sections:
+            self.id_to_sec[section.section_id] = section
+            section.train = self
             if section.departure_daytime is None:
                 raise TomError(f"Could not compute departure time for section "
                                f"{section}: {section.version_info()}.")
@@ -490,7 +505,7 @@ class Train:
             vi = v.section.version_info()
             sg.add_node(vi)
             sg.nodes[vi]['id'] = vi
-            sg.nodes[vi]['label'] = v.section.description()
+            sg.nodes[vi]['label'] = v.section.description(with_bitmap=False)
             sg.nodes[vi]['route_id'] = v.section.route_id()
             sg.nodes[vi]['fillcolor'] = v.section.color or 'white'
         for u, v in trg.edges:
@@ -895,14 +910,15 @@ class Route:
     def route_key(self):
         return '-'.join(map(lambda s: str(s.section_id), self.sections))
 
-    def description(self) -> str:
+    def description(self, with_bitmap=True) -> str:
         first_section = self.sections[0]
         dep = first_section.departure_time().strftime("%H:%M")
         fd = self.first_day().strftime("%d/%m")
         ld = self.last_day().strftime("%d/%m")
+        bitmap = ' ' + compute_bitmap_days(self.calendar) if with_bitmap else ''
         result = f"Route     : {self}\n"
         result += f"Key       : {self.route_key()}\n"
-        result += f"Calendar  : {fd} to {ld}\n"
+        result += f"Calendar  : {fd} to {ld} {bitmap}\n"
         result += f"Start   at: {dep} in {first_section.departure_station}\n"
         for sec in self.sections:
             arr = sec.arrival_time().strftime("%H:%M")

@@ -19,22 +19,22 @@ group Inform IM1, IM2
 end
 group "Path Planning RU1/IM1"
     loop "for $i in {10,20,30}"
-        RU1 -> IM1: PRM(RI-v1, RS-$i.01)
+        RU1 -> IM1: PRM(RI-v1, RS-$i.v1)
         note left
             Send whole RoutingInfo
             RI-v1 within PRM
         end note
     end
     par "for $i in {10,20,30}"
-        IM1 -> RU1: PDM(RS-$i.01)
+        IM1 -> RU1: PDM(RS-$i.v1)
     end
 end
 group "Path Planning RU2/IM2"
-    loop "for $i in {10,20,30}"
-        RU2 -> IM2: PRM(RI-v1, RS-$i.02)
+    loop "for $i in {11,21,31}"
+        RU2 -> IM2: PRM(RI-v1, RS-$i.v1)
     end
-    par "for $i in {10,20,30}"
-        IM2 -> RU2: PDM(RS-$i.02)
+    par "for $i in {11,21,31}"
+        IM2 -> RU2: PDM(RS-$i.v1)
     end
 end
 

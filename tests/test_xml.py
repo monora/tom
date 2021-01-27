@@ -4,7 +4,7 @@ import tom.config as config
 from tom.tom import Train, TSI_SCHEMA_VERSION
 from xml.etree import ElementTree
 
-from util import dump_routing_info_as_xml, xml_to_string
+from tom.util import xml_to_string
 
 
 def taftap_schema():
@@ -27,11 +27,10 @@ def _test_xmlschema():
     assert child_names == ['TrainInformation',
                            'RouteSection',
                            'SectionID',
-                           'Variant',
                            'PlannedJourneyLocation',
                            'PlannedCalendar',
-                           'Successor',
-                           'Variant',
+                           'Successors',
+                           'SectionID',
                            'Route',
                            'PlannedCalendar',
                            'PlannedJourneyLocation']
@@ -54,7 +53,7 @@ def check_xml_instance_to_dict(xml_element):
 
 
 def _test_simple():
-    check_xml_instance_to_dict('data/xml/ri-TR-12AB-1.xml')
+    check_xml_instance_to_dict('../build/TR-12AB-1/ri-TR-12AB-1.xml')
 
 
 def test_all_to_xml(all_trains):

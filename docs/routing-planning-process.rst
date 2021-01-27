@@ -39,7 +39,7 @@ Example: Route Planning of Train Annex 4
 
 The initial planned routing of Train `ID1` is shown in `Example Train Annex 4`_.
 
-Planning Process for version 1
+Planning Process for Version 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following messages have to be exchanged by the involved companies to begin the planning process
@@ -51,24 +51,42 @@ for this train.
 For various reasons this process could not be finished. A second RoutingInfo version RI-v2 for the
 train must now be communicated by the lead RU, which is specified in the next chapter.
 
-RoutingInfo of example Annex 4 v2
+RoutingInfo of Example Annex 4 v2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. _Example Train Annex 4 Version 2: auto_examples/plot_annex_4_v2.html#bildfahrplan
-.. _section graph version 2: auto_examples/plot_annex_4_v2.html##section-graph
+.. _Section Graph Version 2: auto_examples/plot_annex_4_v2.html#section-graph
 
 The updated routing info specification describes the planned final status. You can download it here:
 :download:`../tests/data/train-annex-4-2.yml`.
-See `Example Train Annex 4 Version 2`_ for details.
+See timetable `Example Train Annex 4 Version 2`_ and `Section Graph Version 2`_.
 
-Look at the resulting new section graph to see the differences (marked in yellow):
+Look at the section graphs of version 1 and 2 to see the differences:
 
-.. figure:: examples/example-annex-4-2-section-graph.png
+.. figure:: _images/sphx_glr_plot_annex_4_002.png
+   :alt: Section graph Annex 4 version 1
+
+   Section graph Annex 4 version 1
+
+.. figure:: _images/sphx_glr_plot_annex_4_v2_002.png
    :alt: Section graph Annex 4 version 2
 
    Section graph Annex 4 version 2
 
-Planning Process for version 2
+As you see, we habe two *new* routes:
+
+* 40.v1 -> 41.v1
+* 50.v1 -> 51.v1
+
+and updates for the existing routes which lead to new section versions:
+
+* 10.v2 -> 11.v2
+* 20.v2 -> 21.v2
+* 30.v2 -> 31.v2
+
+The differences need a new planning process for the updated routing info version 2:
+
+Planning Process for Version 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following messages have to be exchanged by the involved companies to reach the state defined by
@@ -95,9 +113,11 @@ the minimum information of the routes of a train:
 
   * Train route (geography, journey sections / locations, timing, indication of responsible RU
     and IM) The locations to be defined for the train route shall be at least:
+
     * origin of the train route
     * border points (Handover points, Interchange points)
     * destination of train route
+
   * Train parameters (weight, length)
   * Train calendar
 
@@ -120,20 +140,56 @@ Download the proposal for a new version 2.x of the XSD here:
 :download:`../tests/data/xml/taf_cat_complete_sector.xsd`.
 
 Have a look at the `XSD Element TrainInformation`_ and compare it to new previous version
-`XSD Element TrainInformation 2.2.4`_. The main difference is that the calendars are attached to
-the *RouteSection* and *Route* elements.
+`XSD Element TrainInformation 2.2.4`_.
 
-.. figure:: taf_cat_complete_sector.v2.3.0.png
+.. figure:: train-information.png
    :alt: TrainInformation XSD
 
-   XSD TrainInformation containing Routes and RouteSections
+   Overview XSD TrainInformation containing Routes and RouteSections
+
+These are the main differences to the original version:
+
+* The *RouteSection* is the main structure that contains the necessary information.
+* The *Route* elements can be computed from sections. That is why they are optional. But we
+  propose to transfer them also for informational purpose.
+* Each section is identified by a new type *SectionID* which is like the type *TrainID* but with
+  new *ObjectType* 'RS'. The *Variant* field of *SectionID* must be unique within the set of
+  sections of a train.
+* The two version attributes *RouteInfoVersion* and *SectionVersion* are optional. We propose
+  them to be used to easily detect the changes in a routing info (see process above).
+* Each section must have exactly two *PlannedJourneyLocations*:
+
+  - First is the departure station
+  - Second is the arrival station of the section
+* In the *PlannedJourneyLocations* only these fields are filled:
+
+  - *LocationIdent*
+  - *TimingAtLocation* needs two attributes:
+
+    + *Offset* which is set to the number of night shifts between departure and arrival of the
+      section.
+    + *Timing* contains the departure or arrival time of the section.
+
+* The *PlannedCalendar* of a section is optional for sections which are not *StartOfConstruction*.
+  Only these must have a calendar.
+* The *Successors* element contains the links to following sections. These links are used to
+  compute all possible routes of the train.
+
+One remark concerning the *Timing* element of a location: If parties are only interested to
+communicate the calendars of routes and sections, the element could be filled with a default (for
+example 0:00 or 12:00). Thus the above mentioned updates must only be communicated if changes
+occurred in:
+
+* Section departure or arrival stations
+* Section calendar
+* Offset at arrival station (offset at departure station must always be zero)
 
 .. _TrainInformation Example Annex 4 V1: auto_examples/plot_annex_4.html#routinginformation-as-traininformation
-.. _TrainInformation Example Annex 4 V2: auto_examples/plot_annex_4_2.html#routinginformation-as-traininformation
+.. _TrainInformation Example Annex 4 V2: auto_examples/plot_annex_4_v2.html#routinginformation-as-traininformation
 
 We have generated the new train information structures for the two version of the example above.
 See
 
 * `TrainInformation Example Annex 4 V1`_ the first version of the example above
-* `TrainInformation Example Annex 4 V2`_ the update version 2
+* `TrainInformation Example Annex 4 V2`_ the update resulting in version 2
 
