@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Example Train Annex 4 &mdash; Train Object Model 0.1.1 documentation</title>
+  <title>Example Train Annex 4 v1 &mdash; Train Object Model 0.2.0 documentation</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example: Train from Amsterdam to Frankfurt" href="plot_ac_ff.html" />
-    <link rel="prev" title="Example showing OTR anomalie" href="plot_test_otr.html" /> 
+    <link rel="next" title="Example Train Annex 4 v2" href="plot_annex_4_v2.html" />
+    <link rel="prev" title="Example: Train AC - FF without timing" href="plot_ac_ff_without_timing.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.2.0
               </div>
             
           
@@ -102,16 +102,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Example Train Annex 4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example Train Annex 4 v1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Bildfahrplan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#route-sections">Route Sections</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-graph">Section graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#routes">Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#routinginformation-as-traininformation">RoutingInformation as TrainInformation</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4_v2.html">Example Train Annex 4 v2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_night_ac_zue.html">Example: Night Train from Amsterdam to Zürich</a></li>
@@ -171,7 +174,7 @@
         
           <li><a href="index.html">ECM example trains</a> &raquo;</li>
         
-      <li>Example Train Annex 4</li>
+      <li>Example Train Annex 4 v1</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -195,23 +198,41 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-annex-4-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="example-train-annex-4">
-<span id="sphx-glr-auto-examples-plot-annex-4-py"></span><h1>Example Train Annex 4<a class="headerlink" href="#example-train-annex-4" title="Permalink to this headline">¶</a></h1>
-<p>Here we investigate the routing specification for example from
-<cite>train-annex-4.yml</cite></p>
+<div class="sphx-glr-example-title section" id="example-train-annex-4-v1">
+<span id="sphx-glr-auto-examples-plot-annex-4-py"></span><h1>Example Train Annex 4 v1<a class="headerlink" href="#example-train-annex-4-v1" title="Permalink to this headline">¶</a></h1>
+<p>A train with three routes each composed of two sections.</p>
+<p>Given this infrastructure:</p>
+<p class="plantuml">
+<img src="../_images/plantuml-dd75fbcbeebbd21f22a93e6eb264581fd7bf3b3e.png" alt="package IM1 &lt;&lt;Rectangle&gt;&gt; {
+    object S
+    object D
+}
+object H1
+H1 : Handover
+package IM2 &lt;&lt;Rectangle&gt;&gt; {
+    object M
+    object T
+}
+
+S - D
+D - H1
+H1 - M
+M - T
+"/>
+</p>
+<p>The following routing specification describes the initial planned routes for the rain with
+<cite>ID1</cite>.  As
+you can see, there is no route section needed which mentions Station <cite>M</cite>. This station does not play
+a role in the routing planning process because it is no origin, destination or handover.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">networkx</span> <span class="kn">import</span> <span class="n">DiGraph</span>
 
-<span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
-<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
 <span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
+<span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span><span class="p">,</span> <span class="n">dump_routing_info_as_xml</span>
 </pre></div>
 </div>
-<p>Load example annex 4 from yaml specification
-Notice the route sections which have a departure time.
-These are considered as route construction starts
-Only one section in a route may be a construction start.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;annex-4.yml&#39;</span>
-<span class="n">train_specs</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<p>Load example annex 4 from yaml specification</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="s1">&#39;annex-4.yml&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -221,25 +242,25 @@ coreID: ID1
 lead_ru: RU1
 version: 1 # RoutingInfo version
 sections:
-    - id: 10.01
+    - id: 10
       version: 1 # RouteSection version
       departure_station: S
       departure_time: &#39;00:10:00&#39; # =&gt; Route Construction Start
       arrival_station: H1
       travel_time: &amp;s1-tt &#39;24:20:00&#39;
-      color: green
       calendar:
         begin: &#39;2021-02-01&#39;
         end: &#39;2021-02-07&#39;
+      color: green
       succ:
-          - 10.02
-    - id: 10.02
+          - 11
+    - id: 11
       version: 1
       departure_station: H1
       arrival_station: T
-      travel_time: &amp;s2-tt 07:30:00
-      color: lightgreen
-    - id: 20.01
+      travel_time: &amp;s2-tt &#39;07:30:00&#39;
+
+    - id: 20
       version: 1
       departure_station: S
       departure_time: &#39;23:50:00&#39; # =&gt; Route Construction Start
@@ -250,45 +271,53 @@ sections:
         begin: &#39;2021-02-07&#39;
         end: &#39;2021-02-13&#39;
       succ:
-          - 20.02
-    - id: 20.02
+          - 21
+    - id: 21
       version: 1
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
-      color: lightblue
-    - id: 30.01
+
+    # Shorten calender of D-T
+    - id: 30
       version: 1
       departure_station: D
       departure_time: &#39;02:00:00&#39; # =&gt; Route Construction Start
       arrival_station: H1
       travel_time: &#39;22:30:00&#39;
-      color: red
+      color: salmon
       calendar:
         begin: &#39;2021-02-15&#39;
         end: &#39;2021-02-20&#39;
       succ:
-          - 30.02
-    - id: 30.02
+          - 31
+    - id: 31
       version: 1
       departure_station: H1
       arrival_station: T
       travel_time: *s2-tt
-      color: salmon
 </pre></div>
 </div>
-<p>Create train object and show its train id.</p>
+<p>Notice the route sections which have a departure time.
+These are considered as <em>route construction starts</em>.
+Only one section in a route may be a construction start.</p>
+<p>Now create train object and show its train id.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">make_train_from_yml</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span>
 <span class="n">t</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/ID1/2021&#39;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/ID1/00/2021&#39;
 </pre></div>
 </div>
 <div class="section" id="timetable">
 <h2>Timetable<a class="headerlink" href="#timetable" title="Permalink to this headline">¶</a></h2>
-<p>Show timetable as dataframe</p>
+<p>This is the timetable of version 1 of TR-ID1. Notice the two train runs with ID
+<cite>TR/8350/ID1/10/2021/2021-02-07</cite> and <cite>TR/8350/ID1/20/2021/2021-02-07</cite>. They both start on
+<cite>07/02</cite>. To make the daily train ID unique on this operating day, we propose to add the
+<cite>section_id</cite> to be
+part of <cite>TrainRun.train_id()</cite>. Here <cite>10</cite> for the train starting at <cite>00:10</cite> and <cite>20</cite> for the
+train departing at <cite>23:50</cite> at station <cite>S</cite>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 <span class="n">df</span>
 </pre></div>
@@ -321,7 +350,7 @@ sections:
   </thead>
   <tbody>
     <tr>
-      <th>TR/8350/ID1/2021/10.01/2021-02-01</th>
+      <th>TR/8350/ID1/10/2021/2021-02-01</th>
       <td></td>
       <td>Mo 01.02.21 00:10  0</td>
       <td>Di 02.02.21 00:30  1</td>
@@ -329,7 +358,7 @@ sections:
       <td>Di 02.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/10.01/2021-02-02</th>
+      <th>TR/8350/ID1/10/2021/2021-02-02</th>
       <td></td>
       <td>Di 02.02.21 00:10  0</td>
       <td>Mi 03.02.21 00:30  1</td>
@@ -337,7 +366,7 @@ sections:
       <td>Mi 03.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/10.01/2021-02-03</th>
+      <th>TR/8350/ID1/10/2021/2021-02-03</th>
       <td></td>
       <td>Mi 03.02.21 00:10  0</td>
       <td>Do 04.02.21 00:30  1</td>
@@ -345,7 +374,7 @@ sections:
       <td>Do 04.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/10.01/2021-02-04</th>
+      <th>TR/8350/ID1/10/2021/2021-02-04</th>
       <td></td>
       <td>Do 04.02.21 00:10  0</td>
       <td>Fr 05.02.21 00:30  1</td>
@@ -353,7 +382,7 @@ sections:
       <td>Fr 05.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/10.01/2021-02-05</th>
+      <th>TR/8350/ID1/10/2021/2021-02-05</th>
       <td></td>
       <td>Fr 05.02.21 00:10  0</td>
       <td>Sa 06.02.21 00:30  1</td>
@@ -361,7 +390,7 @@ sections:
       <td>Sa 06.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/10.01/2021-02-06</th>
+      <th>TR/8350/ID1/10/2021/2021-02-06</th>
       <td></td>
       <td>Sa 06.02.21 00:10  0</td>
       <td>So 07.02.21 00:30  1</td>
@@ -369,7 +398,7 @@ sections:
       <td>So 07.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/10.01/2021-02-07</th>
+      <th>TR/8350/ID1/10/2021/2021-02-07</th>
       <td></td>
       <td>So 07.02.21 00:10  0</td>
       <td>Mo 08.02.21 00:30  1</td>
@@ -377,7 +406,7 @@ sections:
       <td>Mo 08.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/20.01/2021-02-07</th>
+      <th>TR/8350/ID1/20/2021/2021-02-07</th>
       <td></td>
       <td>So 07.02.21 23:50  0</td>
       <td>Di 09.02.21 00:10  2</td>
@@ -385,7 +414,7 @@ sections:
       <td>Di 09.02.21 07:40  2</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/20.01/2021-02-08</th>
+      <th>TR/8350/ID1/20/2021/2021-02-08</th>
       <td></td>
       <td>Mo 08.02.21 23:50  0</td>
       <td>Mi 10.02.21 00:10  2</td>
@@ -393,7 +422,7 @@ sections:
       <td>Mi 10.02.21 07:40  2</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/20.01/2021-02-09</th>
+      <th>TR/8350/ID1/20/2021/2021-02-09</th>
       <td></td>
       <td>Di 09.02.21 23:50  0</td>
       <td>Do 11.02.21 00:10  2</td>
@@ -401,7 +430,7 @@ sections:
       <td>Do 11.02.21 07:40  2</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/20.01/2021-02-10</th>
+      <th>TR/8350/ID1/20/2021/2021-02-10</th>
       <td></td>
       <td>Mi 10.02.21 23:50  0</td>
       <td>Fr 12.02.21 00:10  2</td>
@@ -409,7 +438,7 @@ sections:
       <td>Fr 12.02.21 07:40  2</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/20.01/2021-02-11</th>
+      <th>TR/8350/ID1/20/2021/2021-02-11</th>
       <td></td>
       <td>Do 11.02.21 23:50  0</td>
       <td>Sa 13.02.21 00:10  2</td>
@@ -417,7 +446,7 @@ sections:
       <td>Sa 13.02.21 07:40  2</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/20.01/2021-02-12</th>
+      <th>TR/8350/ID1/20/2021/2021-02-12</th>
       <td></td>
       <td>Fr 12.02.21 23:50  0</td>
       <td>So 14.02.21 00:10  2</td>
@@ -425,7 +454,7 @@ sections:
       <td>So 14.02.21 07:40  2</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/20.01/2021-02-13</th>
+      <th>TR/8350/ID1/20/2021/2021-02-13</th>
       <td></td>
       <td>Sa 13.02.21 23:50  0</td>
       <td>Mo 15.02.21 00:10  2</td>
@@ -433,7 +462,7 @@ sections:
       <td>Mo 15.02.21 07:40  2</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/30.01/2021-02-15</th>
+      <th>TR/8350/ID1/30/2021/2021-02-15</th>
       <td>Mo 15.02.21 02:00  0</td>
       <td></td>
       <td>Di 16.02.21 00:30  1</td>
@@ -441,7 +470,7 @@ sections:
       <td>Di 16.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/30.01/2021-02-16</th>
+      <th>TR/8350/ID1/30/2021/2021-02-16</th>
       <td>Di 16.02.21 02:00  0</td>
       <td></td>
       <td>Mi 17.02.21 00:30  1</td>
@@ -449,7 +478,7 @@ sections:
       <td>Mi 17.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/30.01/2021-02-17</th>
+      <th>TR/8350/ID1/30/2021/2021-02-17</th>
       <td>Mi 17.02.21 02:00  0</td>
       <td></td>
       <td>Do 18.02.21 00:30  1</td>
@@ -457,7 +486,7 @@ sections:
       <td>Do 18.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/30.01/2021-02-18</th>
+      <th>TR/8350/ID1/30/2021/2021-02-18</th>
       <td>Do 18.02.21 02:00  0</td>
       <td></td>
       <td>Fr 19.02.21 00:30  1</td>
@@ -465,7 +494,7 @@ sections:
       <td>Fr 19.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/30.01/2021-02-19</th>
+      <th>TR/8350/ID1/30/2021/2021-02-19</th>
       <td>Fr 19.02.21 02:00  0</td>
       <td></td>
       <td>Sa 20.02.21 00:30  1</td>
@@ -473,7 +502,7 @@ sections:
       <td>Sa 20.02.21 08:00  1</td>
     </tr>
     <tr>
-      <th>TR/8350/ID1/2021/30.01/2021-02-20</th>
+      <th>TR/8350/ID1/30/2021/2021-02-20</th>
       <td>Sa 20.02.21 02:00  0</td>
       <td></td>
       <td>So 21.02.21 00:30  1</td>
@@ -486,13 +515,13 @@ sections:
 </div>
 <br />
 <br /></div>
-<div class="section" id="id1">
-<h2><a class="reference external" href="https://de.wikipedia.org/wiki/Bildfahrplan">Bildfahrplan</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Show timetable as plot</p>
+<div class="section" id="bildfahrplan">
+<h2>Bildfahrplan<a class="headerlink" href="#bildfahrplan" title="Permalink to this headline">¶</a></h2>
+<p>Show timetable as <a class="reference external" href="https://de.wikipedia.org/wiki/Bildfahrplan">Bildfahrplan</a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Timetable TR/8350/ID1/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_annex_4_001.png" />
+<img alt="Timetable TR/8350/ID1/00/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_annex_4_001.png" />
 </div>
 <div class="section" id="route-sections">
 <h2>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h2>
@@ -503,38 +532,38 @@ sections:
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.01v1
-Calender  : 01/02 to 07/02
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.v1
+Calender  : 01/02 to 07/02 1111111
 Start   at: 00:10 in S
 Arrival at: 00:30 in H1
-Successors: [10.02]
+Successors: [11]
 
-ID        : 10.02v1
-Calender  : 02/02 to 08/02
+ID        : 11.v1
+Calender  : 02/02 to 08/02 1111111
 Start   at: 00:30 in H1
 Arrival at: 08:00 in T
 Successors: []
 
-ID        : 20.01v1
-Calender  : 07/02 to 13/02
+ID        : 20.v1
+Calender  : 07/02 to 13/02 1111111
 Start   at: 23:50 in S
 Arrival at: 00:10 in H1
-Successors: [20.02]
+Successors: [21]
 
-ID        : 20.02v1
-Calender  : 09/02 to 15/02
+ID        : 21.v1
+Calender  : 09/02 to 15/02 1111111
 Start   at: 00:10 in H1
 Arrival at: 07:40 in T
 Successors: []
 
-ID        : 30.01v1
-Calender  : 15/02 to 20/02
+ID        : 30.v1
+Calender  : 15/02 to 20/02 111111
 Start   at: 02:00 in D
 Arrival at: 00:30 in H1
-Successors: [30.02]
+Successors: [31]
 
-ID        : 30.02v1
-Calender  : 16/02 to 21/02
+ID        : 31.v1
+Calender  : 16/02 to 21/02 111111
 Start   at: 00:30 in H1
 Arrival at: 08:00 in T
 Successors: []
@@ -543,7 +572,7 @@ Successors: []
 </div>
 <div class="section" id="section-graph">
 <h2>Section graph<a class="headerlink" href="#section-graph" title="Permalink to this headline">¶</a></h2>
-<p>The section graph is computed using the successor relation:</p>
+<p>The section graph is computed using the successor relation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sg</span><span class="p">:</span> <span class="n">DiGraph</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">section_graph</span><span class="p">()</span>
 <span class="n">plot_graph</span><span class="p">(</span><span class="n">sg</span><span class="p">)</span>
 </pre></div>
@@ -561,24 +590,24 @@ Routes are calculated from all possible paths in the section graph.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : S-H1-T
-Key       : 10.01-10.02
-Calendar  : 01/02 to 07/02
+Key       : 10-11
+Calendar  : 01/02 to 07/02  1111111
 Start   at: 00:10 in S
 Arrival at: 00:30 in H1
 Arrival at: 08:00 in T
 
 
 Route     : S-H1-T
-Key       : 20.01-20.02
-Calendar  : 07/02 to 13/02
+Key       : 20-21
+Calendar  : 07/02 to 13/02  1111111
 Start   at: 23:50 in S
 Arrival at: 00:10 in H1
 Arrival at: 07:40 in T
 
 
 Route     : D-H1-T
-Key       : 30.01-30.02
-Calendar  : 15/02 to 20/02
+Key       : 30-31
+Calendar  : 15/02 to 20/02  111111
 Start   at: 02:00 in D
 Arrival at: 00:30 in H1
 Arrival at: 08:00 in T
@@ -595,63 +624,63 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10.01: S-H1
-               ID                   S                  H1
-2021-02-01  10.01 2021-02-01 00:10:00 2021-02-02 00:30:00
-2021-02-02  10.01 2021-02-02 00:10:00 2021-02-03 00:30:00
-2021-02-03  10.01 2021-02-03 00:10:00 2021-02-04 00:30:00
-2021-02-04  10.01 2021-02-04 00:10:00 2021-02-05 00:30:00
-2021-02-05  10.01 2021-02-05 00:10:00 2021-02-06 00:30:00
-2021-02-06  10.01 2021-02-06 00:10:00 2021-02-07 00:30:00
-2021-02-07  10.01 2021-02-07 00:10:00 2021-02-08 00:30:00
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10: S-H1
+            ID                   S                  H1
+2021-02-01  10 2021-02-01 00:10:00 2021-02-02 00:30:00
+2021-02-02  10 2021-02-02 00:10:00 2021-02-03 00:30:00
+2021-02-03  10 2021-02-03 00:10:00 2021-02-04 00:30:00
+2021-02-04  10 2021-02-04 00:10:00 2021-02-05 00:30:00
+2021-02-05  10 2021-02-05 00:10:00 2021-02-06 00:30:00
+2021-02-06  10 2021-02-06 00:10:00 2021-02-07 00:30:00
+2021-02-07  10 2021-02-07 00:10:00 2021-02-08 00:30:00
 
-10.02: H1-T
-               ID                  H1                   T
-2021-02-02  10.02 2021-02-02 00:30:00 2021-02-02 08:00:00
-2021-02-03  10.02 2021-02-03 00:30:00 2021-02-03 08:00:00
-2021-02-04  10.02 2021-02-04 00:30:00 2021-02-04 08:00:00
-2021-02-05  10.02 2021-02-05 00:30:00 2021-02-05 08:00:00
-2021-02-06  10.02 2021-02-06 00:30:00 2021-02-06 08:00:00
-2021-02-07  10.02 2021-02-07 00:30:00 2021-02-07 08:00:00
-2021-02-08  10.02 2021-02-08 00:30:00 2021-02-08 08:00:00
+11: H1-T
+            ID                  H1                   T
+2021-02-02  11 2021-02-02 00:30:00 2021-02-02 08:00:00
+2021-02-03  11 2021-02-03 00:30:00 2021-02-03 08:00:00
+2021-02-04  11 2021-02-04 00:30:00 2021-02-04 08:00:00
+2021-02-05  11 2021-02-05 00:30:00 2021-02-05 08:00:00
+2021-02-06  11 2021-02-06 00:30:00 2021-02-06 08:00:00
+2021-02-07  11 2021-02-07 00:30:00 2021-02-07 08:00:00
+2021-02-08  11 2021-02-08 00:30:00 2021-02-08 08:00:00
 
-20.01: S-H1
-               ID                   S                  H1
-2021-02-07  20.01 2021-02-07 23:50:00 2021-02-09 00:10:00
-2021-02-08  20.01 2021-02-08 23:50:00 2021-02-10 00:10:00
-2021-02-09  20.01 2021-02-09 23:50:00 2021-02-11 00:10:00
-2021-02-10  20.01 2021-02-10 23:50:00 2021-02-12 00:10:00
-2021-02-11  20.01 2021-02-11 23:50:00 2021-02-13 00:10:00
-2021-02-12  20.01 2021-02-12 23:50:00 2021-02-14 00:10:00
-2021-02-13  20.01 2021-02-13 23:50:00 2021-02-15 00:10:00
+20: S-H1
+            ID                   S                  H1
+2021-02-07  20 2021-02-07 23:50:00 2021-02-09 00:10:00
+2021-02-08  20 2021-02-08 23:50:00 2021-02-10 00:10:00
+2021-02-09  20 2021-02-09 23:50:00 2021-02-11 00:10:00
+2021-02-10  20 2021-02-10 23:50:00 2021-02-12 00:10:00
+2021-02-11  20 2021-02-11 23:50:00 2021-02-13 00:10:00
+2021-02-12  20 2021-02-12 23:50:00 2021-02-14 00:10:00
+2021-02-13  20 2021-02-13 23:50:00 2021-02-15 00:10:00
 
-20.02: H1-T
-               ID                  H1                   T
-2021-02-09  20.02 2021-02-09 00:10:00 2021-02-09 07:40:00
-2021-02-10  20.02 2021-02-10 00:10:00 2021-02-10 07:40:00
-2021-02-11  20.02 2021-02-11 00:10:00 2021-02-11 07:40:00
-2021-02-12  20.02 2021-02-12 00:10:00 2021-02-12 07:40:00
-2021-02-13  20.02 2021-02-13 00:10:00 2021-02-13 07:40:00
-2021-02-14  20.02 2021-02-14 00:10:00 2021-02-14 07:40:00
-2021-02-15  20.02 2021-02-15 00:10:00 2021-02-15 07:40:00
+21: H1-T
+            ID                  H1                   T
+2021-02-09  21 2021-02-09 00:10:00 2021-02-09 07:40:00
+2021-02-10  21 2021-02-10 00:10:00 2021-02-10 07:40:00
+2021-02-11  21 2021-02-11 00:10:00 2021-02-11 07:40:00
+2021-02-12  21 2021-02-12 00:10:00 2021-02-12 07:40:00
+2021-02-13  21 2021-02-13 00:10:00 2021-02-13 07:40:00
+2021-02-14  21 2021-02-14 00:10:00 2021-02-14 07:40:00
+2021-02-15  21 2021-02-15 00:10:00 2021-02-15 07:40:00
 
-30.01: D-H1
-               ID                   D                  H1
-2021-02-15  30.01 2021-02-15 02:00:00 2021-02-16 00:30:00
-2021-02-16  30.01 2021-02-16 02:00:00 2021-02-17 00:30:00
-2021-02-17  30.01 2021-02-17 02:00:00 2021-02-18 00:30:00
-2021-02-18  30.01 2021-02-18 02:00:00 2021-02-19 00:30:00
-2021-02-19  30.01 2021-02-19 02:00:00 2021-02-20 00:30:00
-2021-02-20  30.01 2021-02-20 02:00:00 2021-02-21 00:30:00
+30: D-H1
+            ID                   D                  H1
+2021-02-15  30 2021-02-15 02:00:00 2021-02-16 00:30:00
+2021-02-16  30 2021-02-16 02:00:00 2021-02-17 00:30:00
+2021-02-17  30 2021-02-17 02:00:00 2021-02-18 00:30:00
+2021-02-18  30 2021-02-18 02:00:00 2021-02-19 00:30:00
+2021-02-19  30 2021-02-19 02:00:00 2021-02-20 00:30:00
+2021-02-20  30 2021-02-20 02:00:00 2021-02-21 00:30:00
 
-30.02: H1-T
-               ID                  H1                   T
-2021-02-16  30.02 2021-02-16 00:30:00 2021-02-16 08:00:00
-2021-02-17  30.02 2021-02-17 00:30:00 2021-02-17 08:00:00
-2021-02-18  30.02 2021-02-18 00:30:00 2021-02-18 08:00:00
-2021-02-19  30.02 2021-02-19 00:30:00 2021-02-19 08:00:00
-2021-02-20  30.02 2021-02-20 00:30:00 2021-02-20 08:00:00
-2021-02-21  30.02 2021-02-21 00:30:00 2021-02-21 08:00:00
+31: H1-T
+            ID                  H1                   T
+2021-02-16  31 2021-02-16 00:30:00 2021-02-16 08:00:00
+2021-02-17  31 2021-02-17 00:30:00 2021-02-17 08:00:00
+2021-02-18  31 2021-02-18 00:30:00 2021-02-18 08:00:00
+2021-02-19  31 2021-02-19 00:30:00 2021-02-19 08:00:00
+2021-02-20  31 2021-02-20 00:30:00 2021-02-20 08:00:00
+2021-02-21  31 2021-02-21 00:30:00 2021-02-21 08:00:00
 </pre></div>
 </div>
 </div>
@@ -667,107 +696,502 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/ID1/2021/10.01/2021-02-01
-10.01v1:2021-02-01 00:10 OTR=0 S-H1 2021-02-02 00:30 OTR=1
-10.02v1:2021-02-02 00:30 OTR=1 H1-T 2021-02-02 08:00 OTR=1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/ID1/10/2021/2021-02-01
+10.v1:2021-02-01 00:10 OTR=0 S-H1 2021-02-02 00:30 OTR=1
+11.v1:2021-02-02 00:30 OTR=1 H1-T 2021-02-02 08:00 OTR=1
 
 
-TR/8350/ID1/2021/10.01/2021-02-02
-10.01v1:2021-02-02 00:10 OTR=0 S-H1 2021-02-03 00:30 OTR=1
-10.02v1:2021-02-03 00:30 OTR=1 H1-T 2021-02-03 08:00 OTR=1
+TR/8350/ID1/10/2021/2021-02-02
+10.v1:2021-02-02 00:10 OTR=0 S-H1 2021-02-03 00:30 OTR=1
+11.v1:2021-02-03 00:30 OTR=1 H1-T 2021-02-03 08:00 OTR=1
 
 
-TR/8350/ID1/2021/10.01/2021-02-03
-10.01v1:2021-02-03 00:10 OTR=0 S-H1 2021-02-04 00:30 OTR=1
-10.02v1:2021-02-04 00:30 OTR=1 H1-T 2021-02-04 08:00 OTR=1
+TR/8350/ID1/10/2021/2021-02-03
+10.v1:2021-02-03 00:10 OTR=0 S-H1 2021-02-04 00:30 OTR=1
+11.v1:2021-02-04 00:30 OTR=1 H1-T 2021-02-04 08:00 OTR=1
 
 
-TR/8350/ID1/2021/10.01/2021-02-04
-10.01v1:2021-02-04 00:10 OTR=0 S-H1 2021-02-05 00:30 OTR=1
-10.02v1:2021-02-05 00:30 OTR=1 H1-T 2021-02-05 08:00 OTR=1
+TR/8350/ID1/10/2021/2021-02-04
+10.v1:2021-02-04 00:10 OTR=0 S-H1 2021-02-05 00:30 OTR=1
+11.v1:2021-02-05 00:30 OTR=1 H1-T 2021-02-05 08:00 OTR=1
 
 
-TR/8350/ID1/2021/10.01/2021-02-05
-10.01v1:2021-02-05 00:10 OTR=0 S-H1 2021-02-06 00:30 OTR=1
-10.02v1:2021-02-06 00:30 OTR=1 H1-T 2021-02-06 08:00 OTR=1
+TR/8350/ID1/10/2021/2021-02-05
+10.v1:2021-02-05 00:10 OTR=0 S-H1 2021-02-06 00:30 OTR=1
+11.v1:2021-02-06 00:30 OTR=1 H1-T 2021-02-06 08:00 OTR=1
 
 
-TR/8350/ID1/2021/10.01/2021-02-06
-10.01v1:2021-02-06 00:10 OTR=0 S-H1 2021-02-07 00:30 OTR=1
-10.02v1:2021-02-07 00:30 OTR=1 H1-T 2021-02-07 08:00 OTR=1
+TR/8350/ID1/10/2021/2021-02-06
+10.v1:2021-02-06 00:10 OTR=0 S-H1 2021-02-07 00:30 OTR=1
+11.v1:2021-02-07 00:30 OTR=1 H1-T 2021-02-07 08:00 OTR=1
 
 
-TR/8350/ID1/2021/10.01/2021-02-07
-10.01v1:2021-02-07 00:10 OTR=0 S-H1 2021-02-08 00:30 OTR=1
-10.02v1:2021-02-08 00:30 OTR=1 H1-T 2021-02-08 08:00 OTR=1
+TR/8350/ID1/10/2021/2021-02-07
+10.v1:2021-02-07 00:10 OTR=0 S-H1 2021-02-08 00:30 OTR=1
+11.v1:2021-02-08 00:30 OTR=1 H1-T 2021-02-08 08:00 OTR=1
 
 
-TR/8350/ID1/2021/20.01/2021-02-07
-20.01v1:2021-02-07 23:50 OTR=0 S-H1 2021-02-09 00:10 OTR=2
-20.02v1:2021-02-09 00:10 OTR=2 H1-T 2021-02-09 07:40 OTR=2
+TR/8350/ID1/20/2021/2021-02-07
+20.v1:2021-02-07 23:50 OTR=0 S-H1 2021-02-09 00:10 OTR=2
+21.v1:2021-02-09 00:10 OTR=2 H1-T 2021-02-09 07:40 OTR=2
 
 
-TR/8350/ID1/2021/20.01/2021-02-08
-20.01v1:2021-02-08 23:50 OTR=0 S-H1 2021-02-10 00:10 OTR=2
-20.02v1:2021-02-10 00:10 OTR=2 H1-T 2021-02-10 07:40 OTR=2
+TR/8350/ID1/20/2021/2021-02-08
+20.v1:2021-02-08 23:50 OTR=0 S-H1 2021-02-10 00:10 OTR=2
+21.v1:2021-02-10 00:10 OTR=2 H1-T 2021-02-10 07:40 OTR=2
 
 
-TR/8350/ID1/2021/20.01/2021-02-09
-20.01v1:2021-02-09 23:50 OTR=0 S-H1 2021-02-11 00:10 OTR=2
-20.02v1:2021-02-11 00:10 OTR=2 H1-T 2021-02-11 07:40 OTR=2
+TR/8350/ID1/20/2021/2021-02-09
+20.v1:2021-02-09 23:50 OTR=0 S-H1 2021-02-11 00:10 OTR=2
+21.v1:2021-02-11 00:10 OTR=2 H1-T 2021-02-11 07:40 OTR=2
 
 
-TR/8350/ID1/2021/20.01/2021-02-10
-20.01v1:2021-02-10 23:50 OTR=0 S-H1 2021-02-12 00:10 OTR=2
-20.02v1:2021-02-12 00:10 OTR=2 H1-T 2021-02-12 07:40 OTR=2
+TR/8350/ID1/20/2021/2021-02-10
+20.v1:2021-02-10 23:50 OTR=0 S-H1 2021-02-12 00:10 OTR=2
+21.v1:2021-02-12 00:10 OTR=2 H1-T 2021-02-12 07:40 OTR=2
 
 
-TR/8350/ID1/2021/20.01/2021-02-11
-20.01v1:2021-02-11 23:50 OTR=0 S-H1 2021-02-13 00:10 OTR=2
-20.02v1:2021-02-13 00:10 OTR=2 H1-T 2021-02-13 07:40 OTR=2
+TR/8350/ID1/20/2021/2021-02-11
+20.v1:2021-02-11 23:50 OTR=0 S-H1 2021-02-13 00:10 OTR=2
+21.v1:2021-02-13 00:10 OTR=2 H1-T 2021-02-13 07:40 OTR=2
 
 
-TR/8350/ID1/2021/20.01/2021-02-12
-20.01v1:2021-02-12 23:50 OTR=0 S-H1 2021-02-14 00:10 OTR=2
-20.02v1:2021-02-14 00:10 OTR=2 H1-T 2021-02-14 07:40 OTR=2
+TR/8350/ID1/20/2021/2021-02-12
+20.v1:2021-02-12 23:50 OTR=0 S-H1 2021-02-14 00:10 OTR=2
+21.v1:2021-02-14 00:10 OTR=2 H1-T 2021-02-14 07:40 OTR=2
 
 
-TR/8350/ID1/2021/20.01/2021-02-13
-20.01v1:2021-02-13 23:50 OTR=0 S-H1 2021-02-15 00:10 OTR=2
-20.02v1:2021-02-15 00:10 OTR=2 H1-T 2021-02-15 07:40 OTR=2
+TR/8350/ID1/20/2021/2021-02-13
+20.v1:2021-02-13 23:50 OTR=0 S-H1 2021-02-15 00:10 OTR=2
+21.v1:2021-02-15 00:10 OTR=2 H1-T 2021-02-15 07:40 OTR=2
 
 
-TR/8350/ID1/2021/30.01/2021-02-15
-30.01v1:2021-02-15 02:00 OTR=0 D-H1 2021-02-16 00:30 OTR=1
-30.02v1:2021-02-16 00:30 OTR=1 H1-T 2021-02-16 08:00 OTR=1
+TR/8350/ID1/30/2021/2021-02-15
+30.v1:2021-02-15 02:00 OTR=0 D-H1 2021-02-16 00:30 OTR=1
+31.v1:2021-02-16 00:30 OTR=1 H1-T 2021-02-16 08:00 OTR=1
 
 
-TR/8350/ID1/2021/30.01/2021-02-16
-30.01v1:2021-02-16 02:00 OTR=0 D-H1 2021-02-17 00:30 OTR=1
-30.02v1:2021-02-17 00:30 OTR=1 H1-T 2021-02-17 08:00 OTR=1
+TR/8350/ID1/30/2021/2021-02-16
+30.v1:2021-02-16 02:00 OTR=0 D-H1 2021-02-17 00:30 OTR=1
+31.v1:2021-02-17 00:30 OTR=1 H1-T 2021-02-17 08:00 OTR=1
 
 
-TR/8350/ID1/2021/30.01/2021-02-17
-30.01v1:2021-02-17 02:00 OTR=0 D-H1 2021-02-18 00:30 OTR=1
-30.02v1:2021-02-18 00:30 OTR=1 H1-T 2021-02-18 08:00 OTR=1
+TR/8350/ID1/30/2021/2021-02-17
+30.v1:2021-02-17 02:00 OTR=0 D-H1 2021-02-18 00:30 OTR=1
+31.v1:2021-02-18 00:30 OTR=1 H1-T 2021-02-18 08:00 OTR=1
 
 
-TR/8350/ID1/2021/30.01/2021-02-18
-30.01v1:2021-02-18 02:00 OTR=0 D-H1 2021-02-19 00:30 OTR=1
-30.02v1:2021-02-19 00:30 OTR=1 H1-T 2021-02-19 08:00 OTR=1
+TR/8350/ID1/30/2021/2021-02-18
+30.v1:2021-02-18 02:00 OTR=0 D-H1 2021-02-19 00:30 OTR=1
+31.v1:2021-02-19 00:30 OTR=1 H1-T 2021-02-19 08:00 OTR=1
 
 
-TR/8350/ID1/2021/30.01/2021-02-19
-30.01v1:2021-02-19 02:00 OTR=0 D-H1 2021-02-20 00:30 OTR=1
-30.02v1:2021-02-20 00:30 OTR=1 H1-T 2021-02-20 08:00 OTR=1
+TR/8350/ID1/30/2021/2021-02-19
+30.v1:2021-02-19 02:00 OTR=0 D-H1 2021-02-20 00:30 OTR=1
+31.v1:2021-02-20 00:30 OTR=1 H1-T 2021-02-20 08:00 OTR=1
 
 
-TR/8350/ID1/2021/30.01/2021-02-20
-30.01v1:2021-02-20 02:00 OTR=0 D-H1 2021-02-21 00:30 OTR=1
-30.02v1:2021-02-21 00:30 OTR=1 H1-T 2021-02-21 08:00 OTR=1
+TR/8350/ID1/30/2021/2021-02-20
+30.v1:2021-02-20 02:00 OTR=0 D-H1 2021-02-21 00:30 OTR=1
+31.v1:2021-02-21 00:30 OTR=1 H1-T 2021-02-21 08:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.012 seconds)</p>
+</div>
+<div class="section" id="routinginformation-as-traininformation">
+<h2>RoutingInformation as TrainInformation<a class="headerlink" href="#routinginformation-as-traininformation" title="Permalink to this headline">¶</a></h2>
+<p>An XML Dump of the routing information of this example according a new version of the TSI XSD.</p>
+<p>See <a class="reference external" href="../routing-planning-process.html#routininformation-as-traininformation">Routing planning</a>
+for more details.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dump_routing_info_as_xml</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TrainInformation xmlns=&quot;http://taf-jsg.info/schemes&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd&quot; RouteInfoVersion=&quot;1&quot;&gt;
+  &lt;RouteSection SectionVersion=&quot;1&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;---------ID1&lt;/Core&gt;
+    &lt;Variant&gt;10&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:10:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-01T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-07T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;---------ID1&lt;/Core&gt;
+      &lt;Variant&gt;11&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;---------ID1&lt;/Core&gt;
+    &lt;Variant&gt;11&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;08:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-02T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-08T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;---------ID1&lt;/Core&gt;
+    &lt;Variant&gt;20&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;23:50:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:10:00&lt;/Time&gt;
+        &lt;Offset&gt;2&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-07T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-13T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;---------ID1&lt;/Core&gt;
+      &lt;Variant&gt;21&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;---------ID1&lt;/Core&gt;
+    &lt;Variant&gt;21&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:10:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;07:40:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-09T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-15T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;---------ID1&lt;/Core&gt;
+    &lt;Variant&gt;30&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10003&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;D&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;02:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-15T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-20T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;---------ID1&lt;/Core&gt;
+      &lt;Variant&gt;31&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;---------ID1&lt;/Core&gt;
+    &lt;Variant&gt;31&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;08:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-16T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-21T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;Route key=&quot;10-11&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-01T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-07T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:10:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;08:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;Route key=&quot;20-21&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-07T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-13T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;23:50:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:10:00&lt;/Time&gt;
+        &lt;Offset&gt;2&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;07:40:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;Route key=&quot;30-31&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;111111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-02-15T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-02-20T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10003&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;D&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;02:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;08:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;/TrainInformation&gt;
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.964 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-annex-4-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5643e63d75b812d980b176a3c596eff0/plot_annex_4.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_annex_4.py</span></code></a></p>
@@ -786,8 +1210,8 @@ TR/8350/ID1/2021/30.01/2021-02-20
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_ac_ff.html" class="btn btn-neutral float-right" title="Example: Train from Amsterdam to Frankfurt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="plot_test_otr.html" class="btn btn-neutral float-left" title="Example showing OTR anomalie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_annex_4_v2.html" class="btn btn-neutral float-right" title="Example Train Annex 4 v2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_ac_ff_without_timing.html" class="btn btn-neutral float-left" title="Example: Train AC - FF without timing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

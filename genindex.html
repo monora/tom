@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; Train Object Model 0.1.1 documentation</title>
+  <title>Index &mdash; Train Object Model 0.2.0 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.2.0
               </div>
             
           
@@ -181,6 +181,7 @@
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
@@ -189,6 +190,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#X"><strong>X</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -218,6 +220,8 @@
         <li><a href="tom.html#tom.tom.SectionRun.arrival_time">(tom.tom.SectionRun method)</a>
 </li>
       </ul></li>
+      <li><a href="tom.html#tom.tom.RouteSection.arrival_time_offset">arrival_time_offset() (tom.tom.RouteSection method)</a>
+</li>
       <li><a href="tom.html#tom.tom.RouteSection.arrival_times">arrival_times() (tom.tom.RouteSection method)</a>
 </li>
       <li><a href="tom.html#tom.tom.SectionRun.arrival_with_otr">arrival_with_otr() (tom.tom.SectionRun method)</a>
@@ -264,6 +268,8 @@
 </li>
       <li><a href="tom.html#tom.tom.RouteSection.complete_from_successor">complete_from_successor() (tom.tom.RouteSection method)</a>
 </li>
+      <li><a href="tom.html#tom.tom.compute_bitmap_days">compute_bitmap_days() (in module tom.tom)</a>
+</li>
       <li><a href="tom.html#tom.tom.SectionRun.connects_to">connects_to() (tom.tom.SectionRun method)</a>
 </li>
       <li><a href="tom.html#tom.tom.Train.core_id">core_id (tom.tom.Train attribute)</a>
@@ -274,6 +280,8 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.day_offset">day_offset() (in module tom.tom)</a>
+</li>
       <li><a href="tom.html#tom.tom.SectionRun.departure_column">departure_column() (tom.tom.SectionRun method)</a>
 </li>
       <li><a href="tom.html#tom.tom.RouteSection.departure_daytime">departure_daytime (tom.tom.RouteSection attribute)</a>
@@ -304,6 +312,8 @@
         <li><a href="tom.html#tom.tom.RouteSection.description">(tom.tom.RouteSection method)</a>
 </li>
       </ul></li>
+      <li><a href="tom.html#tom.util.dump_routing_info_as_xml">dump_routing_info_as_xml() (in module tom.util)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -348,13 +358,23 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.Train.id">id() (tom.tom.Train method)</a>
 </li>
-      <li><a href="tom.html#tom.tom.RouteSection.is_complete">is_complete() (tom.tom.RouteSection method)</a>
+      <li><a href="tom.html#tom.tom.Train.id_to_sec">id_to_sec (tom.tom.Train attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.RouteSection.is_complete">is_complete() (tom.tom.RouteSection method)</a>
+</li>
       <li><a href="tom.html#tom.tom.RouteSection.is_construction_start">is_construction_start (tom.tom.RouteSection attribute)</a>
 </li>
       <li><a href="tom.html#tom.tom.RouteSection.is_section_complete">is_section_complete (tom.tom.RouteSection attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.Route.journey_location_iter">journey_location_iter() (tom.tom.Route method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -368,13 +388,19 @@
         <li><a href="tom.html#tom.tom.RouteSection.last_day">(tom.tom.RouteSection method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.Train.lead_ru">lead_ru (tom.tom.Train attribute)</a>
 </li>
       <li><a href="tom.html#tom.tom.Train.location_graph">location_graph() (tom.tom.Train method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.TrainRun.location_iterator">location_iterator() (tom.tom.TrainRun method)</a>
+</li>
+      <li><a href="tom.html#tom.tom.LocationIdGenerator.location_last">location_last (tom.tom.LocationIdGenerator attribute)</a>
+</li>
+      <li><a href="tom.html#tom.tom.LocationIdGenerator.location_name_to_code">location_name_to_code (tom.tom.LocationIdGenerator attribute)</a>
+</li>
+      <li><a href="tom.html#tom.tom.LocationIdGenerator">LocationIdGenerator (class in tom.tom)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -383,6 +409,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.make_train_from_yml">make_train_from_yml() (in module tom.tom)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.LocationIdGenerator.map_location_name_to_code">map_location_name_to_code() (tom.tom.LocationIdGenerator method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -433,6 +463,8 @@
       <li><a href="tom.html#tom.tom.Train.routes">routes() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.RouteSection">RouteSection (class in tom.tom)</a>
+</li>
+      <li><a href="tom.html#tom.tom.Train.routing_info_to_xml">routing_info_to_xml() (tom.tom.Train method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -496,6 +528,12 @@
         <li><a href="tom.html#tom.tom.Train.to_dataframe">(tom.tom.Train method)</a>
 </li>
       </ul></li>
+      <li><a href="tom.html#tom.tom.Route.to_xml">to_xml() (tom.tom.Route method)</a>
+
+      <ul>
+        <li><a href="tom.html#tom.tom.RouteSection.to_xml">(tom.tom.RouteSection method)</a>
+</li>
+      </ul></li>
       <li><a href="tom.html#module-tom">tom (module)</a>
 </li>
       <li><a href="tom.html#module-tom.cli">tom.cli (module)</a>
@@ -514,8 +552,12 @@
 </li>
       <li><a href="tom.html#tom.tom.Train">Train (class in tom.tom)</a>
 </li>
-      <li><a href="tom.html#tom.tom.TrainRun.train">train (tom.tom.TrainRun attribute)</a>
+      <li><a href="tom.html#tom.tom.RouteSection.train">train (tom.tom.RouteSection attribute)</a>
+
+      <ul>
+        <li><a href="tom.html#tom.tom.TrainRun.train">(tom.tom.TrainRun attribute)</a>
 </li>
+      </ul></li>
       <li><a href="tom.html#tom.tom.Train.train_id">train_id() (tom.tom.Train method)</a>
 
       <ul>
@@ -524,13 +566,13 @@
       </ul></li>
       <li><a href="tom.html#tom.tom.Train.train_run_graph">train_run_graph() (tom.tom.Train method)</a>
 </li>
-      <li><a href="tom.html#tom.tom.TrainRun.train_run_id">train_run_id() (tom.tom.TrainRun method)</a>
-</li>
       <li><a href="tom.html#tom.tom.Train.train_run_iterator">train_run_iterator() (tom.tom.Train method)</a>
 </li>
       <li><a href="tom.html#tom.tom.TrainRun">TrainRun (class in tom.tom)</a>
 </li>
       <li><a href="tom.html#tom.tom.RouteSection.travel_time">travel_time (tom.tom.RouteSection attribute)</a>
+</li>
+      <li><a href="tom.html#tom.tom.TSI_SCHEMA_VERSION">TSI_SCHEMA_VERSION (in module tom.tom)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -549,6 +591,24 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tom.html#tom.tom.RouteSection.version_info">version_info() (tom.tom.RouteSection method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.xml_add_calendar">xml_add_calendar() (in module tom.tom)</a>
+</li>
+      <li><a href="tom.html#tom.tom.RouteSection.xml_add_id">xml_add_id() (tom.tom.RouteSection method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tom.html#tom.tom.xml_add_journey_location">xml_add_journey_location() (in module tom.tom)</a>
+</li>
+      <li><a href="tom.html#tom.tom.xml_simple_element">xml_simple_element() (in module tom.tom)</a>
+</li>
+      <li><a href="tom.html#tom.util.xml_to_string">xml_to_string() (in module tom.util)</a>
 </li>
   </ul></td>
 </tr></table>

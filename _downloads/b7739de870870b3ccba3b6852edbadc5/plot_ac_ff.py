@@ -3,15 +3,26 @@ Example: Train from Amsterdam to Frankfurt
 ==========================================
 
 Here we investigate the routing specification for example from
-`train-ac-ff.yml`.
+`train-ac-ff-v1.yml`.
+
+Given this infrastructure:
+
+.. uml:: ../uml/tom-04-example-ac-ff-infrastructure.puml
+
+This object diagramm shows a szenario for a train from AC to Frankfurt FF which is planned to
+operate in december 2021. On Fri-Sun handover is EMM. On Mon-Thu handover is Venlo.
+
+.. uml:: ../uml/tom-04-example-ac-ff.puml
+
+.. _Pandas DataFrame: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
 """
-from tom.util import example
-from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
 from tom.plot import plot_train, plot_graph
+from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
+from tom.util import example, dump_routing_info_as_xml
 
 # %%
 # Load example 4 from yaml specification
-pattern = 'ac-ff.yml'
+pattern = 'ac-ff-v1'
 train_specs, t_spec_file = example('../tests/data', pattern)
 print(t_spec_file.read_text())
 
@@ -23,7 +34,9 @@ t.train_id()
 # %%
 # Timetable
 # ^^^^^^^^^
-# Show timetable as dataframe
+#
+# With :meth:`~tom.tom.Train.to_dataframe` you can create a `Pandas DataFrame`_ which you can
+# export to excel.
 df = t.to_dataframe()
 df
 
@@ -81,3 +94,12 @@ for tr in t.train_run_iterator():
     for sr in tr.sections_runs:
         print(sr)
     print("\n")
+
+# %%
+# RoutingInformation as TrainInformation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# An XML Dump of the routing information of this example according a new version of the TSI XSD.
+#
+# See `Routing planning <../routing-planning-process.html#routininformation-as-traininformation>`_
+# for more details.
+print(dump_routing_info_as_xml(t))

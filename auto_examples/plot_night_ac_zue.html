@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Example: Night Train from Amsterdam to Zürich &mdash; Train Object Model 0.1.1 documentation</title>
+  <title>Example: Night Train from Amsterdam to Zürich &mdash; Train Object Model 0.2.0 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.2.0
               </div>
             
           
@@ -102,7 +102,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4 v1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4_v2.html">Example Train Annex 4 v2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Example: Night Train from Amsterdam to Zürich</a><ul>
@@ -266,23 +268,21 @@ sections:
         begin: &amp;b-begin &#39;2021-12-12&#39;
         end: &amp;b-end &#39;2021-12-31&#39;
         mask: &#39;Fri Sat Sun&#39;
-      color: salmon
-      succ:
-          - 30
-    - departure_station: EEM
-      arrival_station: RXBA # Basel Grenze
-      id: 30
-      version: 1
-      travel_time: &#39;06:00:00&#39;
       color: green
       succ:
-          - 50
+          - 11
+    - departure_station: EEM
+      arrival_station: RXBA # Basel Grenze
+      id: 11
+      version: 1
+      travel_time: &#39;06:00:00&#39;
+      succ:
+          - 12
     - departure_station: RXBA
       arrival_station: XSZH # Zürich HB
-      id: 50
+      id: 12
       version: 1
       travel_time: &#39;01:00:00&#39;
-      color: blue
 </pre></div>
 </div>
 <p>Create train object and show its train id</p>
@@ -291,7 +291,7 @@ sections:
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/402403/2021&#39;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/402403/00/2021&#39;
 </pre></div>
 </div>
 <div class="section" id="timetable-v1">
@@ -330,7 +330,7 @@ sections:
   </thead>
   <tbody>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-12</th>
+      <th>TR/8350/402403/10/2021/2021-12-12</th>
       <td>So 12.12.21 20:00  0</td>
       <td>So 12.12.21 21:30  0</td>
       <td>So 12.12.21 21:30  0</td>
@@ -339,7 +339,7 @@ sections:
       <td>Mo 13.12.21 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-17</th>
+      <th>TR/8350/402403/10/2021/2021-12-17</th>
       <td>Fr 17.12.21 20:00  0</td>
       <td>Fr 17.12.21 21:30  0</td>
       <td>Fr 17.12.21 21:30  0</td>
@@ -348,7 +348,7 @@ sections:
       <td>Sa 18.12.21 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-18</th>
+      <th>TR/8350/402403/10/2021/2021-12-18</th>
       <td>Sa 18.12.21 20:00  0</td>
       <td>Sa 18.12.21 21:30  0</td>
       <td>Sa 18.12.21 21:30  0</td>
@@ -357,7 +357,7 @@ sections:
       <td>So 19.12.21 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-19</th>
+      <th>TR/8350/402403/10/2021/2021-12-19</th>
       <td>So 19.12.21 20:00  0</td>
       <td>So 19.12.21 21:30  0</td>
       <td>So 19.12.21 21:30  0</td>
@@ -366,7 +366,7 @@ sections:
       <td>Mo 20.12.21 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-24</th>
+      <th>TR/8350/402403/10/2021/2021-12-24</th>
       <td>Fr 24.12.21 20:00  0</td>
       <td>Fr 24.12.21 21:30  0</td>
       <td>Fr 24.12.21 21:30  0</td>
@@ -375,7 +375,7 @@ sections:
       <td>Sa 25.12.21 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-25</th>
+      <th>TR/8350/402403/10/2021/2021-12-25</th>
       <td>Sa 25.12.21 20:00  0</td>
       <td>Sa 25.12.21 21:30  0</td>
       <td>Sa 25.12.21 21:30  0</td>
@@ -384,7 +384,7 @@ sections:
       <td>So 26.12.21 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-26</th>
+      <th>TR/8350/402403/10/2021/2021-12-26</th>
       <td>So 26.12.21 20:00  0</td>
       <td>So 26.12.21 21:30  0</td>
       <td>So 26.12.21 21:30  0</td>
@@ -393,13 +393,13 @@ sections:
       <td>Mo 27.12.21 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2021/10/2021-12-31</th>
+      <th>TR/8350/402403/10/2021/2021-12-31</th>
       <td>Fr 31.12.21 20:00  0</td>
       <td>Fr 31.12.21 21:30  0</td>
       <td>Fr 31.12.21 21:30  0</td>
-      <td>Sa 01.01.22 03:30  1</td>
-      <td>Sa 01.01.22 03:30  1</td>
-      <td>Sa 01.01.22 04:30  1</td>
+      <td>Sa 01.01.22 03:30 30</td>
+      <td>Sa 01.01.22 03:30 30</td>
+      <td>Sa 01.01.22 04:30 30</td>
     </tr>
   </tbody>
 </table>
@@ -415,7 +415,7 @@ No sections from Utrecht over Venlo here.</p>
 <span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Timetable TR/8350/402403/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_001.png" />
+<img alt="Timetable TR/8350/402403/00/2021 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_001.png" />
 </div>
 <div class="section" id="route-sections">
 <h3>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h3>
@@ -426,20 +426,20 @@ No sections from Utrecht over Venlo here.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10v1
-Calender  : 12/12 to 31/12
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.v1
+Calender  : 12/12 to 31/12 10000111000011100001
 Start   at: 20:00 in XNAC
 Arrival at: 21:30 in EEM
-Successors: [30]
+Successors: [11]
 
-ID        : 30v1
-Calender  : 12/12 to 31/12
+ID        : 11.v1
+Calender  : 12/12 to 31/12 10000111000011100001
 Start   at: 21:30 in EEM
 Arrival at: 03:30 in RXBA
-Successors: [50]
+Successors: [12]
 
-ID        : 50v1
-Calender  : 13/12 to 01/01
+ID        : 12.v1
+Calender  : 13/12 to 01/01 10000111000011100001
 Start   at: 03:30 in RXBA
 Arrival at: 04:30 in XSZH
 Successors: []
@@ -467,8 +467,8 @@ Version 1 has only one route with three sections.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : XNAC-EEM-RXBA-XSZH
-Key       : 10-30-50
-Calendar  : 12/12 to 31/12
+Key       : 10-11-12
+Calendar  : 12/12 to 31/12  10000111000011100001
 Start   at: 20:00 in XNAC
 Arrival at: 21:30 in EEM
 Arrival at: 03:30 in RXBA
@@ -498,27 +498,27 @@ We only show the section run in december here.</p>
 2021-12-26  10 2021-12-26 20:00:00 2021-12-26 21:30:00
 2021-12-31  10 2021-12-31 20:00:00 2021-12-31 21:30:00
 
-30: EEM-RXBA
+11: EEM-RXBA
             ID                 EEM                RXBA
-2021-12-12  30 2021-12-12 21:30:00 2021-12-13 03:30:00
-2021-12-17  30 2021-12-17 21:30:00 2021-12-18 03:30:00
-2021-12-18  30 2021-12-18 21:30:00 2021-12-19 03:30:00
-2021-12-19  30 2021-12-19 21:30:00 2021-12-20 03:30:00
-2021-12-24  30 2021-12-24 21:30:00 2021-12-25 03:30:00
-2021-12-25  30 2021-12-25 21:30:00 2021-12-26 03:30:00
-2021-12-26  30 2021-12-26 21:30:00 2021-12-27 03:30:00
-2021-12-31  30 2021-12-31 21:30:00 2022-01-01 03:30:00
+2021-12-12  11 2021-12-12 21:30:00 2021-12-13 03:30:00
+2021-12-17  11 2021-12-17 21:30:00 2021-12-18 03:30:00
+2021-12-18  11 2021-12-18 21:30:00 2021-12-19 03:30:00
+2021-12-19  11 2021-12-19 21:30:00 2021-12-20 03:30:00
+2021-12-24  11 2021-12-24 21:30:00 2021-12-25 03:30:00
+2021-12-25  11 2021-12-25 21:30:00 2021-12-26 03:30:00
+2021-12-26  11 2021-12-26 21:30:00 2021-12-27 03:30:00
+2021-12-31  11 2021-12-31 21:30:00 2022-01-01 03:30:00
 
-50: RXBA-XSZH
+12: RXBA-XSZH
             ID                RXBA                XSZH
-2021-12-13  50 2021-12-13 03:30:00 2021-12-13 04:30:00
-2021-12-18  50 2021-12-18 03:30:00 2021-12-18 04:30:00
-2021-12-19  50 2021-12-19 03:30:00 2021-12-19 04:30:00
-2021-12-20  50 2021-12-20 03:30:00 2021-12-20 04:30:00
-2021-12-25  50 2021-12-25 03:30:00 2021-12-25 04:30:00
-2021-12-26  50 2021-12-26 03:30:00 2021-12-26 04:30:00
-2021-12-27  50 2021-12-27 03:30:00 2021-12-27 04:30:00
-2022-01-01  50 2022-01-01 03:30:00 2022-01-01 04:30:00
+2021-12-13  12 2021-12-13 03:30:00 2021-12-13 04:30:00
+2021-12-18  12 2021-12-18 03:30:00 2021-12-18 04:30:00
+2021-12-19  12 2021-12-19 03:30:00 2021-12-19 04:30:00
+2021-12-20  12 2021-12-20 03:30:00 2021-12-20 04:30:00
+2021-12-25  12 2021-12-25 03:30:00 2021-12-25 04:30:00
+2021-12-26  12 2021-12-26 03:30:00 2021-12-26 04:30:00
+2021-12-27  12 2021-12-27 03:30:00 2021-12-27 04:30:00
+2022-01-01  12 2022-01-01 03:30:00 2022-01-01 04:30:00
 </pre></div>
 </div>
 </div>
@@ -534,52 +534,52 @@ We only show the section run in december here.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/2021/10/2021-12-12
-10v1:2021-12-12 20:00 OTR=0 XNAC-EEM 2021-12-12 21:30 OTR=0
-30v1:2021-12-12 21:30 OTR=0 EEM-RXBA 2021-12-13 03:30 OTR=1
-50v1:2021-12-13 03:30 OTR=1 RXBA-XSZH 2021-12-13 04:30 OTR=1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/10/2021/2021-12-12
+10.v1:2021-12-12 20:00 OTR=0 XNAC-EEM 2021-12-12 21:30 OTR=0
+11.v1:2021-12-12 21:30 OTR=0 EEM-RXBA 2021-12-13 03:30 OTR=1
+12.v1:2021-12-13 03:30 OTR=1 RXBA-XSZH 2021-12-13 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-17
-10v1:2021-12-17 20:00 OTR=0 XNAC-EEM 2021-12-17 21:30 OTR=0
-30v1:2021-12-17 21:30 OTR=0 EEM-RXBA 2021-12-18 03:30 OTR=1
-50v1:2021-12-18 03:30 OTR=1 RXBA-XSZH 2021-12-18 04:30 OTR=1
+TR/8350/402403/10/2021/2021-12-17
+10.v1:2021-12-17 20:00 OTR=0 XNAC-EEM 2021-12-17 21:30 OTR=0
+11.v1:2021-12-17 21:30 OTR=0 EEM-RXBA 2021-12-18 03:30 OTR=1
+12.v1:2021-12-18 03:30 OTR=1 RXBA-XSZH 2021-12-18 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-18
-10v1:2021-12-18 20:00 OTR=0 XNAC-EEM 2021-12-18 21:30 OTR=0
-30v1:2021-12-18 21:30 OTR=0 EEM-RXBA 2021-12-19 03:30 OTR=1
-50v1:2021-12-19 03:30 OTR=1 RXBA-XSZH 2021-12-19 04:30 OTR=1
+TR/8350/402403/10/2021/2021-12-18
+10.v1:2021-12-18 20:00 OTR=0 XNAC-EEM 2021-12-18 21:30 OTR=0
+11.v1:2021-12-18 21:30 OTR=0 EEM-RXBA 2021-12-19 03:30 OTR=1
+12.v1:2021-12-19 03:30 OTR=1 RXBA-XSZH 2021-12-19 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-19
-10v1:2021-12-19 20:00 OTR=0 XNAC-EEM 2021-12-19 21:30 OTR=0
-30v1:2021-12-19 21:30 OTR=0 EEM-RXBA 2021-12-20 03:30 OTR=1
-50v1:2021-12-20 03:30 OTR=1 RXBA-XSZH 2021-12-20 04:30 OTR=1
+TR/8350/402403/10/2021/2021-12-19
+10.v1:2021-12-19 20:00 OTR=0 XNAC-EEM 2021-12-19 21:30 OTR=0
+11.v1:2021-12-19 21:30 OTR=0 EEM-RXBA 2021-12-20 03:30 OTR=1
+12.v1:2021-12-20 03:30 OTR=1 RXBA-XSZH 2021-12-20 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-24
-10v1:2021-12-24 20:00 OTR=0 XNAC-EEM 2021-12-24 21:30 OTR=0
-30v1:2021-12-24 21:30 OTR=0 EEM-RXBA 2021-12-25 03:30 OTR=1
-50v1:2021-12-25 03:30 OTR=1 RXBA-XSZH 2021-12-25 04:30 OTR=1
+TR/8350/402403/10/2021/2021-12-24
+10.v1:2021-12-24 20:00 OTR=0 XNAC-EEM 2021-12-24 21:30 OTR=0
+11.v1:2021-12-24 21:30 OTR=0 EEM-RXBA 2021-12-25 03:30 OTR=1
+12.v1:2021-12-25 03:30 OTR=1 RXBA-XSZH 2021-12-25 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-25
-10v1:2021-12-25 20:00 OTR=0 XNAC-EEM 2021-12-25 21:30 OTR=0
-30v1:2021-12-25 21:30 OTR=0 EEM-RXBA 2021-12-26 03:30 OTR=1
-50v1:2021-12-26 03:30 OTR=1 RXBA-XSZH 2021-12-26 04:30 OTR=1
+TR/8350/402403/10/2021/2021-12-25
+10.v1:2021-12-25 20:00 OTR=0 XNAC-EEM 2021-12-25 21:30 OTR=0
+11.v1:2021-12-25 21:30 OTR=0 EEM-RXBA 2021-12-26 03:30 OTR=1
+12.v1:2021-12-26 03:30 OTR=1 RXBA-XSZH 2021-12-26 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-26
-10v1:2021-12-26 20:00 OTR=0 XNAC-EEM 2021-12-26 21:30 OTR=0
-30v1:2021-12-26 21:30 OTR=0 EEM-RXBA 2021-12-27 03:30 OTR=1
-50v1:2021-12-27 03:30 OTR=1 RXBA-XSZH 2021-12-27 04:30 OTR=1
+TR/8350/402403/10/2021/2021-12-26
+10.v1:2021-12-26 20:00 OTR=0 XNAC-EEM 2021-12-26 21:30 OTR=0
+11.v1:2021-12-26 21:30 OTR=0 EEM-RXBA 2021-12-27 03:30 OTR=1
+12.v1:2021-12-27 03:30 OTR=1 RXBA-XSZH 2021-12-27 04:30 OTR=1
 
 
-TR/8350/402403/2021/10/2021-12-31
-10v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
-30v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=1
-50v1:2022-01-01 03:30 OTR=1 RXBA-XSZH 2022-01-01 04:30 OTR=1
+TR/8350/402403/10/2021/2021-12-31
+10.v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
+11.v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=30
+12.v1:2022-01-01 03:30 OTR=30 RXBA-XSZH 2022-01-01 04:30 OTR=30
 </pre></div>
 </div>
 </div>
@@ -598,6 +598,7 @@ TR/8350/402403/2021/10/2021-12-31
 coreID: 402403
 version: 2
 sections:
+    # Route Amsterdam-Emm-Basel-Zürich
     - departure_station: XNAC
       arrival_station: EEM
       id: 10
@@ -608,9 +609,23 @@ sections:
         begin: &amp;b-begin &#39;2022-04-12&#39;
         end: &amp;b-end &#39;2022-05-12&#39;
         mask: &#39;Fri Sat&#39;
-      color: salmon
+      color: green
       succ:
-          - 30
+          - 11
+    - departure_station: EEM
+      arrival_station: RXBA # Basel Grenze
+      id: 11
+      version: 1
+      travel_time: &#39;06:00:00&#39;
+      succ:
+          - 12
+    - departure_station: RXBA
+      arrival_station: XSZH # Zürich HB
+      id: 12
+      version: 1
+      travel_time: &#39;01:00:00&#39;
+
+    # Route Utrecht-Venlo-Basel
     - departure_station: XNU # Utrecht
       arrival_station: XNVL # Venlo
       id: 20
@@ -618,34 +633,19 @@ sections:
       departure_time: &#39;20:30:00&#39;
       travel_time: &#39;01:30:00&#39;
       calendar:
-        begin: *b-begin
-        end: *b-end
-        mask: &#39;Sun&#39;
+          begin: *b-begin
+          end: *b-end
+          mask: &#39;Sun&#39;
       color: red
       succ:
-          - 40
-    - departure_station: EEM
-      arrival_station: RXBA # Basel Grenze
-      id: 30
-      version: 2
-      travel_time: &#39;06:00:00&#39;
-      color: green
-      succ:
-          - 50
+          - 21
     - departure_station: XNVL
       arrival_station: RXBA
-      id: 40
+      id: 21
       version: 1
       travel_time: &#39;06:00:00&#39;
-      color: green
       succ:
-          - 50
-    - departure_station: RXBA
-      arrival_station: XSZH # Zürich HB
-      version: 2
-      id: 50
-      travel_time: &#39;01:00:00&#39;
-      color: blue
+          - 12
 </pre></div>
 </div>
 <div class="section" id="timetable-v2">
@@ -687,7 +687,7 @@ sections:
   </thead>
   <tbody>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-04-15</th>
+      <th>TR/8350/402403/10/2022/2022-04-15</th>
       <td></td>
       <td></td>
       <td></td>
@@ -699,7 +699,7 @@ sections:
       <td>Sa 16.04.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-04-16</th>
+      <th>TR/8350/402403/10/2022/2022-04-16</th>
       <td></td>
       <td></td>
       <td></td>
@@ -711,7 +711,7 @@ sections:
       <td>So 17.04.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/20/2022-04-17</th>
+      <th>TR/8350/402403/20/2022/2022-04-17</th>
       <td>So 17.04.22 20:30  0</td>
       <td>So 17.04.22 22:00  0</td>
       <td>So 17.04.22 22:00  0</td>
@@ -723,7 +723,7 @@ sections:
       <td></td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-04-22</th>
+      <th>TR/8350/402403/10/2022/2022-04-22</th>
       <td></td>
       <td></td>
       <td></td>
@@ -735,7 +735,7 @@ sections:
       <td>Sa 23.04.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-04-23</th>
+      <th>TR/8350/402403/10/2022/2022-04-23</th>
       <td></td>
       <td></td>
       <td></td>
@@ -747,7 +747,7 @@ sections:
       <td>So 24.04.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/20/2022-04-24</th>
+      <th>TR/8350/402403/20/2022/2022-04-24</th>
       <td>So 24.04.22 20:30  0</td>
       <td>So 24.04.22 22:00  0</td>
       <td>So 24.04.22 22:00  0</td>
@@ -759,7 +759,7 @@ sections:
       <td></td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-04-29</th>
+      <th>TR/8350/402403/10/2022/2022-04-29</th>
       <td></td>
       <td></td>
       <td></td>
@@ -771,19 +771,19 @@ sections:
       <td>Sa 30.04.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-04-30</th>
+      <th>TR/8350/402403/10/2022/2022-04-30</th>
       <td></td>
       <td></td>
       <td></td>
       <td>Sa 30.04.22 20:00  0</td>
       <td>Sa 30.04.22 21:30  0</td>
       <td>Sa 30.04.22 21:30  0</td>
-      <td>So 01.05.22 03:30  1</td>
-      <td>So 01.05.22 03:30  1</td>
-      <td>So 01.05.22 04:30  1</td>
+      <td>So 01.05.22 03:30 29</td>
+      <td>So 01.05.22 03:30 29</td>
+      <td>So 01.05.22 04:30 29</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/20/2022-05-01</th>
+      <th>TR/8350/402403/20/2022/2022-05-01</th>
       <td>So 01.05.22 20:30  0</td>
       <td>So 01.05.22 22:00  0</td>
       <td>So 01.05.22 22:00  0</td>
@@ -795,7 +795,7 @@ sections:
       <td></td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-05-06</th>
+      <th>TR/8350/402403/10/2022/2022-05-06</th>
       <td></td>
       <td></td>
       <td></td>
@@ -807,7 +807,7 @@ sections:
       <td>Sa 07.05.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/10/2022-05-07</th>
+      <th>TR/8350/402403/10/2022/2022-05-07</th>
       <td></td>
       <td></td>
       <td></td>
@@ -819,7 +819,7 @@ sections:
       <td>So 08.05.22 04:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/402403/2022/20/2022-05-08</th>
+      <th>TR/8350/402403/20/2022/2022-05-08</th>
       <td>So 08.05.22 20:30  0</td>
       <td>So 08.05.22 22:00  0</td>
       <td>So 08.05.22 22:00  0</td>
@@ -842,7 +842,7 @@ sections:
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">all_stations</span><span class="o">=</span><span class="n">stations</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Timetable TR/8350/402403/2022 v2" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_003.png" />
+<img alt="Timetable TR/8350/402403/00/2022 v2" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_night_ac_zue_003.png" />
 </div>
 <div class="section" id="id2">
 <h3>Route Sections<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
@@ -855,35 +855,35 @@ shortened by sunday.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10v2
-Calender  : 15/04 to 07/05
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.v2
+Calender  : 15/04 to 07/05 11000001100000110000011
 Start   at: 20:00 in XNAC
 Arrival at: 21:30 in EEM
-Successors: [30]
+Successors: [11]
 
-ID        : 20v1
-Calender  : 17/04 to 08/05
-Start   at: 20:30 in XNU
-Arrival at: 22:00 in XNVL
-Successors: [40]
-
-ID        : 30v2
-Calender  : 15/04 to 07/05
+ID        : 11.v1
+Calender  : 15/04 to 07/05 11000001100000110000011
 Start   at: 21:30 in EEM
 Arrival at: 03:30 in RXBA
-Successors: [50]
+Successors: [12]
 
-ID        : 40v1
-Calender  : 17/04 to 08/05
-Start   at: 22:00 in XNVL
-Arrival at: 04:00 in RXBA
-Successors: [50]
-
-ID        : 50v2
-Calender  : 16/04 to 08/05
+ID        : 12.v1
+Calender  : 16/04 to 08/05 11000001100000110000011
 Start   at: 03:30 in RXBA
 Arrival at: 04:30 in XSZH
 Successors: []
+
+ID        : 20.v1
+Calender  : 17/04 to 08/05 1000000100000010000001
+Start   at: 20:30 in XNU
+Arrival at: 22:00 in XNVL
+Successors: [21]
+
+ID        : 21.v1
+Calender  : 17/04 to 08/05 1000000100000010000001
+Start   at: 22:00 in XNVL
+Arrival at: 04:00 in RXBA
+Successors: [12]
 </pre></div>
 </div>
 </div>
@@ -906,8 +906,8 @@ Successors: []
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : XNAC-EEM-RXBA-XSZH
-Key       : 10-30-50
-Calendar  : 15/04 to 07/05
+Key       : 10-11-12
+Calendar  : 15/04 to 07/05  11000001100000110000011
 Start   at: 20:00 in XNAC
 Arrival at: 21:30 in EEM
 Arrival at: 03:30 in RXBA
@@ -915,8 +915,8 @@ Arrival at: 04:30 in XSZH
 
 
 Route     : XNU-XNVL-RXBA
-Key       : 20-40
-Calendar  : 17/04 to 08/05
+Key       : 20-21
+Calendar  : 17/04 to 08/05  1000000100000010000001
 Start   at: 20:30 in XNU
 Arrival at: 22:00 in XNVL
 Arrival at: 04:00 in RXBA
@@ -942,6 +942,28 @@ Arrival at: 04:00 in RXBA
 2022-05-06  10 2022-05-06 20:00:00 2022-05-06 21:30:00
 2022-05-07  10 2022-05-07 20:00:00 2022-05-07 21:30:00
 
+11: EEM-RXBA
+            ID                 EEM                RXBA
+2022-04-15  11 2022-04-15 21:30:00 2022-04-16 03:30:00
+2022-04-16  11 2022-04-16 21:30:00 2022-04-17 03:30:00
+2022-04-22  11 2022-04-22 21:30:00 2022-04-23 03:30:00
+2022-04-23  11 2022-04-23 21:30:00 2022-04-24 03:30:00
+2022-04-29  11 2022-04-29 21:30:00 2022-04-30 03:30:00
+2022-04-30  11 2022-04-30 21:30:00 2022-05-01 03:30:00
+2022-05-06  11 2022-05-06 21:30:00 2022-05-07 03:30:00
+2022-05-07  11 2022-05-07 21:30:00 2022-05-08 03:30:00
+
+12: RXBA-XSZH
+            ID                RXBA                XSZH
+2022-04-16  12 2022-04-16 03:30:00 2022-04-16 04:30:00
+2022-04-17  12 2022-04-17 03:30:00 2022-04-17 04:30:00
+2022-04-23  12 2022-04-23 03:30:00 2022-04-23 04:30:00
+2022-04-24  12 2022-04-24 03:30:00 2022-04-24 04:30:00
+2022-04-30  12 2022-04-30 03:30:00 2022-04-30 04:30:00
+2022-05-01  12 2022-05-01 03:30:00 2022-05-01 04:30:00
+2022-05-07  12 2022-05-07 03:30:00 2022-05-07 04:30:00
+2022-05-08  12 2022-05-08 03:30:00 2022-05-08 04:30:00
+
 20: XNU-XNVL
             ID                 XNU                XNVL
 2022-04-17  20 2022-04-17 20:30:00 2022-04-17 22:00:00
@@ -949,34 +971,12 @@ Arrival at: 04:00 in RXBA
 2022-05-01  20 2022-05-01 20:30:00 2022-05-01 22:00:00
 2022-05-08  20 2022-05-08 20:30:00 2022-05-08 22:00:00
 
-30: EEM-RXBA
-            ID                 EEM                RXBA
-2022-04-15  30 2022-04-15 21:30:00 2022-04-16 03:30:00
-2022-04-16  30 2022-04-16 21:30:00 2022-04-17 03:30:00
-2022-04-22  30 2022-04-22 21:30:00 2022-04-23 03:30:00
-2022-04-23  30 2022-04-23 21:30:00 2022-04-24 03:30:00
-2022-04-29  30 2022-04-29 21:30:00 2022-04-30 03:30:00
-2022-04-30  30 2022-04-30 21:30:00 2022-05-01 03:30:00
-2022-05-06  30 2022-05-06 21:30:00 2022-05-07 03:30:00
-2022-05-07  30 2022-05-07 21:30:00 2022-05-08 03:30:00
-
-40: XNVL-RXBA
+21: XNVL-RXBA
             ID                XNVL                RXBA
-2022-04-17  40 2022-04-17 22:00:00 2022-04-18 04:00:00
-2022-04-24  40 2022-04-24 22:00:00 2022-04-25 04:00:00
-2022-05-01  40 2022-05-01 22:00:00 2022-05-02 04:00:00
-2022-05-08  40 2022-05-08 22:00:00 2022-05-09 04:00:00
-
-50: RXBA-XSZH
-            ID                RXBA                XSZH
-2022-04-16  50 2022-04-16 03:30:00 2022-04-16 04:30:00
-2022-04-17  50 2022-04-17 03:30:00 2022-04-17 04:30:00
-2022-04-23  50 2022-04-23 03:30:00 2022-04-23 04:30:00
-2022-04-24  50 2022-04-24 03:30:00 2022-04-24 04:30:00
-2022-04-30  50 2022-04-30 03:30:00 2022-04-30 04:30:00
-2022-05-01  50 2022-05-01 03:30:00 2022-05-01 04:30:00
-2022-05-07  50 2022-05-07 03:30:00 2022-05-07 04:30:00
-2022-05-08  50 2022-05-08 03:30:00 2022-05-08 04:30:00
+2022-04-17  21 2022-04-17 22:00:00 2022-04-18 04:00:00
+2022-04-24  21 2022-04-24 22:00:00 2022-04-25 04:00:00
+2022-05-01  21 2022-05-01 22:00:00 2022-05-02 04:00:00
+2022-05-08  21 2022-05-08 22:00:00 2022-05-09 04:00:00
 </pre></div>
 </div>
 </div>
@@ -991,75 +991,75 @@ Arrival at: 04:00 in RXBA
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/2022/10/2022-04-15
-10v2:2022-04-15 20:00 OTR=0 XNAC-EEM 2022-04-15 21:30 OTR=0
-30v2:2022-04-15 21:30 OTR=0 EEM-RXBA 2022-04-16 03:30 OTR=1
-50v2:2022-04-16 03:30 OTR=1 RXBA-XSZH 2022-04-16 04:30 OTR=1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/402403/10/2022/2022-04-15
+10.v2:2022-04-15 20:00 OTR=0 XNAC-EEM 2022-04-15 21:30 OTR=0
+11.v1:2022-04-15 21:30 OTR=0 EEM-RXBA 2022-04-16 03:30 OTR=1
+12.v1:2022-04-16 03:30 OTR=1 RXBA-XSZH 2022-04-16 04:30 OTR=1
 
 
-TR/8350/402403/2022/10/2022-04-16
-10v2:2022-04-16 20:00 OTR=0 XNAC-EEM 2022-04-16 21:30 OTR=0
-30v2:2022-04-16 21:30 OTR=0 EEM-RXBA 2022-04-17 03:30 OTR=1
-50v2:2022-04-17 03:30 OTR=1 RXBA-XSZH 2022-04-17 04:30 OTR=1
+TR/8350/402403/10/2022/2022-04-16
+10.v2:2022-04-16 20:00 OTR=0 XNAC-EEM 2022-04-16 21:30 OTR=0
+11.v1:2022-04-16 21:30 OTR=0 EEM-RXBA 2022-04-17 03:30 OTR=1
+12.v1:2022-04-17 03:30 OTR=1 RXBA-XSZH 2022-04-17 04:30 OTR=1
 
 
-TR/8350/402403/2022/10/2022-04-22
-10v2:2022-04-22 20:00 OTR=0 XNAC-EEM 2022-04-22 21:30 OTR=0
-30v2:2022-04-22 21:30 OTR=0 EEM-RXBA 2022-04-23 03:30 OTR=1
-50v2:2022-04-23 03:30 OTR=1 RXBA-XSZH 2022-04-23 04:30 OTR=1
+TR/8350/402403/10/2022/2022-04-22
+10.v2:2022-04-22 20:00 OTR=0 XNAC-EEM 2022-04-22 21:30 OTR=0
+11.v1:2022-04-22 21:30 OTR=0 EEM-RXBA 2022-04-23 03:30 OTR=1
+12.v1:2022-04-23 03:30 OTR=1 RXBA-XSZH 2022-04-23 04:30 OTR=1
 
 
-TR/8350/402403/2022/10/2022-04-23
-10v2:2022-04-23 20:00 OTR=0 XNAC-EEM 2022-04-23 21:30 OTR=0
-30v2:2022-04-23 21:30 OTR=0 EEM-RXBA 2022-04-24 03:30 OTR=1
-50v2:2022-04-24 03:30 OTR=1 RXBA-XSZH 2022-04-24 04:30 OTR=1
+TR/8350/402403/10/2022/2022-04-23
+10.v2:2022-04-23 20:00 OTR=0 XNAC-EEM 2022-04-23 21:30 OTR=0
+11.v1:2022-04-23 21:30 OTR=0 EEM-RXBA 2022-04-24 03:30 OTR=1
+12.v1:2022-04-24 03:30 OTR=1 RXBA-XSZH 2022-04-24 04:30 OTR=1
 
 
-TR/8350/402403/2022/10/2022-04-29
-10v2:2022-04-29 20:00 OTR=0 XNAC-EEM 2022-04-29 21:30 OTR=0
-30v2:2022-04-29 21:30 OTR=0 EEM-RXBA 2022-04-30 03:30 OTR=1
-50v2:2022-04-30 03:30 OTR=1 RXBA-XSZH 2022-04-30 04:30 OTR=1
+TR/8350/402403/10/2022/2022-04-29
+10.v2:2022-04-29 20:00 OTR=0 XNAC-EEM 2022-04-29 21:30 OTR=0
+11.v1:2022-04-29 21:30 OTR=0 EEM-RXBA 2022-04-30 03:30 OTR=1
+12.v1:2022-04-30 03:30 OTR=1 RXBA-XSZH 2022-04-30 04:30 OTR=1
 
 
-TR/8350/402403/2022/10/2022-04-30
-10v2:2022-04-30 20:00 OTR=0 XNAC-EEM 2022-04-30 21:30 OTR=0
-30v2:2022-04-30 21:30 OTR=0 EEM-RXBA 2022-05-01 03:30 OTR=1
-50v2:2022-05-01 03:30 OTR=1 RXBA-XSZH 2022-05-01 04:30 OTR=1
+TR/8350/402403/10/2022/2022-04-30
+10.v2:2022-04-30 20:00 OTR=0 XNAC-EEM 2022-04-30 21:30 OTR=0
+11.v1:2022-04-30 21:30 OTR=0 EEM-RXBA 2022-05-01 03:30 OTR=29
+12.v1:2022-05-01 03:30 OTR=29 RXBA-XSZH 2022-05-01 04:30 OTR=29
 
 
-TR/8350/402403/2022/10/2022-05-06
-10v2:2022-05-06 20:00 OTR=0 XNAC-EEM 2022-05-06 21:30 OTR=0
-30v2:2022-05-06 21:30 OTR=0 EEM-RXBA 2022-05-07 03:30 OTR=1
-50v2:2022-05-07 03:30 OTR=1 RXBA-XSZH 2022-05-07 04:30 OTR=1
+TR/8350/402403/10/2022/2022-05-06
+10.v2:2022-05-06 20:00 OTR=0 XNAC-EEM 2022-05-06 21:30 OTR=0
+11.v1:2022-05-06 21:30 OTR=0 EEM-RXBA 2022-05-07 03:30 OTR=1
+12.v1:2022-05-07 03:30 OTR=1 RXBA-XSZH 2022-05-07 04:30 OTR=1
 
 
-TR/8350/402403/2022/10/2022-05-07
-10v2:2022-05-07 20:00 OTR=0 XNAC-EEM 2022-05-07 21:30 OTR=0
-30v2:2022-05-07 21:30 OTR=0 EEM-RXBA 2022-05-08 03:30 OTR=1
-50v2:2022-05-08 03:30 OTR=1 RXBA-XSZH 2022-05-08 04:30 OTR=1
+TR/8350/402403/10/2022/2022-05-07
+10.v2:2022-05-07 20:00 OTR=0 XNAC-EEM 2022-05-07 21:30 OTR=0
+11.v1:2022-05-07 21:30 OTR=0 EEM-RXBA 2022-05-08 03:30 OTR=1
+12.v1:2022-05-08 03:30 OTR=1 RXBA-XSZH 2022-05-08 04:30 OTR=1
 
 
-TR/8350/402403/2022/20/2022-04-17
-20v1:2022-04-17 20:30 OTR=0 XNU-XNVL 2022-04-17 22:00 OTR=0
-40v1:2022-04-17 22:00 OTR=0 XNVL-RXBA 2022-04-18 04:00 OTR=1
+TR/8350/402403/20/2022/2022-04-17
+20.v1:2022-04-17 20:30 OTR=0 XNU-XNVL 2022-04-17 22:00 OTR=0
+21.v1:2022-04-17 22:00 OTR=0 XNVL-RXBA 2022-04-18 04:00 OTR=1
 
 
-TR/8350/402403/2022/20/2022-04-24
-20v1:2022-04-24 20:30 OTR=0 XNU-XNVL 2022-04-24 22:00 OTR=0
-40v1:2022-04-24 22:00 OTR=0 XNVL-RXBA 2022-04-25 04:00 OTR=1
+TR/8350/402403/20/2022/2022-04-24
+20.v1:2022-04-24 20:30 OTR=0 XNU-XNVL 2022-04-24 22:00 OTR=0
+21.v1:2022-04-24 22:00 OTR=0 XNVL-RXBA 2022-04-25 04:00 OTR=1
 
 
-TR/8350/402403/2022/20/2022-05-01
-20v1:2022-05-01 20:30 OTR=0 XNU-XNVL 2022-05-01 22:00 OTR=0
-40v1:2022-05-01 22:00 OTR=0 XNVL-RXBA 2022-05-02 04:00 OTR=1
+TR/8350/402403/20/2022/2022-05-01
+20.v1:2022-05-01 20:30 OTR=0 XNU-XNVL 2022-05-01 22:00 OTR=0
+21.v1:2022-05-01 22:00 OTR=0 XNVL-RXBA 2022-05-02 04:00 OTR=1
 
 
-TR/8350/402403/2022/20/2022-05-08
-20v1:2022-05-08 20:30 OTR=0 XNU-XNVL 2022-05-08 22:00 OTR=0
-40v1:2022-05-08 22:00 OTR=0 XNVL-RXBA 2022-05-09 04:00 OTR=1
+TR/8350/402403/20/2022/2022-05-08
+20.v1:2022-05-08 20:30 OTR=0 XNU-XNVL 2022-05-08 22:00 OTR=0
+21.v1:2022-05-08 22:00 OTR=0 XNVL-RXBA 2022-05-09 04:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.600 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.530 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-night-ac-zue-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a62acb79e721bb2eecbdd07d58314349/plot_night_ac_zue.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_night_ac_zue.py</span></code></a></p>

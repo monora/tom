@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Example showing OTR anomalie &mdash; Train Object Model 0.1.1 documentation</title>
+  <title>Example showing OTR anomalie &mdash; Train Object Model 0.2.0 documentation</title>
   
 
   
@@ -43,7 +43,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example Train Annex 4" href="plot_annex_4.html" />
+    <link rel="next" title="Example: Train AC - FF without timing" href="plot_ac_ff_without_timing.html" />
     <link rel="prev" title="ECM example trains" href="index.html" /> 
 </head>
 
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.2.0
               </div>
             
           
@@ -111,7 +111,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4 v1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4_v2.html">Example Train Annex 4 v2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_night_ac_zue.html">Example: Night Train from Amsterdam to Zürich</a></li>
@@ -205,8 +207,7 @@ with interesting OTRs.</p>
 </pre></div>
 </div>
 <p>Load example from yaml specification</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;otr-test&#39;</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">example</span><span class="p">(</span><span class="s1">&#39;../tests/data&#39;</span><span class="p">,</span> <span class="s1">&#39;otr-test&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t_spec_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -221,11 +222,11 @@ sections:
       calendar:
         begin: &#39;2020-12-01&#39;
         end: &#39;2020-12-02&#39;
-      id: &#39;10.10&#39;
+      id: 10
       color: salmon
       succ:
-          - &#39;10.20&#39;
-          - &#39;11.20&#39;
+          - 20
+          - 40
     - departure_station: B
       arrival_station: C
       departure_time: &#39;00:30:00&#39;
@@ -233,10 +234,10 @@ sections:
       calendar:
         begin: &#39;2020-12-02&#39;
         end: &#39;2020-12-02&#39;
-      id: &#39;10.20&#39;
+      id: 20
       color: red
       succ:
-        - &#39;10.30&#39;
+        - 30
     - departure_station: B
       arrival_station: C
       departure_time: &#39;00:30:00&#39;
@@ -245,10 +246,10 @@ sections:
       calendar:
         begin: &#39;2020-12-04&#39;
         end: &#39;2020-12-04&#39;
-      id: &#39;11.20&#39;
+      id: 40
       color: green
       succ:
-        - &#39;10.30&#39;
+        - 30
     - departure_station: C
       arrival_station: D
       travel_time: &#39;12:00:00&#39;
@@ -257,7 +258,7 @@ sections:
         end: &#39;2020-12-04&#39;
         # Exclude Thu 3.12. No section run on this day!
         mask: &#39;Wed Fri&#39;
-      id: &#39;10.30&#39;
+      id: 30
       color: blue
 </pre></div>
 </div>
@@ -267,7 +268,7 @@ sections:
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/30AB/2020&#39;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&#39;TR/8350/30AB/00/2020&#39;
 </pre></div>
 </div>
 <div class="section" id="timetable">
@@ -306,7 +307,7 @@ sections:
   </thead>
   <tbody>
     <tr>
-      <th>TR/8350/30AB/2020/10.10/2020-12-01</th>
+      <th>TR/8350/30AB/10/2020/2020-12-01</th>
       <td>Di 01.12.20 23:30 -1</td>
       <td>Mi 02.12.20 00:30  0</td>
       <td>Mi 02.12.20 00:30  0</td>
@@ -315,7 +316,7 @@ sections:
       <td>Do 03.12.20 00:30  1</td>
     </tr>
     <tr>
-      <th>TR/8350/30AB/2020/10.10/2020-12-02</th>
+      <th>TR/8350/30AB/10/2020/2020-12-02</th>
       <td>Mi 02.12.20 23:30 -2</td>
       <td>Do 03.12.20 00:30 -1</td>
       <td>Fr 04.12.20 00:30  0</td>
@@ -335,7 +336,7 @@ sections:
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_train</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="Timetable TR/8350/30AB/2020 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_test_otr_001.png" />
+<img alt="Timetable TR/8350/30AB/00/2020 v1" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_test_otr_001.png" />
 </div>
 <div class="section" id="route-sections">
 <h2>Route Sections<a class="headerlink" href="#route-sections" title="Permalink to this headline">¶</a></h2>
@@ -346,26 +347,26 @@ sections:
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.10v1
-Calender  : 01/12 to 02/12
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ID        : 10.v1
+Calender  : 01/12 to 02/12 11
 Start   at: 23:30 in A
 Arrival at: 00:30 in B
-Successors: [&#39;10.20&#39;, &#39;11.20&#39;]
+Successors: [20, 40]
 
-ID        : 10.20v1
-Calender  : 02/12 to 02/12
+ID        : 20.v1
+Calender  : 02/12 to 02/12 1
 Start   at: 00:30 in B
 Arrival at: 12:30 in C
-Successors: [&#39;10.30&#39;]
+Successors: [30]
 
-ID        : 11.20v1
-Calender  : 04/12 to 04/12
+ID        : 40.v1
+Calender  : 04/12 to 04/12 1
 Start   at: 00:30 in B
 Arrival at: 12:30 in C
-Successors: [&#39;10.30&#39;]
+Successors: [30]
 
-ID        : 10.30v1
-Calender  : 02/12 to 04/12
+ID        : 30.v1
+Calender  : 02/12 to 04/12 101
 Start   at: 12:30 in C
 Arrival at: 00:30 in D
 Successors: []
@@ -392,8 +393,8 @@ Routes are calculated from all possible paths in the section graph.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Route     : A-B-C-D
-Key       : 10.10-10.20-10.30
-Calendar  : 01/12 to 01/12
+Key       : 10-20-30
+Calendar  : 01/12 to 01/12  1
 Start   at: 23:30 in A
 Arrival at: 00:30 in B
 Arrival at: 12:30 in C
@@ -401,8 +402,8 @@ Arrival at: 00:30 in D
 
 
 Route     : A-B-C-D
-Key       : 10.10-11.20-10.30
-Calendar  : 02/12 to 02/12
+Key       : 10-40-30
+Calendar  : 02/12 to 02/12  1
 Start   at: 23:30 in A
 Arrival at: 00:30 in B
 Arrival at: 12:30 in C
@@ -420,23 +421,23 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10.10: A-B
-              ID                   A                   B
-2020-12-01  10.1 2020-12-01 23:30:00 2020-12-02 00:30:00
-2020-12-02  10.1 2020-12-02 23:30:00 2020-12-03 00:30:00
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10: A-B
+            ID                   A                   B
+2020-12-01  10 2020-12-01 23:30:00 2020-12-02 00:30:00
+2020-12-02  10 2020-12-02 23:30:00 2020-12-03 00:30:00
 
-10.20: B-C
-              ID                   B                   C
-2020-12-02  10.2 2020-12-02 00:30:00 2020-12-02 12:30:00
+20: B-C
+            ID                   B                   C
+2020-12-02  20 2020-12-02 00:30:00 2020-12-02 12:30:00
 
-11.20: B-C
-              ID                   B                   C
-2020-12-04  11.2 2020-12-04 00:30:00 2020-12-04 12:30:00
+40: B-C
+            ID                   B                   C
+2020-12-04  40 2020-12-04 00:30:00 2020-12-04 12:30:00
 
-10.30: C-D
-              ID                   C                   D
-2020-12-02  10.3 2020-12-02 12:30:00 2020-12-03 00:30:00
-2020-12-04  10.3 2020-12-04 12:30:00 2020-12-05 00:30:00
+30: C-D
+            ID                   C                   D
+2020-12-02  30 2020-12-02 12:30:00 2020-12-03 00:30:00
+2020-12-04  30 2020-12-04 12:30:00 2020-12-05 00:30:00
 </pre></div>
 </div>
 </div>
@@ -452,19 +453,19 @@ The section runs are the rows of RouteSection.to_dataframe:</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/30AB/2020/10.10/2020-12-01
-10.10v1:2020-12-01 23:30 OTR=-1 A-B 2020-12-02 00:30 OTR=0
-10.20v1:2020-12-02 00:30 OTR=0 B-C 2020-12-02 12:30 OTR=0
-10.30v1:2020-12-02 12:30 OTR=0 C-D 2020-12-03 00:30 OTR=1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TR/8350/30AB/10/2020/2020-12-01
+10.v1:2020-12-01 23:30 OTR=-1 A-B 2020-12-02 00:30 OTR=0
+20.v1:2020-12-02 00:30 OTR=0 B-C 2020-12-02 12:30 OTR=0
+30.v1:2020-12-02 12:30 OTR=0 C-D 2020-12-03 00:30 OTR=1
 
 
-TR/8350/30AB/2020/10.10/2020-12-02
-10.10v1:2020-12-02 23:30 OTR=-2 A-B 2020-12-03 00:30 OTR=-1
-11.20v1:2020-12-04 00:30 OTR=0 B-C 2020-12-04 12:30 OTR=0
-10.30v1:2020-12-04 12:30 OTR=0 C-D 2020-12-05 00:30 OTR=1
+TR/8350/30AB/10/2020/2020-12-02
+10.v1:2020-12-02 23:30 OTR=-2 A-B 2020-12-03 00:30 OTR=-1
+40.v1:2020-12-04 00:30 OTR=0 B-C 2020-12-04 12:30 OTR=0
+30.v1:2020-12-04 12:30 OTR=0 C-D 2020-12-05 00:30 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.877 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.812 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-test-otr-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/610027346a8002eb51e8cc68f2f77e61/plot_test_otr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_test_otr.py</span></code></a></p>
@@ -483,7 +484,7 @@ TR/8350/30AB/2020/10.10/2020-12-02
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_annex_4.html" class="btn btn-neutral float-right" title="Example Train Annex 4" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_ac_ff_without_timing.html" class="btn btn-neutral float-right" title="Example: Train AC - FF without timing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="index.html" class="btn btn-neutral float-left" title="ECM example trains" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

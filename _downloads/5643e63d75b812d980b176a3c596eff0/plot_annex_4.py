@@ -1,42 +1,57 @@
 """
-Example Train Annex 4
-=====================
+Example Train Annex 4 v1
+========================
 
-Here we investigate the routing specification for example from
-`train-annex-4.yml`
+A train with three routes each composed of two sections.
+
+Given this infrastructure:
+
+.. uml:: ../uml/tom-06-example-annex-4-infrastructure.puml
+
+The following routing specification describes the initial planned routes for the rain with
+`ID1`.  As
+you can see, there is no route section needed which mentions Station `M`. This station does not play
+a role in the routing planning process because it is no origin, destination or handover.
+
 """
 from networkx import DiGraph
 
-from tom.util import example
-from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
 from tom.plot import *
+from tom.tom import make_train_from_yml, RouteSection, Route
+from tom.util import example, dump_routing_info_as_xml
 
 # %%
 # Load example annex 4 from yaml specification
-# Notice the route sections which have a departure time.
-# These are considered as route construction starts
-# Only one section in a route may be a construction start.
-pattern = 'annex-4.yml'
-train_specs, t_spec_file = example('../tests/data', pattern)
+#
+_, t_spec_file = example('../tests/data', 'annex-4.yml')
 print(t_spec_file.read_text())
 
 # %%
-# Create train object and show its train id.
+# Notice the route sections which have a departure time.
+# These are considered as *route construction starts*.
+# Only one section in a route may be a construction start.
+#
+# Now create train object and show its train id.
 t = make_train_from_yml(t_spec_file)
 t.train_id()
 
 # %%
 # Timetable
 # ^^^^^^^^^
-# Show timetable as dataframe
+#
+# This is the timetable of version 1 of TR-ID1. Notice the two train runs with ID
+# `TR/8350/ID1/10/2021/2021-02-07` and `TR/8350/ID1/20/2021/2021-02-07`. They both start on
+# `07/02`. To make the daily train ID unique on this operating day, we propose to add the
+# `section_id` to be
+# part of `TrainRun.train_id()`. Here `10` for the train starting at `00:10` and `20` for the
+# train departing at `23:50` at station `S`.
 df = t.to_dataframe()
 df
 
 # %%
-# .. _Bildfahrplan: https://de.wikipedia.org/wiki/Bildfahrplan
-# `Bildfahrplan`_
-# ^^^^^^^^^^^^^^
-# Show timetable as plot
+# Bildfahrplan
+# ^^^^^^^^^^^^
+# Show timetable as `Bildfahrplan <https://de.wikipedia.org/wiki/Bildfahrplan>`_.
 plot_train(t)
 
 # %%
@@ -50,8 +65,7 @@ for section in t.sections:
 # %%
 # Section graph
 # ^^^^^^^^^^^^^
-# The section graph is computed using the successor relation:
-
+# The section graph is computed using the successor relation.
 sg: DiGraph = t.section_graph()
 plot_graph(sg)
 
@@ -83,3 +97,12 @@ for tr in t.train_run_iterator():
     for sr in tr.sections_runs:
         print(sr)
     print("\n")
+
+# %%
+# RoutingInformation as TrainInformation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# An XML Dump of the routing information of this example according a new version of the TSI XSD.
+#
+# See `Routing planning <../routing-planning-process.html#routininformation-as-traininformation>`_
+# for more details.
+print(dump_routing_info_as_xml(t))

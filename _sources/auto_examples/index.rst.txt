@@ -34,12 +34,33 @@ Below is a gallery of train examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Here we investigate the routing specification for example from train-annex-4.yml">
+    <div class="sphx-glr-thumbcontainer" tooltip="Example: Train AC - FF without timing">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_ac_ff_without_timing_thumb.png
+     :alt: Example: Train AC - FF without timing
+
+     :ref:`sphx_glr_auto_examples_plot_ac_ff_without_timing.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_ac_ff_without_timing
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A train with three routes each composed of two sections.">
 
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_annex_4_thumb.png
-     :alt: Example Train Annex 4
+     :alt: Example Train Annex 4 v1
 
      :ref:`sphx_glr_auto_examples_plot_annex_4.py`
 
@@ -55,7 +76,28 @@ Below is a gallery of train examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Here we investigate the routing specification for example from train-ac-ff.yml.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Version 2 of example annex 4">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_annex_4_v2_thumb.png
+     :alt: Example Train Annex 4 v2
+
+     :ref:`sphx_glr_auto_examples_plot_annex_4_v2.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_annex_4_v2
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Here we investigate the routing specification for example from train-ac-ff-v1.yml.">
 
 .. only:: html
 

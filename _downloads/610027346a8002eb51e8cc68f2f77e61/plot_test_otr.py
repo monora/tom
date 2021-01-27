@@ -11,8 +11,7 @@ from tom.util import example
 
 # %%
 # Load example from yaml specification
-pattern = 'otr-test'
-_, t_spec_file = example('../tests/data', pattern)
+_, t_spec_file = example('../tests/data', 'otr-test')
 print(t_spec_file.read_text())
 
 # %%

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tom.tom &mdash; Train Object Model 0.1.1 documentation</title>
+  <title>tom.tom &mdash; Train Object Model 0.2.0 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.2.0
               </div>
             
           
@@ -183,9 +183,10 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ElemTree</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">date</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PosixPath</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">ValuesView</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -196,6 +197,94 @@
 <div class="viewcode-block" id="TomError"><a class="viewcode-back" href="../../tom.html#tom.tom.TomError">[docs]</a><span class="k">class</span> <span class="nc">TomError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Constraint violation in the TOM Model are signalled using this error&quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
+
+
+<span class="n">TSI_SCHEMA_VERSION</span> <span class="o">=</span> <span class="s1">&#39;2.3.0&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">New Schema version proposed for change of element TrainInformation</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">TSI_LOCATION_TYPE_CODES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Origin&#39;</span><span class="p">:</span> <span class="s1">&#39;01&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Handover&#39;</span><span class="p">:</span> <span class="s1">&#39;04&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Destination&#39;</span><span class="p">:</span> <span class="s1">&#39;03&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="LocationIdGenerator"><a class="viewcode-back" href="../../tom.html#tom.tom.LocationIdGenerator">[docs]</a><span class="k">class</span> <span class="nc">LocationIdGenerator</span><span class="p">:</span>
+    <span class="n">location_name_to_code</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">location_last</span> <span class="o">=</span> <span class="mi">9999</span>
+
+<div class="viewcode-block" id="LocationIdGenerator.map_location_name_to_code"><a class="viewcode-back" href="../../tom.html#tom.tom.LocationIdGenerator.map_location_name_to_code">[docs]</a>    <span class="k">def</span> <span class="nf">map_location_name_to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_name_to_code</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_last</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_last</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_name_to_code</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div></div>
+
+
+<span class="n">__ID_GENERATOR</span> <span class="o">=</span> <span class="n">LocationIdGenerator</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="compute_bitmap_days"><a class="viewcode-back" href="../../tom.html#tom.tom.compute_bitmap_days">[docs]</a><span class="k">def</span> <span class="nf">compute_bitmap_days</span><span class="p">(</span><span class="n">calendar</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param calendar:</span>
+<span class="sd">    :return: Bitmap string containing 1 and 0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">calendar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">calendar</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;1&#39;</span> <span class="k">if</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">calendar</span> <span class="k">else</span> <span class="s1">&#39;0&#39;</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="xml_simple_element"><a class="viewcode-back" href="../../tom.html#tom.tom.xml_simple_element">[docs]</a><span class="k">def</span> <span class="nf">xml_simple_element</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="xml_add_calendar"><a class="viewcode-back" href="../../tom.html#tom.tom.xml_add_calendar">[docs]</a><span class="k">def</span> <span class="nf">xml_add_calendar</span><span class="p">(</span><span class="n">tom_object</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+    <span class="n">cal</span> <span class="o">=</span> <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;PlannedCalendar&#39;</span><span class="p">)</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">cal</span><span class="p">,</span> <span class="s1">&#39;BitmapDays&#39;</span><span class="p">,</span>
+                       <span class="n">text</span><span class="o">=</span><span class="n">compute_bitmap_days</span><span class="p">(</span><span class="n">tom_object</span><span class="o">.</span><span class="n">calendar</span><span class="p">))</span>
+
+    <span class="n">period</span> <span class="o">=</span> <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">cal</span><span class="p">,</span> <span class="s1">&#39;ValidityPeriod&#39;</span><span class="p">)</span>
+    <span class="n">iso_format</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T00:00:00&quot;</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;StartDateTime&#39;</span><span class="p">,</span>
+                       <span class="n">tom_object</span><span class="o">.</span><span class="n">first_day</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">iso_format</span><span class="p">))</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;EndDateTime&#39;</span><span class="p">,</span>
+                       <span class="n">tom_object</span><span class="o">.</span><span class="n">last_day</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">iso_format</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="xml_add_journey_location"><a class="viewcode-back" href="../../tom.html#tom.tom.xml_add_journey_location">[docs]</a><span class="k">def</span> <span class="nf">xml_add_journey_location</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span>
+                             <span class="n">station</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                             <span class="n">t</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span>
+                             <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                             <span class="n">type_code</span><span class="o">=</span><span class="s1">&#39;04&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add XML Element PlannedJourneyLocation</span>
+
+<span class="sd">    :param parent: RouteSection</span>
+<span class="sd">    :param station: name of destination or arrival</span>
+<span class="sd">    :param t: timestamp</span>
+<span class="sd">    :param offset: in days to departure</span>
+<span class="sd">    :param type_code: JourneyLocationTypeCode (default ist Handover == 04)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;PlannedJourneyLocation&#39;</span><span class="p">)</span>
+    <span class="c1"># Set this only if really needed, because it can be computed from the successor relation</span>
+    <span class="c1"># loc.set(&#39;JourneyLocationTypeCode&#39;, type_code) # FIXME</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="s1">&#39;CountryCodeISO&#39;</span><span class="p">,</span> <span class="s1">&#39;DE&#39;</span><span class="p">)</span>  <span class="c1"># FIXME</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="s1">&#39;LocationPrimaryCode&#39;</span><span class="p">,</span>
+                       <span class="n">__ID_GENERATOR</span><span class="o">.</span><span class="n">map_location_name_to_code</span><span class="p">(</span><span class="n">station</span><span class="p">))</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="s1">&#39;PrimaryLocationName&#39;</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
+
+    <span class="n">time</span> <span class="o">=</span> <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="s1">&#39;TimingAtLocation&#39;</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s1">&#39;Timing&#39;</span><span class="p">)</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">))</span>
+    <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s1">&#39;Offset&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">offset</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="RouteSection"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection">[docs]</a><span class="k">class</span> <span class="nc">RouteSection</span><span class="p">:</span>
@@ -214,12 +303,13 @@
     <span class="n">arrival_station</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">departure_timestamps</span><span class="p">:</span> <span class="n">DatetimeIndex</span> <span class="o">=</span> <span class="n">DatetimeIndex</span><span class="p">([])</span>
     <span class="n">calendar</span><span class="p">:</span> <span class="n">DatetimeIndex</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">section_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+    <span class="n">section_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;00&#39;</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">is_section_complete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">is_construction_start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">successors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">train</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">departure_station</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">arrival_station</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -265,7 +355,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_section_complete</span></div>
 
 <div class="viewcode-block" id="RouteSection.version_info"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.version_info">[docs]</a>    <span class="k">def</span> <span class="nf">version_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">section_id</span><span class="si">}</span><span class="s2">v</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">section_id</span><span class="si">}</span><span class="s2">.v</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 <div class="viewcode-block" id="RouteSection.route_id"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.route_id">[docs]</a>    <span class="k">def</span> <span class="nf">route_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">route_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section_id</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -274,13 +364,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_id</span></div>
 
-<div class="viewcode-block" id="RouteSection.description"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.description">[docs]</a>    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="RouteSection.description"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.description">[docs]</a>    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_bitmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">dep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
         <span class="n">fd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_day</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m&quot;</span><span class="p">)</span>
         <span class="n">ld</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_day</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m&quot;</span><span class="p">)</span>
+        <span class="n">bitmap</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">compute_bitmap_days</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span> <span class="k">if</span> <span class="n">with_bitmap</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ID        : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version_info</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Calender  : </span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">ld</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Calender  : </span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">ld</span><span class="si">}{</span><span class="n">bitmap</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Start   at: </span><span class="si">{</span><span class="n">dep</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">departure_station</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Arrival at: </span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_station</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Successors: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">successors</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -442,7 +533,42 @@
 
     <span class="k">def</span> <span class="nf">__complete_color_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">color</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">color</span>
+
+<div class="viewcode-block" id="RouteSection.xml_add_id"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.xml_add_id">[docs]</a>    <span class="k">def</span> <span class="nf">xml_add_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+        <span class="n">sec_id</span> <span class="o">=</span> <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;SectionID&#39;</span><span class="p">)</span>
+        <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">sec_id</span><span class="p">,</span> <span class="s1">&#39;ObjectType&#39;</span><span class="p">,</span> <span class="s1">&#39;RS&#39;</span><span class="p">)</span>
+        <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">sec_id</span><span class="p">,</span> <span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">lead_ru</span><span class="p">)</span>
+        <span class="n">ci</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:&gt;12}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">core_id</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">sec_id</span><span class="p">,</span> <span class="s1">&#39;Core&#39;</span><span class="p">,</span> <span class="n">ci</span><span class="p">)</span>
+        <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">sec_id</span><span class="p">,</span> <span class="s1">&#39;Variant&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_id</span><span class="p">)</span>
+        <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">sec_id</span><span class="p">,</span> <span class="s1">&#39;TimetableYear&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">timetable_year</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="RouteSection.to_xml"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.to_xml">[docs]</a>    <span class="k">def</span> <span class="nf">to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+        <span class="n">rs</span> <span class="o">=</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;RouteSection&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;SectionVersion&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_construction_start</span><span class="p">:</span>
+            <span class="n">rs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;IsStartOfConstruction&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xml_add_id</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
+        <span class="n">xml_add_journey_location</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">departure_station</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="p">())</span>
+        <span class="n">xml_add_journey_location</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">(),</span>
+                                 <span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_time_offset</span><span class="p">())</span>
+        <span class="n">xml_add_calendar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">successors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">successors</span> <span class="o">=</span> <span class="n">xml_simple_element</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span> <span class="s1">&#39;Successors&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">sec_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors</span><span class="p">:</span>
+                <span class="n">section</span><span class="p">:</span> <span class="n">RouteSection</span>
+                <span class="n">section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">id_to_sec</span><span class="p">[</span><span class="n">sec_id</span><span class="p">]</span>
+                <span class="n">section</span><span class="o">.</span><span class="n">xml_add_id</span><span class="p">(</span><span class="n">successors</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RouteSection.arrival_time_offset"><a class="viewcode-back" href="../../tom.html#tom.tom.RouteSection.arrival_time_offset">[docs]</a>    <span class="k">def</span> <span class="nf">arrival_time_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Offset in days of arrival relativ to departure time (must be positiv)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">day_offset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">departure_time</span><span class="p">())</span></div></div>
 
 
 <div class="viewcode-block" id="SingleSource"><a class="viewcode-back" href="../../tom.html#tom.tom.SingleSource">[docs]</a><span class="k">class</span> <span class="nc">SingleSource</span><span class="p">:</span>
@@ -464,6 +590,7 @@
     <span class="n">core_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">id_to_sec</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">lead_ru</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8350</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RouteSection</span><span class="p">]):</span>
@@ -474,6 +601,8 @@
         <span class="n">sg</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__repair_incomplete_sections</span><span class="p">()</span>
         <span class="c1"># After repair all sections must have a departure time</span>
         <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id_to_sec</span><span class="p">[</span><span class="n">section</span><span class="o">.</span><span class="n">section_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">section</span>
+            <span class="n">section</span><span class="o">.</span><span class="n">train</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">departure_daytime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not compute departure time for section &quot;</span>
                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">version_info</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
@@ -495,7 +624,7 @@
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Train.train_id"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.train_id">[docs]</a>    <span class="k">def</span> <span class="nf">train_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="Train.train_id"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.train_id">[docs]</a>    <span class="k">def</span> <span class="nf">train_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;00&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        **Attention:**</span>
 
@@ -507,7 +636,7 @@
 
 <span class="sd">        :return: Unique ID of this train (LeadRU/CoreID/TimetableYear)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TR/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lead_ru</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">core_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">timetable_year</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TR/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lead_ru</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">core_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">timetable_year</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 <div class="viewcode-block" id="Train.id"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TR-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">core_id</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span></div>
@@ -522,7 +651,7 @@
         <span class="n">section_runs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section_run_iterator</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">section_runs</span><span class="p">:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="n">vi</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">version_info</span><span class="p">()</span>
+            <span class="c1"># vi = v.section.version_info()</span>
             <span class="n">result</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="s1">&#39;fillcolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">color</span> <span class="ow">or</span> <span class="s1">&#39;white&#39;</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">section_runs</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">section_runs</span><span class="p">:</span>
@@ -547,7 +676,7 @@
             <span class="n">vi</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">version_info</span><span class="p">()</span>
             <span class="n">sg</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span>
             <span class="n">sg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">vi</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vi</span>
-            <span class="n">sg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">vi</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">description</span><span class="p">()</span>
+            <span class="n">sg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">vi</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">description</span><span class="p">(</span><span class="n">with_bitmap</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">sg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">vi</span><span class="p">][</span><span class="s1">&#39;route_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">route_id</span><span class="p">()</span>
             <span class="n">sg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">vi</span><span class="p">][</span><span class="s1">&#39;fillcolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">color</span> <span class="ow">or</span> <span class="s1">&#39;white&#39;</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">trg</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
@@ -707,7 +836,7 @@
                     <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Arrivals: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">in_neighbors</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">TomError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid section run design for: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Train.routes"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.routes">[docs]</a>    <span class="k">def</span> <span class="nf">routes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;Route&#39;</span><span class="p">]:</span>
+<div class="viewcode-block" id="Train.routes"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.routes">[docs]</a>    <span class="k">def</span> <span class="nf">routes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValuesView</span><span class="p">[</span><span class="s1">&#39;Route&#39;</span><span class="p">]:</span>
         <span class="n">route_key_to_route</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_run_iterator</span><span class="p">():</span>
             <span class="n">route_key</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">route_key</span><span class="p">()</span>
@@ -722,7 +851,29 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :return: list of all stations of the train</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_graph</span><span class="p">()</span><span class="o">.</span><span class="n">nodes</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_graph</span><span class="p">()</span><span class="o">.</span><span class="n">nodes</span></div>
+
+<div class="viewcode-block" id="Train.routing_info_to_xml"><a class="viewcode-back" href="../../tom.html#tom.tom.Train.routing_info_to_xml">[docs]</a>    <span class="k">def</span> <span class="nf">routing_info_to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">:</span>
+        <span class="n">jsg</span> <span class="o">=</span> <span class="s2">&quot;http://taf-jsg.info/schemes&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;TrainInformation&#39;</span><span class="p">,</span> <span class="n">attrib</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;xmlns&#39;</span><span class="p">:</span> <span class="n">jsg</span><span class="p">,</span>
+            <span class="s1">&#39;xmlns:xsi&#39;</span><span class="p">:</span> <span class="s2">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;xsi:schemaLocation&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">jsg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">/taf_cat_complete_sector.xsd&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;RouteInfoVersion&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">),</span>
+        <span class="p">})</span>
+
+        <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="n">sec</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">routes</span><span class="p">():</span>
+            <span class="n">route</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div></div>
+
+
+<div class="viewcode-block" id="day_offset"><a class="viewcode-back" href="../../tom.html#tom.tom.day_offset">[docs]</a><span class="k">def</span> <span class="nf">day_offset</span><span class="p">(</span><span class="n">departure</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">arrival</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return number of night shifts between two timestamps</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">arrival</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">day</span> <span class="o">-</span> <span class="n">departure</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">day</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SectionRun"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun">[docs]</a><span class="k">class</span> <span class="nc">SectionRun</span><span class="p">:</span>
@@ -749,7 +900,7 @@
     <span class="k">def</span> <span class="nf">__otr_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">):</span>
         <span class="n">dep_time_at_rcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construction_start_section_run</span><span class="o">.</span><span class="n">departure_time</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_relative_to_construction_start</span>
-        <span class="n">otr</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">timestamp</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="o">-</span> <span class="n">dep_time_at_rcs</span><span class="o">.</span><span class="n">date</span><span class="p">())</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+        <span class="n">otr</span> <span class="o">=</span> <span class="n">day_offset</span><span class="p">(</span><span class="n">dep_time_at_rcs</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">otr</span> <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">pos</span> <span class="o">*</span> <span class="n">otr</span>
 
 <div class="viewcode-block" id="SectionRun.otr_at_arrival"><a class="viewcode-back" href="../../tom.html#tom.tom.SectionRun.otr_at_arrival">[docs]</a>    <span class="k">def</span> <span class="nf">otr_at_arrival</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -841,10 +992,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TrainRun.train_id"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.train_id">[docs]</a>    <span class="k">def</span> <span class="nf">train_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">train_id</span><span class="p">()</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_run_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
-
-<div class="viewcode-block" id="TrainRun.train_run_id"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.train_run_id">[docs]</a>    <span class="k">def</span> <span class="nf">train_run_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first_run</span><span class="p">()</span><span class="o">.</span><span class="n">section_id</span><span class="p">()</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">train_id</span><span class="p">(</span><span class="n">variant</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">first_run</span><span class="p">()</span><span class="o">.</span><span class="n">section_id</span><span class="p">())</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 <div class="viewcode-block" id="TrainRun.route_key"><a class="viewcode-back" href="../../tom.html#tom.tom.TrainRun.route_key">[docs]</a>    <span class="k">def</span> <span class="nf">route_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">SectionRun</span><span class="o">.</span><span class="n">section_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections_runs</span><span class="p">))</span></div>
@@ -927,21 +1075,21 @@
                <span class="s1">&#39;-&#39;</span> <span class="o">+</span> \
                <span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">arrival_station</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Route.add_date"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.add_date">[docs]</a>    <span class="k">def</span> <span class="nf">add_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
+<div class="viewcode-block" id="Route.add_date"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.add_date">[docs]</a>    <span class="k">def</span> <span class="nf">add_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">DatetimeIndex</span><span class="p">([</span><span class="n">d</span><span class="p">]))</span></div>
 
 <div class="viewcode-block" id="Route.route_key"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.route_key">[docs]</a>    <span class="k">def</span> <span class="nf">route_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">section_id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Route.description"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.description">[docs]</a>    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="Route.description"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.description">[docs]</a>    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_bitmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">first_section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">last_section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">dep</span> <span class="o">=</span> <span class="n">first_section</span><span class="o">.</span><span class="n">departure_time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
         <span class="n">fd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_day</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m&quot;</span><span class="p">)</span>
         <span class="n">ld</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_day</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m&quot;</span><span class="p">)</span>
+        <span class="n">bitmap</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">compute_bitmap_days</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span> <span class="k">if</span> <span class="n">with_bitmap</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Route     : </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Key       : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">route_key</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Calendar  : </span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">ld</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Calendar  : </span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">ld</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">bitmap</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Start   at: </span><span class="si">{</span><span class="n">dep</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">first_section</span><span class="o">.</span><span class="n">departure_station</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
             <span class="n">arr</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
@@ -952,7 +1100,27 @@
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Route.last_day"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.last_day">[docs]</a>    <span class="k">def</span> <span class="nf">last_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div></div>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendar</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Route.to_xml"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.to_xml">[docs]</a>    <span class="k">def</span> <span class="nf">to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+        <span class="n">route</span> <span class="o">=</span> <span class="n">ElemTree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;Route&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">route_key</span><span class="p">()})</span>
+        <span class="n">xml_add_calendar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">loc</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">tc</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">journey_location_iter</span><span class="p">():</span>
+            <span class="n">xml_add_journey_location</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">type_code</span><span class="o">=</span><span class="n">tc</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Route.journey_location_iter"><a class="viewcode-back" href="../../tom.html#tom.tom.Route.journey_location_iter">[docs]</a>    <span class="k">def</span> <span class="nf">journey_location_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">first_section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">last_section</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">first_section</span><span class="o">.</span><span class="n">departure_station</span><span class="p">,</span> \
+              <span class="n">first_section</span><span class="o">.</span><span class="n">departure_time</span><span class="p">(),</span> \
+              <span class="n">TSI_LOCATION_TYPE_CODES</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">],</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="n">tc_arrival</span> <span class="o">=</span> <span class="s1">&#39;Destination&#39;</span> <span class="k">if</span> <span class="n">last_section</span> <span class="o">==</span> <span class="n">sec</span> <span class="k">else</span> <span class="s1">&#39;Handover&#39;</span>
+            <span class="k">yield</span> <span class="n">sec</span><span class="o">.</span><span class="n">arrival_station</span><span class="p">,</span> \
+                  <span class="n">sec</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">(),</span> \
+                  <span class="n">TSI_LOCATION_TYPE_CODES</span><span class="p">[</span><span class="n">tc_arrival</span><span class="p">],</span> \
+                  <span class="n">day_offset</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">arrival_time</span><span class="p">(),</span> <span class="n">sec</span><span class="o">.</span><span class="n">departure_time</span><span class="p">())</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">__make_section_from_dict</span><span class="p">(</span><span class="n">section</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteSection</span><span class="p">:</span>

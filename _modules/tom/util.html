@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tom.util &mdash; Train Object Model 0.1.1 documentation</title>
+  <title>tom.util &mdash; Train Object Model 0.2.0 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.2.0
               </div>
             
           
@@ -171,6 +171,9 @@
   <h1>Source code for tom.util</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">ElementTree</span>
+
+<span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">Train</span>
 
 
 <div class="viewcode-block" id="example"><a class="viewcode-back" href="../../tom.html#tom.util.example">[docs]</a><span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
@@ -178,6 +181,34 @@
     <span class="n">t_spec_file</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
     <span class="n">t_spec_file</span> <span class="o">+=</span> <span class="nb">next</span><span class="p">(</span><span class="n">spec</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">train_specs</span> <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">spec</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">train_specs</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">t_spec_file</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">__indent_xml</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">level</span> <span class="o">*</span> <span class="s2">&quot;  &quot;</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="s2">&quot;  &quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">tail</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">for</span> <span class="n">sub_elem</span> <span class="ow">in</span> <span class="n">elem</span><span class="p">:</span>
+            <span class="n">__indent_xml</span><span class="p">(</span><span class="n">sub_elem</span><span class="p">,</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">tail</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">j</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">tail</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">j</span>
+    <span class="k">return</span> <span class="n">elem</span>
+
+
+<div class="viewcode-block" id="xml_to_string"><a class="viewcode-back" href="../../tom.html#tom.util.xml_to_string">[docs]</a><span class="k">def</span> <span class="nf">xml_to_string</span><span class="p">(</span><span class="n">xml</span><span class="p">:</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">__indent_xml</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dump_routing_info_as_xml"><a class="viewcode-back" href="../../tom.html#tom.util.dump_routing_info_as_xml">[docs]</a><span class="k">def</span> <span class="nf">dump_routing_info_as_xml</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="n">Train</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">Element</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">routing_info_to_xml</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="s2">&quot;file:///../tests/data/xml&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">xml_to_string</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
