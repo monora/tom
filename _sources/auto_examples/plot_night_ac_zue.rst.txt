@@ -56,7 +56,7 @@ Therefore we need to routes from April on: ::
 
     from tom.plot import plot_train, plot_graph
     from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-    from tom.util import example
+    from tom.util import example, dump_routing_info_as_xml
 
 
 
@@ -555,14 +555,228 @@ Each `TrainRun` defines a row in the timetable of the train above.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-118
+.. GENERATED FROM PYTHON SOURCE LINES 114-117
+
+RoutingInformation as TrainInformation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An XML Dump of the routing information of version 1
+
+.. GENERATED FROM PYTHON SOURCE LINES 117-119
+
+.. code-block:: default
+
+    print(dump_routing_info_as_xml(t))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    <TrainInformation xmlns="http://taf-jsg.info/schemes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd" RouteInfoVersion="1">
+      <RouteSection SectionVersion="1" HasReferenceCalender="true">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>10</Variant>
+        <TimetableYear>2021</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10014</LocationPrimaryCode>
+        <PrimaryLocationName>XNAC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>20:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10015</LocationPrimaryCode>
+        <PrimaryLocationName>EEM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>21:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>10000111000011100001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-12T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-31T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>------402403</Core>
+          <Variant>11</Variant>
+          <TimetableYear>2021</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>11</Variant>
+        <TimetableYear>2021</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10015</LocationPrimaryCode>
+        <PrimaryLocationName>EEM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>21:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>03:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>10000111000011100001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-12T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-31T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>------402403</Core>
+          <Variant>12</Variant>
+          <TimetableYear>2021</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>12</Variant>
+        <TimetableYear>2021</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>03:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10017</LocationPrimaryCode>
+        <PrimaryLocationName>XSZH</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>04:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>10000111000011100001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-13T00:00:00</StartDateTime>
+          <EndDateTime>2022-01-01T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      </RouteSection>
+    <Route key="10-11-12">
+        <PlannedCalendar>
+          <BitmapDays>10000111000011100001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-12T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-31T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10014</LocationPrimaryCode>
+        <PrimaryLocationName>XNAC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>20:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10015</LocationPrimaryCode>
+        <PrimaryLocationName>EEM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>21:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>03:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10017</LocationPrimaryCode>
+        <PrimaryLocationName>XSZH</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>04:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      </Route>
+    </TrainInformation>
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 120-124
 
 Update schedule (version 2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Version 2 of the train contains the update from april on.
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-122
+.. GENERATED FROM PYTHON SOURCE LINES 124-128
 
 .. code-block:: default
 
@@ -638,13 +852,13 @@ Version 2 of the train contains the update from april on.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-126
+.. GENERATED FROM PYTHON SOURCE LINES 129-132
 
 Timetable V2
 ^^^^^^^^^^^^
 Version 2 has train runs on sundays from Utrecht to Basel.
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-129
+.. GENERATED FROM PYTHON SOURCE LINES 132-135
 
 .. code-block:: default
 
@@ -840,13 +1054,13 @@ Version 2 has train runs on sundays from Utrecht to Basel.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-133
+.. GENERATED FROM PYTHON SOURCE LINES 136-139
 
 Bildfahrplan
 ^^^^^^^^^^^^
 On sundays the trains only go to Basel from Utrecht over Venlo.
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-135
+.. GENERATED FROM PYTHON SOURCE LINES 139-141
 
 .. code-block:: default
 
@@ -863,7 +1077,7 @@ On sundays the trains only go to Basel from Utrecht over Venlo.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-141
+.. GENERATED FROM PYTHON SOURCE LINES 142-147
 
 Route Sections
 ^^^^^^^^^^^^^^
@@ -871,7 +1085,7 @@ To realize the schedule we need two new section (with ID 20 and 40)
 All oteher section have a new version 2, because the calender had to
 shortened by sunday.
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-145
+.. GENERATED FROM PYTHON SOURCE LINES 147-151
 
 .. code-block:: default
 
@@ -923,13 +1137,13 @@ shortened by sunday.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-149
+.. GENERATED FROM PYTHON SOURCE LINES 152-155
 
 Section graph
 ^^^^^^^^^^^^^
 The section graph now has two new sections, which define the second route.
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-152
+.. GENERATED FROM PYTHON SOURCE LINES 155-158
 
 .. code-block:: default
 
@@ -947,13 +1161,13 @@ The section graph now has two new sections, which define the second route.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-156
+.. GENERATED FROM PYTHON SOURCE LINES 159-162
 
 Routes
 ^^^^^^
 From april on we have one new route:
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-160
+.. GENERATED FROM PYTHON SOURCE LINES 162-166
 
 .. code-block:: default
 
@@ -992,12 +1206,12 @@ From april on we have one new route:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 161-163
+.. GENERATED FROM PYTHON SOURCE LINES 167-169
 
 Section runs
 ^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-167
+.. GENERATED FROM PYTHON SOURCE LINES 169-173
 
 .. code-block:: default
 
@@ -1066,12 +1280,12 @@ Section runs
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-170
+.. GENERATED FROM PYTHON SOURCE LINES 174-176
 
 TrainRuns
 ^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-176
+.. GENERATED FROM PYTHON SOURCE LINES 176-183
 
 .. code-block:: default
 
@@ -1081,6 +1295,7 @@ TrainRuns
         for sr in tr.sections_runs:
             print(sr)
         print("\n")
+
 
 
 
@@ -1163,10 +1378,360 @@ TrainRuns
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 184-187
+
+RoutingInformation as TrainInformation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An XML Dump of the routing information of version 1
+
+.. GENERATED FROM PYTHON SOURCE LINES 187-189
+
+.. code-block:: default
+
+    print(dump_routing_info_as_xml(t))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    <TrainInformation xmlns="http://taf-jsg.info/schemes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd" RouteInfoVersion="2">
+      <RouteSection SectionVersion="2" HasReferenceCalender="true">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>10</Variant>
+        <TimetableYear>2022</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10014</LocationPrimaryCode>
+        <PrimaryLocationName>XNAC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>20:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10015</LocationPrimaryCode>
+        <PrimaryLocationName>EEM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>21:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>11000001100000110000011</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2022-04-15T00:00:00</StartDateTime>
+          <EndDateTime>2022-05-07T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>------402403</Core>
+          <Variant>11</Variant>
+          <TimetableYear>2022</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>11</Variant>
+        <TimetableYear>2022</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10015</LocationPrimaryCode>
+        <PrimaryLocationName>EEM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>21:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>03:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>11000001100000110000011</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2022-04-15T00:00:00</StartDateTime>
+          <EndDateTime>2022-05-07T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>------402403</Core>
+          <Variant>12</Variant>
+          <TimetableYear>2022</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>12</Variant>
+        <TimetableYear>2022</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>03:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10017</LocationPrimaryCode>
+        <PrimaryLocationName>XSZH</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>04:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>11000001100000110000011</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2022-04-16T00:00:00</StartDateTime>
+          <EndDateTime>2022-05-08T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      </RouteSection>
+    <RouteSection SectionVersion="1" HasReferenceCalender="true">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>20</Variant>
+        <TimetableYear>2022</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10018</LocationPrimaryCode>
+        <PrimaryLocationName>XNU</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>20:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10019</LocationPrimaryCode>
+        <PrimaryLocationName>XNVL</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>22:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>1000000100000010000001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2022-04-17T00:00:00</StartDateTime>
+          <EndDateTime>2022-05-08T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>------402403</Core>
+          <Variant>21</Variant>
+          <TimetableYear>2022</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>------402403</Core>
+        <Variant>21</Variant>
+        <TimetableYear>2022</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10019</LocationPrimaryCode>
+        <PrimaryLocationName>XNVL</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>22:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>04:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>1000000100000010000001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2022-04-17T00:00:00</StartDateTime>
+          <EndDateTime>2022-05-08T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>------402403</Core>
+          <Variant>12</Variant>
+          <TimetableYear>2022</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <Route key="10-11-12">
+        <PlannedCalendar>
+          <BitmapDays>11000001100000110000011</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2022-04-15T00:00:00</StartDateTime>
+          <EndDateTime>2022-05-07T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10014</LocationPrimaryCode>
+        <PrimaryLocationName>XNAC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>20:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10015</LocationPrimaryCode>
+        <PrimaryLocationName>EEM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>21:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>03:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10017</LocationPrimaryCode>
+        <PrimaryLocationName>XSZH</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>04:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      </Route>
+    <Route key="20-21">
+        <PlannedCalendar>
+          <BitmapDays>1000000100000010000001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2022-04-17T00:00:00</StartDateTime>
+          <EndDateTime>2022-05-08T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10018</LocationPrimaryCode>
+        <PrimaryLocationName>XNU</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>20:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10019</LocationPrimaryCode>
+        <PrimaryLocationName>XNVL</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>22:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10016</LocationPrimaryCode>
+        <PrimaryLocationName>RXBA</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>04:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      </Route>
+    </TrainInformation>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.530 seconds)
+   **Total running time of the script:** ( 0 minutes  1.692 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_night_ac_zue.py:

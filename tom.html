@@ -253,7 +253,7 @@ the train.</p></li>
 
 <dl class="attribute">
 <dt id="tom.tom.LocationIdGenerator.location_name_to_code">
-<code class="sig-name descname">location_name_to_code</code><em class="property"> = {'AC': 10004, 'D': 10003, 'EMM': 10005, 'FF': 10006, 'H1': 10001, 'S': 10000, 'T': 10002, 'Venlo': 10007}</em><a class="headerlink" href="#tom.tom.LocationIdGenerator.location_name_to_code" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">location_name_to_code</code><em class="property"> = {'A': 10000, 'AC': 10007, 'B': 10001, 'C': 10002, 'D': 10003, 'E': 10011, 'EEM': 10015, 'EMM': 10008, 'F': 10012, 'FF': 10009, 'G': 10013, 'H1': 10005, 'RXBA': 10016, 'S': 10004, 'T': 10006, 'Venlo': 10010, 'XNAC': 10014, 'XNU': 10018, 'XNVL': 10019, 'XSZH': 10017}</em><a class="headerlink" href="#tom.tom.LocationIdGenerator.location_name_to_code" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -928,7 +928,7 @@ necessary, that the  TimetableYear should be part of the TrainID)</p>
 
 <dl class="function">
 <dt id="tom.tom.xml_add_journey_location">
-<code class="sig-prename descclassname">tom.tom.</code><code class="sig-name descname">xml_add_journey_location</code><span class="sig-paren">(</span><em class="sig-param">parent: xml.etree.ElementTree.Element</em>, <em class="sig-param">station: str</em>, <em class="sig-param">t: datetime.datetime</em>, <em class="sig-param">offset: int = 0</em>, <em class="sig-param">type_code='04'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#xml_add_journey_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.xml_add_journey_location" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tom.tom.</code><code class="sig-name descname">xml_add_journey_location</code><span class="sig-paren">(</span><em class="sig-param">parent: xml.etree.ElementTree.Element</em>, <em class="sig-param">station: str</em>, <em class="sig-param">t: datetime.datetime</em>, <em class="sig-param">offset: int = 0</em>, <em class="sig-param">type_code=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tom/tom.html#xml_add_journey_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tom.tom.xml_add_journey_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add XML Element PlannedJourneyLocation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

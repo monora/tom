@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Example: Train from Amsterdam to Frankfurt" href="plot_ac_ff.html" />
-    <link rel="prev" title="Example Train Annex 4 v1" href="plot_annex_4.html" /> 
+    <link rel="prev" title="Example: Train AC - FF without timing" href="plot_ac_ff_without_timing.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -102,8 +102,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4 v1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Example Train Annex 4 v2</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
@@ -866,7 +866,7 @@ for more details.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TrainInformation xmlns=&quot;http://taf-jsg.info/schemes&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd&quot; RouteInfoVersion=&quot;2&quot;&gt;
-  &lt;RouteSection SectionVersion=&quot;2&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+  &lt;RouteSection SectionVersion=&quot;2&quot; HasReferenceCalender=&quot;true&quot;&gt;
     &lt;SectionID&gt;
       &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
     &lt;Company&gt;8350&lt;/Company&gt;
@@ -876,7 +876,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10004&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -887,7 +887,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -923,7 +923,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -934,7 +934,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -951,7 +951,7 @@ for more details.</p>
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
   &lt;/RouteSection&gt;
-&lt;RouteSection SectionVersion=&quot;1&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
     &lt;SectionID&gt;
       &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
     &lt;Company&gt;8350&lt;/Company&gt;
@@ -961,7 +961,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10004&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -972,7 +972,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1008,7 +1008,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1019,7 +1019,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1036,7 +1036,7 @@ for more details.</p>
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
   &lt;/RouteSection&gt;
-&lt;RouteSection SectionVersion=&quot;2&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+&lt;RouteSection SectionVersion=&quot;2&quot; HasReferenceCalender=&quot;true&quot;&gt;
     &lt;SectionID&gt;
       &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
     &lt;Company&gt;8350&lt;/Company&gt;
@@ -1046,7 +1046,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10004&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1057,7 +1057,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1093,7 +1093,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1104,7 +1104,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1121,7 +1121,7 @@ for more details.</p>
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
   &lt;/RouteSection&gt;
-&lt;RouteSection SectionVersion=&quot;1&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
     &lt;SectionID&gt;
       &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
     &lt;Company&gt;8350&lt;/Company&gt;
@@ -1142,7 +1142,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1178,7 +1178,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1189,7 +1189,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1206,7 +1206,7 @@ for more details.</p>
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
   &lt;/RouteSection&gt;
-&lt;RouteSection SectionVersion=&quot;2&quot; IsStartOfConstruction=&quot;true&quot;&gt;
+&lt;RouteSection SectionVersion=&quot;2&quot; HasReferenceCalender=&quot;true&quot;&gt;
     &lt;SectionID&gt;
       &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
     &lt;Company&gt;8350&lt;/Company&gt;
@@ -1227,7 +1227,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1263,7 +1263,7 @@ for more details.</p>
     &lt;/SectionID&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1274,7 +1274,7 @@ for more details.</p>
     &lt;/PlannedJourneyLocation&gt;
   &lt;PlannedJourneyLocation&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1299,9 +1299,9 @@ for more details.</p>
       &lt;EndDateTime&gt;2021-02-04T00:00:00&lt;/EndDateTime&gt;
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10004&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1310,9 +1310,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1321,9 +1321,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1341,9 +1341,9 @@ for more details.</p>
       &lt;EndDateTime&gt;2021-02-06T00:00:00&lt;/EndDateTime&gt;
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10004&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1352,9 +1352,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1363,9 +1363,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1383,9 +1383,9 @@ for more details.</p>
       &lt;EndDateTime&gt;2021-02-13T00:00:00&lt;/EndDateTime&gt;
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10004&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;S&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1394,9 +1394,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1405,9 +1405,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1425,7 +1425,7 @@ for more details.</p>
       &lt;EndDateTime&gt;2021-02-11T00:00:00&lt;/EndDateTime&gt;
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
     &lt;LocationPrimaryCode&gt;10003&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;D&lt;/PrimaryLocationName&gt;
@@ -1436,9 +1436,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1447,9 +1447,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1467,7 +1467,7 @@ for more details.</p>
       &lt;EndDateTime&gt;2021-02-20T00:00:00&lt;/EndDateTime&gt;
       &lt;/ValidityPeriod&gt;
     &lt;/PlannedCalendar&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
     &lt;LocationPrimaryCode&gt;10003&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;D&lt;/PrimaryLocationName&gt;
@@ -1478,9 +1478,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10005&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;H1&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1489,9 +1489,9 @@ for more details.</p>
         &lt;/Timing&gt;
       &lt;/TimingAtLocation&gt;
     &lt;/PlannedJourneyLocation&gt;
-  &lt;PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
       &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
-    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;LocationPrimaryCode&gt;10006&lt;/LocationPrimaryCode&gt;
     &lt;PrimaryLocationName&gt;T&lt;/PrimaryLocationName&gt;
     &lt;TimingAtLocation&gt;
         &lt;Timing&gt;
@@ -1504,7 +1504,7 @@ for more details.</p>
 &lt;/TrainInformation&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.092 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.039 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-annex-4-v2-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/f8f0cae11595e7fec4ae94ae1462d7e1/plot_annex_4_v2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_annex_4_v2.py</span></code></a></p>
@@ -1524,7 +1524,7 @@ for more details.</p>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="plot_ac_ff.html" class="btn btn-neutral float-right" title="Example: Train from Amsterdam to Frankfurt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="plot_annex_4.html" class="btn btn-neutral float-left" title="Example Train Annex 4 v1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_ac_ff_without_timing.html" class="btn btn-neutral float-left" title="Example: Train AC - FF without timing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

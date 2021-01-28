@@ -25,7 +25,7 @@ Example: Train AC - FF without timing
 
 .. code-block:: default
 
-    from tom.util import example
+    from tom.util import example, dump_routing_info_as_xml
     from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
     from tom.plot import plot_train, plot_graph
 
@@ -746,7 +746,7 @@ TrainRuns
 ^^^^^^^^^
 Each `TrainRun` defines a row in the timetable of the train above
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-80
+.. GENERATED FROM PYTHON SOURCE LINES 74-81
 
 .. code-block:: default
 
@@ -756,6 +756,7 @@ Each `TrainRun` defines a row in the timetable of the train above
         for sr in tr.sections_runs:
             print(sr)
         print("\n")
+
 
 
 
@@ -925,10 +926,292 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 82-85
+
+RoutingInformation as TrainInformation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An XML Dump of the routing information of this example according a new version of the TSI XSD.
+
+.. GENERATED FROM PYTHON SOURCE LINES 85-86
+
+.. code-block:: default
+
+    print(dump_routing_info_as_xml(t))
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    <TrainInformation xmlns="http://taf-jsg.info/schemes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd" RouteInfoVersion="1">
+      <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------00AB</Core>
+        <Variant>10</Variant>
+        <TimetableYear>2021</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
+        <PrimaryLocationName>AC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10008</LocationPrimaryCode>
+        <PrimaryLocationName>EMM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>110001111000111100011110001111</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-01T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-30T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>--------00AB</Core>
+          <Variant>20</Variant>
+          <TimetableYear>2021</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1" HasReferenceCalender="true">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------00AB</Core>
+        <Variant>20</Variant>
+        <TimetableYear>2021</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10008</LocationPrimaryCode>
+        <PrimaryLocationName>EMM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
+        <PrimaryLocationName>FF</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>110001111000111100011110001111</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-02T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-31T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      </RouteSection>
+    <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------00AB</Core>
+        <Variant>30</Variant>
+        <TimetableYear>2021</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
+        <PrimaryLocationName>AC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10010</LocationPrimaryCode>
+        <PrimaryLocationName>Venlo</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>11100001110000111000011100001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-03T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-31T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>--------00AB</Core>
+          <Variant>40</Variant>
+          <TimetableYear>2021</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1" HasReferenceCalender="true">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------00AB</Core>
+        <Variant>40</Variant>
+        <TimetableYear>2021</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10010</LocationPrimaryCode>
+        <PrimaryLocationName>Venlo</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
+        <PrimaryLocationName>FF</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>11100001110000111000011100001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-04T00:00:00</StartDateTime>
+          <EndDateTime>2022-01-01T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      </RouteSection>
+    <Route key="10-20">
+        <PlannedCalendar>
+          <BitmapDays>110001111000111100011110001111</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-01T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-30T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
+        <PrimaryLocationName>AC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10008</LocationPrimaryCode>
+        <PrimaryLocationName>EMM</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
+        <PrimaryLocationName>FF</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      </Route>
+    <Route key="30-40">
+        <PlannedCalendar>
+          <BitmapDays>11100001110000111000011100001</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2021-12-03T00:00:00</StartDateTime>
+          <EndDateTime>2021-12-31T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
+        <PrimaryLocationName>AC</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10010</LocationPrimaryCode>
+        <PrimaryLocationName>Venlo</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
+        <PrimaryLocationName>FF</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:00:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      </Route>
+    </TrainInformation>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.420 seconds)
+   **Total running time of the script:** ( 0 minutes  1.332 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_ac_ff_without_timing.py:

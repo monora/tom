@@ -30,7 +30,7 @@ with interesting OTRs.
 
     from tom.plot import plot_train, plot_graph
     from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-    from tom.util import example
+    from tom.util import example, dump_routing_info_as_xml
 
 
 
@@ -412,7 +412,7 @@ TrainRuns
 ^^^^^^^^^
 Each `TrainRun` defines a row in the timetable of the train above
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-79
+.. GENERATED FROM PYTHON SOURCE LINES 73-80
 
 .. code-block:: default
 
@@ -422,6 +422,7 @@ Each `TrainRun` defines a row in the timetable of the train above
         for sr in tr.sections_runs:
             print(sr)
         print("\n")
+
 
 
 
@@ -448,10 +449,331 @@ Each `TrainRun` defines a row in the timetable of the train above
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 81-84
+
+RoutingInformation as TrainInformation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An XML Dump of the routing information of version 1
+
+.. GENERATED FROM PYTHON SOURCE LINES 84-86
+
+.. code-block:: default
+
+    print(dump_routing_info_as_xml(t))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    <TrainInformation xmlns="http://taf-jsg.info/schemes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd" RouteInfoVersion="1">
+      <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------30AB</Core>
+        <Variant>10</Variant>
+        <TimetableYear>2020</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10000</LocationPrimaryCode>
+        <PrimaryLocationName>A</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>23:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10001</LocationPrimaryCode>
+        <PrimaryLocationName>B</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>11</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2020-12-01T00:00:00</StartDateTime>
+          <EndDateTime>2020-12-02T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>--------30AB</Core>
+          <Variant>20</Variant>
+          <TimetableYear>2020</TimetableYear>
+          </SectionID>
+        <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>--------30AB</Core>
+          <Variant>40</Variant>
+          <TimetableYear>2020</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1" HasReferenceCalender="true">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------30AB</Core>
+        <Variant>20</Variant>
+        <TimetableYear>2020</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10001</LocationPrimaryCode>
+        <PrimaryLocationName>B</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10002</LocationPrimaryCode>
+        <PrimaryLocationName>C</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>1</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2020-12-02T00:00:00</StartDateTime>
+          <EndDateTime>2020-12-02T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>--------30AB</Core>
+          <Variant>30</Variant>
+          <TimetableYear>2020</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1" HasReferenceCalender="true">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------30AB</Core>
+        <Variant>40</Variant>
+        <TimetableYear>2020</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10001</LocationPrimaryCode>
+        <PrimaryLocationName>B</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10002</LocationPrimaryCode>
+        <PrimaryLocationName>C</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>1</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2020-12-04T00:00:00</StartDateTime>
+          <EndDateTime>2020-12-04T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <Successors>
+          <SectionID>
+            <ObjectType>RS</ObjectType>
+          <Company>8350</Company>
+          <Core>--------30AB</Core>
+          <Variant>30</Variant>
+          <TimetableYear>2020</TimetableYear>
+          </SectionID>
+        </Successors>
+      </RouteSection>
+    <RouteSection SectionVersion="1">
+        <SectionID>
+          <ObjectType>RS</ObjectType>
+        <Company>8350</Company>
+        <Core>--------30AB</Core>
+        <Variant>30</Variant>
+        <TimetableYear>2020</TimetableYear>
+        </SectionID>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10002</LocationPrimaryCode>
+        <PrimaryLocationName>C</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation>
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10003</LocationPrimaryCode>
+        <PrimaryLocationName>D</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedCalendar>
+          <BitmapDays>101</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2020-12-02T00:00:00</StartDateTime>
+          <EndDateTime>2020-12-04T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      </RouteSection>
+    <Route key="10-20-30">
+        <PlannedCalendar>
+          <BitmapDays>1</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2020-12-01T00:00:00</StartDateTime>
+          <EndDateTime>2020-12-01T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10000</LocationPrimaryCode>
+        <PrimaryLocationName>A</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>23:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10001</LocationPrimaryCode>
+        <PrimaryLocationName>B</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10002</LocationPrimaryCode>
+        <PrimaryLocationName>C</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10003</LocationPrimaryCode>
+        <PrimaryLocationName>D</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      </Route>
+    <Route key="10-40-30">
+        <PlannedCalendar>
+          <BitmapDays>1</BitmapDays>
+        <ValidityPeriod>
+            <StartDateTime>2020-12-02T00:00:00</StartDateTime>
+          <EndDateTime>2020-12-02T00:00:00</EndDateTime>
+          </ValidityPeriod>
+        </PlannedCalendar>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10000</LocationPrimaryCode>
+        <PrimaryLocationName>A</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>23:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10001</LocationPrimaryCode>
+        <PrimaryLocationName>B</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10002</LocationPrimaryCode>
+        <PrimaryLocationName>C</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>12:30:00</Time>
+            <Offset>0</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
+          <CountryCodeISO>DE</CountryCodeISO>
+        <LocationPrimaryCode>10003</LocationPrimaryCode>
+        <PrimaryLocationName>D</PrimaryLocationName>
+        <TimingAtLocation>
+            <Timing>
+              <Time>00:30:00</Time>
+            <Offset>1</Offset>
+            </Timing>
+          </TimingAtLocation>
+        </PlannedJourneyLocation>
+      </Route>
+    </TrainInformation>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.812 seconds)
+   **Total running time of the script:** ( 0 minutes  1.340 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_test_otr.py:

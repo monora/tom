@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example Train Annex 4 v1" href="plot_annex_4.html" />
-    <link rel="prev" title="Example showing OTR anomalie" href="plot_test_otr.html" /> 
+    <link rel="next" title="Example Train Annex 4 v2" href="plot_annex_4_v2.html" />
+    <link rel="prev" title="Example Train Annex 4 v1" href="plot_annex_4.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -102,6 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4 v1</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Example: Train AC - FF without timing</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timetable">Timetable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bildfahrplan">Bildfahrplan</a></li>
@@ -110,9 +111,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#routes">Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#routinginformation-as-traininformation">RoutingInformation as TrainInformation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4 v1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4_v2.html">Example Train Annex 4 v2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
@@ -199,7 +200,7 @@ to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-train-ac-ff-without-timing">
 <span id="sphx-glr-auto-examples-plot-ac-ff-without-timing-py"></span><h1>Example: Train AC - FF without timing<a class="headerlink" href="#example-train-ac-ff-without-timing" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span><span class="p">,</span> <span class="n">dump_routing_info_as_xml</span>
 <span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
 <span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span><span class="p">,</span> <span class="n">plot_graph</span>
 </pre></div>
@@ -927,7 +928,273 @@ TR/8350/00AB/30/2021/2021-12-31
 40.v1:2022-01-01 12:00 OTR=0 Venlo-FF 2022-01-02 12:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.420 seconds)</p>
+</div>
+<div class="section" id="routinginformation-as-traininformation">
+<h2>RoutingInformation as TrainInformation<a class="headerlink" href="#routinginformation-as-traininformation" title="Permalink to this headline">¶</a></h2>
+<p>An XML Dump of the routing information of this example according a new version of the TSI XSD.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dump_routing_info_as_xml</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TrainInformation xmlns=&quot;http://taf-jsg.info/schemes&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd&quot; RouteInfoVersion=&quot;1&quot;&gt;
+  &lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------00AB&lt;/Core&gt;
+    &lt;Variant&gt;10&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10007&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;AC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10008&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EMM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;110001111000111100011110001111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-01T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-30T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;--------00AB&lt;/Core&gt;
+      &lt;Variant&gt;20&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------00AB&lt;/Core&gt;
+    &lt;Variant&gt;20&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10008&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EMM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10009&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;FF&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;110001111000111100011110001111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-02T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-31T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------00AB&lt;/Core&gt;
+    &lt;Variant&gt;30&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10007&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;AC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10010&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;Venlo&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11100001110000111000011100001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-03T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-31T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;--------00AB&lt;/Core&gt;
+      &lt;Variant&gt;40&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------00AB&lt;/Core&gt;
+    &lt;Variant&gt;40&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10010&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;Venlo&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10009&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;FF&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11100001110000111000011100001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-04T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-01-01T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;Route key=&quot;10-20&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;110001111000111100011110001111&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-01T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-30T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10007&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;AC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10008&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EMM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10009&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;FF&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;Route key=&quot;30-40&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11100001110000111000011100001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-03T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-31T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10007&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;AC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10010&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;Venlo&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10009&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;FF&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;/TrainInformation&gt;
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.332 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-ac-ff-without-timing-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d56c8d41519552a08bd5db586c4917b2/plot_ac_ff_without_timing.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_ac_ff_without_timing.py</span></code></a></p>
@@ -946,8 +1213,8 @@ TR/8350/00AB/30/2021/2021-12-31
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_annex_4.html" class="btn btn-neutral float-right" title="Example Train Annex 4 v1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="plot_test_otr.html" class="btn btn-neutral float-left" title="Example showing OTR anomalie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_annex_4_v2.html" class="btn btn-neutral float-right" title="Example Train Annex 4 v2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_annex_4.html" class="btn btn-neutral float-left" title="Example Train Annex 4 v1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

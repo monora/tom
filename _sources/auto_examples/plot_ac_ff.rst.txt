@@ -976,7 +976,7 @@ for more details.
         </SectionID>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10004</LocationPrimaryCode>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
         <PrimaryLocationName>AC</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -987,7 +987,7 @@ for more details.
         </PlannedJourneyLocation>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10005</LocationPrimaryCode>
+        <LocationPrimaryCode>10008</LocationPrimaryCode>
         <PrimaryLocationName>EMM</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1013,7 +1013,7 @@ for more details.
           </SectionID>
         </Successors>
       </RouteSection>
-    <RouteSection SectionVersion="1" IsStartOfConstruction="true">
+    <RouteSection SectionVersion="1" HasReferenceCalender="true">
         <SectionID>
           <ObjectType>RS</ObjectType>
         <Company>8350</Company>
@@ -1023,7 +1023,7 @@ for more details.
         </SectionID>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10005</LocationPrimaryCode>
+        <LocationPrimaryCode>10008</LocationPrimaryCode>
         <PrimaryLocationName>EMM</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1034,7 +1034,7 @@ for more details.
         </PlannedJourneyLocation>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10006</LocationPrimaryCode>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
         <PrimaryLocationName>FF</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1061,7 +1061,7 @@ for more details.
         </SectionID>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10004</LocationPrimaryCode>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
         <PrimaryLocationName>AC</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1072,7 +1072,7 @@ for more details.
         </PlannedJourneyLocation>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10007</LocationPrimaryCode>
+        <LocationPrimaryCode>10010</LocationPrimaryCode>
         <PrimaryLocationName>Venlo</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1098,7 +1098,7 @@ for more details.
           </SectionID>
         </Successors>
       </RouteSection>
-    <RouteSection SectionVersion="1" IsStartOfConstruction="true">
+    <RouteSection SectionVersion="1" HasReferenceCalender="true">
         <SectionID>
           <ObjectType>RS</ObjectType>
         <Company>8350</Company>
@@ -1108,7 +1108,7 @@ for more details.
         </SectionID>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10007</LocationPrimaryCode>
+        <LocationPrimaryCode>10010</LocationPrimaryCode>
         <PrimaryLocationName>Venlo</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1119,7 +1119,7 @@ for more details.
         </PlannedJourneyLocation>
       <PlannedJourneyLocation>
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10006</LocationPrimaryCode>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
         <PrimaryLocationName>FF</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1144,9 +1144,9 @@ for more details.
           <EndDateTime>2021-12-30T00:00:00</EndDateTime>
           </ValidityPeriod>
         </PlannedCalendar>
-      <PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10004</LocationPrimaryCode>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
         <PrimaryLocationName>AC</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1155,9 +1155,9 @@ for more details.
             </Timing>
           </TimingAtLocation>
         </PlannedJourneyLocation>
-      <PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10005</LocationPrimaryCode>
+        <LocationPrimaryCode>10008</LocationPrimaryCode>
         <PrimaryLocationName>EMM</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1166,9 +1166,9 @@ for more details.
             </Timing>
           </TimingAtLocation>
         </PlannedJourneyLocation>
-      <PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10006</LocationPrimaryCode>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
         <PrimaryLocationName>FF</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1186,9 +1186,9 @@ for more details.
           <EndDateTime>2021-12-31T00:00:00</EndDateTime>
           </ValidityPeriod>
         </PlannedCalendar>
-      <PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="01">
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10004</LocationPrimaryCode>
+        <LocationPrimaryCode>10007</LocationPrimaryCode>
         <PrimaryLocationName>AC</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1197,9 +1197,9 @@ for more details.
             </Timing>
           </TimingAtLocation>
         </PlannedJourneyLocation>
-      <PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="04">
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10007</LocationPrimaryCode>
+        <LocationPrimaryCode>10010</LocationPrimaryCode>
         <PrimaryLocationName>Venlo</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1208,9 +1208,9 @@ for more details.
             </Timing>
           </TimingAtLocation>
         </PlannedJourneyLocation>
-      <PlannedJourneyLocation>
+      <PlannedJourneyLocation JourneyLocationTypeCode="03">
           <CountryCodeISO>DE</CountryCodeISO>
-        <LocationPrimaryCode>10006</LocationPrimaryCode>
+        <LocationPrimaryCode>10009</LocationPrimaryCode>
         <PrimaryLocationName>FF</PrimaryLocationName>
         <TimingAtLocation>
             <Timing>
@@ -1229,7 +1229,7 @@ for more details.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.399 seconds)
+   **Total running time of the script:** ( 0 minutes  1.289 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_ac_ff.py:

@@ -102,8 +102,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../routing-planning-process.html">Routing Planning Process</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ECM example trains</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_test_otr.html">Example showing OTR anomalie</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4 v1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4_v2.html">Example Train Annex 4 v2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
@@ -116,6 +116,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#routes">Routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#section-runs">Section runs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#routinginformation-as-traininformation">RoutingInformation as TrainInformation</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#update-schedule-version-2">Update schedule (version 2)</a><ul>
@@ -126,6 +127,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#id4">Routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id5">Section runs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id6">TrainRuns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">RoutingInformation as TrainInformation</a></li>
 </ul>
 </li>
 </ul>
@@ -242,7 +244,7 @@ Therefore we need to routes from April on:</p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span><span class="p">,</span> <span class="n">plot_graph</span>
 <span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
-<span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
+<span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span><span class="p">,</span> <span class="n">dump_routing_info_as_xml</span>
 </pre></div>
 </div>
 <div class="section" id="standard-schedule-version-1">
@@ -580,6 +582,203 @@ TR/8350/402403/10/2021/2021-12-31
 10.v1:2021-12-31 20:00 OTR=0 XNAC-EEM 2021-12-31 21:30 OTR=0
 11.v1:2021-12-31 21:30 OTR=0 EEM-RXBA 2022-01-01 03:30 OTR=30
 12.v1:2022-01-01 03:30 OTR=30 RXBA-XSZH 2022-01-01 04:30 OTR=30
+</pre></div>
+</div>
+</div>
+<div class="section" id="routinginformation-as-traininformation">
+<h3>RoutingInformation as TrainInformation<a class="headerlink" href="#routinginformation-as-traininformation" title="Permalink to this headline">¶</a></h3>
+<p>An XML Dump of the routing information of version 1</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dump_routing_info_as_xml</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TrainInformation xmlns=&quot;http://taf-jsg.info/schemes&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd&quot; RouteInfoVersion=&quot;1&quot;&gt;
+  &lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;10&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10014&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNAC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;20:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10015&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EEM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;21:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;10000111000011100001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-12T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-31T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;------402403&lt;/Core&gt;
+      &lt;Variant&gt;11&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;11&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10015&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EEM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;21:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;03:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;10000111000011100001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-12T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-31T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;------402403&lt;/Core&gt;
+      &lt;Variant&gt;12&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;12&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2021&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;03:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10017&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XSZH&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;04:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;10000111000011100001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-13T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-01-01T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;Route key=&quot;10-11-12&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;10000111000011100001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2021-12-12T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2021-12-31T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10014&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNAC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;20:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10015&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EEM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;21:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;03:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10017&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XSZH&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;04:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;/TrainInformation&gt;
 </pre></div>
 </div>
 </div>
@@ -1059,7 +1258,340 @@ TR/8350/402403/20/2022/2022-05-08
 21.v1:2022-05-08 22:00 OTR=0 XNVL-RXBA 2022-05-09 04:00 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.530 seconds)</p>
+</div>
+<div class="section" id="id7">
+<h3>RoutingInformation as TrainInformation<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>An XML Dump of the routing information of version 1</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dump_routing_info_as_xml</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TrainInformation xmlns=&quot;http://taf-jsg.info/schemes&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd&quot; RouteInfoVersion=&quot;2&quot;&gt;
+  &lt;RouteSection SectionVersion=&quot;2&quot; HasReferenceCalender=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;10&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10014&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNAC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;20:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10015&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EEM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;21:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11000001100000110000011&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2022-04-15T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-05-07T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;------402403&lt;/Core&gt;
+      &lt;Variant&gt;11&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;11&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10015&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EEM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;21:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;03:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11000001100000110000011&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2022-04-15T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-05-07T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;------402403&lt;/Core&gt;
+      &lt;Variant&gt;12&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;12&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;03:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10017&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XSZH&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;04:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11000001100000110000011&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2022-04-16T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-05-08T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;20&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10018&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNU&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;20:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10019&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNVL&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;22:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1000000100000010000001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2022-04-17T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-05-08T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;------402403&lt;/Core&gt;
+      &lt;Variant&gt;21&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;------402403&lt;/Core&gt;
+    &lt;Variant&gt;21&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10019&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNVL&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;22:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;04:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1000000100000010000001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2022-04-17T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-05-08T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;------402403&lt;/Core&gt;
+      &lt;Variant&gt;12&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2022&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;Route key=&quot;10-11-12&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11000001100000110000011&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2022-04-15T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-05-07T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10014&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNAC&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;20:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10015&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;EEM&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;21:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;03:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10017&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XSZH&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;04:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;Route key=&quot;20-21&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1000000100000010000001&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2022-04-17T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2022-05-08T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10018&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNU&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;20:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10019&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;XNVL&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;22:00:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10016&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;RXBA&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;04:00:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;/TrainInformation&gt;
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.692 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-night-ac-zue-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a62acb79e721bb2eecbdd07d58314349/plot_night_ac_zue.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_night_ac_zue.py</span></code></a></p>

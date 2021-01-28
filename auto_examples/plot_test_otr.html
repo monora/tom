@@ -43,7 +43,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example: Train AC - FF without timing" href="plot_ac_ff_without_timing.html" />
+    <link rel="next" title="Example Train Annex 4 v1" href="plot_annex_4.html" />
     <link rel="prev" title="ECM example trains" href="index.html" /> 
 </head>
 
@@ -109,10 +109,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#routes">Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#section-runs">Section runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#trainruns">TrainRuns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#routinginformation-as-traininformation">RoutingInformation as TrainInformation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4.html">Example Train Annex 4 v1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ac_ff_without_timing.html">Example: Train AC - FF without timing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_annex_4_v2.html">Example Train Annex 4 v2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ac_ff.html">Example: Train from Amsterdam to Frankfurt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_a_f.html">Example: Train with three IMs</a></li>
@@ -203,7 +204,7 @@ to download the full example code</p>
 with interesting OTRs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tom.plot</span> <span class="kn">import</span> <span class="n">plot_train</span><span class="p">,</span> <span class="n">plot_graph</span>
 <span class="kn">from</span> <span class="nn">tom.tom</span> <span class="kn">import</span> <span class="n">make_train_from_yml</span><span class="p">,</span> <span class="n">TrainRun</span><span class="p">,</span> <span class="n">RouteSection</span><span class="p">,</span> <span class="n">Route</span>
-<span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span>
+<span class="kn">from</span> <span class="nn">tom.util</span> <span class="kn">import</span> <span class="n">example</span><span class="p">,</span> <span class="n">dump_routing_info_as_xml</span>
 </pre></div>
 </div>
 <p>Load example from yaml specification</p>
@@ -465,7 +466,311 @@ TR/8350/30AB/10/2020/2020-12-02
 30.v1:2020-12-04 12:30 OTR=0 C-D 2020-12-05 00:30 OTR=1
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.812 seconds)</p>
+</div>
+<div class="section" id="routinginformation-as-traininformation">
+<h2>RoutingInformation as TrainInformation<a class="headerlink" href="#routinginformation-as-traininformation" title="Permalink to this headline">¶</a></h2>
+<p>An XML Dump of the routing information of version 1</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dump_routing_info_as_xml</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TrainInformation xmlns=&quot;http://taf-jsg.info/schemes&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://taf-jsg.info/schemes file:///../tests/data/xml/taf_cat_complete_sector.xsd&quot; RouteInfoVersion=&quot;1&quot;&gt;
+  &lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------30AB&lt;/Core&gt;
+    &lt;Variant&gt;10&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;A&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;23:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;B&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;11&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2020-12-01T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2020-12-02T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;--------30AB&lt;/Core&gt;
+      &lt;Variant&gt;20&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;--------30AB&lt;/Core&gt;
+      &lt;Variant&gt;40&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------30AB&lt;/Core&gt;
+    &lt;Variant&gt;20&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;B&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;C&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2020-12-02T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2020-12-02T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;--------30AB&lt;/Core&gt;
+      &lt;Variant&gt;30&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot; HasReferenceCalender=&quot;true&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------30AB&lt;/Core&gt;
+    &lt;Variant&gt;40&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;B&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;C&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2020-12-04T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2020-12-04T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;Successors&gt;
+      &lt;SectionID&gt;
+        &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+      &lt;Company&gt;8350&lt;/Company&gt;
+      &lt;Core&gt;--------30AB&lt;/Core&gt;
+      &lt;Variant&gt;30&lt;/Variant&gt;
+      &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+      &lt;/SectionID&gt;
+    &lt;/Successors&gt;
+  &lt;/RouteSection&gt;
+&lt;RouteSection SectionVersion=&quot;1&quot;&gt;
+    &lt;SectionID&gt;
+      &lt;ObjectType&gt;RS&lt;/ObjectType&gt;
+    &lt;Company&gt;8350&lt;/Company&gt;
+    &lt;Core&gt;--------30AB&lt;/Core&gt;
+    &lt;Variant&gt;30&lt;/Variant&gt;
+    &lt;TimetableYear&gt;2020&lt;/TimetableYear&gt;
+    &lt;/SectionID&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;C&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10003&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;D&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;101&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2020-12-02T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2020-12-04T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;/RouteSection&gt;
+&lt;Route key=&quot;10-20-30&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2020-12-01T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2020-12-01T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;A&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;23:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;B&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;C&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10003&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;D&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;Route key=&quot;10-40-30&quot;&gt;
+    &lt;PlannedCalendar&gt;
+      &lt;BitmapDays&gt;1&lt;/BitmapDays&gt;
+    &lt;ValidityPeriod&gt;
+        &lt;StartDateTime&gt;2020-12-02T00:00:00&lt;/StartDateTime&gt;
+      &lt;EndDateTime&gt;2020-12-02T00:00:00&lt;/EndDateTime&gt;
+      &lt;/ValidityPeriod&gt;
+    &lt;/PlannedCalendar&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;01&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10000&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;A&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;23:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10001&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;B&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;04&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10002&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;C&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;12:30:00&lt;/Time&gt;
+        &lt;Offset&gt;0&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;PlannedJourneyLocation JourneyLocationTypeCode=&quot;03&quot;&gt;
+      &lt;CountryCodeISO&gt;DE&lt;/CountryCodeISO&gt;
+    &lt;LocationPrimaryCode&gt;10003&lt;/LocationPrimaryCode&gt;
+    &lt;PrimaryLocationName&gt;D&lt;/PrimaryLocationName&gt;
+    &lt;TimingAtLocation&gt;
+        &lt;Timing&gt;
+          &lt;Time&gt;00:30:00&lt;/Time&gt;
+        &lt;Offset&gt;1&lt;/Offset&gt;
+        &lt;/Timing&gt;
+      &lt;/TimingAtLocation&gt;
+    &lt;/PlannedJourneyLocation&gt;
+  &lt;/Route&gt;
+&lt;/TrainInformation&gt;
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.340 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-test-otr-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/610027346a8002eb51e8cc68f2f77e61/plot_test_otr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_test_otr.py</span></code></a></p>
@@ -484,7 +789,7 @@ TR/8350/30AB/10/2020/2020-12-02
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_ac_ff_without_timing.html" class="btn btn-neutral float-right" title="Example: Train AC - FF without timing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_annex_4.html" class="btn btn-neutral float-right" title="Example Train Annex 4 v1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="index.html" class="btn btn-neutral float-left" title="ECM example trains" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

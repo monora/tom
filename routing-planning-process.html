@@ -312,7 +312,7 @@ See timetable <a class="reference external" href="auto_examples/plot_annex_4_v2.
 version 2 of the routing info:</p>
 <div class="figure align-default" id="id5">
 <p class="plantuml">
-<img src="_images/plantuml-02a1bd68f679cc4e8cd5840e386df29a00dc6757.png" alt="title Re-Planning (Lead RU = RU1)
+<img src="_images/plantuml-a8988dd36772ea70590af7534ca6943990d0299e.png" alt="title Re-Planning (Lead RU = RU1)
 skinparam BoxPadding 25
 
 box &quot;RU1/IM1&quot;
@@ -348,7 +348,7 @@ group &quot;Path Re-Planning RU1/IM1&quot;
     IM1 -&gt; RU1: PDM(RS-50.v1)
 end
 group &quot;Path Re-Planning RU2/IM2&quot;
-    loop &quot;for $i in {10,20,30}&quot;
+    loop &quot;for $i in {11,21,31}&quot;
         RU2 -&gt; IM2: PRM(RI-v2, RS-$i.v2)
     end
     RU2 -&gt; IM2: PRM(RI-v2, RS-41.v1)
@@ -431,8 +431,9 @@ them to be used to easily detect the changes in a routing info (see process abov
 <li><p><em>TimingAtLocation</em> needs two attributes:</p>
 <ul>
 <li><p><em>Offset</em> which is set to the number of night shifts between departure and arrival of the
-section.</p></li>
-<li><p><em>Timing</em> contains the departure or arrival time of the section.</p></li>
+section. The offset at the departure station (first location) must always be zero.</p></li>
+<li><p><em>Timing</em> contains the departure time for the first location (which is the departure) and or
+arrival time last location of the section (which is the arrival).</p></li>
 </ul>
 </li>
 </ul>
@@ -449,7 +450,7 @@ occurred in:</p>
 <ul class="simple">
 <li><p>Section departure or arrival stations</p></li>
 <li><p>Section calendar</p></li>
-<li><p>Offset at arrival station (offset at departure station must always be zero)</p></li>
+<li><p>Offset at arrival station</p></li>
 </ul>
 <p>We have generated the new train information structures for the two version of the example above.
 See</p>
