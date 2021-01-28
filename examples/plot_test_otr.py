@@ -7,7 +7,7 @@ with interesting OTRs.
 """
 from tom.plot import plot_train, plot_graph
 from tom.tom import make_train_from_yml, TrainRun, RouteSection, Route
-from tom.util import example
+from tom.util import example, dump_routing_info_as_xml
 
 # %%
 # Load example from yaml specification
@@ -76,3 +76,10 @@ for tr in t.train_run_iterator():
     for sr in tr.sections_runs:
         print(sr)
     print("\n")
+
+# %%
+# RoutingInformation as TrainInformation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# An XML Dump of the routing information of version 1
+print(dump_routing_info_as_xml(t))
+

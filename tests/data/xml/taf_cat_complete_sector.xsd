@@ -6767,9 +6767,9 @@ TPWS
 								<xs:documentation>When a section changed this version is incremented.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
-						<xs:attribute name="IsStartOfConstruction" type="xs:boolean" use="optional" default="false">
+						<xs:attribute name="HasReferenceCalender" type="xs:boolean" use="optional" default="false">
 							<xs:annotation>
-								<xs:documentation>Marks a section as start of construction</xs:documentation>
+								<xs:documentation>Calendars of other sections can be computed starting from this section.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
 					</xs:complexType>

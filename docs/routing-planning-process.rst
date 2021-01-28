@@ -167,8 +167,9 @@ These are the main differences to the original version:
   - *TimingAtLocation* needs two attributes:
 
     + *Offset* which is set to the number of night shifts between departure and arrival of the
-      section.
-    + *Timing* contains the departure or arrival time of the section.
+      section. The offset at the departure station (first location) must always be zero.
+    + *Timing* contains the departure time for the first location (which is the departure) and or
+      arrival time last location of the section (which is the arrival).
 
 * The *PlannedCalendar* of a section is optional for sections which are not *StartOfConstruction*.
   Only these must have a calendar.
@@ -182,7 +183,7 @@ occurred in:
 
 * Section departure or arrival stations
 * Section calendar
-* Offset at arrival station (offset at departure station must always be zero)
+* Offset at arrival station
 
 .. _TrainInformation Example Annex 4 V1: auto_examples/plot_annex_4.html#routinginformation-as-traininformation
 .. _TrainInformation Example Annex 4 V2: auto_examples/plot_annex_4_v2.html#routinginformation-as-traininformation

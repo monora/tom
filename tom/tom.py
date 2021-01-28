@@ -92,7 +92,7 @@ def xml_add_journey_location(parent: ElemTree.Element,
                              station: str,
                              t: datetime,
                              offset: int = 0,
-                             type_code='04'):
+                             type_code=None):
     """
     Add XML Element PlannedJourneyLocation
 
@@ -103,8 +103,9 @@ def xml_add_journey_location(parent: ElemTree.Element,
     :param type_code: JourneyLocationTypeCode (default ist Handover == 04)
     """
     loc = xml_simple_element(parent, 'PlannedJourneyLocation')
-    # Set this only if really needed, because it can be computed from the successor relation
-    # loc.set('JourneyLocationTypeCode', type_code) # FIXME
+    if type_code:
+        # Set this only if really needed, because it can be computed from the successor relation
+        loc.set('JourneyLocationTypeCode', type_code)
     xml_simple_element(loc, 'CountryCodeISO', 'DE')  # FIXME
     xml_simple_element(loc, 'LocationPrimaryCode',
                        __ID_GENERATOR.map_location_name_to_code(station))
@@ -376,7 +377,7 @@ class RouteSection:
     def to_xml(self, root: ElemTree.Element):
         rs = ElemTree.SubElement(root, 'RouteSection', {'SectionVersion': str(self.version)})
         if self.is_construction_start:
-            rs.set('IsStartOfConstruction', 'true')
+            rs.set('HasReferenceCalender', 'true')
         self.xml_add_id(rs)
         xml_add_journey_location(rs,
                                  self.departure_station,

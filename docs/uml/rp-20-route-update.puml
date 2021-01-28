@@ -34,7 +34,7 @@ group "Path Re-Planning RU1/IM1"
     IM1 -> RU1: PDM(RS-50.v1)
 end
 group "Path Re-Planning RU2/IM2"
-    loop "for $i in {10,20,30}"
+    loop "for $i in {11,21,31}"
         RU2 -> IM2: PRM(RI-v2, RS-$i.v2)
     end
     RU2 -> IM2: PRM(RI-v2, RS-41.v1)
