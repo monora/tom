@@ -75,9 +75,9 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	sphinx-apidoc -o docs/ tom
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	# $(BROWSER) docs/_build/html/index.html
 	cp -a docs/xsd docs/_build/html
-	firefox docs/_build/html/index.html
+	# $(BROWSER) docs/_build/html/index.html
+	firefox docs/_build/html/index.html &
 
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
@@ -96,3 +96,4 @@ version-major:
 
 version-minor:
 	bump2version minor
+https://fahrweg.dbnetze.com/resource/blob/4359918/b61f2cef98cb6d0ba5080a06b0ccf94a/02_EVU-Schnittstelle-Download-3-data.pdf

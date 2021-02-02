@@ -6774,7 +6774,7 @@ TPWS
 						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="Route" maxOccurs="unbounded">
+				<xs:element name="Route" minOccurs="0" maxOccurs="unbounded">
 					<xs:annotation>
 						<xs:documentation>Optional because all routes can be computed from the route sections</xs:documentation>
 					</xs:annotation>
