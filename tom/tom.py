@@ -593,6 +593,7 @@ class Train:
         train_ids = list(map(TrainRun.train_id, train_runs))
         result = pd.DataFrame(index=train_ids,
                               columns=self.__time_table_columns())
+        result.index.name = 'Daily Train ID'
         for tr in train_runs:
             result.loc[tr.train_id()] = tr.time_table(format_time=format_time)
         if format_time:
@@ -745,15 +746,15 @@ class SectionRun:
     def arrival_time(self) -> datetime:
         return self.departure_time + self.section.travel_time
 
-    def arrival_with_otr(self) -> str:
+    def arrival_formatted(self) -> str:
         return self.__format_time(self.arrival_time(), self.otr_at_arrival())
 
-    def departure_with_otr(self) -> str:
+    def departure_formatted(self) -> str:
         return self.__format_time(self.departure_time, self.otr_at_departure())
 
     @staticmethod
     def __format_time(t, otr):
-        return t.strftime(f"%a %d.%m.%y %H:%M {otr:2d}")
+        return t.strftime(f"%a %d.%m.%y %H:%M")
 
     def arrival_at_departure_station(self) -> datetime:
         """:return: the timestamp when the train will arrive in the departure station
@@ -836,8 +837,8 @@ class TrainRun:
     def time_table(self, format_time=True) -> Dict[str, str]:
         result = {}
         for sr in self.sections_runs:
-            arr = sr.arrival_with_otr() if format_time else sr.arrival_time()
-            dep = sr.departure_with_otr() if format_time else sr.departure_time
+            arr = sr.arrival_formatted() if format_time else sr.arrival_time()
+            dep = sr.departure_formatted() if format_time else sr.departure_time
             result[sr.arrival_column()] = arr
             result[sr.departure_column()] = dep
         return result
