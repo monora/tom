@@ -185,25 +185,34 @@ Show timetable as dataframe
           <th>Departure C</th>
           <th>Arrival D</th>
         </tr>
+        <tr>
+          <th>Daily Train ID</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
         <tr>
           <th>TR/8350/30AB/10/2020/2020-12-01</th>
-          <td>Di 01.12.20 23:30 -1</td>
-          <td>Mi 02.12.20 00:30  0</td>
-          <td>Mi 02.12.20 00:30  0</td>
-          <td>Mi 02.12.20 12:30  0</td>
-          <td>Mi 02.12.20 12:30  0</td>
-          <td>Do 03.12.20 00:30  1</td>
+          <td>Di 01.12.20 23:30</td>
+          <td>Mi 02.12.20 00:30</td>
+          <td>Mi 02.12.20 00:30</td>
+          <td>Mi 02.12.20 12:30</td>
+          <td>Mi 02.12.20 12:30</td>
+          <td>Do 03.12.20 00:30</td>
         </tr>
         <tr>
           <th>TR/8350/30AB/10/2020/2020-12-02</th>
-          <td>Mi 02.12.20 23:30 -2</td>
-          <td>Do 03.12.20 00:30 -1</td>
-          <td>Fr 04.12.20 00:30  0</td>
-          <td>Fr 04.12.20 12:30  0</td>
-          <td>Fr 04.12.20 12:30  0</td>
-          <td>Sa 05.12.20 00:30  1</td>
+          <td>Mi 02.12.20 23:30</td>
+          <td>Do 03.12.20 00:30</td>
+          <td>Fr 04.12.20 00:30</td>
+          <td>Fr 04.12.20 12:30</td>
+          <td>Fr 04.12.20 12:30</td>
+          <td>Sa 05.12.20 00:30</td>
         </tr>
       </tbody>
     </table>
@@ -773,7 +782,7 @@ An XML Dump of the routing information of version 1
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.197 seconds)
+   **Total running time of the script:** ( 0 minutes  2.684 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_test_otr.py:
