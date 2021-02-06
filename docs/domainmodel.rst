@@ -141,6 +141,10 @@ should arrive at at different time at `EMM`, the RU has to define a new RouteSec
 this day. If `EMM` is a handover, the lead RU must ask the applicant RU of the following section to
 create fitting route section with section station of departure `EMM`.
 
+section_id can be considered as a technical id to identify the section easily among the sections of a train.
+The quatruble (=section_key()) is a functional key, which ensures the consistency of the model (Rule SEC-UFK).
+There must be a 1:1 correspondence between section_key() and section_id.
+
 Versioning
 ~~~~~~~~~~
 

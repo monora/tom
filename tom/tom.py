@@ -396,7 +396,7 @@ class RouteSection:
 
     def arrival_time_offset(self) -> int:
         """
-        :return: Offset in days of arrival relativ to departure time (must be positiv)
+        :return: Offset in days of arrival relative to departure time (must be positive)
         """
         return day_offset(self.arrival_time(), self.departure_time())
 
